@@ -44,7 +44,7 @@
 		<cameo.version>2.12</cameo.version>
 		<javaluator.version>3.0.6</javaluator.version>
 		<monocle.version>21.0.2</monocle.version>
-		<mockito.version>5.20.0</mockito.version>
+		<mockito.version>5.21.0</mockito.version>
 		<images-folder>target/main/images</images-folder>
 	</properties>
 
