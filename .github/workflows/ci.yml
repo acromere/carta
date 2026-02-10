@@ -1,4 +1,4 @@
-name: Acromere Carta CI
+name: Carta CI
 
 on:
   push:
