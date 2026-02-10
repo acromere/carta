@@ -1,4 +1,4 @@
-name: CI
+name: Acromere Carta CI
 
 on:
   push:
@@ -7,16 +7,18 @@ on:
   workflow_dispatch:
 
 env:
-  AVN_PRODUCT: "carta"
+  ACM_PRODUCT: "carta"
   # The default release, should be overridden in config.sh
-  AVN_RELEASE: "latest"
+  ACM_RELEASE: "latest"
   # The default platform, should be overridden in the platform binaries jobs below
-  AVN_PLATFORM: "linux"
+  ACM_PLATFORM: "linux"
 
-  AVN_GPG_PASSWORD: ${{ secrets.AVN_GPG_PASSWORD }}
-  AVN_KEYSTORE_PASSWORD: ${{ secrets.AVN_KEYSTORE_PASSWORD }}
-  AVN_REPO_USERNAME: ${{ secrets.AVN_REPO_USERNAME }}
-  AVN_REPO_PASSWORD: ${{ secrets.AVN_REPO_PASSWORD }}
+  ACM_GPG_PASSWORD: ${{ secrets.ACM_GPG_PASSWORD }}
+  ACM_KEYSTORE_PASSWORD: ${{ secrets.ACM_KEYSTORE_PASSWORD }}
+  ACM_MAVEN_REPO_USERNAME: ${{ secrets.ACM_MAVEN_REPO_USERNAME }}
+  ACM_MAVEN_REPO_PASSWORD: ${{ secrets.ACM_MAVEN_REPO_PASSWORD }}
+  ACM_XENON_REPO_USERNAME: ${{ secrets.ACM_XENON_REPO_USERNAME }}
+  ACM_XENON_REPO_PASSWORD: ${{ secrets.ACM_XENON_REPO_PASSWORD }}
 
   DISPLAY: ":99"
   GITHUB_REF: ${{ github.ref }}
@@ -36,7 +38,7 @@ jobs:
       - name: Fetch CI/CD resources
         uses: actions/checkout@v6
         with:
-          repository: avereon/canoe
+          repository: acromere/canoe
           path: .github
 
       - name: Configuration
@@ -63,11 +65,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v4
-        with:
-          languages: java
-
       - name: Compile
         run: |
           mvn ${{env.MAVEN_PARMS}} compile
@@ -75,9 +72,6 @@ jobs:
       - name: Unit Tests
         run: |
           mvn ${{env.MAVEN_PARMS}} test
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v4
 
       - name: Upload Artifacts for Next Steps
         uses: actions/upload-artifact@v6
@@ -98,7 +92,7 @@ jobs:
       - name: Fetch CI/CD resources
         uses: actions/checkout@v6
         with:
-          repository: avereon/canoe
+          repository: acromere/canoe
           path: .github
 
       - name: Configuration
@@ -132,21 +126,21 @@ jobs:
           name: build
           path: target
 
-      - name: Publish Arifacts
+      - name: Publish Artifacts
         run: |
           mvn ${{env.MAVEN_PARMS}} deploy -Dmaven.test.skip=true
 
       - name: Publish Icons
         run: |
-          scp -B target/main/images/*product.png ${{env.AVN_REPO_USERNAME}}@avereon.com:${PRODUCT_DEPLOY_PATH} 2>&1
+          scp -B target/main/images/*product.png ${{env.ACM_XENON_REPO_USERNAME}}@acromere.com:${PRODUCT_DEPLOY_PATH} 2>&1
 
       - name: Publish JavaDoc
         run: |
-          ssh -t ${{env.AVN_REPO_USERNAME}}@avereon.com "mkdir -p ${{env.JAVADOC_DEPLOY_PATH}};"
+          ssh -t ${{env.ACM_XENON_REPO_USERNAME}}@acromere.com "mkdir -p ${{env.JAVADOC_DEPLOY_PATH}};"
           if [ $? -ne 0 ]; then exit 1; fi
-          scp -B target/${AVN_PRODUCT}-*-javadoc.jar ${{env.AVN_REPO_USERNAME}}@avereon.com:${{env.JAVADOC_DEPLOY_PATH}}/javadoc.jar 2>&1
+          scp -B target/${ACM_PRODUCT}-*-javadoc.jar ${{env.ACM_XENON_REPO_USERNAME}}@acromere.com:${{env.JAVADOC_DEPLOY_PATH}}/javadoc.jar 2>&1
           if [ $? -ne 0 ]; then exit 1; fi
-          ssh -t ${{env.AVN_REPO_USERNAME}}@avereon.com "mkdir -p ${{env.JAVADOC_TARGET_PATH}};rm -rf ${{env.JAVADOC_TARGET_PATH}}/*;cd ${{env.JAVADOC_TARGET_PATH}};jar -xf ${{env.JAVADOC_DEPLOY_PATH}}/javadoc.jar;cd -;"
+          ssh -t ${{env.ACM_XENON_REPO_USERNAME}}@acromere.com "mkdir -p ${{env.JAVADOC_TARGET_PATH}};rm -rf ${{env.JAVADOC_TARGET_PATH}}/*;cd ${{env.JAVADOC_TARGET_PATH}};jar -xf ${{env.JAVADOC_DEPLOY_PATH}}/javadoc.jar;cd -;"
           if [ $? -ne 0 ]; then exit 1; fi
 
   screenshots1x:
@@ -156,7 +150,7 @@ jobs:
     timeout-minutes: 5
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/stable' || github.base_ref == 'refs/heads/main' || github.base_ref == 'refs/heads/stable'
     env:
-      AVN_PLATFORM: "linux"
+      ACM_PLATFORM: "linux"
       XVFB_PARMS: "-screen 0 1920x1080x24 -nolisten unix"
     steps:
       - name: Fetch sources
@@ -165,7 +159,7 @@ jobs:
       - name: Fetch CI/CD resources
         uses: actions/checkout@v6
         with:
-          repository: avereon/canoe
+          repository: acromere/canoe
           path: .github
 
       - name: Configuration
@@ -204,9 +198,9 @@ jobs:
 
       - name: Publish Screenshots
         run: |
-          ssh -t ${{env.AVN_REPO_USERNAME}}@avereon.com "mkdir -p /opt/avn/web/screenshots/mod/carta;"
+          ssh -t ${{env.ACM_XENON_REPO_USERNAME}}@acromere.com "mkdir -p /opt/acm/web/screenshots/mod/carta;"
           if [ $? -ne 0 ]; then exit 1; fi
-          scp -Br target/screenshots/* ${{env.AVN_REPO_USERNAME}}@avereon.com:/opt/avn/web/screenshots/mod/carta 2>&1
+          scp -Br target/screenshots/* ${{env.ACM_XENON_REPO_USERNAME}}@acromere.com:/opt/acm/web/screenshots/mod/carta 2>&1
 
   screenshots2x:
     needs: build
@@ -215,7 +209,7 @@ jobs:
     timeout-minutes: 5
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/stable' || github.base_ref == 'refs/heads/main' || github.base_ref == 'refs/heads/stable'
     env:
-      AVN_PLATFORM: "linux"
+      ACM_PLATFORM: "linux"
       XVFB_PARMS: "-screen 0 3840x2160x24 -nolisten unix"
     steps:
       - name: Fetch sources
@@ -224,7 +218,7 @@ jobs:
       - name: Fetch CI/CD resources
         uses: actions/checkout@v6
         with:
-          repository: avereon/canoe
+          repository: acromere/canoe
           path: .github
 
       - name: Configuration
@@ -263,9 +257,9 @@ jobs:
 
       - name: Publish Screenshots
         run: |
-          ssh -t ${{env.AVN_REPO_USERNAME}}@avereon.com "mkdir -p /opt/avn/web/screenshots/mod/carta;"
+          ssh -t ${{env.ACM_XENON_REPO_USERNAME}}@acromere.com "mkdir -p /opt/acm/web/screenshots/mod/carta;"
           if [ $? -ne 0 ]; then exit 1; fi
-          scp -Br target/screenshots/* ${{env.AVN_REPO_USERNAME}}@avereon.com:/opt/avn/web/screenshots/mod/carta 2>&1
+          scp -Br target/screenshots/* ${{env.ACM_XENON_REPO_USERNAME}}@acromere.com:/opt/acm/web/screenshots/mod/carta 2>&1
 
   packs:
     needs: build
@@ -274,7 +268,7 @@ jobs:
     timeout-minutes: 30
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/stable' || github.base_ref == 'refs/heads/main' || github.base_ref == 'refs/heads/stable'
     env:
-      AVN_PLATFORM: "linux"
+      ACM_PLATFORM: "linux"
     steps:
       - name: Fetch sources
         uses: actions/checkout@v6
@@ -282,7 +276,7 @@ jobs:
       - name: Fetch CI/CD resources
         uses: actions/checkout@v6
         with:
-          repository: avereon/canoe
+          repository: acromere/canoe
           path: .github
 
       - name: Configuration
@@ -325,9 +319,8 @@ jobs:
 
       - name: Publish Product Pack
         run: |
-          scp -B target/*product.jar ${{env.AVN_REPO_USERNAME}}@avereon.com:${PRODUCT_DEPLOY_PATH} 2>&1
+          scp -B target/*product.jar ${{env.ACM_XENON_REPO_USERNAME}}@acromere.com:${PRODUCT_DEPLOY_PATH} 2>&1
 
       - name: Publish Product Card
         run: |
-          scp -B target/main/java/META-INF/*.card ${{env.AVN_REPO_USERNAME}}@avereon.com:${PRODUCT_DEPLOY_PATH} 2>&1
-
+          scp -B target/main/java/META-INF/*.card ${{env.ACM_XENON_REPO_USERNAME}}@acromere.com:${PRODUCT_DEPLOY_PATH} 2>&1

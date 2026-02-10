@@ -5,7 +5,7 @@
 	"timestamp": "${project.timestamp}",
 	"packaging": "mod",
 	"packagingVersion": "2",
-	"icons": [ "${project.artifactId}", "https://avereon.com/download/latest/${project.artifactId}/product/icon" ],
+	"icons": [ "${project.artifactId}", "https://acromere.com/download/latest/${project.artifactId}/product/icon" ],
 	"name": "${project.name}",
 	"provider": "${project.organization.name}",
 	"providerUrl": "${project.organization.url}",
@@ -18,10 +18,10 @@
 	"maintainers": [
 		{
 			"name": "Mark Soderquist",
-			"email": "mark@avereon.com",
+			"email": "mark@acromere.com",
 			"timezone": "US/Mountain",
-			"organization": "Avereon",
-			"organizationUrl": "https://www.avereon.com",
+			"organization": "Acromere",
+			"organizationUrl": "https://www.acromere.com",
 			"roles": [ "Architect", "Developer" ]
 		}
 	],

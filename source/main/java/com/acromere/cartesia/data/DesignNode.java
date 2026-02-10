@@ -1,0 +1,33 @@
+package com.acromere.cartesia.data;
+
+import com.acromere.data.IdNode;
+import com.acromere.data.Node;
+
+import java.util.Map;
+import java.util.Optional;
+
+/**
+ * The base node for all design data objects.
+ */
+public abstract class DesignNode extends IdNode {
+
+	public DesignNode() {}
+
+	protected Map<String, Object> asMap() {
+		return asMap( ID );
+	}
+
+	public DesignNode updateFrom( Map<String, Object> map ) {
+		if( map.containsKey( ID ) ) setId( (String)map.get( ID ) );
+		return this;
+	}
+
+	public Optional<DesignModel> getDesign() {
+		Node node = this;
+		while( node != null && !(node instanceof DesignModel) ) {
+			node = node.getParent();
+		}
+		return Optional.ofNullable( (DesignModel)node );
+	}
+
+}

@@ -1,9 +1,9 @@
-import com.avereon.cartesia.CartesiaMod;
-import com.avereon.xenon.Module;
+import com.acromere.cartesia.CartesiaMod;
+import com.acromere.xenon.Module;
 
 // This should match the group and artifact from the product card,
 // or there will be a lot of confusion.
-module com.avereon.carta {
+module com.acromere.carta {
 
 	// Compile-time only
 	requires static lombok;
@@ -11,11 +11,11 @@ module com.avereon.carta {
 	requires static org.mapstruct;
 
 	// Both compile-time and run-time
-	requires com.avereon.curve;
-	requires com.avereon.marea;
-	requires com.avereon.xenon;
-	requires com.avereon.zerra;
-	requires com.avereon.zevra;
+	requires com.acromere.curve;
+	requires com.acromere.marea;
+	requires com.acromere.xenon;
+	requires com.acromere.zerra;
+	requires com.acromere.zevra;
 	requires com.fasterxml.jackson.core;
 	requires com.fasterxml.jackson.databind;
 	requires java.logging;
@@ -24,35 +24,35 @@ module com.avereon.carta {
 	requires org.jsoup;
 
 	// Public APIs
-	exports com.avereon.cartesia;
-	exports com.avereon.cartesia.command;
-	exports com.avereon.cartesia.command.base;
-	exports com.avereon.cartesia.command.camera;
-	exports com.avereon.cartesia.command.draw;
-	exports com.avereon.cartesia.command.layer;
-	exports com.avereon.cartesia.command.measure;
-	exports com.avereon.cartesia.command.view;
-	exports com.avereon.cartesia.command.print;
-	exports com.avereon.cartesia.command.snap;
-	exports com.avereon.cartesia.command.edit;
-	exports com.avereon.cartesia.data;
-	exports com.avereon.cartesia.math;
-	exports com.avereon.cartesia.snap;
-	exports com.avereon.cartesia.trial;
+	exports com.acromere.cartesia;
+	exports com.acromere.cartesia.command;
+	exports com.acromere.cartesia.command.base;
+	exports com.acromere.cartesia.command.camera;
+	exports com.acromere.cartesia.command.draw;
+	exports com.acromere.cartesia.command.layer;
+	exports com.acromere.cartesia.command.measure;
+	exports com.acromere.cartesia.command.view;
+	exports com.acromere.cartesia.command.print;
+	exports com.acromere.cartesia.command.snap;
+	exports com.acromere.cartesia.command.edit;
+	exports com.acromere.cartesia.data;
+	exports com.acromere.cartesia.math;
+	exports com.acromere.cartesia.snap;
+	exports com.acromere.cartesia.trial;
 
 	// Private APIs
-	exports com.avereon.cartesia.cursor to com.avereon.zerra;
-	exports com.avereon.cartesia.icon to com.avereon.zerra;
-	exports com.avereon.cartesia.settings to com.avereon.xenon;
-	exports com.avereon.cartesia.tool to com.avereon.xenon;
-	exports com.avereon.cartesia.tool.design to com.avereon.xenon;
-	exports com.avereon.cartesia.tool.design.binding to org.mapstruct;
-	exports com.avereon.cartesia.rb to com.avereon.xenon;
+	exports com.acromere.cartesia.cursor to com.acromere.zerra;
+	exports com.acromere.cartesia.icon to com.acromere.zerra;
+	exports com.acromere.cartesia.settings to com.acromere.xenon;
+	exports com.acromere.cartesia.tool to com.acromere.xenon;
+	exports com.acromere.cartesia.tool.design to com.acromere.xenon;
+	exports com.acromere.cartesia.tool.design.binding to org.mapstruct;
+	exports com.acromere.cartesia.rb to com.acromere.xenon;
 
 	// Public resources
-	opens com.avereon.cartesia.bundles;
-	opens com.avereon.cartesia.design.props;
-	opens com.avereon.cartesia.settings;
+	opens com.acromere.cartesia.bundles;
+	opens com.acromere.cartesia.design.props;
+	opens com.acromere.cartesia.settings;
 
 	provides Module with CartesiaMod;
 

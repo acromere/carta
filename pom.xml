@@ -6,12 +6,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.avereon.pom</groupId>
+		<groupId>com.acromere.pom</groupId>
 		<artifactId>mod</artifactId>
-		<version>3.7-SNAPSHOT</version>
+		<version>1.0-SNAPSHOT</version>
 	</parent>
 
-	<groupId>com.avereon</groupId>
+	<groupId>com.acromere</groupId>
 	<artifactId>carta</artifactId>
 	<version>1.4-SNAPSHOT</version>
 	<packaging>jar</packaging>
@@ -22,15 +22,15 @@
 
 	<repositories>
 		<repository>
-			<id>avn</id>
-			<url>https://repo.avereon.com/avn</url>
+			<id>acm</id>
+			<url>https://repo.acromere.com/acm</url>
 		</repository>
 	</repositories>
 
 	<pluginRepositories>
 		<pluginRepository>
-			<id>avn</id>
-			<url>https://repo.avereon.com/avn</url>
+			<id>acm</id>
+			<url>https://repo.acromere.com/acm</url>
 		</pluginRepository>
 	</pluginRepositories>
 
@@ -40,37 +40,39 @@
 		<xenos.version>1.10-SNAPSHOT</xenos.version>
 		<curve.version>0.6-SNAPSHOT</curve.version>
 		<marea.version>0.4-SNAPSHOT</marea.version>
-		<zerra.version>0.11</zerra.version>
-		<cameo.version>2.12</cameo.version>
+		<zerra.version>0.12-SNAPSHOT</zerra.version>
 		<javaluator.version>3.0.6</javaluator.version>
 		<monocle.version>21.0.2</monocle.version>
 		<mockito.version>5.21.0</mockito.version>
+
+		<!-- Plugin versions -->
+		<cameo.version>2.13-SNAPSHOT</cameo.version>
 		<images-folder>target/main/images</images-folder>
 	</properties>
 
 	<dependencies>
 
 		<dependency>
-			<groupId>com.avereon</groupId>
+			<groupId>com.acromere</groupId>
 			<artifactId>curve</artifactId>
 			<version>${curve.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>com.avereon</groupId>
+			<groupId>com.acromere</groupId>
 			<artifactId>marea</artifactId>
 			<version>${marea.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>com.avereon</groupId>
+			<groupId>com.acromere</groupId>
 			<artifactId>zerra</artifactId>
 			<version>${zerra.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>com.avereon</groupId>
+			<groupId>com.acromere</groupId>
 			<artifactId>xenos</artifactId>
 			<version>${xenos.version}</version>
 			<scope>test</scope>
@@ -160,7 +162,7 @@
 			</plugin>
 
 			<plugin>
-				<groupId>com.avereon</groupId>
+				<groupId>com.acromere</groupId>
 				<artifactId>cameo</artifactId>
 				<version>${cameo.version}</version>
 				<executions>
@@ -173,7 +175,7 @@
 						<configuration>
 							<images>
 								<image>
-									<class>com.avereon.cartesia.icon.CartesiaIcon</class>
+									<class>com.acromere.cartesia.icon.CartesiaIcon</class>
 									<target>${images-folder}/product.png</target>
 									<theme>light</theme>
 								</image>
@@ -209,7 +211,7 @@
 										<argument>-p</argument>
 										<modulepath/>
 										<argument>-m</argument>
-										<argument>com.avereon.carta/com.avereon.cartesia.CartesiaScreenshots</argument>
+										<argument>com.acromere.carta/com.acromere.cartesia.CartesiaScreenshots</argument>
 										<argument>1</argument>
 									</arguments>
 								</configuration>
@@ -243,7 +245,7 @@
 										<argument>-p</argument>
 										<modulepath/>
 										<argument>-m</argument>
-										<argument>com.avereon.carta/com.avereon.cartesia.CartesiaScreenshots</argument>
+										<argument>com.acromere.carta/com.acromere.cartesia.CartesiaScreenshots</argument>
 										<argument>2</argument>
 									</arguments>
 								</configuration>

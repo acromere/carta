@@ -1,0 +1,140 @@
+package com.acromere.cartesia.data;
+
+import com.acromere.cartesia.test.Point3DAssert;
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Point3D;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static com.acromere.cartesia.TestConstants.TOLERANCE;
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class DesignMarkerTest {
+
+	@Test
+	void testGetSteps() {
+		// given
+		DesignMarker point = new DesignMarker( new Point3D( 0, 0, 0 ), "1", DesignMarker.Type.DIAMOND );
+
+		// when
+		List<DesignPath.Step> steps = point.getSteps();
+
+		// then
+		assertThat( steps ).isNotEmpty();
+		assertThat( steps.get( 0 ).command() ).isEqualTo( DesignPath.Command.M );
+		assertThat( steps.get( 0 ).data() ).isEqualTo( new double[]{ -0.5, 0 } );
+		assertThat( steps.get( 1 ).command() ).isEqualTo( DesignPath.Command.L );
+		assertThat( steps.get( 1 ).data() ).isEqualTo( new double[]{ 0.0, 0.5 } );
+		assertThat( steps.get( 2 ).command() ).isEqualTo( DesignPath.Command.L );
+		assertThat( steps.get( 2 ).data() ).isEqualTo( new double[]{ 0.5, 0 } );
+		assertThat( steps.get( 3 ).command() ).isEqualTo( DesignPath.Command.L );
+		assertThat( steps.get( 3 ).data() ).isEqualTo( new double[]{ 0.0, -0.5 } );
+		assertThat( steps.get( 4 ).command() ).isEqualTo( DesignPath.Command.Z );
+		assertThat( point.getSteps().size() ).isEqualTo( 5 );
+	}
+
+	@Test
+	void testGetStepsWithOriginAndSize() {
+		// given
+		DesignMarker point = new DesignMarker( new Point3D( 1, 1, 0 ), "2", DesignMarker.Type.DIAMOND );
+
+		// when
+		List<DesignPath.Step> steps = point.getSteps();
+
+		// then
+		assertThat( steps ).isNotEmpty();
+		assertThat( steps.get( 0 ).command() ).isEqualTo( DesignPath.Command.M );
+		assertThat( steps.get( 0 ).data() ).isEqualTo( new double[]{ 0.0, 1.0 } );
+		assertThat( steps.get( 1 ).command() ).isEqualTo( DesignPath.Command.L );
+		assertThat( steps.get( 1 ).data() ).isEqualTo( new double[]{ 1.0, 2.0 } );
+		assertThat( steps.get( 2 ).command() ).isEqualTo( DesignPath.Command.L );
+		assertThat( steps.get( 2 ).data() ).isEqualTo( new double[]{ 2.0, 1.0 } );
+		assertThat( steps.get( 3 ).command() ).isEqualTo( DesignPath.Command.L );
+		assertThat( steps.get( 3 ).data() ).isEqualTo( new double[]{ 1.0, 0.0 } );
+		assertThat( steps.get( 4 ).command() ).isEqualTo( DesignPath.Command.Z );
+		assertThat( point.getSteps().size() ).isEqualTo( 5 );
+	}
+
+	@Test
+	void testModify() {
+		DesignMarker point = new DesignMarker( new Point3D( 0, 0, 0 ) );
+		assertThat( point.isModified() ).isTrue();
+		point.setModified( false );
+		assertThat( point.isModified() ).isFalse();
+
+		point.setOrigin( new Point3D( 1, 1, 0 ) );
+		assertThat( point.isModified() ).isTrue();
+		point.setOrigin( new Point3D( 0, 0, 0 ) );
+		assertThat( point.isModified() ).isFalse();
+
+		point.setOrigin( new Point3D( 1, 1, 0 ) );
+		assertThat( point.isModified() ).isTrue();
+		point.setModified( false );
+		assertThat( point.isModified() ).isFalse();
+	}
+
+	@Test
+	void testOrigin() {
+		DesignMarker point = new DesignMarker( new Point3D( 0, 0, 0 ) );
+		assertThat( point.getOrigin() ).isEqualTo( new Point3D( 0, 0, 0 ) );
+
+		point.setOrigin( new Point3D( 1, 2, 3 ) );
+		assertThat( point.getOrigin() ).isEqualTo( new Point3D( 1, 2, 3 ) );
+	}
+
+	@Test
+	void testDistanceTo() {
+		assertThat( new DesignMarker( new Point3D( -2, 1, 0 ) ).distanceTo( new Point3D( 2, -2, 0 ) ) ).isCloseTo( 5.0, TOLERANCE );
+	}
+
+	@Test
+	void testPathLength() {
+		assertThat( new DesignMarker( new Point3D( -2, 1, 0 ) ).pathLength() ).isCloseTo( 0.0, TOLERANCE );
+	}
+
+	@Test
+	void testGetVisualBounds() {
+		// This is the geometrically correct bounds
+		//assertThat( new DesignMarker( new Point3D( -2, 1, 0 ) ).getVisualBounds() ).isEqualTo( new BoundingBox( -2.5, 0.5, 1, 1 ) );
+
+		// But this is what is computed by JavaFX
+		assertThat( new DesignMarker( new Point3D( -2, 1, 0 ) ).getSelectBounds() ).isEqualTo( new BoundingBox( -3.0, 0.0, 2, 2 ) );
+	}
+
+	@Test
+	void testCirclePath() {
+		DesignMarker marker = new DesignMarker( new Point3D( 0, 0, 0 ) );
+		marker.setType( DesignMarker.Type.CIRCLE.name() );
+
+		assertThat( marker.getMarkerType() ).isEqualTo( DesignMarker.Type.CIRCLE.name().toLowerCase() );
+
+		List<DesignPath.Step> steps = marker.getSteps();
+		DesignPath.Step e0 = steps.getFirst();
+		assertThat( e0.command() ).isEqualTo( DesignPath.Command.M );
+		assertThat( e0.data() ).isEqualTo( new double[]{ 0.0, -0.5 } );
+		DesignPath.Step e1 = steps.get( 1 );
+		assertThat( e1.command() ).isEqualTo( DesignPath.Command.A );
+		assertThat( e1.data() ).isEqualTo( new double[]{ 0.0, 0.5, 0.5, 0.5, 0, 0, 0 } );
+		DesignPath.Step e2 = steps.get( 2 );
+		assertThat( e2.command() ).isEqualTo( DesignPath.Command.A );
+		assertThat( e2.data() ).isEqualTo( new double[]{ 0.0, -0.5, 0.5, 0.5, 0, 0, 0 } );
+		DesignPath.Step e3 = steps.get( 3 );
+		assertThat( e3.command() ).isEqualTo( DesignPath.Command.Z );
+		assertThat( e3.data() ).isEqualTo( new double[]{} );
+		assertThat( steps.size() ).isEqualTo( 4 );
+	}
+
+	@Test
+	void getReferencePoints() {
+		// given
+		DesignMarker marker = new DesignMarker( new Point3D( 5, -2, 0 ), DesignMarker.Type.CIRCLE );
+
+		// when
+		List<Point3D> points = marker.getReferencePoints();
+
+		// then
+		Point3DAssert.assertThat( points.getFirst() ).isCloseTo( new Point3D( 5, -2, 0 ) );
+	}
+
+}

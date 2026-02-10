@@ -1,0 +1,65 @@
+package com.acromere.cartesia.data.util;
+
+import com.acromere.cartesia.data.DesignModel;
+import com.acromere.cartesia.data.DesignLayer;
+import com.acromere.data.IdNode;
+import com.acromere.util.TextUtil;
+import com.acromere.xenon.XenonProgramProduct;
+import com.acromere.xenon.resource.Resource;
+import com.acromere.xenon.tool.settings.SettingOptionProvider;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+public class DesignLayerOptionProvider implements SettingOptionProvider {
+
+	private final XenonProgramProduct product;
+
+	private final boolean showRoot;
+
+	public DesignLayerOptionProvider( XenonProgramProduct product ) {
+		this( product, false );
+	}
+
+	public DesignLayerOptionProvider( XenonProgramProduct product, boolean showRoot ) {
+		this.product = product;
+		this.showRoot = showRoot;
+	}
+
+	@Override
+	public List<String> getKeys() {
+		Optional<DesignModel> optional = getDesign();
+		if( optional.isEmpty() ) return List.of();
+
+		DesignModel design = optional.get();
+		List<String> rootKey = List.of();
+		if( showRoot ) rootKey = List.of( design.getLayers().getId() );
+
+		return Stream.concat( rootKey.stream(), design.getAllLayers().stream().map( IdNode::getId ) ).collect( Collectors.toList() );
+	}
+
+	@Override
+	public String getName( String key ) {
+		Optional<DesignModel> optional = getDesign();
+		if( optional.isEmpty() ) return TextUtil.EMPTY;
+
+		DesignModel design = optional.get();
+		DesignLayer notfound = new DesignLayer();
+		List<DesignLayer> layers = design.getAllLayers();
+
+		DesignLayer layer = Stream.concat( Stream.of( design.getLayers() ), layers.stream() ).filter( l -> l.getId().equals( key ) ).findAny().orElse( notfound );
+
+		return layer == notfound ? key : layer.getFullName();
+	}
+
+	private Optional<DesignModel> getDesign() {
+		Resource currentResource = product.getProgram().getResourceManager().getCurrentAsset();
+		if( currentResource == null ) return Optional.empty();
+		Object model = currentResource.getModel();
+		if( model instanceof DesignModel ) return Optional.of( (DesignModel)model );
+		return Optional.empty();
+	}
+
+}
