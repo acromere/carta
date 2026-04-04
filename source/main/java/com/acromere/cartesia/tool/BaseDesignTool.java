@@ -249,8 +249,8 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		getResource().register( Resource.NAME, e -> setTitle( e.getNewValue() ) );
 		getResource().register( Resource.ICON, e -> setIcon( e.getNewValue() ) );
 
-		getResource().getUndoManager().undoAvailableProperty().addListener( ( v, o, n ) -> undoAction.updateEnabled() );
-		getResource().getUndoManager().redoAvailableProperty().addListener( ( v, o, n ) -> redoAction.updateEnabled() );
+		getResource().getUndoManager().undoAvailableProperty().addListener( ( p, o, n ) -> undoAction.updateEnabled() );
+		getResource().getUndoManager().redoAvailableProperty().addListener( ( p, o, n ) -> redoAction.updateEnabled() );
 
 		// Set the design model
 		Design<DesignModel2D> design = request.getResource().getModel();

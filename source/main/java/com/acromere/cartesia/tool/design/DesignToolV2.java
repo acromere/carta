@@ -153,8 +153,8 @@ public class DesignToolV2 extends BaseDesignTool {
 		// Fire the design ready event (should be done after renderer.setDesign)
 		fireEvent( new DesignToolEvent( this, DesignToolEvent.DESIGN_READY ) );
 
-		getResource().getUndoManager().undoAvailableProperty().addListener( ( v, o, n ) -> getUndoAction().updateEnabled() );
-		getResource().getUndoManager().redoAvailableProperty().addListener( ( v, o, n ) -> getRedoAction().updateEnabled() );
+		getResource().getUndoManager().undoAvailableProperty().addListener( ( p, o, n ) -> getUndoAction().updateEnabled() );
+		getResource().getUndoManager().redoAvailableProperty().addListener( ( p, o, n ) -> getRedoAction().updateEnabled() );
 
 		layersGuide.ready( request );
 		//		viewsGuide.ready( request );
