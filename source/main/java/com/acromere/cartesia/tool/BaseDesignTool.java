@@ -194,10 +194,12 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		// Example DPI values:
 		// Sapphire: 162 @ 1x
 		// Graphene: 153 @ 1x
+		// Headless: 100 @ 1x
 		renderer.setDpiX( Screen.getPrimary().getDpi() );
 		renderer.setDpiY( Screen.getPrimary().getDpi() );
 
-		// gsettings set org.gnome.desktop.interface scaling-factor 2
+		// To change this on Gnome-based systems, use the following command:
+		// `gsettings set org.gnome.desktop.interface scaling-factor 2`
 		renderer.setOutputScaleX( Screen.getPrimary().getOutputScaleX() );
 		renderer.setOutputScaleY( Screen.getPrimary().getOutputScaleY() );
 

@@ -14,6 +14,7 @@ import javafx.geometry.BoundingBox;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.Cursor;
+import javafx.stage.Screen;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -177,12 +178,12 @@ public class DesignToolV3Test extends BaseToolTest {
 	}
 
 	@Test
-	void defaultDpi() {
+	void initialDpi() {
 		// when
 		double result = tool.getDpi();
 
 		// then
-		assertThat( result ).isEqualTo( DesignToolV3.DEFAULT_DPI );
+		assertThat( result ).isEqualTo( Screen.getPrimary().getDpi() );
 	}
 
 	@Test
@@ -272,7 +273,7 @@ public class DesignToolV3Test extends BaseToolTest {
 
 		// then
 		assertThat( tool.getViewCenter() ).isEqualTo( new Point3D( 450, 550, 0 ) );
-		assertThat( tool.getViewZoom() ).isEqualTo( 0.26458333333333334 );
+		assertThat( tool.getViewZoom() ).isEqualTo( 0.254 );
 		assertThat( tool.getWidth() ).isEqualTo( 1000 );
 		assertThat( tool.getHeight() ).isEqualTo( 1000 );
 	}

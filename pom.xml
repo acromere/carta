@@ -41,7 +41,6 @@
 		<marea.version>0.4-SNAPSHOT</marea.version>
 		<zerra.version>0.12-SNAPSHOT</zerra.version>
 		<javaluator.version>3.0.6</javaluator.version>
-		<monocle.version>21.0.2</monocle.version>
 		<mockito.version>5.21.0</mockito.version>
 
 		<!-- Plugin versions -->
@@ -88,19 +87,6 @@
 			<version>${mapstruct.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.testfx</groupId>
-			<artifactId>openjfx-monocle</artifactId>
-			<version>${monocle.version}</version>
-			<scope>test</scope>
-			<exclusions>
-				<!-- Exclude the openjfx libraries, they are already available -->
-				<exclusion>
-					<groupId>org.openjfx</groupId>
-					<artifactId>*</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
