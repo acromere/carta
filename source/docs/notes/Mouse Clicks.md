@@ -10,24 +10,39 @@ should be used with caution due to the delay in time and potential motion
 between the mouse-down and mouse-up events. This can lead to unintended actions 
 or misinterpretation of user intent.
 
-## Solution
+## Parameters
 
-In Cartesia there will be two mechanisms for handing the challenge of mouse
-input. The first will be the ability to accurately configure commands to mouse 
-actions. The second will be carefully configured default mouse actions to 
-commands such that user intent is not misinterpreted. In particular, care will
-be taken to use the mouse-down event to capture important information from the 
-user and to minimize the impact of mouse up events on user experience. 
+### Actions
 
-Furthermore, it would be appropriate if all mouse actions could be translated 
-into commands. This would allow for a consistent experience between interactive
-and non-interactive operations. For example, the mouse-down event could be 
-translated into a "pen down" followed by coordinates. This command would be 
-interpreted by the tool command processor accordingly. The same could be done 
-for mouse-up events. Special interpretation can be done for mouse-up events if
-there was a mouse drag event that occurred. Modifiers can also be used to 
-configure the mouse-down event. For example, the modifier "shift" could be 
-used to select geometry.
+Thankfully, there are only a few actions possible with a mouse other than moving
+the cursor around, and they all have to do with the wheel or buttons. For any 
+button there are five actions, down, up, click (down and up together), drag, and 
+release (button up from dragging). The mouse wheel has only two actions, scroll
+up and scroll down.
+
+### Modifiers
+
+There are four modifiers, and their combinations, that can be used with mouse
+actions. The modifiers are ctrl, alt, shift, and meta. They can be used in any 
+combination as well like ctrl-shift and alt-meta. These modifiers can be applied
+to any of the mouse actions.
+
+### Situations
+
+There are also some situations that may affect how mouse actions are handled.
+They are: "cursor over geometry", "geometry is selected". These situations need
+to be taken into account when determining what command to execute or what a 
+command should do.
+
+## Considerations
+
+It is desired that as many mouse actions that can be done immediately with mouse 
+down be done. The reason is for user response. Assume the user needs to get work
+accomplished quickly and the mouse down action is the first action the user can
+make. Other applications make the user go through the mouse down/mouse up cycle
+before making a choice; this slows the user down. Can we avoid that, or shift 
+important actions to the mouse down action? Does shifting actions to the mouse
+down action shadow the use of full-cycle options?
 
 Something else to consider is the mouse cursor is often used to prompt the user 
 for a specific type of input. We may not need to change the cursor, but we may 
@@ -41,10 +56,12 @@ Something that Cartesia has not considered yet is "hover" actions. We have not
 considered "hover" actions because they are possible with touch gestures. But 
 this doesn't necessarily mean that we should not consider them. 
 
+## Potential Configuration
+
 ### Default Mouse Actions
 Here are the expected default actions and commands for Cartesia:
-- Mouse-down, no modifier in an open area. Mouse-up ignored: Unselect any selected geometry
-- Mouse-down, no modifier over geometry. Mouse-up ignored: Select geometry
+- Mouse-down, no modifier in an open area. Mouse-up ignored: Unselect all geometry
+- Mouse-down, no modifier, over geometry. Mouse-up ignored: Select geometry
 - Mouse-down, ctrl-drag, mouse-up: Add to selected geometry by window contains
 - Mouse-down, shift-drag. Mouse-up ignored: Move the viewpoint
 - Scroll-up, no modifier: Zoom in
@@ -52,7 +69,7 @@ Here are the expected default actions and commands for Cartesia:
 
 ### Draw.io Style Mouse Actions
 A different configuration to consider to avoid focusing on the default configuration:
-- Mouse-down, no modifier, mouse-up in an open area: Unselect any selected geometry (Note the command is triggered on the mouse-up event)
+- Mouse-down, no modifier, mouse-up in an open area: Unselect all geometry (Note the command is triggered on the mouse-up event)
 - Mouse-down, no modifier over geometry. Mouse-up ignored: Select geometry (Note the command is triggered on the mouse-up event
 - Mouse-down, shift-drag, mouse-up: Add to selected geometry by window contains
 - Mouse-down, ctrl-drag. Mouse-up ignored: Move the viewpoint
@@ -69,13 +86,3 @@ point command instead of a select command.
 Another option is to always return a point command when the mouse-down event is 
 triggered. The receiving command would then have to determine what to do with 
 the point like use it to select geometry or as a point.
-
-| Trigger     | Modifiers | Command                                     |
-|-------------|-----------|---------------------------------------------|
-| mouse-down  | none      | Select                                      |
-| mouse-up    | none      | Deselect                                    |
-| mouse-down  | shift     | Add single element to selected geometry     |
-| mouse-up    | shift     | Add to selected geometry by window contains |
-| mouse-drag  | ctrl      | Move the viewpoint                          |
-| scroll-up   | none      | Zoom in                                     |
-| scroll-down | none      | Zoom out                                    |
