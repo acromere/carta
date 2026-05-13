@@ -56,18 +56,18 @@ Something that Cartesia has not considered yet is "hover" actions. We have not
 considered "hover" actions because they are possible with touch gestures. But
 this doesn't necessarily mean that we should not consider them.
 
-## Command
+## Commands
 
 Here is the list of commands that we expect to connect to mouse actions:
 
-- **Reference Anchor** - This one is not obvious because it is usually done in
-  the background. This command sets the reference anchor point for relative
-  points.
-- **Select a Point** - Select a point. Usually done when other commands are
-  asking for a point. This usually sets the reference anchor also.
-- **Select Geometry** - Select geometry. If hovering over geometry, select or
-  unselect geometry. Modifiers can change select or unselect action. If the user
-  clicks in an empty area (no geometry) then all geometry is unselected.
+- **Reference Anchor** - This command sets the reference anchor point for
+  relative point operations. This one is not obvious because it is usually done
+  in the background.
+- **Select a Point** - Usually done when other commands are asking for a point.
+  This usually sets the reference anchor at the same time.
+- **Select Geometry** - If hovering over geometry, select or unselect geometry.
+  Modifiers can change select or unselect action. If the user clicks in an empty
+  area (no geometry) then all geometry is unselected.
 - **Select Geometry by Window** - Drag a window around some geometry to select
   or unselect it. Modifiers can change select or unselect action. Modifiers can
   change contains or intersect behavior. If the user drags a window around no
@@ -81,6 +81,20 @@ Here is the list of commands that we expect to connect to mouse actions:
 - **Move the View Point** - Move the view point when the user drags the mouse.
 - **Rotate the View Point** - Rotate the view point when the user drags the
   mouse.
+
+### Point Snaps
+
+Point snaps are often assigned to mouse buttons to aid in quick point selection
+when a specific type of snap constraint is desired.
+
+- **Select the Nearest Point** - Select the nearest construction point from the
+  cursor.
+- **Select the Midpoint** - Select the midpoint or center of selected geometry.
+  If it is a line or arc it will be the midpoint. If it is a circle or ellipse
+  it will be the center.
+- **Select the Center** - Select the center or midpoint of selected geometry. If
+  it is a circle, ellipse or arc it will be the center. If it is a line it will
+  be the midpoint.
 
 ## Potential Configuration
 
