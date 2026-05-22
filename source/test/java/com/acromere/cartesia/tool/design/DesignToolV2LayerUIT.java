@@ -14,7 +14,7 @@ public class DesignToolV2LayerUIT extends DesignToolV2BaseUIT {
 	@Test
 	void initialCurrentLayerNotNull() {
 		// when
-		DesignLayer firstLayer = getDesign().getAllLayers().getFirst();
+		DesignLayer firstLayer = getDesignModel().getAllLayers().getFirst();
 
 		// then
 		assertThat( getTool().getCurrentLayer() ).isEqualTo( firstLayer );
@@ -23,8 +23,8 @@ public class DesignToolV2LayerUIT extends DesignToolV2BaseUIT {
 	@Test
 	void setCurrentLayer() {
 		// given
-		DesignLayer firstLayer = getDesign().getAllLayers().getFirst();
-		DesignLayer secondLayer = getDesign().getAllLayers().get( 1 );
+		DesignLayer firstLayer = getDesignModel().getAllLayers().getFirst();
+		DesignLayer secondLayer = getDesignModel().getAllLayers().get( 1 );
 		assertThat( getTool().getCurrentLayer() ).isEqualTo( firstLayer );
 
 		// when
@@ -47,7 +47,7 @@ public class DesignToolV2LayerUIT extends DesignToolV2BaseUIT {
 	@Test
 	void setLayerVisible() {
 		// given
-		DesignLayer layer = getDesign().getAllLayers().getFirst();
+		DesignLayer layer = getDesignModel().getAllLayers().getFirst();
 		assertThat( getTool().isLayerVisible( layer ) ).isFalse();
 		assertThat( getTool().getVisibleLayers().size() ).isEqualTo( 0 );
 

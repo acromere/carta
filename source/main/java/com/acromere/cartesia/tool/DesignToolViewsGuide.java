@@ -46,7 +46,7 @@ public class DesignToolViewsGuide extends Guide {
 	}
 
 	public void link() {
-		DesignModel design = tool.getDesign();
+		DesignModel design = tool.getDesignModel();
 
 		// Populate the guide
 		design.getViews().forEach( this::addView );

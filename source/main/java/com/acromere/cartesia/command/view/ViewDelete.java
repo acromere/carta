@@ -12,7 +12,7 @@ public class ViewDelete extends ViewCommand {
 		DesignView view = task.getTool().getCurrentView();
 		if( view == null ) return SUCCESS;
 
-		task.getTool().getDesign().removeView( view );
+		task.getTool().getDesignModel().removeView( view );
 
 		return SUCCESS;
 	}

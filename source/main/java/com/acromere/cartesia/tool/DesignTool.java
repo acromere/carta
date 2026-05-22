@@ -4,10 +4,7 @@ import com.acromere.cartesia.CartesiaMod;
 import com.acromere.cartesia.DesignUnit;
 import com.acromere.cartesia.DesignValue;
 import com.acromere.cartesia.cursor.Reticle;
-import com.acromere.cartesia.data.DesignLayer;
-import com.acromere.cartesia.data.DesignModel;
-import com.acromere.cartesia.data.DesignShape;
-import com.acromere.cartesia.data.DesignView;
+import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.tool.design.BaseDesignRenderer;
 import com.acromere.cartesia.tool.design.CommonToolRenderer;
 import com.acromere.xenon.XenonProgram;
@@ -76,7 +73,9 @@ public interface DesignTool extends RenderConstants, CommonToolRenderer {
 
 	Resource getResource();
 
-	DesignModel getDesign();
+	Design<? extends DesignModel> getDesign();
+
+	DesignModel getDesignModel();
 
 	/**
 	 * A convenience method to get the design context.

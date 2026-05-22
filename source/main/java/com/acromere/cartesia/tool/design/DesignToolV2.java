@@ -7,13 +7,11 @@ import com.acromere.cartesia.ShapePropertiesResourceType;
 import com.acromere.cartesia.cursor.Reticle;
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.tool.*;
-import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.data.map.DesignUnitMapper;
 import com.acromere.cartesia.data.util.DesignPropertiesMap;
 import com.acromere.cartesia.math.CadPoints;
 import com.acromere.cartesia.snap.Snap;
 import com.acromere.cartesia.snap.SnapGrid;
-import com.acromere.cartesia.tool.*;
 import com.acromere.data.IdNode;
 import com.acromere.data.MultiNodeSettings;
 import com.acromere.data.NodeSettings;
@@ -145,10 +143,10 @@ public class DesignToolV2 extends BaseDesignTool {
 		getToast().setVisible( false );
 
 		// Set the renderer design
-		renderer.setDesign( getDesign() );
+		renderer.setDesign( getDesignModel() );
 
 		// Set defaults
-		setCurrentLayer( getDesign().getAllLayers().getFirst() );
+		setCurrentLayer( getDesignModel().getAllLayers().getFirst() );
 
 		// Fire the design ready event (should be done after renderer.setDesign)
 		fireEvent( new DesignToolEvent( this, DesignToolEvent.DESIGN_READY ) );
@@ -211,16 +209,16 @@ public class DesignToolV2 extends BaseDesignTool {
 		//		designPane.setReferencePointSize( referencePointSize );
 		//		designPane.setReferencePointPaint( referencePointPaint );
 
-		getDesign().findLayers( DesignLayer.ID, settings.get( CURRENT_LAYER, "" ) ).stream().findFirst().ifPresent( this::setCurrentLayer );
-		getDesign().findViews( DesignView.ID, settings.get( CURRENT_VIEW, "" ) ).stream().findFirst().ifPresent( this::setCurrentView );
+		getDesignModel().findLayers( DesignLayer.ID, settings.get( CURRENT_LAYER, "" ) ).stream().findFirst().ifPresent( this::setCurrentLayer );
+		getDesignModel().findViews( DesignView.ID, settings.get( CURRENT_VIEW, "" ) ).stream().findFirst().ifPresent( this::setCurrentView );
 
 		// Restore the list of enabled layers
 		Set<String> enabledLayerIds = settings.get( ENABLED_LAYERS, new TypeReference<>() {}, Set.of() );
-		getDesign().getAllLayers().forEach( l -> setLayerEnabled( l, enabledLayerIds.contains( l.getId() ) ) );
+		getDesignModel().getAllLayers().forEach( l -> setLayerEnabled( l, enabledLayerIds.contains( l.getId() ) ) );
 
 		// Restore the list of visible layers
 		Set<String> visibleLayerIds = settings.get( VISIBLE_LAYERS, new TypeReference<>() {}, Set.of() );
-		getDesign().getAllLayers().forEach( l -> setLayerVisible( l, visibleLayerIds.contains( l.getId() ) ) );
+		getDesignModel().getAllLayers().forEach( l -> setLayerVisible( l, visibleLayerIds.contains( l.getId() ) ) );
 
 		// Restore the grid visible flag
 		setGridVisible( Boolean.parseBoolean( settings.get( GRID_VISIBLE, DEFAULT_GRID_VISIBLE ) ) );
@@ -914,23 +912,23 @@ public class DesignToolV2 extends BaseDesignTool {
 	}
 
 	private List<DesignLayer> getFilteredLayers( Predicate<? super DesignLayer> filter ) {
-		return getDesign().getAllLayers().stream().filter( filter ).collect( Collectors.toList() );
+		return getDesignModel().getAllLayers().stream().filter( filter ).collect( Collectors.toList() );
 	}
 
 	private void doSetSelectedLayerById( String id ) {
-		getDesign().findLayerById( id ).ifPresent( this::setSelectedLayer );
+		getDesignModel().findLayerById( id ).ifPresent( this::setSelectedLayer );
 		log.atConfig().log( "Selected layer: %s", id );
 	}
 
 	private void doSetCurrentLayerById( String id ) {
-		getDesign().findLayerById( id ).ifPresent( y -> {
+		getDesignModel().findLayerById( id ).ifPresent( y -> {
 			currentLayerProperty().set( y );
 			showPropertiesPage( y );
 		} );
 	}
 
 	private void doSetCurrentViewById( String id ) {
-		getDesign().findViewById( id ).ifPresent( v -> {
+		getDesignModel().findViewById( id ).ifPresent( v -> {
 			currentViewProperty().set( v );
 			//renderer.setView( v.getLayers(), v.getOrigin(), v.getZoom(), v.getRotate() );
 			//showPropertiesPage( v );

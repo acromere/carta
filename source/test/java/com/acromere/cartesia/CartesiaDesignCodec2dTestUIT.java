@@ -1,7 +1,6 @@
 package com.acromere.cartesia;
 
 import com.acromere.cartesia.data.*;
-import com.acromere.cartesia.data.*;
 import com.acromere.xenon.resource.Resource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -39,7 +38,7 @@ class CartesiaDesignCodec2dTestUIT extends BaseCartesiaUiTest {
 
 		Path path = Paths.get( "target", "design.tmp" );
 		resource = new Resource( new Design2dResourceType( getMod() ), path.toUri() );
-		resource.setModel( new Design<DesignModel2D>().setDataModel( new DesignModel2D() ) );
+		resource.setModel( new Design<>( new DesignModel2D() ) );
 	}
 
 	@Test
@@ -157,8 +156,8 @@ class CartesiaDesignCodec2dTestUIT extends BaseCartesiaUiTest {
 		layer6.addShape( curve1 );
 
 		DesignPath path1 = new DesignPath( new Point3D( -6, 0, 0 ) );
-		path1.line(-6,1);
-		path1.cubic(-6,2,-5,2,-5,1);
+		path1.line( -6, 1 );
+		path1.cubic( -6, 2, -5, 2, -5, 1 );
 		layer7.addShape( path1 );
 
 		DesignMarker marker = new DesignMarker( new Point3D( 1, 2, 0 ) );

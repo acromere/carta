@@ -11,20 +11,16 @@ import lombok.Getter;
 @Getter
 public class Design<T extends DesignModel> {
 
-	private T dataModel;
+	private final T dataModel;
 
-	private DesignContext designContext;
+	private final DesignContext designContext;
 
-	private CommandContext commandContext;
+	private final CommandContext commandContext;
 
-	public Design() {}
-
-	public Design<T> setDataModel( T model ) {
-		if( this.dataModel != null ) return this;
+	public Design( T model ) {
 		this.dataModel = model;
 		this.commandContext = new CommandContext();
 		this.designContext = new DesignContext();
-		return this;
 	}
 
 }

@@ -68,7 +68,7 @@ public class BaseCommandTest extends BaseToolTest {
 		lenient().when( tool.getMod() ).thenReturn( (CartesiaMod)module );
 		lenient().when( tool.getProduct() ).thenReturn( module );
 		lenient().when( tool.getProgram() ).thenReturn( program );
-		lenient().when( tool.getDesign() ).thenReturn( design );
+		lenient().when( tool.getDesignModel() ).thenReturn( design );
 		lenient().when( tool.getDesignContext() ).thenReturn( designContext );
 		lenient().when( tool.getCommandContext() ).thenReturn( commandContext );
 		lenient().when( tool.getSelectedLayer() ).thenReturn( selectedLayer );

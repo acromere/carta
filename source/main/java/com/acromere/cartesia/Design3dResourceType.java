@@ -47,7 +47,7 @@ public class Design3dResourceType extends ResourceType {
 
 		// If there is not already a model, create one
 		if( design == null ) {
-			design = new Design<DesignModel3D>().setDataModel( new DesignModel3D() );
+			design = new Design<>( new DesignModel3D() );
 			resource.setModel( design );
 		}
 

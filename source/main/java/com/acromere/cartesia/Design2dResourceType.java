@@ -57,7 +57,7 @@ public class Design2dResourceType extends ResourceType {
 
 		// If there is not already a model, create one
 		if( design == null ) {
-			design = new Design<DesignModel2D>().setDataModel( new DesignModel2D() );
+			design = new Design<>( new DesignModel2D() );
 			resource.setModel( design );
 		}
 

@@ -29,7 +29,7 @@ public class ViewCreate extends ViewCommand {
 			view.setLayers( task.getTool().getVisibleLayers() );
 
 			// Add the view to the design
-			task.getTool().getDesign().addView( view );
+			task.getTool().getDesignModel().addView( view );
 
 			// Set the current view to the new view
 			task.getTool().setCurrentView( view );

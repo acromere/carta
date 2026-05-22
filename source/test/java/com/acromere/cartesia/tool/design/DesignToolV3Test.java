@@ -43,7 +43,7 @@ public class DesignToolV3Test extends BaseToolTest {
 		super.setup();
 
 		model = ExampleDesigns.redBlueX();
-		design = new Design<>().setDataModel( model );
+		design = new Design<>( model );
 
 		Resource resource = new Resource( new Design2dResourceType( getProgram() ), URI.create( "new://test" ) ).setModel( design );
 
@@ -59,7 +59,7 @@ public class DesignToolV3Test extends BaseToolTest {
 		Design<DesignModel> design = tool.getResource().getModel();
 		assertThat( design ).isEqualTo( this.design );
 		assertThat( design.getDataModel() ).isEqualTo( model );
-		assertThat( tool.getDesign() ).isNotNull();
+		assertThat( tool.getDesignModel() ).isNotNull();
 
 		lenient().doCallRealMethod().when( renderer ).setDpi( anyDouble(), anyDouble() );
 	}

@@ -46,7 +46,7 @@ public class DesignToolPrintsGuide extends Guide {
 	}
 
 	public void link() {
-		DesignModel design = tool.getDesign();
+		DesignModel design = tool.getDesignModel();
 
 		// Populate the guide
 		design.getPrints().forEach( this::addPrint );

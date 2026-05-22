@@ -22,7 +22,7 @@ public class PrintCreate extends PrintCommand {
 			print.setRotate( task.getTool().getViewRotate() );
 			print.setLayers( task.getTool().getVisibleLayers() );
 
-			task.getTool().getDesign().addPrint( print );
+			task.getTool().getDesignModel().addPrint( print );
 			//task.getTool().setCurrentPrint( print );
 
 			return print;
