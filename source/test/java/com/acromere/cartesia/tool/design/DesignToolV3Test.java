@@ -30,24 +30,19 @@ import static org.mockito.Mockito.*;
 
 public class DesignToolV3Test extends BaseToolTest {
 
-	private DesignModel model;
-
-	private Design<DesignModel> design;
+	private final DesignToolV3Renderer renderer = Mockito.spy( new DesignToolV3Renderer() );
 
 	private DesignToolV3 tool;
-
-	private DesignToolV3Renderer renderer;
 
 	@BeforeEach
 	protected void setup() throws Exception {
 		super.setup();
 
-		model = ExampleDesigns.redBlueX();
-		design = new Design<>( model );
+		DesignModel model = ExampleDesigns.redBlueX();
+		Design<DesignModel> design1 = new Design<>( model );
 
-		Resource resource = new Resource( new Design2dResourceType( getProgram() ), URI.create( "new://test" ) ).setModel( design );
-
-		renderer = Mockito.spy( new DesignToolV3Renderer() );
+		Resource resource = new Resource( new Design2dResourceType( getProgram() ), URI.create( "new://test" ) ).setModel( design1 );
+		resource.setModel( design1 );
 
 		Fx.run( () -> tool = new DesignToolV3( module, resource, renderer ) );
 		Fx.waitFor( 1, TimeUnit.SECONDS );
@@ -57,7 +52,7 @@ public class DesignToolV3Test extends BaseToolTest {
 		tool.ready( request );
 
 		Design<DesignModel> design = tool.getResource().getModel();
-		assertThat( design ).isEqualTo( this.design );
+		assertThat( design ).isEqualTo( design1 );
 		assertThat( design.getDataModel() ).isEqualTo( model );
 		assertThat( tool.getDesignModel() ).isNotNull();
 
