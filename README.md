@@ -26,9 +26,9 @@ Cartesia provides the following features:
 
 | Release                                               | Feature Goals                                    |      Status |
 |-------------------------------------------------------|--------------------------------------------------|------------:|
-| [1.5](https://github.com/acromere/xenon/milestone/15) |                                                  |    Planning |
-| [1.4](https://github.com/acromere/xenon/milestone/14) | JavaFX 25, Design tool V3, paths                 | In Progress |
-| [1.3](https://github.com/acromere/xenon/milestone/13) | Design tool V2, prints, text                     | 29 Apr 2025 |
-| [1.2](https://github.com/acromere/xenon/milestone/12) | More design commands, bug fixes                  | 01 Jan 2023 |
-| [1.1](https://github.com/acromere/xenon/milestone/11) | Design properties, paths, views, prints          | 09 Oct 2021 |
-| [1.0](https://github.com/acromere/xenon/milestone/10) | Primitives, layers, snaps, modifiers, transforms | 28 May 2021 |
+| [1.5](https://github.com/acromere/carta/milestone/15) |                                                  |    Planning |
+| [1.4](https://github.com/acromere/carta/milestone/14) | JavaFX 25, Design tool V3, paths                 | In Progress |
+| [1.3](https://github.com/acromere/carta/milestone/13) | Design tool V2, prints, text                     | 29 Apr 2025 |
+| [1.2](https://github.com/acromere/carta/milestone/12) | More design commands, bug fixes                  | 01 Jan 2023 |
+| [1.1](https://github.com/acromere/carta/milestone/11) | Design properties, paths, views, prints          | 09 Oct 2021 |
+| [1.0](https://github.com/acromere/carta/milestone/10) | Primitives, layers, snaps, modifiers, transforms | 28 May 2021 |
