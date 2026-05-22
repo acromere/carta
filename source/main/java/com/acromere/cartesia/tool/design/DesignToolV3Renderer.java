@@ -4,7 +4,6 @@ import com.acromere.cartesia.data.*;
 import com.acromere.annotation.UiNote;
 import com.acromere.annotation.Note;
 import com.acromere.cartesia.DesignUnit;
-import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.tool.Workplane;
 import com.acromere.cartesia.tool.design.binding.DesignBinding;
 import com.acromere.cartesia.tool.design.binding.DesignDoubleBinding;
@@ -73,8 +72,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	@Getter
 	final Pane world;
 
-	// The geometry in this pane should be configured by the workplane but
-	// managed internally so that it can be optimized the use of the FX geometry.
+	// The geometry in this pane is configured by the workplane but managed
+	// internally so that it can be optimized the use of the FX geometry.
 	@Getter
 	final Pane grid;
 
@@ -122,7 +121,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 */
 	private long nextGridUpdate;
 
-	private final EventHandler<NodeEvent> workflowChangeHandler = _ -> updateGridFxGeometry();
+	private final EventHandler<NodeEvent> workplaneChangeHandler = _ -> updateGridFxGeometry();
 
 	private final EventHandler<NodeEvent> designUnitChangeHandler = _ -> setDesignUnit( design.calcDesignUnit() );
 
@@ -157,13 +156,10 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		// The world scale container
 		// Contains the grid, design, preview, and reference panes
 		world = new StackPane();
-		world.getChildren().addAll( grid, layers, preview, reference );
 
 		// The screen scale container
 		// Contains the orientation indicator
 		screen = new Pane();
-
-		getChildren().addAll( world, screen );
 
 		// Configure the shape scale definition. The shape scale includes the unit
 		// scale, DPI and the output scale and is used to modify the shape geometry.
@@ -209,10 +205,16 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		viewCenterTransform.xProperty().bind( getRendererCenterX().subtract( viewCenterXProperty().multiply( shapeScaleXProperty() ) ) );
 		viewCenterTransform.yProperty().bind( getRendererCenterY().subtract( viewCenterYProperty().multiply( shapeScaleYProperty() ) ) );
 
-		// FIXME Consider changing the grid geometry to bound properties
 		// Update the design geometry when the global scale changes
+		// TODO Consider changing the grid geometry to bound properties
 		shapeScaleXProperty().addListener( ( _, _, _ ) -> this.updateGridFxGeometry() );
 		shapeScaleYProperty().addListener( ( _, _, _ ) -> this.updateGridFxGeometry() );
+
+		// Important: Adding the children last ensures that they use all the values
+		// set above. This fixes a bug where the children were added earlier in the
+		// method causing them to use incorrect values of zero for width and height.
+		world.getChildren().addAll( grid, layers, preview, reference );
+		getChildren().addAll( world, screen );
 	}
 
 	/**
@@ -254,13 +256,13 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	@Override
 	public void setWorkplane( Workplane workplane ) {
 		if( this.workplane != null ) {
-			this.workplane.unregister( this, NodeEvent.ANY, workflowChangeHandler );
+			this.workplane.unregister( this, NodeEvent.ANY, workplaneChangeHandler );
 		}
 
 		this.workplane = workplane;
 
 		if( this.workplane != null ) {
-			this.workplane.register( this, NodeEvent.ANY, workflowChangeHandler );
+			this.workplane.register( this, NodeEvent.ANY, workplaneChangeHandler );
 		}
 
 		updateGridFxGeometry();

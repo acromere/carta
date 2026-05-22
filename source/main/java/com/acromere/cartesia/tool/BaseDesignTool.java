@@ -5,7 +5,6 @@ import com.acromere.cartesia.RbKey;
 import com.acromere.cartesia.cursor.Reticle;
 import com.acromere.cartesia.cursor.ReticleCursor;
 import com.acromere.cartesia.data.*;
-import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.tool.design.BaseDesignRenderer;
 import com.acromere.data.NodeSettings;
 import com.acromere.product.Rb;
@@ -223,9 +222,9 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		this.workplane = new Workplane();
 		renderer.setWorkplane( this.workplane );
 
-		// Keep the renderer in the center of the tool
-		widthProperty().addListener( ( _, _, _ ) -> updateWorkplaneBoundaries() );
-		heightProperty().addListener( ( _, _, _ ) -> updateWorkplaneBoundaries() );
+		// Keep the workplane up to date when the renderer changes
+		renderer.widthProperty().addListener( ( _, _, _ ) -> updateWorkplaneBoundaries() );
+		renderer.heightProperty().addListener( ( _, _, _ ) -> updateWorkplaneBoundaries() );
 		renderer.viewCenterXProperty().addListener( ( _, _, _ ) -> updateWorkplaneBoundaries() );
 		renderer.viewCenterYProperty().addListener( ( _, _, _ ) -> updateWorkplaneBoundaries() );
 		renderer.viewCenterZProperty().addListener( ( _, _, _ ) -> updateWorkplaneBoundaries() );
@@ -819,7 +818,11 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		// Note that the viewport can be panned, zoomed and rotated
 		// A world rectangle could be determined from the viewport
 
-		workplane.setBounds( getRenderer().screenToWorld( getRenderer().getLayoutBounds() ) );
+		Bounds rendererBounds = getRenderer().getLayoutBounds();
+		Bounds workplaneBounds = getRenderer().screenToWorld( rendererBounds );
+		log.atWarn().log( "renderer={0}", rendererBounds );
+		log.atConfig().withCause( new Throwable() ).log( "workplane={0}", workplaneBounds );
+		workplane.setBounds( workplaneBounds );
 	}
 
 	protected class PrintAction extends ProgramAction {
