@@ -368,10 +368,10 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 	@Override
 	public final CommandContext getCommandContext() {
-		getDesignModel();
-		Design<? extends DesignModel> design = getAssetModel();
-		CommandContext context = design == null ? null : design.getCommandContext();
-		if( context != null ) context.setTool( this );
+		Design<? extends DesignModel> design = getDesign();
+		if( design == null ) return null;
+		CommandContext context = design.getCommandContext();
+		context.setTool( this );
 		return context;
 	}
 

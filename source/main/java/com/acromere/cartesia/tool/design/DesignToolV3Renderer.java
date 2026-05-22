@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @CustomLog
 public class DesignToolV3Renderer extends BaseDesignRenderer {
@@ -118,9 +117,9 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	private boolean updatingFxGeometry;
 
 	/**
-	 * A dirty flag indicating when to allow the next grid update.
+	 * A flag indicating that the grid is currently regenerating.
 	 */
-	AtomicBoolean dirtyGridFlag = new AtomicBoolean( false );
+	private boolean gridRegeneratingFlag;
 
 	private final EventHandler<NodeEvent> workplaneChangeHandler = _ -> updateGridFxGeometry();
 
@@ -520,17 +519,25 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		setUnitScale( unit.to( 1, DesignUnit.IN ) );
 	}
 
+	boolean needsExtraRegeneration;
+
 	@Note( UiNote.THREAD_SAFE )
 	void updateGridFxGeometry() {
 		Fx.onFxOrCurrent( () -> {
+			// Because the dirty flag is modified on the one FX thread, there is no need for a synchronized block
+			if( gridRegeneratingFlag ) {
+				needsExtraRegeneration = true;
+				return;
+			}
+
 			if( workplane == null ) {
 				grid.getChildren().clear();
 			} else {
-				// Because the dirty flag is modified on the one FX thread, there is no need for a synchronized block
-				if( dirtyGridFlag.get() ) return;
-				dirtyGridFlag.set( true );
+				needsExtraRegeneration = false;
+				gridRegeneratingFlag = true;
 				workplane.getGridSystem().updateFxGeometryGrid( workplane, getShapeScaleX(), grid.getChildren() );
-				dirtyGridFlag.set( false );
+				if( needsExtraRegeneration ) workplane.getGridSystem().updateFxGeometryGrid( workplane, getShapeScaleX(), grid.getChildren() );
+				gridRegeneratingFlag = false;
 			}
 		} );
 	}
