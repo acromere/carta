@@ -4,10 +4,11 @@
 
 ## Introduction
 
-Cartesia is a computer aided design mod for [Xenon](https://www.acromere.com/product/xenon).
-Designed with simplicity and user experience in mind, Cartesia offers a large
-set of simple commands to construct your design. Cartesia provides common
-geometry, snaps, modifiers and transforms as well as unlimited layers.
+Cartesia is a computer aided design module
+for [Xenon](https://www.acromere.com/product/xenon). Designed with simplicity
+and user experience in mind, Cartesia offers a large set of simple commands to
+construct your design. Cartesia provides common geometry, snaps, modifiers and
+transforms as well as unlimited layers.
 
 ## Features
 
@@ -23,10 +24,11 @@ Cartesia provides the following features:
 
 #### Version 1.x
 
-| Release                                             | Feature Goals                                    |      Status |
-|-----------------------------------------------------|--------------------------------------------------|------------:|
-| [1.4](https://github.com/acromere/xenon/milestone/5) |                                                  |    Planning |
-| [1.3](https://github.com/acromere/xenon/milestone/4) | Faster design tool, prints, text                 | In Progress |
-| [1.2](https://github.com/acromere/xenon/milestone/3) | More design commands, bug fixes                  | 01 Jan 2023 |
-| [1.1](https://github.com/acromere/xenon/milestone/2) | Design properties, paths, views, prints          | 09 Oct 2021 |
-| [1.0](https://github.com/acromere/xenon/milestone/1) | Primitives, layers, snaps, modifiers, transforms | 28 May 2021 |
+| Release                                               | Feature Goals                                    |      Status |
+|-------------------------------------------------------|--------------------------------------------------|------------:|
+| [1.5](https://github.com/acromere/xenon/milestone/15) |                                                  |    Planning |
+| [1.4](https://github.com/acromere/xenon/milestone/14) | JavaFX 25, Design tool V3, paths                 | In Progress |
+| [1.3](https://github.com/acromere/xenon/milestone/13) | Design tool V2, prints, text                     | 29 Apr 2025 |
+| [1.2](https://github.com/acromere/xenon/milestone/12) | More design commands, bug fixes                  | 01 Jan 2023 |
+| [1.1](https://github.com/acromere/xenon/milestone/11) | Design properties, paths, views, prints          | 09 Oct 2021 |
+| [1.0](https://github.com/acromere/xenon/milestone/10) | Primitives, layers, snaps, modifiers, transforms | 28 May 2021 |
