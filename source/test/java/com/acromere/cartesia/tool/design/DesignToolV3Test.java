@@ -23,7 +23,6 @@ import org.mockito.Mockito;
 import java.net.URI;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -39,25 +38,25 @@ public class DesignToolV3Test extends BaseToolTest {
 		super.setup();
 
 		DesignModel model = ExampleDesigns.redBlueX();
-		Design<DesignModel> design1 = new Design<>( model );
+		Design<DesignModel> design = new Design<>( model );
 
-		Resource resource = new Resource( new Design2dResourceType( getProgram() ), URI.create( "new://test" ) ).setModel( design1 );
-		resource.setModel( design1 );
+		Resource resource = new Resource( new Design2dResourceType( getProgram() ), URI.create( "new://test" ) ).setModel( design );
+		resource.setModel( design );
 
-		Fx.run( () -> tool = new DesignToolV3( module, resource, renderer ) );
-		Fx.waitFor( 5, TimeUnit.SECONDS );
+		tool = new DesignToolV3( module, resource, renderer );
+		//		Fx.run( () -> tool = new DesignToolV3( module, resource, renderer ) );
+		//		Fx.waitFor( 1, TimeUnit.SECONDS );
 
 		OpenAssetRequest request = new OpenAssetRequest();
 		request.setResource( resource );
 		tool.ready( request );
 
-		Design<DesignModel> design = tool.getResource().getModel();
-		assertThat( design ).isEqualTo( design1 );
-		assertThat( design.getDataModel() ).isEqualTo( model );
-		assertThat( tool.getDesignModel() ).isNotNull();
+		Design<DesignModel> resourceModel = tool.getResource().getModel();
+		assertThat( resourceModel ).isEqualTo( design );
+		assertThat( resourceModel.getDataModel() ).isEqualTo( model );
+		assertThat( tool.getDesignModel() ).isEqualTo( model );
 
-		// If renderer is still null a UnfinishedStubbingException is thrown
-		lenient().doCallRealMethod().when( renderer ).setDpi( anyDouble(), anyDouble() );
+		doCallRealMethod().when( renderer ).setDpi( anyDouble(), anyDouble() );
 	}
 
 	@Test
