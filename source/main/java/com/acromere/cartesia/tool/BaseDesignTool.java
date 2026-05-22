@@ -365,7 +365,9 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	@Override
 	public final CommandContext getCommandContext() {
 		Design<? extends DesignModel> design = getAssetModel();
-		return design == null ? null : design.getCommandContext();
+		CommandContext context = design == null ? null : design.getCommandContext();
+		if( context != null ) context.setTool( this );
+		return context;
 	}
 
 	@Override
@@ -820,8 +822,8 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 		Bounds rendererBounds = getRenderer().getLayoutBounds();
 		Bounds workplaneBounds = getRenderer().screenToWorld( rendererBounds );
-		log.atWarn().log( "renderer={0}", rendererBounds );
-		log.atConfig().withCause( new Throwable() ).log( "workplane={0}", workplaneBounds );
+		//		log.atWarn().log( "renderer={0}", rendererBounds );
+		//		log.atConfig().withCause( new Throwable() ).log( "workplane={0}", workplaneBounds );
 		workplane.setBounds( workplaneBounds );
 	}
 

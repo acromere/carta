@@ -425,7 +425,9 @@ public class CommandContext implements EventHandler<KeyEvent> {
 	private boolean submitEventCommand( InputEvent event ) {
 		// NOTE This method does not handle key events,
 		//  those are handled by the action infrastructure
-		CommandMetadata metadata = getTool().getMod().getCommandMap().getCommandByEvent( event );
+		DesignTool tool = getTool();
+		if( tool == null ) return false;
+		CommandMetadata metadata = tool.getMod().getCommandMap().getCommandByEvent( event );
 		if( metadata == NONE ) return false;
 
 		log.atConfig().log( "Mapped command=%s", metadata );
