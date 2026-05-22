@@ -526,6 +526,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 			if( workplane == null ) {
 				grid.getChildren().clear();
 			} else {
+				// Because the dirty flag is modified on the one FX thread, there is no need for a synchronized block
 				if( dirtyGridFlag.get() ) return;
 				dirtyGridFlag.set( true );
 				workplane.getGridSystem().updateFxGeometryGrid( workplane, getShapeScaleX(), grid.getChildren() );
