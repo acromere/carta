@@ -2,12 +2,11 @@ package com.acromere.cartesia.tool.design;
 
 import com.acromere.cartesia.DesignValue;
 import com.acromere.cartesia.data.*;
-import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.tool.BaseDesignTool;
 import com.acromere.cartesia.tool.DesignPortal;
 import com.acromere.xenon.XenonProgramProduct;
-import com.acromere.xenon.resource.Resource;
 import com.acromere.xenon.resource.OpenAssetRequest;
+import com.acromere.xenon.resource.Resource;
 import com.acromere.xenon.workpane.ToolException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;

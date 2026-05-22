@@ -583,4 +583,9 @@ public class Workplane extends Node {
 		return this;
 	}
 
+	@Override
+	public String toString() {
+		return getBounds().toString();
+	}
+
 }

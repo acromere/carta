@@ -1,9 +1,9 @@
 package com.acromere.cartesia.tool.design;
 
-import com.acromere.cartesia.data.*;
-import com.acromere.annotation.UiNote;
 import com.acromere.annotation.Note;
+import com.acromere.annotation.UiNote;
 import com.acromere.cartesia.DesignUnit;
+import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.tool.Workplane;
 import com.acromere.cartesia.tool.design.binding.DesignBinding;
 import com.acromere.cartesia.tool.design.binding.DesignDoubleBinding;
@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @CustomLog
 public class DesignToolV3Renderer extends BaseDesignRenderer {
@@ -117,9 +118,9 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	private boolean updatingFxGeometry;
 
 	/**
-	 * A timing flag indicating when to allow the next grid update.
+	 * A dirty flag indicating when to allow the next grid update.
 	 */
-	private long nextGridUpdate;
+	AtomicBoolean dirtyGridFlag = new AtomicBoolean( false );
 
 	private final EventHandler<NodeEvent> workplaneChangeHandler = _ -> updateGridFxGeometry();
 
@@ -521,17 +522,16 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 	@Note( UiNote.THREAD_SAFE )
 	void updateGridFxGeometry() {
-		if( System.nanoTime() < nextGridUpdate ) return;
-
 		Fx.onFxOrCurrent( () -> {
 			if( workplane == null ) {
 				grid.getChildren().clear();
 			} else {
+				if( dirtyGridFlag.get() ) return;
+				dirtyGridFlag.set( true );
 				workplane.getGridSystem().updateFxGeometryGrid( workplane, getShapeScaleX(), grid.getChildren() );
+				dirtyGridFlag.set( false );
 			}
 		} );
-
-		nextGridUpdate = System.nanoTime() + DEFAULT_REFRESH_TIME_NANOS;
 	}
 
 	/**
@@ -643,8 +643,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		arc.centerYProperty().bind( shapeScaleYProperty().multiply( originYProperty ) );
 		arc.radiusXProperty().bind( shapeScaleXProperty().multiply( radiusXProperty ) );
 		arc.radiusYProperty().bind( shapeScaleYProperty().multiply( radiusYProperty ) );
-		arc.startAngleProperty().bind(  startAngleProperty.negate()  );
-		arc.lengthProperty().bind(  lengthProperty.negate()  );
+		arc.startAngleProperty().bind( startAngleProperty.negate() );
+		arc.lengthProperty().bind( lengthProperty.negate() );
 
 		Rotate rotate = new Rotate();
 		rotate.angleProperty().bind( rotateProperty );
