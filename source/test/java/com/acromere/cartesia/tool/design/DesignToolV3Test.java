@@ -56,6 +56,7 @@ public class DesignToolV3Test extends BaseToolTest {
 		assertThat( design.getDataModel() ).isEqualTo( model );
 		assertThat( tool.getDesignModel() ).isNotNull();
 
+		// If renderer is still null a UnfinishedStubbingException is thrown
 		lenient().doCallRealMethod().when( renderer ).setDpi( anyDouble(), anyDouble() );
 	}
 
