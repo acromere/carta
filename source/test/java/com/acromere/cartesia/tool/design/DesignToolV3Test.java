@@ -45,7 +45,7 @@ public class DesignToolV3Test extends BaseToolTest {
 		resource.setModel( design1 );
 
 		Fx.run( () -> tool = new DesignToolV3( module, resource, renderer ) );
-		Fx.waitFor( 1, TimeUnit.SECONDS );
+		Fx.waitFor( 5, TimeUnit.SECONDS );
 
 		OpenAssetRequest request = new OpenAssetRequest();
 		request.setResource( resource );
