@@ -29,7 +29,7 @@ import static org.mockito.Mockito.*;
 
 public class DesignToolV3Test extends BaseToolTest {
 
-	private final DesignToolV3Renderer renderer = Mockito.spy( new DesignToolV3Renderer() );
+	private DesignToolV3Renderer renderer;
 
 	private DesignToolV3 tool;
 
@@ -43,9 +43,8 @@ public class DesignToolV3Test extends BaseToolTest {
 		Resource resource = new Resource( new Design2dResourceType( getProgram() ), URI.create( "new://test" ) ).setModel( design );
 		resource.setModel( design );
 
+		renderer = Mockito.spy( new DesignToolV3Renderer() );
 		tool = new DesignToolV3( module, resource, renderer );
-		//		Fx.run( () -> tool = new DesignToolV3( module, resource, renderer ) );
-		//		Fx.waitFor( 1, TimeUnit.SECONDS );
 
 		OpenAssetRequest request = new OpenAssetRequest();
 		request.setResource( resource );
@@ -55,8 +54,6 @@ public class DesignToolV3Test extends BaseToolTest {
 		assertThat( resourceModel ).isEqualTo( design );
 		assertThat( resourceModel.getDataModel() ).isEqualTo( model );
 		assertThat( tool.getDesignModel() ).isEqualTo( model );
-
-		doCallRealMethod().when( renderer ).setDpi( anyDouble(), anyDouble() );
 	}
 
 	@Test
