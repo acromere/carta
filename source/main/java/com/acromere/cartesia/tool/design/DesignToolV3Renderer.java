@@ -121,6 +121,12 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 */
 	private boolean gridRegeneratingFlag;
 
+	/**
+	 * A flag indicating that the grid was requested to be regenerated while it
+	 * was regenerating, and therefore needs to be regenerated again.
+	 */
+	boolean needsExtraRegeneration;
+
 	private final EventHandler<NodeEvent> workplaneChangeHandler = _ -> updateGridFxGeometry();
 
 	private final EventHandler<NodeEvent> designUnitChangeHandler = _ -> setDesignUnit( design.calcDesignUnit() );
@@ -519,17 +525,14 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		setUnitScale( unit.to( 1, DesignUnit.IN ) );
 	}
 
-	boolean needsExtraRegeneration;
-
 	@Note( UiNote.THREAD_SAFE )
 	void updateGridFxGeometry() {
-		Fx.onFxOrCurrent( () -> {
-			// Because the dirty flag is modified on the one FX thread, there is no need for a synchronized block
-			if( gridRegeneratingFlag ) {
-				needsExtraRegeneration = true;
-				return;
-			}
+		if( gridRegeneratingFlag ) {
+			needsExtraRegeneration = true;
+			return;
+		}
 
+		Fx.onFxOrCurrent( () -> {
 			if( workplane == null ) {
 				grid.getChildren().clear();
 			} else {
