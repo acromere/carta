@@ -1,7 +1,6 @@
 package com.acromere.cartesia.tool.design;
 
 import com.acromere.annotation.Note;
-import com.acromere.annotation.UiNote;
 import com.acromere.cartesia.DesignUnit;
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.tool.Workplane;
@@ -525,7 +524,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		setUnitScale( unit.to( 1, DesignUnit.IN ) );
 	}
 
-	@Note( UiNote.THREAD_SAFE )
+	@Note( Note.THREAD_SAFE )
 	void updateGridFxGeometry() {
 		if( gridRegeneratingFlag ) {
 			needsExtraRegeneration = true;
