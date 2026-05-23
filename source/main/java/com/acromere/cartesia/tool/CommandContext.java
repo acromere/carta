@@ -299,6 +299,8 @@ public class CommandContext implements EventHandler<KeyEvent> {
 	}
 
 	public void handle( MouseEvent event ) {
+		// NEXT Ok mouse event fans. How do we want to handle them now?
+
 		// If the event does not trigger a command, forward it to the command stack
 		if( !submitEventCommand( event ) ) forwardCommandToCommandStack( event );
 	}
@@ -348,7 +350,6 @@ public class CommandContext implements EventHandler<KeyEvent> {
 		return commandStack.size();
 	}
 
-	// THREAD Task Thread
 	Object doProcessCommands() throws Exception {
 		if( Fx.isFxThread() ) {
 			log.atSevere().log( "Command processing should not be run on the FX thread" );
@@ -385,13 +386,17 @@ public class CommandContext implements EventHandler<KeyEvent> {
 				result = stepResult;
 			}
 		} catch( InvalidInputException exception ) {
-			commandStack.remove( task );
-			String title = Rb.text( RbKey.NOTICE, "invalid-input" );
-			String message = Rb.text( RbKey.PROMPT, exception.getInputRbKey() ) + " " + exception.getValue();
-			if( task.getContext().isInteractive() ) {
-				getTool().getProgram().getNoticeManager().addNotice( new Notice( title, message ).setType( Notice.Type.WARN ) );
+			boolean success = commandStack.remove( task );
+			if( success ) {
+				String title = Rb.text( RbKey.NOTICE, "invalid-input" );
+				String message = Rb.text( RbKey.PROMPT, exception.getInputRbKey() ) + " " + exception.getValue();
+				if( task.getContext().isInteractive() ) {
+					getTool().getProgram().getNoticeManager().addNotice( new Notice( title, message ).setType( Notice.Type.WARN ) );
+				} else {
+					log.atWarn( exception ).log( "Invalid input={0}", task );
+				}
 			} else {
-				log.atWarn( exception ).log( "Invalid input=%s", task );
+				log.atError( exception ).log( "Unable to remove invalid input from command stack input={0}", task );
 			}
 		} catch( Exception exception ) {
 			cancelAllCommands();
