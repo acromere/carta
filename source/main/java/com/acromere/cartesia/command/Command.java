@@ -6,12 +6,11 @@ import com.acromere.cartesia.command.base.Prompt;
 import com.acromere.cartesia.command.draw.DrawPath;
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.math.*;
-import com.acromere.cartesia.data.*;
-import com.acromere.cartesia.math.*;
 import com.acromere.cartesia.tool.CommandContext;
 import com.acromere.product.Rb;
 import javafx.geometry.Point3D;
 import javafx.scene.Cursor;
+import javafx.scene.input.GestureEvent;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -156,6 +155,8 @@ public abstract class Command {
 	public void handle( CommandTask task, KeyEvent event ) {}
 
 	public void handle( CommandTask task, MouseEvent event ) {}
+
+	public void handle( CommandTask task, GestureEvent event ) {}
 
 	@Override
 	public String toString() {

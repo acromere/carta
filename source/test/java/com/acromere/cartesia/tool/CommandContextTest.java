@@ -4,7 +4,6 @@ import com.acromere.cartesia.BaseCommandTest;
 import com.acromere.cartesia.command.Command;
 import com.acromere.cartesia.command.CommandTask;
 import com.acromere.cartesia.command.SelectByPoint;
-import com.acromere.cartesia.command.*;
 import com.acromere.cartesia.command.base.Anchor;
 import com.acromere.cartesia.command.base.Prompt;
 import com.acromere.cartesia.command.base.Value;
@@ -49,7 +48,7 @@ public class CommandContextTest extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submitCommand( any( CommandTask.class ) );
-		verify( commandContext, times( 0 ) ).forwardCommandToCommandStack( any( MouseEvent.class ) );
+		verify( commandContext, times( 0 ) ).sendEventToCommandStack( any( MouseEvent.class ) );
 	}
 
 	@Test
@@ -62,7 +61,7 @@ public class CommandContextTest extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 0 ) ).submitCommand( any( CommandTask.class ) );
-		verify( commandContext, times( 1 ) ).forwardCommandToCommandStack( any( MouseEvent.class ) );
+		verify( commandContext, times( 1 ) ).sendEventToCommandStack( any( MouseEvent.class ) );
 	}
 
 	/**

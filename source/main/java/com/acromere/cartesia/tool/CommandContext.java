@@ -260,13 +260,13 @@ public class CommandContext implements EventHandler<KeyEvent> {
 			}
 		}
 
-		forwardCommandToCommandStack( event );
+		sendEventToCommandStack( event );
 
 		// If the event is not consumed here, it will bubble up to the event
 		// handling of the scene which should trigger the appropriate action.
 	}
 
-	void forwardCommandToCommandStack( KeyEvent event ) {
+	void sendEventToCommandStack( KeyEvent event ) {
 		Iterator<CommandTask> iterator = commandStack.iterator();
 		while( iterator.hasNext() && !event.isConsumed() ) {
 			CommandTask task = iterator.next();
@@ -300,33 +300,39 @@ public class CommandContext implements EventHandler<KeyEvent> {
 
 	public void handle( MouseEvent event ) {
 		// NEXT Ok mouse event fans. How do we want to handle them now?
+		// 1. Should the command stack get first crack at the event?
+		//    Most commands expect a "point" command to be created on mouse-down.
+		//    The command does not handle "mouse-down" for a point on it's own.
+		// 2. Assuming the command stack does not consume the event...
+		// 3. Collect all the variables involved in determining mouse event handling
+		//    1. Modifiers, over geometry, geometry selected, etc.
+		// 4. Start the mouse event handing command?
+		//    1. Should this be a single command to handle this situation?
+		//    2. A "select", "pen", or "mouse" command?
+		//    3. I don't like "mouse" because it's too generic. How about "pointer"?
+		//    4. Can the command be called from the command line?
+		//    5. Or are there separate commands for the different mouse actions?
+		//       1. Zoom in, zoom out, pan, etc.
+		// 5. I think the tricky part will be how to handle the "incompleteness" of
+		//    mouse down...and then what actions.
+		// 6. There will also be complication with the change of modifiers after
+		//    mouse down.
+
+		// Are there simple actions that should "just" always be done? For example,
+		// on mouse-down:
+		// - Clear the selected geometry if not over any geometry
+		// - Select the geometry under the mouse if over geometry
+		//
+		// Will either of those actions get in the way of "what comes next"?
 
 		// If the event does not trigger a command, forward it to the command stack
-		if( !submitEventCommand( event ) ) forwardCommandToCommandStack( event );
-	}
-
-	void forwardCommandToCommandStack( MouseEvent event ) {
-		Iterator<CommandTask> iterator = commandStack.iterator();
-		while( iterator.hasNext() && !event.isConsumed() ) {
-			CommandTask task = iterator.next();
-			task.getCommand().handle( task, event );
-		}
-		event.consume();
-	}
-
-	public void handle( ScrollEvent event ) {
-		submitEventCommand( event );
-	}
-
-	public void handle( ZoomEvent event ) {
 		submitEventCommand( event );
 	}
 
 	public void handle( GestureEvent event ) {
-		log.atConfig().log( "gesture event=%s", event );
+		submitEventCommand( event );
 	}
 
-	@NonNull
 	public final DesignTool getLastUserTool() {
 		return lastUserTool;
 	}
@@ -336,7 +342,6 @@ public class CommandContext implements EventHandler<KeyEvent> {
 		setTool( tool );
 	}
 
-	@NonNull
 	public final DesignTool getTool() {
 		return tool;
 	}
@@ -427,18 +432,39 @@ public class CommandContext implements EventHandler<KeyEvent> {
 		return mapping;
 	}
 
-	private boolean submitEventCommand( InputEvent event ) {
+	private void submitEventCommand( InputEvent event ) {
 		// NOTE This method does not handle key events,
 		//  those are handled by the action infrastructure
 		DesignTool tool = getTool();
-		if( tool == null ) return false;
-		CommandMetadata metadata = tool.getMod().getCommandMap().getCommandByEvent( event );
-		if( metadata == NONE ) return false;
+		CommandMetadata metadata = null;
+		if( tool != null ) metadata = tool.getMod().getCommandMap().getCommandByEvent( event );
+		if( metadata == null || metadata == NONE ) {
+			sendEventToCommandStack( event );
+			return;
+		}
 
 		log.atConfig().log( "Mapped command=%s", metadata );
 
 		submitCommand( (DesignTool)event.getSource(), event, metadata.getType(), metadata.getParameters() );
-		return true;
+	}
+
+	void sendEventToCommandStack( InputEvent event ) {
+		Iterator<CommandTask> iterator = commandStack.iterator();
+		try {
+			while( iterator.hasNext() && !event.isConsumed() ) {
+				CommandTask task = iterator.next();
+				switch( event ) {
+					case MouseEvent mouseEvent -> task.getCommand().handle( task, mouseEvent );
+					case KeyEvent keyEvent -> task.getCommand().handle( task, keyEvent );
+					case GestureEvent gestureEvent -> task.getCommand().handle( task, gestureEvent );
+					default -> {
+						// Unhandled input event type
+					}
+				}
+			}
+		} finally {
+			event.consume();
+		}
 	}
 
 	private Command submitCommand( CommandMetadata metadata ) {

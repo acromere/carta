@@ -271,19 +271,13 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 			getRenderer().setLayerVisible( model.getLayers().getLayers().getFirst(), true );
 		}
 
-		// FIXME Mouse events need to go through a mouse event processor
-		// to handle more complex context scenarios like clicking on geometry and
-		// then dragging. A simple map solution is not sufficient.
-
-		// Update the design context when the mouse moves
-		addEventFilter( MouseEvent.MOUSE_MOVED, e -> getCommandContext().setMouse( e ) );
-
 		// Link the command context to the user interfaces
 		//addEventFilter( KeyEvent.ANY, e -> getCommandContext().handle( e ) );
 		addEventFilter( MouseEvent.ANY, e -> getCommandContext().handle( e ) );
-		addEventFilter( ScrollEvent.ANY, e -> getCommandContext().handle( e ) );
-		addEventFilter( ZoomEvent.ANY, e -> getCommandContext().handle( e ) );
 		addEventFilter( GestureEvent.ANY, e -> getCommandContext().handle( e ) );
+
+		// Update the design context when the mouse moves
+		addEventFilter( MouseEvent.MOUSE_MOVED, e -> getCommandContext().setMouse( e ) );
 
 		// Swap the toast for the renderer
 		getToast().setVisible( false );
