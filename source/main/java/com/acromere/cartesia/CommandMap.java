@@ -211,7 +211,11 @@ public final class CommandMap {
 
 		// NOTE: Can't use Alt-Drag on Linux because it is used to move the window
 
+		// NOTE This is just one way to map the mouse events, there could be others
+		// NEXT Create different mouse event mappings for different styles (Linux, Windows, Visio, draw.io, etc.)
+
 		// Anchor ------------------------------------------------------------------
+		// NOTE Anchor is roughly the "pen down" that returns a point whenever it is executed
 		add( "anchor", new CommandTrigger( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, CommandTrigger.Modifier.ANY ) );
 
 		// Selects -----------------------------------------------------------------
@@ -281,6 +285,7 @@ public final class CommandMap {
 	}
 
 	public CommandMetadata getCommandByAction( String action ) {
+		// Do not allow any command to be mapped to empty string
 		if( TextUtil.isEmpty( action ) ) return NONE;
 
 		CommandMetadata mapping = actionCommands.getOrDefault( action, NONE );
