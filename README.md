@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Cartesia is a computer aided design module
+Cartesia is a computer-aided design module
 for [Xenon](https://www.acromere.com/product/xenon). Designed with simplicity
 and user experience in mind, Cartesia offers a large set of simple commands to
 construct your design. Cartesia provides common geometry, snaps, modifiers and
