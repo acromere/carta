@@ -205,44 +205,7 @@ public final class CommandMap {
 		add( product, "snap-auto-intersection", AutoSnap.class, new SnapIntersection() );
 		//add( product, "snap-auto-grid", SnapAutoCommand.class, new SnapGrid() ); // No one really does this
 
-		// NOTE: Can't use Alt-Drag on Linux because it is used to move the window
-
-		// NOTE This is just one way to map the mouse events, there could be others
-		// NEXT Create different mouse event mappings for different styles (Linux, Windows, Visio, draw.io, etc.)
-
-		// Anchor ------------------------------------------------------------------
-		// NOTE Anchor is roughly the "pen down" that returns a point whenever it is executed
-		// Then maybe it should just be called "point"?
-		add( "anchor", new CommandTrigger( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, CommandTrigger.Modifier.ANY ) );
-
-		// Selects -----------------------------------------------------------------
-		// Single select
-		add( "select-point", new CommandTrigger( MouseEvent.MOUSE_RELEASED, MouseButton.PRIMARY ) );
-		// Toggle select
-		add( "select-toggle", new CommandTrigger( MouseEvent.MOUSE_RELEASED, MouseButton.PRIMARY, CommandTrigger.Modifier.CONTROL ) );
-		// Window select
-		add( "select-window-contain", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.MOVED ) );
-		// Window select by intersection
-		add( "select-window-intersect", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.SHIFT, CommandTrigger.Modifier.MOVED ) );
-
-		// Snaps -------------------------------------------------------------------
-		// Snap nearest
-		add( "snap-auto-nearest", new CommandTrigger( MouseEvent.MOUSE_CLICKED, MouseButton.SECONDARY ) );
-		// Snap midpoint
-		add( "snap-auto-midpoint", new CommandTrigger( MouseEvent.MOUSE_CLICKED, MouseButton.MIDDLE ) );
-
-		// Camera 2D ---------------------------------------------------------------
-		// Camera move (aka pan)
-		add( "camera-move", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.CONTROL, CommandTrigger.Modifier.MOVED ) );
-		// Camera zoom
-		add( "camera-zoom", new CommandTrigger( ScrollEvent.SCROLL, CommandTrigger.Modifier.CONTROL ) );
-		add( "camera-zoom", new CommandTrigger( ZoomEvent.ZOOM ) );
-
-		// Camera spin
-		//add( new CommandEventKey( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, false, true, false, false ), "camera-spin" );
-		// Camera walk (moving the camera forward and back)
-		//add( new CommandEventKey( ScrollEvent.SCROLL, false, true, false, false ), "camera-walk" );
-		//add( new CommandEventKey( ZoomEvent.ZOOM, false, true, false, false ), "camera-walk" );
+		MouseAndGestureMap.CARTESIA.load( this );
 
 		//printCommandMapByCommand();
 		//printCommandMapByName();
