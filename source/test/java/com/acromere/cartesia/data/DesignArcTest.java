@@ -395,7 +395,7 @@ public class DesignArcTest {
 		DesignEllipse ellipse = new DesignEllipse( new Point3D( 0, 0, 0 ), radiusX, radiusY );
 		double theta = CadGeometry.ellipseAngle360( ellipse, new Point3D( -1, -1, 0 ) ) + 270;
 
-		System.out.println( "theta=" + theta );
+		//System.out.println( "theta=" + theta );
 
 		//DesignArc arc = new DesignArc( new Point3D( 0, 0, 0 ), radiusX, radiusY, 90.0, theta, DesignArc.Type.OPEN );
 		DesignArc arc = new DesignArc( new Point3D( 0, 0, 0 ), radiusX, radiusY, 0.0, 90.0, 270.0, DesignArc.Type.OPEN );
