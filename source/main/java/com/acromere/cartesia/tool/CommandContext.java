@@ -299,37 +299,14 @@ public class CommandContext implements EventHandler<KeyEvent> {
 	}
 
 	public void handle( MouseEvent event ) {
-		// NEXT Ok mouse event fans. How do we want to handle them now?
-		// 1. Should the command stack get first crack at the event?
-		//    Most commands expect a "point" command to be created on mouse-down.
-		//    The command does not handle "mouse-down" for a point on it's own.
-		// 2. Assuming the command stack does not consume the event...
-		// 3. Collect all the variables involved in determining mouse event handling
-		//    1. Modifiers, over geometry, geometry selected, etc.
-		// 4. Start the mouse event handing command?
-		//    1. Should this be a single command to handle this situation?
-		//    2. A "select", "pen", or "mouse" command?
-		//    3. I don't like "mouse" because it's too generic. How about "pointer"?
-		//    4. Can the command be called from the command line?
-		//    5. Or are there separate commands for the different mouse actions?
-		//       1. Zoom in, zoom out, pan, etc.
-		// 5. I think the tricky part will be how to handle the "incompleteness" of
-		//    mouse down...and then what actions.
-		// 6. There will also be complication with the change of modifiers after
-		//    mouse down.
-
-		// Are there simple actions that should "just" always be done? For example,
-		// on mouse-down:
-		// - Clear the selected geometry if not over any geometry
-		// - Select the geometry under the mouse if over geometry
-		//
-		// Will either of those actions get in the way of "what comes next"?
-
-		// If the event does not trigger a command, forward it to the command stack
 		submitEventCommand( event );
 	}
 
 	public void handle( GestureEvent event ) {
+		submitEventCommand( event );
+	}
+
+	public void handle( TouchEvent event ) {
 		submitEventCommand( event );
 	}
 
@@ -433,11 +410,40 @@ public class CommandContext implements EventHandler<KeyEvent> {
 	}
 
 	private void submitEventCommand( InputEvent event ) {
-		// NOTE This method does not handle key events,
-		//  those are handled by the action infrastructure
+		// NOTE This method does not handle key events, those are handled by the action infrastructure
+
+		// NEXT Ok input event fans. How do we want to handle them now?
+		// 1. Should the command stack get first crack at the event?
+		//    Most commands expect a "point" command to be created on mouse-down.
+		//    The command does not handle "mouse-down" for a point on it's own.
+		// 2. Assuming the command stack does not consume the event...
+		// 3. Collect all the variables involved in determining mouse event handling
+		//    1. Modifiers, over geometry, geometry selected, etc.
+		// 4. Start the mouse event handing command?
+		//    1. Should this be a single command to handle this situation?
+		//    2. A "select", "pen", or "mouse" command?
+		//    3. I don't like "mouse" because it's too generic. How about "pointer"?
+		//    4. Can the command be called from the command line?
+		//    5. Or are there separate commands for the different mouse actions?
+		//       1. Zoom in, zoom out, pan, etc.
+		// 5. I think the tricky part will be how to handle the "incompleteness" of
+		//    mouse down...and then what actions.
+		// 6. There will also be complication with the change of modifiers after
+		//    mouse down.
+		//
+		// Are there simple actions that should "just" always be done? For example,
+		// on mouse-down:
+		// - Clear the selected geometry if not over any geometry
+		// - Select the geometry under the mouse if over geometry
+		//
+		// Will either of those actions get in the way of "what comes next"?
+
+		// Determine the event to a command if possible
 		DesignTool tool = getTool();
 		CommandMetadata metadata = null;
 		if( tool != null ) metadata = tool.getMod().getCommandMap().getCommandByEvent( event );
+
+
 		if( metadata == null || metadata == NONE ) {
 			sendEventToCommandStack( event );
 			return;

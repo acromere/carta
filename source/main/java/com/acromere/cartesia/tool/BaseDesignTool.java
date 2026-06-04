@@ -275,6 +275,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		//addEventFilter( KeyEvent.ANY, e -> getCommandContext().handle( e ) );
 		addEventFilter( MouseEvent.ANY, e -> getCommandContext().handle( e ) );
 		addEventFilter( GestureEvent.ANY, e -> getCommandContext().handle( e ) );
+		addEventFilter( TouchEvent.ANY, e -> getCommandContext().handle( e ) );
 
 		// Update the design context when the mouse moves
 		addEventFilter( MouseEvent.MOUSE_MOVED, e -> getCommandContext().setMouse( e ) );

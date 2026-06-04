@@ -6,12 +6,12 @@ import com.acromere.cartesia.ParseUtil;
 import com.acromere.cartesia.ShapePropertiesResourceType;
 import com.acromere.cartesia.cursor.Reticle;
 import com.acromere.cartesia.data.*;
-import com.acromere.cartesia.tool.*;
 import com.acromere.cartesia.data.map.DesignUnitMapper;
 import com.acromere.cartesia.data.util.DesignPropertiesMap;
 import com.acromere.cartesia.math.CadPoints;
 import com.acromere.cartesia.snap.Snap;
 import com.acromere.cartesia.snap.SnapGrid;
+import com.acromere.cartesia.tool.*;
 import com.acromere.data.IdNode;
 import com.acromere.data.MultiNodeSettings;
 import com.acromere.data.NodeSettings;
@@ -36,9 +36,9 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
+import javafx.scene.input.GestureEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
-import javafx.scene.input.ZoomEvent;
+import javafx.scene.input.TouchEvent;
 import javafx.scene.paint.Paint;
 import javafx.scene.transform.Transform;
 import lombok.CustomLog;
@@ -319,9 +319,8 @@ public class DesignToolV2 extends BaseDesignTool {
 
 		//addEventFilter( KeyEvent.ANY, e -> getCommandContext().handle( e ) );
 		addEventFilter( MouseEvent.ANY, e -> getCommandContext().handle( e ) );
-		//addEventFilter( MouseDragEvent.ANY, e -> getCommandContext().handle( e ) );
-		addEventFilter( ScrollEvent.ANY, e -> getCommandContext().handle( e ) );
-		addEventFilter( ZoomEvent.ANY, e -> getCommandContext().handle( e ) );
+		addEventFilter( GestureEvent.ANY, e -> getCommandContext().handle( e ) );
+		addEventFilter( TouchEvent.ANY, e -> getCommandContext().handle( e ) );
 
 		getCoordinateStatus().updateZoom( getViewZoom() );
 		//		designPane.updateView();
