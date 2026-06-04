@@ -443,15 +443,12 @@ public class CommandContext implements EventHandler<KeyEvent> {
 		CommandMetadata metadata = null;
 		if( tool != null ) metadata = tool.getMod().getCommandMap().getCommandByEvent( event );
 
-
-		if( metadata == null || metadata == NONE ) {
+		if( metadata != null && metadata != NONE ) {
+			log.atConfig().log( "Mapped command=%s", metadata );
+			submitCommand( (DesignTool)event.getSource(), event, metadata.getType(), metadata.getParameters() );
+		} else {
 			sendEventToCommandStack( event );
-			return;
 		}
-
-		log.atConfig().log( "Mapped command=%s", metadata );
-
-		submitCommand( (DesignTool)event.getSource(), event, metadata.getType(), metadata.getParameters() );
 	}
 
 	void sendEventToCommandStack( InputEvent event ) {
