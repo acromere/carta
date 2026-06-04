@@ -1,5 +1,6 @@
-package com.acromere.cartesia.command;
+package com.acromere.cartesia.command.select;
 
+import com.acromere.cartesia.command.CommandTask;
 import lombok.CustomLog;
 
 @CustomLog

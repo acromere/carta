@@ -1,9 +1,9 @@
 package com.acromere.cartesia.command;
 
 import com.acromere.cartesia.BaseCommandTest;
-import com.acromere.cartesia.CommandTrigger;
 import com.acromere.cartesia.command.base.Prompt;
 import com.acromere.cartesia.command.base.Value;
+import com.acromere.cartesia.command.select.SelectByWindowContain;
 import javafx.geometry.Point3D;
 import javafx.scene.input.InputEvent;
 import org.junit.jupiter.api.Test;

@@ -1,12 +1,12 @@
 package com.acromere.cartesia.tool;
 
-import com.acromere.cartesia.CommandMetadata;
-import com.acromere.cartesia.CommandTrigger;
+import com.acromere.cartesia.command.CommandMetadata;
+import com.acromere.cartesia.command.CommandTrigger;
 import com.acromere.cartesia.RbKey;
 import com.acromere.cartesia.command.Command;
 import com.acromere.cartesia.command.CommandTask;
 import com.acromere.cartesia.command.InvalidInputException;
-import com.acromere.cartesia.command.SelectByPoint;
+import com.acromere.cartesia.command.select.SelectByPoint;
 import com.acromere.cartesia.command.base.Value;
 import com.acromere.cartesia.data.Design;
 import com.acromere.cartesia.error.UnknownCommand;
@@ -32,7 +32,7 @@ import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.logging.Level;
 
-import static com.acromere.cartesia.CommandMap.NONE;
+import static com.acromere.cartesia.command.CommandMap.NONE;
 import static com.acromere.cartesia.command.Command.Result.*;
 
 /**

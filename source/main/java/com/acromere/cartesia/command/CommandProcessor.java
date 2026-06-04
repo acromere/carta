@@ -1,7 +1,6 @@
-package com.acromere.cartesia;
+package com.acromere.cartesia.command;
 
 import com.acromere.cartesia.tool.BaseDesignTool;
-import com.acromere.cartesia.command.CommandException;
 import javafx.geometry.Point3D;
 
 public interface CommandProcessor {

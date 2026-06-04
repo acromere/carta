@@ -1,5 +1,6 @@
-package com.acromere.cartesia.command;
+package com.acromere.cartesia.command.select;
 
+import com.acromere.cartesia.command.CommandTask;
 import com.acromere.cartesia.command.base.Value;
 import com.acromere.cartesia.tool.BaseDesignTool;
 import javafx.geometry.Point3D;

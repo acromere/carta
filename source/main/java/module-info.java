@@ -53,6 +53,7 @@ module com.acromere.carta {
 	opens com.acromere.cartesia.bundles;
 	opens com.acromere.cartesia.design.props;
 	opens com.acromere.cartesia.settings;
+	exports com.acromere.cartesia.command.select;
 
 	provides Module with CartesiaMod;
 

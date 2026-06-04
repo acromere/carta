@@ -1,6 +1,5 @@
 package com.acromere.cartesia.command;
 
-import com.acromere.cartesia.CommandTrigger;
 import com.acromere.cartesia.tool.CommandContext;
 import com.acromere.cartesia.tool.DesignTool;
 import com.acromere.util.ArrayUtil;

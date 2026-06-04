@@ -1,6 +1,8 @@
 package com.acromere.cartesia;
 
 import com.acromere.cartesia.command.Command;
+import com.acromere.cartesia.command.CommandMetadata;
+import com.acromere.cartesia.command.CommandTrigger;
 import com.acromere.cartesia.data.DesignModel;
 import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.tool.CommandPrompt;

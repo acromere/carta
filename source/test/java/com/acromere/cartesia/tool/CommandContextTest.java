@@ -3,7 +3,7 @@ package com.acromere.cartesia.tool;
 import com.acromere.cartesia.BaseCommandTest;
 import com.acromere.cartesia.command.Command;
 import com.acromere.cartesia.command.CommandTask;
-import com.acromere.cartesia.command.SelectByPoint;
+import com.acromere.cartesia.command.select.SelectByPoint;
 import com.acromere.cartesia.command.base.Anchor;
 import com.acromere.cartesia.command.base.Prompt;
 import com.acromere.cartesia.command.base.Value;

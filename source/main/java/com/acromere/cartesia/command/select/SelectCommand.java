@@ -1,4 +1,6 @@
-package com.acromere.cartesia.command;
+package com.acromere.cartesia.command.select;
+
+import com.acromere.cartesia.command.Command;
 
 public abstract class SelectCommand extends Command {
 

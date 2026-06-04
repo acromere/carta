@@ -1,10 +1,10 @@
 package com.acromere.cartesia;
 
-import com.acromere.cartesia.command.SelectByPoint;
-import com.acromere.cartesia.command.SelectByWindowContain;
-import com.acromere.cartesia.command.SelectByWindowIntersect;
-import com.acromere.cartesia.command.SelectToggle;
-import com.acromere.cartesia.command.*;
+import com.acromere.cartesia.command.CommandMetadata;
+import com.acromere.cartesia.command.select.SelectByPoint;
+import com.acromere.cartesia.command.select.SelectByWindowContain;
+import com.acromere.cartesia.command.select.SelectByWindowIntersect;
+import com.acromere.cartesia.command.select.SelectToggle;
 import com.acromere.cartesia.command.base.Anchor;
 import com.acromere.cartesia.command.camera.CameraMove;
 import com.acromere.cartesia.command.camera.CameraZoom;

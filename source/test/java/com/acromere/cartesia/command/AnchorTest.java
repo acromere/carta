@@ -1,7 +1,6 @@
 package com.acromere.cartesia.command;
 
 import com.acromere.cartesia.BaseCommandTest;
-import com.acromere.cartesia.CommandTrigger;
 import com.acromere.cartesia.command.base.Anchor;
 import com.acromere.cartesia.command.base.Prompt;
 import javafx.geometry.Point3D;

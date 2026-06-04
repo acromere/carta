@@ -1,4 +1,4 @@
-package com.acromere.cartesia;
+package com.acromere.cartesia.command;
 
 import javafx.event.EventType;
 import javafx.scene.input.GestureEvent;

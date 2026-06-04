@@ -1,6 +1,5 @@
-package com.acromere.cartesia;
+package com.acromere.cartesia.command;
 
-import com.acromere.cartesia.command.Command;
 import com.acromere.util.TextUtil;
 import lombok.Getter;
 

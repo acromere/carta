@@ -1,7 +1,7 @@
 package com.acromere.cartesia.command.snap;
 
 import com.acromere.cartesia.BaseCommandTest;
-import com.acromere.cartesia.CommandTrigger;
+import com.acromere.cartesia.command.CommandTrigger;
 import com.acromere.cartesia.command.InvalidInputException;
 import com.acromere.cartesia.command.base.Prompt;
 import com.acromere.cartesia.data.DesignLine;

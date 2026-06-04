@@ -1,10 +1,11 @@
 package com.acromere.cartesia;
 
+import com.acromere.cartesia.command.CommandMap;
+import com.acromere.cartesia.command.CommandMetadata;
 import com.acromere.cartesia.cursor.Reticle;
 import com.acromere.cartesia.data.util.DesignLayerOptionProvider;
 import com.acromere.cartesia.data.util.DesignUnitOptionProvider;
 import com.acromere.cartesia.data.util.MarkerTypeOptionProvider;
-import com.acromere.cartesia.icon.*;
 import com.acromere.cartesia.icon.*;
 import com.acromere.cartesia.rb.CartesiaHelp;
 import com.acromere.cartesia.settings.FontSettingEditor;
