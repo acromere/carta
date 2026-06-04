@@ -55,7 +55,7 @@ public class SelectByWindowContainTest extends BaseCommandTest {
 	@Test
 	void testExecuteWithNoParametersAndEvent() throws Exception {
 		// given
-		CommandTrigger trigger = getMod().getCommandMap().getTriggerByAction( "select-window-contain" );
+		CommandTrigger trigger = getMod().getCommandMap().getTriggersByAction( "select-window-contain" ).iterator().next();
 		InputEvent event = createMouseEvent( trigger, 48, 17 );
 		CommandTask task = new CommandTask( commandContext, tool, trigger, event, command );
 		// Pretend the world anchor has been set

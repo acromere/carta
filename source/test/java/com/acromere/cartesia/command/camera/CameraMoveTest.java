@@ -60,7 +60,7 @@ public class CameraMoveTest extends BaseCommandTest {
 	@Test
 	void testExecuteWithNoParametersAndEvent() throws Exception {
 		// given
-		CommandTrigger trigger = getMod().getCommandMap().getTriggerByAction( "camera-move" );
+		CommandTrigger trigger = getMod().getCommandMap().getTriggersByAction( "camera-move" ).iterator().next();
 		InputEvent event = createMouseEvent( trigger, 48, 17 );
 		CommandTask task = new CommandTask( commandContext, tool, trigger, event, command );
 		// Pretend the world anchor has been set

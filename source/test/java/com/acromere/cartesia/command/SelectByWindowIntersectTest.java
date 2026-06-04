@@ -55,7 +55,7 @@ public class SelectByWindowIntersectTest extends BaseCommandTest {
 	@Test
 	void testExecuteWithNoParametersAndEvent() throws Exception {
 		// given
-		CommandTrigger trigger = getMod().getCommandMap().getTriggerByAction( "select-window-intersect" );
+		CommandTrigger trigger = getMod().getCommandMap().getTriggersByAction( "select-window-intersect" ).iterator().next();
 		InputEvent event = createMouseEvent( trigger, 48, 17 );
 		CommandTask task = new CommandTask( commandContext, tool, trigger, event, command );
 		// Pretend the world anchor has been set

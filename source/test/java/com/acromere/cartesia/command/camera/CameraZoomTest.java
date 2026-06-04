@@ -54,7 +54,7 @@ public class CameraZoomTest extends BaseCommandTest {
 	@Test
 	void testExecuteWithZoomEvent() throws Exception {
 		// given
-		CommandTrigger trigger = getMod().getCommandMap().getTriggerByAction( "camera-zoom" );
+		CommandTrigger trigger = getMod().getCommandMap().getTriggersByAction( "camera-zoom" ).iterator().next();
 		InputEvent event = createZoomEvent( trigger, 42, 87, Math.sqrt( 2 ) );
 		CommandTask task = new CommandTask( commandContext, tool, trigger, event, command );
 		when( tool.screenToWorkplane( eq( 42.0 ), eq( 87.0 ), eq( 0.0 ) ) ).thenReturn( new Point3D( 1, 2, 0 ) );
@@ -77,7 +77,7 @@ public class CameraZoomTest extends BaseCommandTest {
 	@Test
 	void testExecuteWithScrollEventZoomIn() throws Exception {
 		// given
-		CommandTrigger trigger = getMod().getCommandMap().getTriggerByAction( "camera-zoom" );
+		CommandTrigger trigger = getMod().getCommandMap().getTriggersByAction( "camera-zoom" ).iterator().next();
 		InputEvent event = createScrollEvent( trigger, 42, 87, 0, 1 );
 		CommandTask task = new CommandTask( commandContext, tool, trigger, event, command );
 		when( tool.screenToWorkplane( eq( 42.0 ), eq( 87.0 ), eq( 0.0 ) ) ).thenReturn( new Point3D( 1, 2, 0 ) );
@@ -100,7 +100,7 @@ public class CameraZoomTest extends BaseCommandTest {
 	@Test
 	void testExecuteWithScrollEventZoomOut() throws Exception {
 		// given
-		CommandTrigger trigger = getMod().getCommandMap().getTriggerByAction( "camera-zoom" );
+		CommandTrigger trigger = getMod().getCommandMap().getTriggersByAction( "camera-zoom" ).iterator().next();
 		InputEvent event = createScrollEvent( trigger, 42, 87, 0, -1 );
 		CommandTask task = new CommandTask( commandContext, tool, trigger, event, command );
 		when( tool.screenToWorkplane( eq( 42.0 ), eq( 87.0 ), eq( 0.0 ) ) ).thenReturn( new Point3D( 1, 2, 0 ) );

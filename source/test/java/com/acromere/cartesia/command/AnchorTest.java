@@ -60,7 +60,7 @@ public class AnchorTest extends BaseCommandTest {
 	@Test
 	void testExecuteWithEvent() throws Exception {
 		// given
-		CommandTrigger trigger = getMod().getCommandMap().getTriggerByAction( "anchor" );
+		CommandTrigger trigger = getMod().getCommandMap().getTriggersByAction( "anchor" ).iterator().next();
 		InputEvent event = createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, false, false, false, false, 48, 17 );
 		CommandTask task = new CommandTask( commandContext, tool, trigger, event, command );
 		when( tool.screenToWorld( eq( new Point3D( 48, 17, 0 ) ) ) ).thenReturn( new Point3D( -2, 1, 0 ) );

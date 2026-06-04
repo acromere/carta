@@ -73,7 +73,7 @@ public class SelectToggleTest extends BaseCommandTest {
 		// Select by point with event should cause select to be called
 
 		// given
-		CommandTrigger trigger = getMod().getCommandMap().getTriggerByAction( "select-point" );
+		CommandTrigger trigger = getMod().getCommandMap().getTriggersByAction( "select-point" ).iterator().next();
 		InputEvent event = createMouseEvent( trigger, 48, 17 );
 		CommandTask task = new CommandTask( commandContext, tool, trigger, event, command );
 		when( commandContext.isSelectMode() ).thenReturn( true );
@@ -91,7 +91,7 @@ public class SelectToggleTest extends BaseCommandTest {
 		// Select by point with event, and commands on the command stack, should return a world point
 
 		// given
-		CommandTrigger trigger = getMod().getCommandMap().getTriggerByAction( "select-point" );
+		CommandTrigger trigger = getMod().getCommandMap().getTriggersByAction( "select-point" ).iterator().next();
 		InputEvent event = createMouseEvent( trigger, 48, 17 );
 		CommandTask task = new CommandTask( commandContext, tool, trigger, event, command );
 		// Pretend there is another command on the stack

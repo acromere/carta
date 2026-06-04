@@ -59,7 +59,7 @@ public class AutoSnapNearestTest extends BaseCommandTest {
 	@Test
 	void testRunTaskStepSnapAndEvent() throws Exception {
 		// given
-		CommandTrigger trigger = getMod().getCommandMap().getTriggerByAction( "snap-auto-nearest" );
+		CommandTrigger trigger = getMod().getCommandMap().getTriggersByAction( "snap-auto-nearest" ).iterator().next();
 		InputEvent event = createMouseEvent( trigger, 48, 17 );
 		CommandTask task = new CommandTask( commandContext, tool, trigger, event, command, snap );
 		when( tool.screenToWorld( eq( new Point3D( 48, 17, 0 ) ) ) ).thenReturn( new Point3D( 0.75, 0.75, 0 ) );

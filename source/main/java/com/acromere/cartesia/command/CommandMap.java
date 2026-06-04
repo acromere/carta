@@ -1,13 +1,13 @@
 package com.acromere.cartesia.command;
 
-import com.acromere.cartesia.command.camera.*;
-import com.acromere.cartesia.command.draw.*;
-import com.acromere.cartesia.command.edit.*;
-import com.acromere.cartesia.command.layer.*;
 import com.acromere.cartesia.command.base.Anchor;
 import com.acromere.cartesia.command.base.GridToggle;
 import com.acromere.cartesia.command.base.ReferencePointsToggle;
 import com.acromere.cartesia.command.base.ShapeInformation;
+import com.acromere.cartesia.command.camera.*;
+import com.acromere.cartesia.command.draw.*;
+import com.acromere.cartesia.command.edit.*;
+import com.acromere.cartesia.command.layer.*;
 import com.acromere.cartesia.command.measure.MeasureAngle;
 import com.acromere.cartesia.command.measure.MeasureDistance;
 import com.acromere.cartesia.command.measure.MeasureLength;
@@ -34,9 +34,7 @@ import com.acromere.xenon.XenonProgramProduct;
 import javafx.scene.input.*;
 import lombok.CustomLog;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @CustomLog
@@ -48,7 +46,7 @@ public final class CommandMap {
 
 	private final Map<CommandTrigger, String> actionByTrigger = new ConcurrentHashMap<>();
 
-	private final Map<String, CommandTrigger> triggerByAction = new ConcurrentHashMap<>();
+	private final Map<String, Set<CommandTrigger>> triggersByAction = new ConcurrentHashMap<>();
 
 	private final Map<String, CommandMetadata> actionCommands = new ConcurrentHashMap<>();
 
@@ -56,9 +54,9 @@ public final class CommandMap {
 		actionCommands.clear();
 		shortcutActions.clear();
 		actionByTrigger.clear();
-		triggerByAction.clear();
+		triggersByAction.clear();
 
-		// High level letters
+		// High-level letters
 		// a - arc
 		// c - circle
 		// d - draw [verb] (size, paint, pattern, etc.)
@@ -70,12 +68,12 @@ public final class CommandMap {
 		// m - marker
 		// p - print
 		// r - reference
-		// s - snap
+		// s - snap [verb]
 		// t - text
 		// v - curve
 		// w - view
 		// y - layer
-		// z - zoom
+		// z - zoom [verb]
 
 		// Draw setting commands
 		// In GCAD these were initially managed with simple commands. Later on you could tell the
@@ -238,7 +236,7 @@ public final class CommandMap {
 		add( "camera-move", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.CONTROL, CommandTrigger.Modifier.MOVED ) );
 		// Camera zoom
 		add( "camera-zoom", new CommandTrigger( ScrollEvent.SCROLL, CommandTrigger.Modifier.CONTROL ) );
-		//add( "camera-zoom", new CommandTrigger( ZoomEvent.ZOOM ) );
+		add( "camera-zoom", new CommandTrigger( ZoomEvent.ZOOM ) );
 
 		// Camera spin
 		//add( new CommandEventKey( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, false, true, false, false ), "camera-spin" );
@@ -293,8 +291,8 @@ public final class CommandMap {
 		return mapping;
 	}
 
-	public CommandTrigger getTriggerByAction( String action ) {
-		return triggerByAction.get( action );
+	public Set<CommandTrigger> getTriggersByAction( String action ) {
+		return triggersByAction.getOrDefault( action, Collections.emptySet() );
 	}
 
 	private void add( String action, CommandTrigger trigger ) {
@@ -306,13 +304,9 @@ public final class CommandMap {
 			log.atSevere().log( "Trigger already used [%s] by %s", trigger, action );
 			return;
 		}
-		if( triggerByAction.containsKey( action ) ) {
-			log.atSevere().log( "Action already used [%s] by %s", action, trigger );
-			return;
-		}
 
 		actionByTrigger.put( trigger, action );
-		triggerByAction.put( action, trigger );
+		triggersByAction.computeIfAbsent( action, _ -> new HashSet<>() ).add( trigger );
 	}
 
 	private void add( XenonProgramProduct product, String action, Class<? extends Command> type, Object... parameters ) {
@@ -329,6 +323,7 @@ public final class CommandMap {
 		add( action, type, name, command, shortcut, tags, parameters );
 	}
 
+	// Tool testing only
 	public void add( String action, Class<? extends Command> type, String name, String command, String shortcut, Object... parameters ) {
 		add( action, type, name, command, shortcut, List.of(), parameters );
 	}
@@ -381,4 +376,7 @@ public final class CommandMap {
 
 	public static final class Noop extends Command {}
 
+	public static final class CartesiaMouseMap {}
+
+	private static final class DrawIoMouseMap {}
 }
