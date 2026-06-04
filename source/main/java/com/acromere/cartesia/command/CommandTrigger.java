@@ -30,9 +30,11 @@ public class CommandTrigger {
 		SHIFT,
 		ALT,
 		META,
+		MOVED,
 		DIRECT,
 		INERTIA,
-		MOVED
+		OVER_GEOMETRY,
+		GEOMETRY_SELECTED
 	}
 
 	private final EventType<?> type;
@@ -101,8 +103,8 @@ public class CommandTrigger {
 	}
 
 	public static CommandTrigger from( InputEvent event ) {
-		// This method creates a command trigger from an input event for the purpose
-		// of using the event trigger to look up a command in the command map.
+		// This method creates a command trigger from an input event to use
+		// the event trigger to look up a command in the command map.
 
 		if( event == null ) return null;
 
@@ -112,6 +114,7 @@ public class CommandTrigger {
 
 			if( mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED ) {
 				// Special handling for MOUSE_PRESSED events
+				// FIXME I don't like "special handling"
 				trigger.modifiers.add( Modifier.ANY );
 			} else {
 				if( mouseEvent.isControlDown() ) trigger.modifiers.add( Modifier.CONTROL );

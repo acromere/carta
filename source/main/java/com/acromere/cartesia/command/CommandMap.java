@@ -295,7 +295,7 @@ public final class CommandMap {
 		return triggersByAction.getOrDefault( action, Collections.emptySet() );
 	}
 
-	private void add( String action, CommandTrigger trigger ) {
+	void add( String action, CommandTrigger trigger ) {
 		if( trigger.getEventType() == MouseEvent.MOUSE_PRESSED && !"anchor".equals( action ) ) {
 			log.atWarn().log( "Mouse pressed event should only be assigned to \"anchor\" command: %s", action );
 			return;
