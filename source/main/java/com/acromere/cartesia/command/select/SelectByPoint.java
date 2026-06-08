@@ -27,7 +27,7 @@ public class SelectByPoint extends SelectCommand {
 
 		if( paramCount < 1 & noEvent ) {
 			// Select window anchor
-			promptForPoint( task, "select-point" );
+			promptForPoint( task, "select-touch" );
 			return INCOMPLETE;
 		}
 
@@ -50,7 +50,7 @@ public class SelectByPoint extends SelectCommand {
 
 		if( task.hasParameter( 0 ) ) {
 			// If there is a parameter, use that
-			Point3D worldPoint = asPoint( task, "select-point", 0 );
+			Point3D worldPoint = asPoint( task, "select-touch", 0 );
 
 			if( task.getContext().isSelectMode() ) {
 				task.getTool().worldPointSelect( worldPoint, toggle );

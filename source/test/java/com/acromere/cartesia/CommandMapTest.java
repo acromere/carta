@@ -67,7 +67,7 @@ public class CommandMapTest extends BaseCommandMapTest {
 
 			// Select
 			Arguments.of(
-				createMetadata( "select-point", "Select By Point", null, SelectByPoint.class ),
+				createMetadata( "select-touch", "Select By Point", null, SelectByPoint.class ),
 				createMouseEvent( MouseEvent.MOUSE_RELEASED, MouseButton.PRIMARY, false, false, false, false, false )
 			),
 			Arguments.of(

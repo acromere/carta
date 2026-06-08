@@ -86,7 +86,7 @@ public class AnchorTest extends BaseCommandTest {
 		// then
 		verify( commandContext, times( 0 ) ).submit( eq( tool ), any( Prompt.class ) );
 		verify( currentLayer, times( 0 ) ).addShape( any() );
-		assertThat( exception.getInputRbKey() ).isEqualTo( "select-point" );
+		assertThat( exception.getInputRbKey() ).isEqualTo( "select-touch" );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
 	}

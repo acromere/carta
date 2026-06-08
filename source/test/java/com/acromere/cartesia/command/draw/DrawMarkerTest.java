@@ -95,7 +95,7 @@ public class DrawMarkerTest extends BaseCommandTest {
 	}
 
 	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "select-point" ) );
+		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "select-touch" ) );
 	}
 
 	@Test

@@ -73,7 +73,7 @@ public class SelectToggleTest extends BaseCommandTest {
 		// Select by point with event should cause select to be called
 
 		// given
-		CommandTrigger trigger = getMod().getCommandMap().getTriggersByAction( "select-point" ).iterator().next();
+		CommandTrigger trigger = getMod().getCommandMap().getTriggersByAction( "select-touch" ).iterator().next();
 		InputEvent event = createMouseEvent( trigger, 48, 17 );
 		CommandTask task = new CommandTask( commandContext, tool, trigger, event, command );
 		when( commandContext.isSelectMode() ).thenReturn( true );
@@ -91,7 +91,7 @@ public class SelectToggleTest extends BaseCommandTest {
 		// Select by point with event, and commands on the command stack, should return a world point
 
 		// given
-		CommandTrigger trigger = getMod().getCommandMap().getTriggersByAction( "select-point" ).iterator().next();
+		CommandTrigger trigger = getMod().getCommandMap().getTriggersByAction( "select-touch" ).iterator().next();
 		InputEvent event = createMouseEvent( trigger, 48, 17 );
 		CommandTask task = new CommandTask( commandContext, tool, trigger, event, command );
 		// Pretend there is another command on the stack
@@ -121,7 +121,7 @@ public class SelectToggleTest extends BaseCommandTest {
 		// then
 		verify( commandContext, times( 0 ) ).submit( eq( tool ), any( Prompt.class ) );
 		verify( currentLayer, times( 0 ) ).addShape( any() );
-		assertThat( exception.getInputRbKey() ).isEqualTo( "select-point" );
+		assertThat( exception.getInputRbKey() ).isEqualTo( "select-touch" );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
 	}

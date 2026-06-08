@@ -101,7 +101,7 @@ public final class CommandMap {
 
 		// Basic commands
 		add( product, "anchor", Anchor.class );
-		add( product, "select-point", SelectByPoint.class );
+		add( product, "select-touch", SelectByPoint.class );
 		add( product, "select-toggle", SelectToggle.class );
 		add( product, "select-window-contain", SelectByWindowContain.class );
 		add( product, "select-window-intersect", SelectByWindowIntersect.class );

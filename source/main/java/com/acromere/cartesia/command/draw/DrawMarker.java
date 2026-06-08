@@ -20,7 +20,7 @@ public class DrawMarker extends DrawCommand {
 
 		if( task.getParameterCount() == 0 ) {
 			if( preview == null ) preview = createPreviewMarker( task );
-			promptForPoint( task, "select-point" );
+			promptForPoint( task, "select-touch" );
 			return INCOMPLETE;
 		}
 
@@ -28,7 +28,7 @@ public class DrawMarker extends DrawCommand {
 		if( task.hasParameter( 0 ) ) {
 			setCaptureUndoChanges( task, true );
 
-			Point3D point = asPoint( task, "select-point", 0 );
+			Point3D point = asPoint( task, "select-touch", 0 );
 			task.getTool().getCurrentLayer().addShape( new DesignMarker( point ) );
 
 			return SUCCESS;

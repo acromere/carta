@@ -21,7 +21,7 @@ public class Anchor extends Command {
 
 	public Object execute( CommandTask task ) throws Exception {
 		if( task.getParameters().length < 1 && task.getEvent() == null ) {
-			promptForPoint( task, "select-point" );
+			promptForPoint( task, "select-touch" );
 			return INCOMPLETE;
 		}
 
@@ -35,7 +35,7 @@ public class Anchor extends Command {
 		}
 
 		if( task.hasParameter( 0 ) ) {
-			Point3D worldPoint = asPoint( task, "select-point", 0 );
+			Point3D worldPoint = asPoint( task, "select-touch", 0 );
 			Point3D screenPoint = task.getTool().worldToScreen( worldPoint );
 			if( worldPoint != null ) {
 				task.getContext().setLocalAnchor( screenPoint );
