@@ -114,7 +114,7 @@ public class CommandTrigger {
 
 			if( mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED ) {
 				// Special handling for MOUSE_PRESSED events
-				// FIXME I don't like "special handling"
+				// FIXME I don't like "special handling" here, consider refactoring
 				trigger.modifiers.add( Modifier.ANY );
 			} else {
 				if( mouseEvent.isControlDown() ) trigger.modifiers.add( Modifier.CONTROL );

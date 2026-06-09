@@ -259,10 +259,10 @@ public final class CommandMap {
 	}
 
 	void add( String action, CommandTrigger trigger ) {
-		if( trigger.getEventType() == MouseEvent.MOUSE_PRESSED && !"anchor".equals( action ) ) {
-			log.atWarn().log( "Mouse pressed event should only be assigned to \"anchor\" command: %s", action );
-			return;
-		}
+//		if( trigger.getEventType() == MouseEvent.MOUSE_PRESSED && !"anchor".equals( action ) ) {
+//			log.atWarn().log( "Mouse pressed event should only be assigned to \"anchor\" command: %s", action );
+//			return;
+//		}
 		if( actionByTrigger.containsKey( trigger ) ) {
 			log.atSevere().log( "Trigger already used [%s] by %s", trigger, action );
 			return;
