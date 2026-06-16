@@ -31,7 +31,9 @@ import com.acromere.util.TextUtil;
 import com.acromere.xenon.ActionLibrary;
 import com.acromere.xenon.ActionProxy;
 import com.acromere.xenon.XenonProgramProduct;
-import javafx.scene.input.*;
+import javafx.scene.input.GestureEvent;
+import javafx.scene.input.InputEvent;
+import javafx.scene.input.MouseEvent;
 import lombok.CustomLog;
 
 import java.util.*;
@@ -240,7 +242,8 @@ public final class CommandMap {
 	}
 
 	public CommandMetadata getCommandByEvent( InputEvent event ) {
-		String action = actionByTrigger.getOrDefault( CommandTrigger.from( event ), TextUtil.EMPTY );
+		boolean matchAny = event.getEventType() == MouseEvent.MOUSE_PRESSED;
+		String action = actionByTrigger.getOrDefault( CommandTrigger.from( event, matchAny ), TextUtil.EMPTY );
 		return getCommandByAction( action );
 	}
 
@@ -328,7 +331,7 @@ public final class CommandMap {
 	@SuppressWarnings( "unused" )
 	private String triggerToString( CommandTrigger trigger ) {
 		String info = trigger.getEventType().getName();
-		info += " button=" + trigger.getButton();
+		info += " button=" + trigger.getMouseButton();
 		info += " control=" + trigger.hasModifier( CommandTrigger.Modifier.CONTROL );
 		info += " shift=" + trigger.hasModifier( CommandTrigger.Modifier.SHIFT );
 		info += " alt=" + trigger.hasModifier( CommandTrigger.Modifier.ALT );

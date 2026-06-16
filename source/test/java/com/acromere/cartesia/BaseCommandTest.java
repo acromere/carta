@@ -89,7 +89,7 @@ public class BaseCommandTest extends BaseToolTest {
 	@SuppressWarnings( "unchecked" )
 	protected static MouseEvent createMouseEvent( CommandTrigger trigger, double x, double y ) {
 		MouseEvent event = createMouseEvent( (EventType<MouseEvent>)trigger.getEventType(),
-			trigger.getButton(),
+			trigger.getMouseButton(),
 			trigger.hasModifier( CommandTrigger.Modifier.CONTROL ),
 			trigger.hasModifier( CommandTrigger.Modifier.SHIFT ),
 			trigger.hasModifier( CommandTrigger.Modifier.ALT ),

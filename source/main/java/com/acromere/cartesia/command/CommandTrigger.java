@@ -40,7 +40,7 @@ public class CommandTrigger {
 	private final EventType<?> type;
 
 	// There can only be one mouse button
-	private MouseButton mouseButton;
+	private final MouseButton button;
 
 	// There can be many modifiers
 	private final Set<Modifier> modifiers;
@@ -51,7 +51,7 @@ public class CommandTrigger {
 
 	public CommandTrigger( EventType<?> type, MouseButton button, Modifier... modifiers ) {
 		this.type = type;
-		this.mouseButton = button;
+		this.button = button;
 		this.modifiers = new HashSet<>( Arrays.asList( modifiers ) );
 
 		//		// If comparing against mouse drag events, always enable the MOVING modifier
@@ -64,16 +64,16 @@ public class CommandTrigger {
 		return type;
 	}
 
-	public MouseButton getButton() {
-		return mouseButton;
+	public MouseButton getMouseButton() {
+		return button;
 	}
 
-	public Set<Modifier> getModifiers() {
-		return new HashSet<>( modifiers );
-	}
+	//	public Set<Modifier> getModifiers() {
+	//		return new HashSet<>( modifiers );
+	//	}
 
 	public boolean hasButton( MouseButton button ) {
-		return mouseButton == button;
+		return this.button == button;
 	}
 
 	public boolean hasModifier( Modifier modifier ) {
@@ -82,7 +82,7 @@ public class CommandTrigger {
 
 	@Override
 	public String toString() {
-		return "CommandTrigger{" + "type=" + type + ", mouseButton=" + mouseButton + ", modifiers=" + modifiers + '}';
+		return "CommandTrigger{" + "type=" + type + ", mouseButton=" + button + ", modifiers=" + modifiers + '}';
 	}
 
 	@Override
@@ -90,49 +90,57 @@ public class CommandTrigger {
 		if( this == object ) return true;
 		if( object == null || getClass() != object.getClass() ) return false;
 		CommandTrigger that = (CommandTrigger)object;
-		return type.equals( that.type ) && mouseButton == that.mouseButton && modifiers.equals( that.modifiers );
+		boolean typeMatches = type.equals( that.type );
+		boolean buttonMatches = Objects.equals( this.button, that.button );
+		boolean modifiersMatch = modifiers.contains( Modifier.ANY) || modifiers.equals( that.modifiers );
+		return typeMatches && buttonMatches && modifiersMatch;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash( type, mouseButton, modifiers );
+		return Objects.hash( type, button, modifiers );
 	}
 
-	public boolean matches(InputEvent event ) {
+	public boolean matches( InputEvent event ) {
 		return this.equals( from( event ) );
 	}
 
 	public static CommandTrigger from( InputEvent event ) {
+		return from( event, false );
+	}
+
+	public static CommandTrigger from( InputEvent event, boolean wildcard ) {
 		// This method creates a command trigger from an input event to use
 		// the event trigger to look up a command in the command map.
 
 		if( event == null ) return null;
 
-		CommandTrigger trigger = new CommandTrigger( event.getEventType() );
-		if( event instanceof MouseEvent mouseEvent ) {
-			trigger.mouseButton = mouseEvent.getButton();
+		MouseButton button = null;
+		if( event instanceof MouseEvent mouseEvent ) button = mouseEvent.getButton();
 
-			if( mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED ) {
-				// Special handling for MOUSE_PRESSED events
-				// FIXME I don't like "special handling" here, consider refactoring
-				trigger.modifiers.add( Modifier.ANY );
-			} else {
+		CommandTrigger trigger = new CommandTrigger( event.getEventType(), button );
+
+		// Modifiers
+		if( wildcard ) {
+			trigger.modifiers.add( Modifier.ANY );
+		} else {
+			if( event instanceof MouseEvent mouseEvent ) {
 				if( mouseEvent.isControlDown() ) trigger.modifiers.add( Modifier.CONTROL );
 				if( mouseEvent.isShiftDown() ) trigger.modifiers.add( Modifier.SHIFT );
 				if( mouseEvent.isAltDown() ) trigger.modifiers.add( Modifier.ALT );
 				if( mouseEvent.isMetaDown() ) trigger.modifiers.add( Modifier.META );
 				if( !mouseEvent.isStillSincePress() ) trigger.modifiers.add( Modifier.MOVED );
+			} else if( event instanceof GestureEvent gestureEvent ) {
+				if( gestureEvent.isControlDown() ) trigger.modifiers.add( Modifier.CONTROL );
+				if( gestureEvent.isShiftDown() ) trigger.modifiers.add( Modifier.SHIFT );
+				if( gestureEvent.isAltDown() ) trigger.modifiers.add( Modifier.ALT );
+				if( gestureEvent.isMetaDown() ) trigger.modifiers.add( Modifier.META );
+				if( gestureEvent.isDirect() ) trigger.modifiers.add( Modifier.DIRECT );
+				if( gestureEvent.isInertia() ) trigger.modifiers.add( Modifier.INERTIA );
+			} else {
+				log.atWarn().log( "Unhandled event type" );
+				return null;
 			}
-		} else if( event instanceof GestureEvent gestureEvent ) {
-			if( gestureEvent.isControlDown() ) trigger.modifiers.add( Modifier.CONTROL );
-			if( gestureEvent.isShiftDown() ) trigger.modifiers.add( Modifier.SHIFT );
-			if( gestureEvent.isAltDown() ) trigger.modifiers.add( Modifier.ALT );
-			if( gestureEvent.isMetaDown() ) trigger.modifiers.add( Modifier.META );
-			if( gestureEvent.isDirect() ) trigger.modifiers.add( Modifier.DIRECT );
-			if( gestureEvent.isInertia() ) trigger.modifiers.add( Modifier.INERTIA );
-		} else {
-			log.atWarn().log( "Unhandled event type" );
-			return null;
 		}
 
 		return trigger;
