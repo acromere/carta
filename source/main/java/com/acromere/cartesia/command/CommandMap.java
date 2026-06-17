@@ -33,7 +33,6 @@ import com.acromere.xenon.ActionProxy;
 import com.acromere.xenon.XenonProgramProduct;
 import javafx.scene.input.GestureEvent;
 import javafx.scene.input.InputEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import lombok.CustomLog;
 
@@ -244,17 +243,7 @@ public final class CommandMap {
 
 	public CommandMetadata getCommandByEvent( InputEvent event ) {
 		// Determine if the event should trigger the anchor command
-		// FIXME This lookup could be optimized with a cache
-		boolean matchAny = false;
-		Set<CommandTrigger> triggers = getTriggersByAction( "anchor" );
-		if( event instanceof MouseEvent mouseEvent ) {
-			for( CommandTrigger trigger : triggers ) {
-				boolean eventTypeMatches = trigger.getEventType() == event.getEventType();
-				boolean mouseButtonMatches = trigger.getMouseButton() == mouseEvent.getButton();
-				if( eventTypeMatches && mouseButtonMatches ) matchAny = true;
-			}
-		}
-
+		boolean matchAny = isAnchorEvent( event );
 		String action = actionByTrigger.getOrDefault( CommandTrigger.from( event, matchAny ), TextUtil.EMPTY );
 		return getCommandByAction( action );
 	}
@@ -274,10 +263,10 @@ public final class CommandMap {
 	}
 
 	void add( String action, CommandTrigger trigger ) {
-//		if( trigger.getEventType() == MouseEvent.MOUSE_PRESSED && !"anchor".equals( action ) ) {
-//			log.atWarn().log( "Mouse pressed event should only be assigned to \"anchor\" command: %s", action );
-//			return;
-//		}
+		//		if( trigger.getEventType() == MouseEvent.MOUSE_PRESSED && !"anchor".equals( action ) ) {
+		//			log.atWarn().log( "Mouse pressed event should only be assigned to \"anchor\" command: %s", action );
+		//			return;
+		//		}
 		if( actionByTrigger.containsKey( trigger ) ) {
 			log.atSevere().log( "Trigger already used [%s] by %s", trigger, action );
 			return;
@@ -313,13 +302,28 @@ public final class CommandMap {
 			return;
 		}
 
-		actionCommands.computeIfAbsent( action, k -> {
-			if( command != null ) shortcutActions.put( command, action );
-			return new CommandMetadata( action, name, command, shortcut, tags, type, parameters );
-		} );
+		actionCommands.computeIfAbsent(
+			action, k -> {
+				if( command != null ) shortcutActions.put( command, action );
+				return new CommandMetadata( action, name, command, shortcut, tags, type, parameters );
+			}
+		);
 	}
 
 	@SuppressWarnings( "unused" )
+	private boolean isAnchorEvent( InputEvent event ) {
+		// FIXME Could this lookup could be optimized with a cache?
+		// Might be hard to do since there are possibly multiple triggers
+		if( event instanceof MouseEvent mouseEvent ) {
+			for( CommandTrigger trigger : getTriggersByAction( "anchor" ) ) {
+				boolean eventTypeMatches = trigger.getEventType() == event.getEventType();
+				boolean mouseButtonMatches = trigger.getMouseButton() == mouseEvent.getButton();
+				if( eventTypeMatches && mouseButtonMatches ) return true;
+			}
+		}
+		return false;
+	}
+
 	private String eventToString( InputEvent event ) {
 		String info = event.getEventType().getName();
 		if( event instanceof MouseEvent mouseEvent ) {
@@ -349,6 +353,8 @@ public final class CommandMap {
 		info += " alt=" + trigger.hasModifier( CommandTrigger.Modifier.ALT );
 		info += " meta=" + trigger.hasModifier( CommandTrigger.Modifier.META );
 		info += " moved=" + trigger.hasModifier( CommandTrigger.Modifier.MOVED );
+		info += " over_geometry=" + trigger.hasModifier( CommandTrigger.Modifier.OVER_GEOMETRY );
+		info += " geometry_selected=" + trigger.hasModifier( CommandTrigger.Modifier.GEOMETRY_SELECTED );
 		return info;
 	}
 
