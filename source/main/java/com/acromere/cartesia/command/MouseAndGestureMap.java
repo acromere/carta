@@ -9,7 +9,7 @@ public enum MouseAndGestureMap {
 
 	CARTESIA {
 		void load( CommandMap map ) {
-			map.add( "anchor", new CommandTrigger( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, CommandTrigger.Modifier.ANY ) );
+			map.add( "anchor", new CommandTrigger( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY ) );
 
 			// Selects ---------------------------------------------------------------
 			map.add( "select-touch", new CommandTrigger( MouseEvent.MOUSE_RELEASED, MouseButton.PRIMARY ) );
@@ -18,10 +18,8 @@ public enum MouseAndGestureMap {
 			map.add( "select-window-intersect", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.SHIFT, CommandTrigger.Modifier.MOVED ) );
 
 			// Snaps -----------------------------------------------------------------
-			// FIXME The mouse event should be MOUSE_PRESSED
-			map.add( "snap-auto-nearest", new CommandTrigger( MouseEvent.MOUSE_CLICKED, MouseButton.SECONDARY ) );
-			// FIXME The mouse event should be MOUSE_PRESSED
-			map.add( "snap-auto-midpoint", new CommandTrigger( MouseEvent.MOUSE_CLICKED, MouseButton.MIDDLE ) );
+			map.add( "snap-auto-nearest", new CommandTrigger( MouseEvent.MOUSE_PRESSED, MouseButton.SECONDARY ) );
+			map.add( "snap-auto-midpoint", new CommandTrigger( MouseEvent.MOUSE_PRESSED, MouseButton.MIDDLE ) );
 
 			// Camera 2D -------------------------------------------------------------
 			map.add( "camera-move", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.CONTROL, CommandTrigger.Modifier.MOVED ) );

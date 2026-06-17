@@ -33,6 +33,7 @@ import com.acromere.xenon.ActionProxy;
 import com.acromere.xenon.XenonProgramProduct;
 import javafx.scene.input.GestureEvent;
 import javafx.scene.input.InputEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import lombok.CustomLog;
 
@@ -242,7 +243,18 @@ public final class CommandMap {
 	}
 
 	public CommandMetadata getCommandByEvent( InputEvent event ) {
-		boolean matchAny = event.getEventType() == MouseEvent.MOUSE_PRESSED;
+		// Determine if the event should trigger the anchor command
+		// FIXME This lookup could be optimized with a cache
+		boolean matchAny = false;
+		Set<CommandTrigger> triggers = getTriggersByAction( "anchor" );
+		if( event instanceof MouseEvent mouseEvent ) {
+			for( CommandTrigger trigger : triggers ) {
+				boolean eventTypeMatches = trigger.getEventType() == event.getEventType();
+				boolean mouseButtonMatches = trigger.getMouseButton() == mouseEvent.getButton();
+				if( eventTypeMatches && mouseButtonMatches ) matchAny = true;
+			}
+		}
+
 		String action = actionByTrigger.getOrDefault( CommandTrigger.from( event, matchAny ), TextUtil.EMPTY );
 		return getCommandByAction( action );
 	}

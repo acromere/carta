@@ -83,9 +83,14 @@ public class CommandMapTest extends BaseCommandMapTest {
 				createMouseEvent( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, false, true, false, false, true )
 			),
 
-			// Auto Snap
+			// Snap Auto Nearest
 			Arguments.of( createMetadata( "snap-auto-nearest", "Snap Nearest", null, AutoSnap.class ),
-				createMouseEvent( MouseEvent.MOUSE_CLICKED, MouseButton.SECONDARY, false, false, false, false, false )
+				createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.SECONDARY, false, false, false, false, false )
+			),
+
+			// Snap Auto Midpoint
+			Arguments.of( createMetadata( "snap-auto-midpoint", "Snap Midpoint", null, AutoSnap.class ),
+				createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.MIDDLE, false, false, false, false, false )
 			),
 
 			// Camera Move

@@ -54,8 +54,11 @@ public class CommandTrigger {
 		this.button = button;
 		this.modifiers = new HashSet<>( Arrays.asList( modifiers ) );
 
+		// FIXME This is only applicable to the "anchor" command
+		if( type == MouseEvent.MOUSE_PRESSED && modifiers.length == 0 ) this.modifiers.add( Modifier.ANY );
+
 		//		// If comparing against mouse drag events, always enable the MOVING modifier
-		//		if( type == MouseEvent.MOUSE_DRAGGED ) {
+		//		if( type == MouseEvent.MOUSE_DRAGGED && modifiers.length == 0 ) {
 		//			this.modifiers.add( Modifier.MOVING );
 		//		}
 	}
@@ -92,7 +95,7 @@ public class CommandTrigger {
 		CommandTrigger that = (CommandTrigger)object;
 		boolean typeMatches = type.equals( that.type );
 		boolean buttonMatches = Objects.equals( this.button, that.button );
-		boolean modifiersMatch = modifiers.contains( Modifier.ANY) || modifiers.equals( that.modifiers );
+		boolean modifiersMatch = modifiers.contains( Modifier.ANY ) || modifiers.equals( that.modifiers );
 		return typeMatches && buttonMatches && modifiersMatch;
 	}
 
@@ -122,6 +125,7 @@ public class CommandTrigger {
 
 		// Modifiers
 		if( wildcard ) {
+			// FIXME This is only applicable to the "anchor" command
 			trigger.modifiers.add( Modifier.ANY );
 		} else {
 			if( event instanceof MouseEvent mouseEvent ) {
