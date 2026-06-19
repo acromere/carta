@@ -35,6 +35,7 @@ import javafx.scene.input.GestureEvent;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 import lombok.CustomLog;
+import org.jspecify.annotations.NonNull;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -248,6 +249,7 @@ public final class CommandMap {
 		return getCommandByAction( action );
 	}
 
+	@NonNull
 	public CommandMetadata getCommandByAction( String action ) {
 		// Do not allow any command to be mapped to empty string
 		if( TextUtil.isEmpty( action ) ) return NONE;

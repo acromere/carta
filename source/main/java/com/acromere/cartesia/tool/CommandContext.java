@@ -440,10 +440,10 @@ public class CommandContext implements EventHandler<KeyEvent> {
 
 		// Determine the event to a command if possible
 		DesignTool tool = getTool();
-		CommandMetadata metadata = null;
+		CommandMetadata metadata = NONE;
 		if( tool != null ) metadata = tool.getMod().getCommandMap().getCommandByEvent( event );
 
-		if( metadata != null && metadata != NONE ) {
+		if( metadata != NONE ) {
 			log.atConfig().log( "Mapped command=%s", metadata );
 			submitCommand( (DesignTool)event.getSource(), event, metadata.getType(), metadata.getParameters() );
 		} else {
