@@ -26,7 +26,7 @@ public class CameraZoom extends CameraCommand {
 			Point3D point = task.getTool().screenToWorkplane( event.getX(), event.getY(), 0 );
 
 			if( event instanceof ScrollEvent scrollEvent ) {
-				// NOTE Using the shift key causes the deltaX to change :-)
+				// Using the shift key causes the delta to switch from X to Y
 				double deltaX = scrollEvent.getDeltaX();
 				double deltaY = scrollEvent.getDeltaY();
 				if( deltaX != 0.0 ) zoomByFactor( task.getTool(), point, deltaX > 0 ? BaseDesignTool.ZOOM_IN_FACTOR : BaseDesignTool.ZOOM_OUT_FACTOR );
