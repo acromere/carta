@@ -18,7 +18,6 @@ public class SelectByPoint extends SelectCommand {
 	}
 
 	protected Object execute( CommandTask task, boolean toggle ) throws Exception {
-		// NEXT Why is this command not getting executed on the first mouse click
 		int paramCount = task.getParameters().length;
 		InputEvent event = task.getEvent();
 		boolean noEvent = event == null;

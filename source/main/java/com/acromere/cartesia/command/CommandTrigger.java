@@ -124,7 +124,7 @@ public class CommandTrigger {
 			if( mouseEvent.isShiftDown() ) trigger.modifiers.add( Modifier.SHIFT );
 			if( mouseEvent.isAltDown() ) trigger.modifiers.add( Modifier.ALT );
 			if( mouseEvent.isMetaDown() ) trigger.modifiers.add( Modifier.META );
-			if( !mouseEvent.isStillSincePress() ) trigger.modifiers.add( Modifier.MOVED );
+			//if( !mouseEvent.isStillSincePress() ) trigger.modifiers.add( Modifier.MOVED );
 		} else if( event instanceof GestureEvent gestureEvent ) {
 			if( gestureEvent.isControlDown() ) trigger.modifiers.add( Modifier.CONTROL );
 			if( gestureEvent.isShiftDown() ) trigger.modifiers.add( Modifier.SHIFT );
