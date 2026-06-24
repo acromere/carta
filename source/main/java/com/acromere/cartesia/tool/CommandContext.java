@@ -1,21 +1,18 @@
 package com.acromere.cartesia.tool;
 
-import com.acromere.cartesia.command.CommandMetadata;
-import com.acromere.cartesia.command.CommandTrigger;
 import com.acromere.cartesia.RbKey;
-import com.acromere.cartesia.command.Command;
-import com.acromere.cartesia.command.CommandTask;
-import com.acromere.cartesia.command.InvalidInputException;
-import com.acromere.cartesia.command.select.SelectByPoint;
+import com.acromere.cartesia.command.*;
 import com.acromere.cartesia.command.base.Value;
 import com.acromere.cartesia.data.Design;
 import com.acromere.cartesia.error.UnknownCommand;
+import com.acromere.cartesia.ui.MouseEventUtil;
 import com.acromere.log.LazyEval;
 import com.acromere.product.Rb;
 import com.acromere.util.TextUtil;
 import com.acromere.xenon.notice.Notice;
 import com.acromere.zerra.javafx.Fx;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.input.*;
@@ -32,8 +29,8 @@ import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.logging.Level;
 
-import static com.acromere.cartesia.command.CommandMap.NONE;
 import static com.acromere.cartesia.command.Command.Result.*;
+import static com.acromere.cartesia.command.CommandMap.NONE;
 
 /**
  * The CommandContext class is a container for command-specific information. It
@@ -161,31 +158,16 @@ public class CommandContext implements EventHandler<KeyEvent> {
 		String input = getCommandPrompt().getCommand();
 		if( input.isEmpty() ) {
 			tool = getLastUserTool();
+
+			final EventType<KeyEvent> keyEventType = event.getEventType();
+			EventType<MouseEvent> mouseEventType = null;
+			if( keyEventType == KeyEvent.KEY_PRESSED ) mouseEventType = MouseEvent.MOUSE_PRESSED;
+			if( keyEventType == KeyEvent.KEY_RELEASED ) mouseEventType = MouseEvent.MOUSE_RELEASED;
+			if( keyEventType == KeyEvent.KEY_TYPED ) mouseEventType = MouseEvent.MOUSE_CLICKED;
+			if( mouseEventType == null ) return;
 			Point3D localMouse = this.localMouse;
 			Point2D screenMouse = this.screenMouse;
-			MouseEvent mouseEvent = new MouseEvent(
-				tool,
-				null,
-				MouseEvent.MOUSE_RELEASED,
-				localMouse.getX(),
-				localMouse.getY(),
-				screenMouse.getX(),
-				screenMouse.getY(),
-				MouseButton.PRIMARY,
-				1,
-				event.isShiftDown(),
-				event.isControlDown(),
-				event.isAltDown(),
-				event.isMetaDown(),
-				true,
-				false,
-				false,
-				true,
-				false,
-				true,
-				null
-			);
-			submitCommand( new SelectByPoint(), mouseEvent );
+			submitEventCommand( MouseEventUtil.of( tool, null, mouseEventType, localMouse, screenMouse, MouseButton.PRIMARY ) );
 		} else {
 			// Process text calls doCommand
 			processText( input, true );
@@ -499,7 +481,10 @@ public class CommandContext implements EventHandler<KeyEvent> {
 		// one of the commands could be setting a new prompt
 		if( Fx.isRunning() ) getCommandPrompt().clear();
 
+		// Set the prior command
 		request.setPrior( commandStack.peek() );
+
+		// Push the new command on the command stack
 		commandStack.push( request );
 		log.atTrace().log( "Command submitted %s", request );
 
