@@ -16,7 +16,7 @@ public class CommandTaskTest extends BaseCommandTest {
 	private CommandTask task;
 
 	@BeforeEach
-	protected void setup() throws Exception {
+	public void setup() throws Exception {
 		super.setup();
 		command = new MockCommand();
 		task = new CommandTask( commandContext, tool, null, null, command );

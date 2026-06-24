@@ -63,7 +63,7 @@ public class BaseCommandTest extends BaseToolTest {
 	protected DesignLayer referenceLayer;
 
 	@BeforeEach
-	protected void setup() throws Exception {
+	public void setup() throws Exception {
 		super.setup();
 
 		lenient().when( resource.getModel() ).thenReturn( design );

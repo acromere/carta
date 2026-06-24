@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CommandMapTest extends BaseCommandMapTest {
 
 	@BeforeEach
-	protected void setup() throws Exception {
+	public void setup() throws Exception {
 		super.setup();
 	}
 

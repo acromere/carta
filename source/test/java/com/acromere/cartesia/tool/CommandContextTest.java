@@ -27,7 +27,7 @@ public class CommandContextTest extends BaseCommandTest {
 	private static boolean configured;
 
 	@BeforeEach
-	protected void setup() throws Exception {
+	public void setup() throws Exception {
 		super.setup();
 		this.commandContext = spy( new CommandContext() );
 		lenient().doReturn( tool ).when( commandContext ).getTool();
