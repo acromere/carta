@@ -63,7 +63,7 @@ public class SnapGridToggleTest extends BaseCommandTest {
 	@Test
 	void runTaskStepIgnoresEvent() throws Exception {
 		// given
-		InputEvent event = createMouseEvent( MouseEvent.MOUSE_CLICKED, MouseButton.PRIMARY, false, false, false, false, false );
+		InputEvent event = createMouseEvent( MouseEvent.MOUSE_CLICKED, MouseButton.PRIMARY, false, false, false, false );
 		CommandTask task = new CommandTask( commandContext, tool, null, event, command );
 		// Pretend the grid is visible
 		when( tool.isGridSnapEnabled() ).thenReturn( true );

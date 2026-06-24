@@ -94,7 +94,6 @@ public class BaseCommandTest extends BaseToolTest {
 			trigger.hasModifier( CommandTrigger.Modifier.SHIFT ),
 			trigger.hasModifier( CommandTrigger.Modifier.ALT ),
 			trigger.hasModifier( CommandTrigger.Modifier.META ),
-			trigger.hasModifier( CommandTrigger.Modifier.MOVED ),
 			x,
 			y
 		);
@@ -119,36 +118,38 @@ public class BaseCommandTest extends BaseToolTest {
 		return event;
 	}
 
-	protected static MouseEvent createMouseEvent( EventType<MouseEvent> type, MouseButton button, boolean control, boolean shift, boolean alt, boolean meta, boolean moved ) {
-		return createMouseEvent( type, button, control, shift, alt, meta, moved, 0, 0, 0 );
+	protected static MouseEvent createMouseEvent( EventType<MouseEvent> type, MouseButton button, boolean control, boolean shift, boolean alt, boolean meta ) {
+		return createMouseEvent( type, button, control, shift, alt, meta, 0, 0, 0 );
 	}
 
-	protected static MouseEvent createMouseEvent( EventType<MouseEvent> type, MouseButton button, boolean control, boolean shift, boolean alt, boolean meta, boolean moved, double x, double y ) {
-		return createMouseEvent( type, button, control, shift, alt, meta, moved, x, y, 0 );
+	protected static MouseEvent createMouseEvent( EventType<MouseEvent> type, MouseButton button, boolean control, boolean shift, boolean alt, boolean meta, double x, double y ) {
+		return createMouseEvent( type, button, control, shift, alt, meta, x, y, 0 );
 	}
 
 	protected static MouseEvent createMouseEvent(
-		Object source, EventTarget target, EventType<MouseEvent> type, MouseButton button, boolean control, boolean shift, boolean alt, boolean meta, boolean moved, double x, double y
+		Object source, EventTarget target, EventType<MouseEvent> type, MouseButton button, boolean control, boolean shift, boolean alt, boolean meta, double x, double y
 	) {
-		return createMouseEvent( source, target, type, button, control, shift, alt, meta, moved, x, y, 0 );
+		return createMouseEvent( source, target, type, button, control, shift, alt, meta, x, y, 0 );
 	}
 
 	protected static MouseEvent createMouseEvent(
-		EventType<MouseEvent> type, MouseButton button, boolean control, boolean shift, boolean alt, boolean meta, boolean moved, double x, double y, int clicks
-	) {
-		boolean primary = button == MouseButton.PRIMARY;
-		boolean secondary = button == MouseButton.SECONDARY;
-		boolean middle = button == MouseButton.MIDDLE;
-		return new MouseEvent( type, x, y, 0, 0, button, clicks, shift, control, alt, meta, primary, middle, secondary, false, false, !moved, null );
-	}
-
-	protected static MouseEvent createMouseEvent(
-		Object source, EventTarget target, EventType<MouseEvent> type, MouseButton button, boolean control, boolean shift, boolean alt, boolean meta, boolean moved, double x, double y, int clicks
+		EventType<MouseEvent> type, MouseButton button, boolean control, boolean shift, boolean alt, boolean meta, double x, double y, int clicks
 	) {
 		boolean primary = button == MouseButton.PRIMARY;
 		boolean secondary = button == MouseButton.SECONDARY;
 		boolean middle = button == MouseButton.MIDDLE;
-		return new MouseEvent( source, target, type, x, y, 0, 0, button, clicks, shift, control, alt, meta, primary, middle, secondary, false, false, !moved, null );
+		boolean isStill = type != MouseEvent.MOUSE_DRAGGED;
+		return new MouseEvent( type, x, y, 0, 0, button, clicks, shift, control, alt, meta, primary, middle, secondary, false, false, isStill, null );
+	}
+
+	protected static MouseEvent createMouseEvent(
+		Object source, EventTarget target, EventType<MouseEvent> type, MouseButton button, boolean control, boolean shift, boolean alt, boolean meta, double x, double y, int clicks
+	) {
+		boolean primary = button == MouseButton.PRIMARY;
+		boolean secondary = button == MouseButton.SECONDARY;
+		boolean middle = button == MouseButton.MIDDLE;
+		boolean isStill = type != MouseEvent.MOUSE_DRAGGED;
+		return new MouseEvent( source, target, type, x, y, 0, 0, button, clicks, shift, control, alt, meta, primary, middle, secondary, false, false, isStill, null );
 	}
 
 	@SuppressWarnings( "unchecked" )

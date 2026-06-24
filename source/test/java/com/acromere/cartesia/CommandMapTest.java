@@ -41,7 +41,7 @@ public class CommandMapTest extends BaseCommandMapTest {
 	}
 
 	@ParameterizedTest
-	@MethodSource( "provideCommandMetadataInputEventMatches" )
+	@MethodSource( "cartesiaMetadataMap" )
 	void getCommandByEvent( CommandMetadata expected, InputEvent event ) {
 		CommandMetadata actual = getMod().getCommandMap().getCommandByEvent( event );
 		assertThat( actual.getAction() ).isEqualTo( expected.getAction() );
@@ -51,8 +51,14 @@ public class CommandMapTest extends BaseCommandMapTest {
 		assertThat( actual.getType() ).isEqualTo( expected.getType() );
 	}
 
-	private static Stream<Arguments> provideCommandMetadataInputEventMatches() {
+	private static Stream<Arguments> cartesiaMetadataMap() {
 		return Stream.of(
+			// Camera Move
+			Arguments.of( createMetadata( "camera-move", "Camera Pan", "pa", CameraMove.class ), createMouseEvent( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, false, true, false, false ) ),
+
+			// Camera Zoom
+			Arguments.of( createMetadata( "camera-zoom", "Zoom", "zm", CameraZoom.class ), createScrollEvent( ScrollEvent.SCROLL, false, false, false, false, false, false ) ),
+
 			// Anchor
 //			Arguments.of( createMetadata( "anchor", "Anchor", null, SelectTouch.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, false, false, false, false ) ),
 //			Arguments.of( createMetadata( "anchor", "Anchor", null, SelectTouch.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, true, false, false, false, false ) ),
@@ -68,36 +74,30 @@ public class CommandMapTest extends BaseCommandMapTest {
 			// Select
 			Arguments.of(
 				createMetadata( "select-touch", "Select By Point", null, SelectByPoint.class ),
-				createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, false, false, false, false )
+				createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, false, false, false )
 			),
 			Arguments.of(
 				createMetadata( "select-toggle", "Select Toggle", null, SelectToggle.class ),
-				createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, true, false, false, false, false )
+				createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, true, false, false, false )
 			),
 			Arguments.of(
 				createMetadata( "select-window-contain", "Select Window Contain", "ws", SelectByWindowContain.class ),
-				createMouseEvent( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, false, false, false, false, true )
+				createMouseEvent( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, false, false, false, false )
 			),
 			Arguments.of(
 				createMetadata( "select-window-intersect", "Select Window Intersect", "cs", SelectByWindowIntersect.class ),
-				createMouseEvent( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, false, true, false, false, true )
+				createMouseEvent( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, true, false, false, false )
 			),
 
 			// Snap Auto Nearest
 			Arguments.of( createMetadata( "snap-auto-nearest", "Snap Nearest", null, AutoSnap.class ),
-				createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.SECONDARY, false, false, false, false, false )
+				createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.SECONDARY, false, false, false, false )
 			),
 
 			// Snap Auto Midpoint
 			Arguments.of( createMetadata( "snap-auto-midpoint", "Snap Midpoint", null, AutoSnap.class ),
-				createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.MIDDLE, false, false, false, false, false )
-			),
-
-			// Camera Move
-			Arguments.of( createMetadata( "camera-move", "Camera Pan", "pa", CameraMove.class ), createMouseEvent( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, true, false, false, false, true ) ),
-
-			// Camera Zoom
-			Arguments.of( createMetadata( "camera-zoom", "Zoom", "zm", CameraZoom.class ), createScrollEvent( ScrollEvent.SCROLL, true, false, false, false, false, false ) )
+				createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.MIDDLE, false, false, false, false )
+			)
 		);
 	}
 

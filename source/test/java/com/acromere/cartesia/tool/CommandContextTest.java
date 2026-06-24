@@ -41,7 +41,7 @@ public class CommandContextTest extends BaseCommandTest {
 	@Test
 	void handleWithMouseEventAndTrigger() {
 		// given
-		MouseEvent event = createMouseEvent( tool, null, MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, false, false, false, false, 48, 17 );
+		MouseEvent event = createMouseEvent( tool, null, MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, false, false, false, 48, 17 );
 
 		// when
 		commandContext.handle( event );
@@ -54,7 +54,7 @@ public class CommandContextTest extends BaseCommandTest {
 	@Test
 	void handleWithMouseEventNoTrigger() {
 		// given
-		MouseEvent event = createMouseEvent( tool, null, MouseEvent.ANY, MouseButton.PRIMARY, false, false, false, false, false, 48, 17 );
+		MouseEvent event = createMouseEvent( tool, null, MouseEvent.ANY, MouseButton.PRIMARY, false, false, false, false, 48, 17 );
 
 		// when
 		commandContext.handle( event );

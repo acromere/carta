@@ -338,7 +338,6 @@ public final class CommandMap {
 		info += " shift=" + trigger.hasModifier( CommandTrigger.Modifier.SHIFT );
 		info += " alt=" + trigger.hasModifier( CommandTrigger.Modifier.ALT );
 		info += " meta=" + trigger.hasModifier( CommandTrigger.Modifier.META );
-		info += " moved=" + trigger.hasModifier( CommandTrigger.Modifier.MOVED );
 		info += " over_geometry=" + trigger.hasModifier( CommandTrigger.Modifier.OVER_GEOMETRY );
 		info += " geometry_selected=" + trigger.hasModifier( CommandTrigger.Modifier.GEOMETRY_SELECTED );
 		return info;

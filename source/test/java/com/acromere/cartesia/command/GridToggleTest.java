@@ -63,7 +63,7 @@ public class GridToggleTest extends BaseCommandTest {
 	@Test
 	void executeIgnoresEvent() throws Exception {
 		// given
-		InputEvent event = createMouseEvent( MouseEvent.MOUSE_CLICKED, MouseButton.PRIMARY, false, false, false, false, false, 48, 17 );
+		InputEvent event = createMouseEvent( MouseEvent.MOUSE_CLICKED, MouseButton.PRIMARY, false, false, false, false, 48, 17 );
 		CommandTask task = new CommandTask( commandContext, tool, null, event, command );
 		// Pretend the grid is visible
 		when( tool.isGridVisible() ).thenReturn( true );

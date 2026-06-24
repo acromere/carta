@@ -14,18 +14,18 @@ public enum MouseAndGestureMap {
 			// Selects ---------------------------------------------------------------
 			map.add( "select-touch", new CommandTrigger( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY ) );
 			map.add( "select-toggle", new CommandTrigger( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, CommandTrigger.Modifier.CONTROL ) );
-			map.add( "select-window-contain", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.MOVED ) );
-			map.add( "select-window-intersect", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.SHIFT, CommandTrigger.Modifier.MOVED ) );
+			map.add( "select-window-contain", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY ) );
+			map.add( "select-window-intersect", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.CONTROL ) );
 
 			// Snaps -----------------------------------------------------------------
 			map.add( "snap-auto-nearest", new CommandTrigger( MouseEvent.MOUSE_PRESSED, MouseButton.SECONDARY ) );
 			map.add( "snap-auto-midpoint", new CommandTrigger( MouseEvent.MOUSE_PRESSED, MouseButton.MIDDLE ) );
 
 			// Camera 2D -------------------------------------------------------------
-			map.add( "camera-move", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.CONTROL, CommandTrigger.Modifier.MOVED ) );
-			map.add( "camera-zoom", new CommandTrigger( ScrollEvent.SCROLL, CommandTrigger.Modifier.CONTROL ) );
+			map.add( "camera-move", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.SHIFT ) );
+			map.add( "camera-zoom", new CommandTrigger( ScrollEvent.SCROLL ) );
 			map.add( "camera-zoom", new CommandTrigger( ZoomEvent.ZOOM ) );
-			map.add( "camera-spin", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.CONTROL, CommandTrigger.Modifier.SHIFT, CommandTrigger.Modifier.MOVED ) );
+			map.add( "camera-spin", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.CONTROL, CommandTrigger.Modifier.SHIFT ) );
 
 			// Camera 3D -------------------------------------------------------------
 			// Camera walk (moving the camera forward and back)
@@ -41,18 +41,18 @@ public enum MouseAndGestureMap {
 			// Selects ---------------------------------------------------------------
 			map.add( "select-touch", new CommandTrigger( MouseEvent.MOUSE_CLICKED, MouseButton.PRIMARY ) );
 			map.add( "select-toggle", new CommandTrigger( MouseEvent.MOUSE_CLICKED, MouseButton.PRIMARY, CommandTrigger.Modifier.CONTROL ) );
-			map.add( "select-window-contain", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.MOVED ) );
-			map.add( "select-window-intersect", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.SHIFT, CommandTrigger.Modifier.MOVED ) );
+			map.add( "select-window-contain", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY ) );
+			map.add( "select-window-intersect", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.SHIFT ) );
 
 			// Snaps -----------------------------------------------------------------
 			map.add( "snap-auto-nearest", new CommandTrigger( MouseEvent.MOUSE_CLICKED, MouseButton.SECONDARY ) );
 			map.add( "snap-auto-midpoint", new CommandTrigger( MouseEvent.MOUSE_CLICKED, MouseButton.MIDDLE ) );
 
 			// Camera 2D -------------------------------------------------------------
-			map.add( "camera-move", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.CONTROL, CommandTrigger.Modifier.MOVED ) );
+			map.add( "camera-move", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.CONTROL ) );
 			map.add( "camera-zoom", new CommandTrigger( ScrollEvent.SCROLL, CommandTrigger.Modifier.CONTROL ) );
 			map.add( "camera-zoom", new CommandTrigger( ZoomEvent.ZOOM ) );
-			map.add( "camera-spin", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.CONTROL, CommandTrigger.Modifier.SHIFT, CommandTrigger.Modifier.MOVED ) );
+			map.add( "camera-spin", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.CONTROL, CommandTrigger.Modifier.SHIFT ) );
 
 			// Camera 3D -------------------------------------------------------------
 			// Camera walk (moving the camera forward and back)

@@ -67,7 +67,7 @@ public class CommandTest extends BaseCommandTest {
 		when( tool.screenToWorld( new Point3D( 72, 72, 0 ) ) ).thenReturn( new Point3D( 1.01, 2.01, 0 ) );
 
 		// when
-		Point3D result = command.asPoint( task, "point", createMouseEvent( MouseEvent.MOUSE_CLICKED, MouseButton.PRIMARY, false, false, false, false, false, 72, 72 ) );
+		Point3D result = command.asPoint( task, "point", createMouseEvent( MouseEvent.MOUSE_CLICKED, MouseButton.PRIMARY, false, false, false, false, 72, 72 ) );
 
 		// then
 		Point3DAssert.assertThat( result ).isEqualTo( new Point3D( 1.01, 2.01, 0 ) );

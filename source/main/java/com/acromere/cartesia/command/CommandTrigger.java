@@ -26,7 +26,6 @@ public class CommandTrigger {
 		SHIFT,
 		ALT,
 		META,
-		MOVED,
 		DIRECT,
 		INERTIA,
 		OVER_GEOMETRY,
