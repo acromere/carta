@@ -1,6 +1,6 @@
 package com.acromere.cartesia.command;
 
-import com.acromere.cartesia.command.base.Anchor;
+import com.acromere.cartesia.command.select.Anchor;
 import com.acromere.cartesia.command.base.GridToggle;
 import com.acromere.cartesia.command.base.ReferencePointsToggle;
 import com.acromere.cartesia.command.base.ShapeInformation;
@@ -243,10 +243,7 @@ public final class CommandMap {
 	}
 
 	public CommandMetadata getCommandByEvent( InputEvent event ) {
-		// Determine if the event should trigger the anchor command
-		boolean matchAny = isAnchorEvent( event );
-		String action = actionByTrigger.getOrDefault( CommandTrigger.from( event, matchAny ), TextUtil.EMPTY );
-		return getCommandByAction( action );
+		return getCommandByAction( actionByTrigger.getOrDefault( CommandTrigger.from( event ), TextUtil.EMPTY ) );
 	}
 
 	@NonNull
@@ -313,19 +310,6 @@ public final class CommandMap {
 	}
 
 	@SuppressWarnings( "unused" )
-	private boolean isAnchorEvent( InputEvent event ) {
-		// FIXME Could this lookup could be optimized with a cache?
-		// Might be hard to do since there are possibly multiple triggers
-		if( event instanceof MouseEvent mouseEvent ) {
-			for( CommandTrigger trigger : getTriggersByAction( "anchor" ) ) {
-				boolean eventTypeMatches = trigger.getEventType() == event.getEventType();
-				boolean mouseButtonMatches = trigger.getMouseButton() == mouseEvent.getButton();
-				if( eventTypeMatches && mouseButtonMatches ) return true;
-			}
-		}
-		return false;
-	}
-
 	private String eventToString( InputEvent event ) {
 		String info = event.getEventType().getName();
 		if( event instanceof MouseEvent mouseEvent ) {

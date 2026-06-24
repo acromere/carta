@@ -1,8 +1,6 @@
 package com.acromere.cartesia.command.select;
 
-import com.acromere.cartesia.command.Command;
 import com.acromere.cartesia.command.CommandTask;
-import com.acromere.cartesia.command.base.Prompt;
 import com.acromere.cartesia.tool.CommandContext;
 import javafx.geometry.Point3D;
 import javafx.scene.input.InputEvent;
@@ -64,9 +62,11 @@ public class SelectByPoint extends SelectCommand {
 	}
 
 	private boolean isSelectingShape( CommandTask task ) {
-		CommandTask priorTask = task.getPrior();
-		Command priorCommand = priorTask == null ? null : priorTask.getCommand();
-		return priorCommand instanceof Prompt && priorCommand.getInputMode() == CommandContext.Input.SHAPE;
+		//		CommandTask priorTask = task.getPrior();
+		//		Command priorCommand = priorTask == null ? null : priorTask.getCommand();
+		//		return priorCommand instanceof Prompt && priorCommand.getInputMode() == CommandContext.Input.SHAPE;
+
+		return task.getContext().getInputMode() == CommandContext.Input.SHAPE;
 	}
 
 }

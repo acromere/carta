@@ -1,9 +1,11 @@
-package com.acromere.cartesia.command;
+package com.acromere.cartesia.command.select;
 
 import com.acromere.cartesia.BaseCommandTest;
+import com.acromere.cartesia.command.CommandTask;
+import com.acromere.cartesia.command.CommandTrigger;
+import com.acromere.cartesia.command.InvalidInputException;
 import com.acromere.cartesia.command.base.Prompt;
 import com.acromere.cartesia.command.base.Value;
-import com.acromere.cartesia.command.select.SelectByWindowContain;
 import javafx.geometry.Point3D;
 import javafx.scene.input.InputEvent;
 import org.junit.jupiter.api.Test;
@@ -21,9 +23,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-public class SelectByWindowContainTest extends BaseCommandTest {
+public class SelectByWindowIntersectTest extends BaseCommandTest {
 
-	private final SelectByWindowContain command = new SelectByWindowContain();
+	private final SelectByWindowIntersect command = new SelectByWindowIntersect();
 
 	/**
 	 * Select by window contain with no parameters or event, should prompt the
@@ -55,7 +57,7 @@ public class SelectByWindowContainTest extends BaseCommandTest {
 	@Test
 	void testExecuteWithNoParametersAndEvent() throws Exception {
 		// given
-		CommandTrigger trigger = getMod().getCommandMap().getTriggersByAction( "select-window-contain" ).iterator().next();
+		CommandTrigger trigger = getMod().getCommandMap().getTriggersByAction( "select-window-intersect" ).iterator().next();
 		InputEvent event = createMouseEvent( trigger, 48, 17 );
 		CommandTask task = new CommandTask( commandContext, tool, trigger, event, command );
 		// Pretend the world anchor has been set
@@ -91,9 +93,8 @@ public class SelectByWindowContainTest extends BaseCommandTest {
 	}
 
 	/**
-	 * Select by window contain with two parameters should set both the anchor
-	 * and the point, and then select the geometry contained by the window. The
-	 * result should be success.
+	 * Select by window contain with one parameter should set the anchor. The
+	 * result should be incomplete.
 	 *
 	 * @throws Exception If an error occurs during the test
 	 */
@@ -107,7 +108,7 @@ public class SelectByWindowContainTest extends BaseCommandTest {
 		Object result = task.runTaskStep();
 
 		// then
-		verify( tool, times( 1 ) ).worldWindowSelect( eq( new Point3D( -3, 3, 0 ) ), eq( new Point3D( 3, -3, 0 ) ), eq( false ), eq( false ) );
+		verify( tool, times( 1 ) ).worldWindowSelect( eq( new Point3D( -3, 3, 0 ) ), eq( new Point3D( 3, -3, 0 ) ), eq( true ), eq( false ) );
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
 

@@ -9,11 +9,11 @@ public enum MouseAndGestureMap {
 
 	CARTESIA {
 		void load( CommandMap map ) {
-			map.add( "anchor", new CommandTrigger( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY ) );
+			//map.add( "anchor", new CommandTrigger( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY ) );
 
 			// Selects ---------------------------------------------------------------
-			map.add( "select-touch", new CommandTrigger( MouseEvent.MOUSE_RELEASED, MouseButton.PRIMARY ) );
-			map.add( "select-toggle", new CommandTrigger( MouseEvent.MOUSE_RELEASED, MouseButton.PRIMARY, CommandTrigger.Modifier.CONTROL ) );
+			map.add( "select-touch", new CommandTrigger( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY ) );
+			map.add( "select-toggle", new CommandTrigger( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, CommandTrigger.Modifier.CONTROL ) );
 			map.add( "select-window-contain", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.MOVED ) );
 			map.add( "select-window-intersect", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.SHIFT, CommandTrigger.Modifier.MOVED ) );
 
@@ -36,7 +36,7 @@ public enum MouseAndGestureMap {
 
 	DRAWIO {
 		void load( CommandMap map ) {
-			map.add( "anchor", new CommandTrigger( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, CommandTrigger.Modifier.ANY ) );
+			//map.add( "anchor", new CommandTrigger( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, CommandTrigger.Modifier.ANY ) );
 
 			// Selects ---------------------------------------------------------------
 			map.add( "select-touch", new CommandTrigger( MouseEvent.MOUSE_CLICKED, MouseButton.PRIMARY ) );

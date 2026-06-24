@@ -1,23 +1,24 @@
-package com.acromere.cartesia.command;
+package com.acromere.cartesia.command.select;
 
 import com.acromere.cartesia.BaseCommandTest;
+import com.acromere.cartesia.command.Command;
+import com.acromere.cartesia.command.CommandTask;
+import com.acromere.cartesia.command.CommandTrigger;
+import com.acromere.cartesia.command.InvalidInputException;
 import com.acromere.cartesia.command.base.Prompt;
-import com.acromere.cartesia.command.select.SelectToggle;
 import javafx.geometry.Point3D;
 import javafx.scene.input.InputEvent;
 import org.junit.jupiter.api.Test;
 
-import static com.acromere.cartesia.command.Command.Result.INCOMPLETE;
-import static com.acromere.cartesia.command.Command.Result.SUCCESS;
+import static com.acromere.cartesia.command.Command.Result.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowableOfType;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-public class SelectToggleTest extends BaseCommandTest {
+public class SelectByPointTest extends BaseCommandTest {
 
-	private final SelectToggle command = new SelectToggle();
+	private final Command command = new SelectByPoint();
 
 	@Test
 	void testExecuteWithNoParameters() throws Exception {
@@ -47,7 +48,7 @@ public class SelectToggleTest extends BaseCommandTest {
 		Object result = task.runTaskStep();
 
 		// then
-		verify( tool, times( 1 ) ).worldPointSelect( eq( new Point3D( 1, 1, 0 ) ), eq( true ) );
+		verify( tool, times( 1 ) ).worldPointSelect( eq( new Point3D( 1, 1, 0 ) ), eq( false ) );
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
 
@@ -82,7 +83,8 @@ public class SelectToggleTest extends BaseCommandTest {
 		Object result = task.runTaskStep();
 
 		// then
-		verify( tool, times( 1 ) ).screenPointSelect( eq( new Point3D( 48, 17, 0 ) ), eq( true ) );
+		verify( tool, times( 1 ) ).screenPointSelect( eq( new Point3D( 48, 17, 0 ) ), eq( false ) );
+		assertThat( event.isConsumed() ).isTrue();
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
 
@@ -105,6 +107,7 @@ public class SelectToggleTest extends BaseCommandTest {
 		verify( tool, times( 1 ) ).screenToWorkplane( eq( new Point3D( 48, 17, 0 ) ) );
 		verify( tool, times( 0 ) ).screenPointSelect( any(), anyBoolean() );
 		verify( tool, times( 0 ) ).screenToWorld( any( Point3D.class ) );
+		assertThat( event.isConsumed() ).isTrue();
 		assertThat( result ).isEqualTo( new Point3D( 1, 1, 0 ) );
 	}
 

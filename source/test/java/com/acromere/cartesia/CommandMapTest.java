@@ -5,7 +5,7 @@ import com.acromere.cartesia.command.select.SelectByPoint;
 import com.acromere.cartesia.command.select.SelectByWindowContain;
 import com.acromere.cartesia.command.select.SelectByWindowIntersect;
 import com.acromere.cartesia.command.select.SelectToggle;
-import com.acromere.cartesia.command.base.Anchor;
+import com.acromere.cartesia.command.select.Anchor;
 import com.acromere.cartesia.command.camera.CameraMove;
 import com.acromere.cartesia.command.camera.CameraZoom;
 import com.acromere.cartesia.command.snap.AutoSnap;
@@ -54,25 +54,25 @@ public class CommandMapTest extends BaseCommandMapTest {
 	private static Stream<Arguments> provideCommandMetadataInputEventMatches() {
 		return Stream.of(
 			// Anchor
-			Arguments.of( createMetadata( "anchor", "Anchor", null, Anchor.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, false, false, false, false ) ),
-			Arguments.of( createMetadata( "anchor", "Anchor", null, Anchor.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, true, false, false, false, false ) ),
-			Arguments.of( createMetadata( "anchor", "Anchor", null, Anchor.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, true, false, false, false ) ),
-			Arguments.of( createMetadata( "anchor", "Anchor", null, Anchor.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, false, true, false, false ) ),
-			Arguments.of( createMetadata( "anchor", "Anchor", null, Anchor.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, false, false, true, false ) ),
-			Arguments.of( createMetadata( "anchor", "Anchor", null, Anchor.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, false, false, false, true ) ),
-			Arguments.of( createMetadata( "anchor", "Anchor", null, Anchor.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, true, false, false, false, true ) ),
-			Arguments.of( createMetadata( "anchor", "Anchor", null, Anchor.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, true, false, false, true ) ),
-			Arguments.of( createMetadata( "anchor", "Anchor", null, Anchor.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, false, true, false, true ) ),
-			Arguments.of( createMetadata( "anchor", "Anchor", null, Anchor.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, false, false, true, true ) ),
+//			Arguments.of( createMetadata( "anchor", "Anchor", null, SelectTouch.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, false, false, false, false ) ),
+//			Arguments.of( createMetadata( "anchor", "Anchor", null, SelectTouch.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, true, false, false, false, false ) ),
+//			Arguments.of( createMetadata( "anchor", "Anchor", null, SelectTouch.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, true, false, false, false ) ),
+//			Arguments.of( createMetadata( "anchor", "Anchor", null, SelectTouch.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, false, true, false, false ) ),
+//			Arguments.of( createMetadata( "anchor", "Anchor", null, SelectTouch.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, false, false, true, false ) ),
+//			Arguments.of( createMetadata( "anchor", "Anchor", null, SelectTouch.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, false, false, false, true ) ),
+//			Arguments.of( createMetadata( "anchor", "Anchor", null, SelectTouch.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, true, false, false, false, true ) ),
+//			Arguments.of( createMetadata( "anchor", "Anchor", null, SelectTouch.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, true, false, false, true ) ),
+//			Arguments.of( createMetadata( "anchor", "Anchor", null, SelectTouch.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, false, true, false, true ) ),
+//			Arguments.of( createMetadata( "anchor", "Anchor", null, SelectTouch.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, false, false, true, true ) ),
 
 			// Select
 			Arguments.of(
 				createMetadata( "select-touch", "Select By Point", null, SelectByPoint.class ),
-				createMouseEvent( MouseEvent.MOUSE_RELEASED, MouseButton.PRIMARY, false, false, false, false, false )
+				createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, false, false, false, false )
 			),
 			Arguments.of(
 				createMetadata( "select-toggle", "Select Toggle", null, SelectToggle.class ),
-				createMouseEvent( MouseEvent.MOUSE_RELEASED, MouseButton.PRIMARY, true, false, false, false, false )
+				createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, true, false, false, false, false )
 			),
 			Arguments.of(
 				createMetadata( "select-window-contain", "Select Window Contain", "ws", SelectByWindowContain.class ),

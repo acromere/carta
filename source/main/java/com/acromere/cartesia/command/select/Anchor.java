@@ -1,4 +1,4 @@
-package com.acromere.cartesia.command.base;
+package com.acromere.cartesia.command.select;
 
 import com.acromere.cartesia.command.Command;
 import com.acromere.cartesia.command.CommandTask;
@@ -7,6 +7,10 @@ import javafx.scene.input.MouseEvent;
 
 import static com.acromere.cartesia.command.Command.Result.*;
 
+/**
+ * @deprecated In favor of {@link SelectByPoint}
+ */
+@Deprecated
 public class Anchor extends Command {
 
 	@Override
