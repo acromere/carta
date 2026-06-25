@@ -7,6 +7,7 @@ import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.math.*;
 import com.acromere.cartesia.tool.CommandContext;
 import com.acromere.product.Rb;
+import com.acromere.zerra.javafx.Fx;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.Cursor;
@@ -130,7 +131,7 @@ public abstract class Command {
 
 	public void cancel( CommandTask task ) {
 		if( task.getTool() != null ) {
-			task.getTool().setCursor( Cursor.DEFAULT );
+			Fx.run( () -> task.getTool().setCursor( Cursor.DEFAULT ) );
 			task.getTool().clearSelectedShapes();
 			clearReferenceAndPreview( task );
 		}
@@ -250,27 +251,27 @@ public abstract class Command {
 	}
 
 	protected void promptForNumber( CommandTask task, String key ) {
-		task.getTool().setCursor( null );
+		Fx.run( () -> task.getTool().setCursor( null ) );
 		promptForValue( task, key, CommandContext.Input.NUMBER );
 	}
 
 	protected void promptForPoint( CommandTask task, String key ) {
-		task.getTool().setCursor( task.getTool().getReticleCursor() );
+		Fx.run( () -> task.getTool().setCursor( task.getTool().getReticleCursor() ) );
 		promptForValue( task, key, CommandContext.Input.POINT );
 	}
 
 	protected void promptForWindow( CommandTask task, String key ) {
-		task.getTool().setCursor( task.getTool().getReticleCursor() );
+		Fx.run( () -> task.getTool().setCursor( task.getTool().getReticleCursor() ) );
 		promptForValue( task, key, CommandContext.Input.POINT );
 	}
 
 	protected void promptForShape( CommandTask task, String key ) {
-		task.getTool().setCursor( Cursor.HAND );
+		Fx.run( () -> task.getTool().setCursor( Cursor.HAND ) );
 		promptForValue( task, key, CommandContext.Input.SHAPE );
 	}
 
 	protected void promptForText( CommandTask task, String key ) {
-		task.getTool().setCursor( Cursor.TEXT );
+		Fx.run( () -> task.getTool().setCursor( Cursor.TEXT ) );
 		promptForValue( task, key, CommandContext.Input.TEXT );
 	}
 

@@ -1,5 +1,6 @@
 package com.acromere.cartesia.tool;
 
+import com.acromere.annotation.Note;
 import com.acromere.cartesia.CartesiaMod;
 import com.acromere.cartesia.DesignUnit;
 import com.acromere.cartesia.DesignValue;
@@ -373,6 +374,7 @@ public interface DesignTool extends RenderConstants, CommonToolRenderer {
 
 	void showCommandPrompt();
 
+	@Note( Note.FX_THREAD )
 	void setCursor( Cursor cursor );
 
 	BaseDesignRenderer getScreenDesignRenderer();

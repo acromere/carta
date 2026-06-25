@@ -1,5 +1,6 @@
 package com.acromere.cartesia.tool;
 
+import com.acromere.annotation.Note;
 import com.acromere.cartesia.CartesiaMod;
 import com.acromere.cartesia.RbKey;
 import com.acromere.cartesia.cursor.Reticle;
@@ -483,6 +484,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	}
 
 	@Override
+	@Note( Note.FX_THREAD )
 	public final ReticleCursor getReticleCursor() {
 		return getReticle().getCursor( getProgram() );
 	}

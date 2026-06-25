@@ -6,12 +6,15 @@ import com.acromere.cartesia.command.base.Prompt;
 import com.acromere.cartesia.data.DesignArc;
 import com.acromere.cartesia.data.DesignLine;
 import com.acromere.cartesia.command.CommandTask;
+import com.acromere.zerra.javafx.Fx;
 import javafx.scene.Cursor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static com.acromere.cartesia.command.Command.Result.INCOMPLETE;
@@ -27,7 +30,7 @@ public class DrawArc2Test extends BaseCommandTest {
 	private final DrawArc2 command = new DrawArc2();
 
 	/**
-	 * Draw arc with no parameters or event, should prompt the
+	 * Draw arc with no parameters or event. Should prompt the
 	 * user to select an origin point. The result should be incomplete.
 	 *
 	 * @throws Exception If an error occurs during the test
@@ -41,11 +44,12 @@ public class DrawArc2Test extends BaseCommandTest {
 
 		// when
 		Object result = task.runTaskStep();
+		Fx.waitForWithExceptions( 1, TimeUnit.SECONDS );
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
 		verify( tool, times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
-		assertThat( command.getReference().stream().findFirst().orElse( null ) ).isInstanceOf( DesignLine.class );
+		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
@@ -57,6 +61,7 @@ public class DrawArc2Test extends BaseCommandTest {
 
 		// when
 		Object result = task.runTaskStep();
+		Fx.waitForWithExceptions( 1, TimeUnit.SECONDS );
 
 		// then
 		verify( currentLayer, times( 1 ) ).addShape( any( DesignArc.class ) );
@@ -95,13 +100,15 @@ public class DrawArc2Test extends BaseCommandTest {
 
 		// when
 		Object result = task.runTaskStep();
+		Fx.waitForWithExceptions( 1, TimeUnit.SECONDS );
 
 		// then
 		verify( commandContext, times( 2 ) ).submit( eq( tool ), any( Prompt.class ) );
 		verify( tool, times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
-		assertThat( command.getReference().stream().findFirst().orElse( null ) ).isInstanceOf( DesignLine.class );
+
+		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
-		assertThat( command.getPreview().stream().findFirst().orElse( null ) ).isInstanceOf( DesignArc.class );
+		assertThat( Objects.requireNonNull( command.getPreview().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignArc.class );
 		assertThat( command.getPreview() ).hasSize( 1 );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
@@ -120,13 +127,14 @@ public class DrawArc2Test extends BaseCommandTest {
 
 		// when
 		Object result = task.runTaskStep();
+		Fx.waitForWithExceptions( 1, TimeUnit.SECONDS );
 
 		// then
 		verify( commandContext, times( 3 ) ).submit( eq( tool ), any( Prompt.class ) );
 		verify( tool, times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
-		assertThat( command.getReference().stream().findFirst().orElse( null ) ).isInstanceOf( DesignLine.class );
+		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
-		assertThat( command.getPreview().stream().findFirst().orElse( null ) ).isInstanceOf( DesignArc.class );
+		assertThat( Objects.requireNonNull( command.getPreview().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignArc.class );
 		assertThat( command.getPreview() ).hasSize( 1 );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
@@ -145,6 +153,7 @@ public class DrawArc2Test extends BaseCommandTest {
 
 		// when
 		Object result = task.runTaskStep();
+		Fx.waitForWithExceptions( 1, TimeUnit.SECONDS );
 
 		// then
 		verify( commandContext, times( 3 ) ).submit( eq( tool ), any( Prompt.class ) );
@@ -164,6 +173,7 @@ public class DrawArc2Test extends BaseCommandTest {
 
 		// when
 		InvalidInputException exception = catchThrowableOfType( InvalidInputException.class, task::runTaskStep );
+		Fx.waitForWithExceptions( 1, TimeUnit.SECONDS );
 
 		// then
 		verify( commandContext, times( 0 ) ).submit( eq( tool ), any( Prompt.class ) );
