@@ -7,6 +7,7 @@ import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.math.*;
 import com.acromere.cartesia.tool.CommandContext;
 import com.acromere.product.Rb;
+import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.Cursor;
 import javafx.scene.input.GestureEvent;
@@ -160,6 +161,16 @@ public abstract class Command {
 	@Override
 	public String toString() {
 		return getClass().getSimpleName();
+	}
+
+	protected void setContextAnchor( CommandTask task, MouseEvent event ) {
+		task.getContext().setScreenAnchor( new Point2D( event.getX(), event.getY() ) );
+		task.getContext().setWorldAnchor( task.getTool().screenToWorkplane( event.getX(), event.getY(), event.getZ() ) );
+	}
+
+	protected void setContextAnchor( CommandTask task, Point3D anchor ) {
+		task.getContext().setWorldAnchor( anchor );
+		task.getTool().worldToScreen( anchor );
 	}
 
 	protected double asDoubleOrNan( CommandTask task, int index ) {
@@ -406,7 +417,7 @@ public abstract class Command {
 
 	private void addPreview( CommandTask task, List<DesignShape> shapes ) {
 		DesignLayer previewLayer = task.getTool().getPreviewLayer();
-		if( previewLayer != null) previewLayer.addShapes( shapes );
+		if( previewLayer != null ) previewLayer.addShapes( shapes );
 		preview.addAll( shapes );
 	}
 
@@ -421,14 +432,14 @@ public abstract class Command {
 	protected void removePreview( CommandTask task, Collection<DesignShape> shapes ) {
 		if( shapes == null ) return;
 		DesignLayer previewLayer = task.getTool().getPreviewLayer();
-		if( previewLayer != null) previewLayer.removeShapes( shapes );
+		if( previewLayer != null ) previewLayer.removeShapes( shapes );
 		preview.removeAll( shapes );
 	}
 
 	protected void clearPreview( CommandTask task ) {
 		// The shapes have to be removed before capturing undo changes again
 		DesignLayer previewLayer = task.getTool().getPreviewLayer();
-		if(previewLayer != null) previewLayer.clearShapes();
+		if( previewLayer != null ) previewLayer.clearShapes();
 		preview.clear();
 	}
 

@@ -27,7 +27,7 @@ public abstract class SelectByWindow extends SelectCommand {
 		}
 
 		// If there is an event, but no parameters, use the world anchor as the first parameter
-		if( paramCount == 0 & hasEvent && event.getEventType() == MouseEvent.DRAG_DETECTED ) {
+		if( paramCount == 0 & hasEvent && event instanceof MouseEvent mouseEvent && task.getTrigger().matches( mouseEvent ) ) {
 			// Submit a Value command to pass the anchor back to this command
 			task.getContext().submit( task.getTool(), new Value(), task.getContext().getWorldAnchor() );
 			return INCOMPLETE;

@@ -1,11 +1,12 @@
 package com.acromere.cartesia.command.camera;
 
 import com.acromere.cartesia.BaseCommandTest;
+import com.acromere.cartesia.command.CommandTask;
 import com.acromere.cartesia.command.CommandTrigger;
 import com.acromere.cartesia.command.InvalidInputException;
 import com.acromere.cartesia.command.base.Prompt;
 import com.acromere.cartesia.command.base.Value;
-import com.acromere.cartesia.command.CommandTask;
+import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.Cursor;
 import javafx.scene.input.InputEvent;
@@ -63,14 +64,16 @@ public class CameraMoveTest extends BaseCommandTest {
 		CommandTrigger trigger = getMod().getCommandMap().getTriggersByAction( "camera-move" ).iterator().next();
 		InputEvent event = createMouseEvent( trigger, 48, 17 );
 		CommandTask task = new CommandTask( commandContext, tool, trigger, event, command );
-		// Pretend the world anchor has been set
-		when( commandContext.getWorldAnchor() ).thenReturn( new Point3D( -2, 1, 0 ) );
+		when( tool.screenToWorkplane( anyDouble(), anyDouble(), anyDouble() ) ).thenReturn( new Point3D( -2, 1, 0 ) );
 
 		// when
 		Object result = task.runTaskStep();
 
 		// then
-		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Value.class ), eq( new Point3D( -2, 1, 0 ) ) );
+		verify( commandContext, times( 1 ) ).setTool( eq( tool ) );
+		verify( commandContext, times( 1 ) ).setScreenAnchor( eq( new Point2D( 48, 17 ) ) );
+		verify( commandContext, times( 1 ) ).setWorldAnchor( eq( new Point3D( -2, 1, 0 ) ) );
+		verify( commandContext, times( 0 ) ).submit( eq( tool ), any( Value.class ), any( Point3D.class ) );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
@@ -91,6 +94,7 @@ public class CameraMoveTest extends BaseCommandTest {
 		Object result = task.runTaskStep();
 
 		// then
+		verify( commandContext, times( 1 ) ).setTool( eq( tool ) );
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
 		verify( tool, times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
 		assertThat( result ).isEqualTo( INCOMPLETE );
@@ -138,10 +142,7 @@ public class CameraMoveTest extends BaseCommandTest {
 	}
 
 	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of(
-			Arguments.of( new String[]{ "bad parameter" }, "pan-anchor" ),
-			Arguments.of( new String[]{ "1,3", "bad parameter" }, "pan-target" )
-		);
+		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "pan-anchor" ), Arguments.of( new String[]{ "1,3", "bad parameter" }, "pan-target" ) );
 	}
 
 }

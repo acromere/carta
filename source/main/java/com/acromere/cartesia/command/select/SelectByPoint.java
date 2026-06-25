@@ -23,12 +23,6 @@ public class SelectByPoint extends SelectCommand {
 		boolean noEvent = event == null;
 		boolean hasEvent = !noEvent;
 
-		if( paramCount < 1 & noEvent ) {
-			// Select window anchor
-			promptForPoint( task, "select-touch" );
-			return INCOMPLETE;
-		}
-
 		if( hasEvent && event instanceof MouseEvent mouseEvent && task.getTrigger().matches( mouseEvent ) ) {
 			// Otherwise, if there is an event, use that
 			Point3D screenPoint = new Point3D( mouseEvent.getX(), mouseEvent.getY(), mouseEvent.getZ() );
@@ -46,8 +40,14 @@ public class SelectByPoint extends SelectCommand {
 			}
 		}
 
-		if( task.hasParameter( 0 ) ) {
-			// If there is a parameter, use that
+		// Prompt the user for an anchor
+		if( paramCount == 0 & noEvent ) {
+			promptForPoint( task, "select-touch" );
+			return INCOMPLETE;
+		}
+
+		// With the anchor, select geometry or return a point
+		if( paramCount == 1 && noEvent ) {
 			Point3D worldPoint = asPoint( task, "select-touch", 0 );
 
 			if( task.getContext().isSelectMode() ) {

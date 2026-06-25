@@ -341,6 +341,13 @@ public class CommandContext implements EventHandler<KeyEvent> {
 
 				// Remove the command if it has completed
 				commandStack.remove( task );
+				log.atConfig().log( "Pull command=%s", task.getCommand() );
+
+				if( task.getCommand() instanceof Value ) {
+					Object[] parameters = (Object[])stepResult;
+					Object parameter0 = parameters[ 0 ];
+					if( parameter0 instanceof Point3D ) setWorldAnchor( (Point3D)parameter0 );
+				}
 
 				// Pass the task result to the next task
 				passParameter( commandStack.peek(), stepResult );
@@ -442,9 +449,7 @@ public class CommandContext implements EventHandler<KeyEvent> {
 					case MouseEvent mouseEvent -> task.getCommand().handle( task, mouseEvent );
 					case KeyEvent keyEvent -> task.getCommand().handle( task, keyEvent );
 					case GestureEvent gestureEvent -> task.getCommand().handle( task, gestureEvent );
-					default -> {
-						// Unhandled input event type
-					}
+					default -> log.atWarn().log( "Unhandled input event={0}", event );
 				}
 			}
 		} finally {
@@ -486,7 +491,8 @@ public class CommandContext implements EventHandler<KeyEvent> {
 
 		// Push the new command on the command stack
 		commandStack.push( request );
-		log.atTrace().log( "Command submitted %s", request );
+		//log.atTrace().log( "Command submitted %s", request );
+		log.atConfig().log( "Push command=%s", request.getCommand() );
 
 		// Run the processing on a task thread
 		getTool().getProduct().task( "process-commands", this::doProcessCommands );
@@ -503,7 +509,11 @@ public class CommandContext implements EventHandler<KeyEvent> {
 
 	private void logCommandStack( String prefix ) {
 		if( !log.at( COMMAND_STACK_LOG_LEVEL ).isEnabled() ) return;
-		log.at( COMMAND_STACK_LOG_LEVEL ).log( "%s tasks=%s", prefix, commandStack.reversed() );
+		log.at( COMMAND_STACK_LOG_LEVEL ).log( "%s tasks=%s", prefix, printCommandStack() );
+	}
+
+	private String printCommandStack() {
+		return String.valueOf( commandStack.reversed() );
 	}
 
 	private void passParameter( CommandTask task, Object parameter ) throws InvalidInputException {

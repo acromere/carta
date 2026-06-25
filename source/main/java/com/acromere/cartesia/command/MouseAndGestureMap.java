@@ -22,7 +22,8 @@ public enum MouseAndGestureMap {
 			map.add( "snap-auto-midpoint", new CommandTrigger( MouseEvent.MOUSE_PRESSED, MouseButton.MIDDLE ) );
 
 			// Camera 2D -------------------------------------------------------------
-			map.add( "camera-move", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.SHIFT ) );
+			map.add( "camera-move", new CommandTrigger( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, CommandTrigger.Modifier.SHIFT ) );
+			//map.add( "camera-move", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.SHIFT ) );
 			map.add( "camera-zoom", new CommandTrigger( ScrollEvent.SCROLL ) );
 			map.add( "camera-zoom", new CommandTrigger( ZoomEvent.ZOOM ) );
 			map.add( "camera-spin", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.CONTROL, CommandTrigger.Modifier.SHIFT ) );

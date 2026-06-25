@@ -14,6 +14,8 @@ import static com.acromere.cartesia.command.Command.Result.*;
 @CustomLog
 public class CameraMove extends CameraCommand {
 
+	private Point3D originalAnchor;
+
 	private Point3D originalViewPoint;
 
 	private Transform originalTransform;
@@ -25,32 +27,40 @@ public class CameraMove extends CameraCommand {
 		boolean noEvent = event == null;
 		boolean hasEvent = !noEvent;
 
-		if( task.getParameterCount() == 0 & noEvent ) {
+		// Command triggered by input event
+		if( paramCount == 0 & hasEvent && event instanceof MouseEvent mouseEvent && task.getTrigger().matches( event ) ) {
+			event.consume();
+
+			originalAnchor = task.getTool().screenToWorkplane( mouseEvent.getX(), mouseEvent.getY(), mouseEvent.getZ() );
+			originalViewPoint = task.getTool().getViewCenter();
+			originalTransform = task.getTool().getScreenToWorldTransform().clone();
+
+			// Set the context anchor
+			setContextAnchor( task, mouseEvent );
+
+			return INCOMPLETE;
+		}
+
+		// Prompt the user for an anchor
+		if( paramCount == 0 & noEvent ) {
 			promptForPoint( task, "pan-anchor" );
 			return INCOMPLETE;
 		}
 
-		if( paramCount == 0 & hasEvent && event.getEventType() == MouseEvent.DRAG_DETECTED ) {
-			event.consume();
-
-			originalViewPoint = task.getTool().getViewCenter();
-			originalTransform = task.getTool().getScreenToWorldTransform().clone();
-
-			// Submit a Value command to pass the anchor back to this command
-			task.getContext().submit( task.getTool(), new Value(), task.getContext().getWorldAnchor() );
-			return INCOMPLETE;
-		}
-
+		// Prompt the user for a target
 		if( paramCount == 1 & noEvent ) {
 			Point3D worldAnchor = asPoint( task, "pan-anchor", 0 );
 			if( worldAnchor != null ) {
-				promptForPoint( task, "pan-target" );
-				return INCOMPLETE;
+				originalAnchor = worldAnchor;
+				setContextAnchor( task, worldAnchor );
 			}
+
+			promptForPoint( task, "pan-target" );
+
+			return INCOMPLETE;
 		}
 
-		// The situation of one parameter and an event should not occur
-
+		// With the anchor and the target, move the view point
 		if( paramCount == 2 & noEvent ) {
 			Point3D worldAnchor = asPoint( task, "pan-anchor", 0 );
 			Point3D worldCorner = asPoint( task, "pan-target", 1 );
@@ -66,20 +76,22 @@ public class CameraMove extends CameraCommand {
 
 	@Override
 	public void handle( CommandTask task, MouseEvent event ) {
+		if( originalAnchor == null ) return;
 		if( originalViewPoint == null ) return;
 		if( originalTransform == null ) return;
 
 		BaseDesignTool tool = (BaseDesignTool)event.getSource();
-		Point3D anchor = task.getContext().getWorldAnchor();
-		Point3D corner = originalTransform.transform( new Point3D( event.getX(), event.getY(), event.getZ() ) );
+		Point3D anchor = originalAnchor;
+		Point3D corner = originalTransform.transform( event.getX(), event.getY(), event.getZ() );
 
 		if( event.getEventType().equals( MouseEvent.MOUSE_DRAGGED ) ) {
 			Point3D worldOffset = anchor.subtract( corner );
 			tool.setViewCenter( originalViewPoint.add( worldOffset ) );
 			event.consume();
 		} else if( event.getEventType().equals( MouseEvent.MOUSE_RELEASED ) ) {
+			// Submit a Value that completes this command successfully
 			Point3D worldOffset = anchor.subtract( corner );
-			task.getContext().submit( tool, new Value(), task.getContext().getWorldAnchor().subtract( worldOffset ) );
+			task.getContext().submit( tool, new Value(), originalAnchor.subtract( worldOffset ) );
 			event.consume();
 		}
 	}

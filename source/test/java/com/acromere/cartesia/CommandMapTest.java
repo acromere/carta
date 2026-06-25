@@ -54,7 +54,7 @@ public class CommandMapTest extends BaseCommandMapTest {
 	private static Stream<Arguments> cartesiaMetadataMap() {
 		return Stream.of(
 			// Camera Move
-			Arguments.of( createMetadata( "camera-move", "Camera Pan", "pa", CameraMove.class ), createMouseEvent( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, false, true, false, false ) ),
+			Arguments.of( createMetadata( "camera-move", "Camera Pan", "pa", CameraMove.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, true, false, false ) ),
 
 			// Camera Zoom
 			Arguments.of( createMetadata( "camera-zoom", "Zoom", "zm", CameraZoom.class ), createScrollEvent( ScrollEvent.SCROLL, false, false, false, false, false, false ) ),
