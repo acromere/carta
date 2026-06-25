@@ -1,10 +1,10 @@
 package com.acromere.cartesia.command.draw;
 
+import com.acromere.cartesia.command.CommandTask;
 import com.acromere.cartesia.data.DesignArc;
 import com.acromere.cartesia.data.DesignLine;
 import com.acromere.cartesia.math.CadGeometry;
 import com.acromere.cartesia.tool.BaseDesignTool;
-import com.acromere.cartesia.command.CommandTask;
 import javafx.geometry.Point3D;
 import javafx.scene.input.MouseEvent;
 import lombok.CustomLog;
@@ -26,15 +26,17 @@ public class DrawArc2 extends DrawCommand {
 	public Object execute( CommandTask task ) throws Exception {
 		setCaptureUndoChanges( task, false );
 
+		int paramCount = task.getParameterCount();
+
 		// Step 1 - Prompt for origin
-		if( task.getParameterCount() == 0 ) {
+		if( paramCount == 0 ) {
 			if( referenceLine == null ) referenceLine = createReferenceLine( task );
 			promptForPoint( task, "center" );
 			return INCOMPLETE;
 		}
 
 		// Step 2 - Get origin, prompt for start
-		if( task.getParameterCount() == 1 ) {
+		if( paramCount == 1 ) {
 			Point3D origin = asPoint( task, "center", 0 );
 
 			if( referenceLine == null ) referenceLine = createReferenceLine( task );
@@ -47,7 +49,7 @@ public class DrawArc2 extends DrawCommand {
 		}
 
 		// Step 3 - Get start, prompt for extent
-		if( task.getParameterCount() == 2 ) {
+		if( paramCount == 2 ) {
 			Point3D origin = asPoint( task, "center", 0 );
 			Point3D startPoint = asPoint( task, "start", 1 );
 
@@ -61,7 +63,7 @@ public class DrawArc2 extends DrawCommand {
 			return INCOMPLETE;
 		}
 
-		if( task.hasParameter( 3 ) ) spin = asDouble( task, "spin", 3 );
+		if( paramCount == 4 ) spin = asDouble( task, "spin", 3 );
 
 		if( task.hasParameter( 2 ) ) {
 			setCaptureUndoChanges( task, true );

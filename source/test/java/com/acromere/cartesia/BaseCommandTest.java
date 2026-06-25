@@ -23,6 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.lenient;
 
 @ExtendWith( MockitoExtension.class )
@@ -37,6 +38,8 @@ public class BaseCommandTest extends BaseToolTest {
 	protected static final Object BAD_TEXT_PARAMETER = null;
 
 	protected static final Object BAD_PARAMETER = null;
+
+	protected static final int FX_TIMEOUT = 1000;
 
 	@Mock
 	protected DesignModel design;
@@ -77,7 +80,7 @@ public class BaseCommandTest extends BaseToolTest {
 		lenient().when( tool.getCurrentLayer() ).thenReturn( currentLayer );
 		lenient().when( tool.getPreviewLayer() ).thenReturn( previewLayer );
 		lenient().when( tool.getReferenceLayer() ).thenReturn( referenceLayer );
-		lenient().when( tool.getReticleCursor() ).thenReturn( RETICLE );
+		lenient().doReturn( RETICLE ).when( tool ).getReticleCursor();
 		lenient().when( commandContext.getTool() ).thenReturn( tool );
 		lenient().when( commandContext.getCommandPrompt() ).thenReturn( commandPrompt );
 	}

@@ -8,6 +8,7 @@ import com.acromere.xenon.XenonProgramProduct;
 import com.acromere.xenon.resource.OpenAssetRequest;
 import com.acromere.xenon.resource.Resource;
 import com.acromere.xenon.workpane.ToolException;
+import com.acromere.zerra.javafx.Fx;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.geometry.Point3D;
@@ -249,7 +250,8 @@ public class DesignToolV3 extends BaseDesignTool {
 
 	@Override
 	public void showCommandPrompt() {
-
+		Fx.run( this::registerStatusBarItems );
+		Fx.run( this::requestFocus );
 	}
 
 	@Override

@@ -1,20 +1,17 @@
 package com.acromere.cartesia.command.draw;
 
 import com.acromere.cartesia.BaseCommandTest;
+import com.acromere.cartesia.command.CommandTask;
 import com.acromere.cartesia.command.InvalidInputException;
 import com.acromere.cartesia.command.base.Prompt;
 import com.acromere.cartesia.data.DesignArc;
 import com.acromere.cartesia.data.DesignLine;
-import com.acromere.cartesia.command.CommandTask;
-import com.acromere.zerra.javafx.Fx;
-import javafx.scene.Cursor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static com.acromere.cartesia.command.Command.Result.INCOMPLETE;
@@ -26,8 +23,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 public class DrawArc2Test extends BaseCommandTest {
-	
-	private static final int FX_TIMEOUT = 2;
 
 	private final DrawArc2 command = new DrawArc2();
 
@@ -41,16 +36,13 @@ public class DrawArc2Test extends BaseCommandTest {
 	void testRunTaskStepNoParameters() throws Exception {
 		// given
 		CommandTask task = new CommandTask( commandContext, tool, null, null, command );
-		// Use the CLOSED_HAND cursor as a reticle cursor
-		when( tool.getReticleCursor() ).thenReturn( Cursor.CLOSED_HAND );
 
 		// when
 		Object result = task.runTaskStep();
-		Fx.waitForWithExceptions( FX_TIMEOUT, TimeUnit.SECONDS );
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
 		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
 		assertThat( result ).isEqualTo( INCOMPLETE );
@@ -63,7 +55,6 @@ public class DrawArc2Test extends BaseCommandTest {
 
 		// when
 		Object result = task.runTaskStep();
-		Fx.waitForWithExceptions( FX_TIMEOUT, TimeUnit.SECONDS );
 
 		// then
 		verify( currentLayer, times( 1 ) ).addShape( any( DesignArc.class ) );
@@ -95,18 +86,14 @@ public class DrawArc2Test extends BaseCommandTest {
 		// given
 		CommandTask task1 = new CommandTask( commandContext, tool, null, null, command );
 		task1.runTaskStep();
-
 		CommandTask task = new CommandTask( commandContext, tool, null, null, command, "8,3" );
-		// Use the CLOSED_HAND cursor as a reticle cursor
-		when( tool.getReticleCursor() ).thenReturn( Cursor.CLOSED_HAND );
 
 		// when
 		Object result = task.runTaskStep();
-		Fx.waitForWithExceptions( FX_TIMEOUT, TimeUnit.SECONDS );
 
 		// then
 		verify( commandContext, times( 2 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
+		verify( tool, timeout( FX_TIMEOUT ).times( 2 ) ).setCursor( RETICLE );
 
 		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
@@ -116,24 +103,20 @@ public class DrawArc2Test extends BaseCommandTest {
 	}
 
 	@Test
-	void testRunTaskStepWithTwoStep() throws Exception {
+	void testRunTaskStepWithTwoSteps() throws Exception {
 		// given
-		CommandTask task1 = new CommandTask( commandContext, tool, null, null, command );
-		task1.runTaskStep();
-		CommandTask task2 = new CommandTask( commandContext, tool, null, null, command, "8,3" );
-		task2.runTaskStep();
-
-		CommandTask task = new CommandTask( commandContext, tool, null, null, command, "8,3", "1,0" );
-		// Use the CLOSED_HAND cursor as a reticle cursor
-		when( tool.getReticleCursor() ).thenReturn( Cursor.CLOSED_HAND );
+		CommandTask task = new CommandTask( commandContext, tool, null, null, command );
+		task.runTaskStep();
+		task.addParameter( "8,3" );
+		task.runTaskStep();
+		task.addParameter( "1,0" );
 
 		// when
 		Object result = task.runTaskStep();
-		Fx.waitForWithExceptions( FX_TIMEOUT, TimeUnit.SECONDS );
 
 		// then
 		verify( commandContext, times( 3 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
+		verify( tool, timeout( FX_TIMEOUT ).times( 3 ) ).setCursor( RETICLE );
 		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
 		assertThat( Objects.requireNonNull( command.getPreview().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignArc.class );
@@ -142,20 +125,18 @@ public class DrawArc2Test extends BaseCommandTest {
 	}
 
 	@Test
-	void testRunTaskStepWithThreeSteps() throws Exception {
+	void testRunTaskStepWithThreePriorSteps() throws Exception {
 		// given
-		CommandTask task1 = new CommandTask( commandContext, tool, null, null, command );
-		task1.runTaskStep();
-		CommandTask task2 = new CommandTask( commandContext, tool, null, null, command, "8,3" );
-		task2.runTaskStep();
-		CommandTask task3 = new CommandTask( commandContext, tool, null, null, command, "8,3", "1,0" );
-		task3.runTaskStep();
-
-		CommandTask task = new CommandTask( commandContext, tool, null, null, command, "8,3", "1,0", "1,1", "0" );
+		CommandTask task = new CommandTask( commandContext, tool, null, null, command );
+		task.runTaskStep();
+		task.addParameter( "8,3" );
+		task.runTaskStep();
+		task.addParameter( "1,0" );
+		task.runTaskStep();
+		task.addParameter( "1,1" );
 
 		// when
 		Object result = task.runTaskStep();
-		Fx.waitForWithExceptions( FX_TIMEOUT, TimeUnit.SECONDS );
 
 		// then
 		verify( commandContext, times( 3 ) ).submit( eq( tool ), any( Prompt.class ) );
@@ -175,7 +156,6 @@ public class DrawArc2Test extends BaseCommandTest {
 
 		// when
 		InvalidInputException exception = catchThrowableOfType( InvalidInputException.class, task::runTaskStep );
-		Fx.waitForWithExceptions( FX_TIMEOUT, TimeUnit.SECONDS );
 
 		// then
 		verify( commandContext, times( 0 ) ).submit( eq( tool ), any( Prompt.class ) );

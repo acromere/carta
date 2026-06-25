@@ -5,14 +5,12 @@ import com.acromere.cartesia.command.CommandTask;
 import com.acromere.cartesia.command.InvalidInputException;
 import com.acromere.cartesia.command.base.Prompt;
 import com.acromere.cartesia.data.DesignLine;
-import com.acromere.zerra.javafx.Fx;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static com.acromere.cartesia.command.Command.Result.INCOMPLETE;
@@ -24,8 +22,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 public class DrawLine2Test extends BaseCommandTest {
-
-	private static final int FX_TIMEOUT = 2;
 
 	private final DrawLine2 command = new DrawLine2();
 
@@ -68,11 +64,10 @@ public class DrawLine2Test extends BaseCommandTest {
 
 		// when
 		Object result = task.runTaskStep();
-		Fx.waitForWithExceptions( FX_TIMEOUT, TimeUnit.SECONDS );
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, times( 1 ) ).setCursor( RETICLE );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
 		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
 		assertThat( command.getPreview() ).hasSize( 0 );
@@ -92,9 +87,10 @@ public class DrawLine2Test extends BaseCommandTest {
 
 		// when
 		Object result = task.runTaskStep();
-		Fx.waitForWithExceptions( FX_TIMEOUT, TimeUnit.SECONDS );
 
 		// then
+		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
 		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
 		assertThat( Objects.requireNonNull( command.getPreview().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
@@ -122,10 +118,7 @@ public class DrawLine2Test extends BaseCommandTest {
 	}
 
 	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of(
-			Arguments.of( new Object[]{ BAD_POINT_PARAMETER }, "start-point" ),
-			Arguments.of( new Object[]{ "-3,3", BAD_POINT_PARAMETER }, "end-point" )
-		);
+		return Stream.of( Arguments.of( new Object[]{ BAD_POINT_PARAMETER }, "start-point" ), Arguments.of( new Object[]{ "-3,3", BAD_POINT_PARAMETER }, "end-point" ) );
 	}
 
 	@Test

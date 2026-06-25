@@ -20,6 +20,8 @@ public class DrawLine2 extends DrawCommand {
 	public Object execute( CommandTask task ) throws Exception {
 		setCaptureUndoChanges( task, false );
 
+		int paramCount = task.getParameterCount();
+
 		// Step 1
 		if( task.getParameterCount() == 0 ) {
 			if( reference == null ) reference = createReferenceLine( task );
@@ -41,7 +43,7 @@ public class DrawLine2 extends DrawCommand {
 			return INCOMPLETE;
 		}
 
-		if( task.hasParameter( 1 ) ) {
+		if( paramCount >= 2 ) {
 			removeReference( task, reference );
 			setCaptureUndoChanges( task, true );
 
