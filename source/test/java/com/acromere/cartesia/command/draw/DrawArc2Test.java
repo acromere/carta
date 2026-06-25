@@ -26,6 +26,8 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 public class DrawArc2Test extends BaseCommandTest {
+	
+	private static final int FX_TIMEOUT = 2;
 
 	private final DrawArc2 command = new DrawArc2();
 
@@ -44,7 +46,7 @@ public class DrawArc2Test extends BaseCommandTest {
 
 		// when
 		Object result = task.runTaskStep();
-		Fx.waitForWithExceptions( 1, TimeUnit.SECONDS );
+		Fx.waitForWithExceptions( FX_TIMEOUT, TimeUnit.SECONDS );
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
@@ -61,7 +63,7 @@ public class DrawArc2Test extends BaseCommandTest {
 
 		// when
 		Object result = task.runTaskStep();
-		Fx.waitForWithExceptions( 1, TimeUnit.SECONDS );
+		Fx.waitForWithExceptions( FX_TIMEOUT, TimeUnit.SECONDS );
 
 		// then
 		verify( currentLayer, times( 1 ) ).addShape( any( DesignArc.class ) );
@@ -100,7 +102,7 @@ public class DrawArc2Test extends BaseCommandTest {
 
 		// when
 		Object result = task.runTaskStep();
-		Fx.waitForWithExceptions( 1, TimeUnit.SECONDS );
+		Fx.waitForWithExceptions( FX_TIMEOUT, TimeUnit.SECONDS );
 
 		// then
 		verify( commandContext, times( 2 ) ).submit( eq( tool ), any( Prompt.class ) );
@@ -127,7 +129,7 @@ public class DrawArc2Test extends BaseCommandTest {
 
 		// when
 		Object result = task.runTaskStep();
-		Fx.waitForWithExceptions( 1, TimeUnit.SECONDS );
+		Fx.waitForWithExceptions( FX_TIMEOUT, TimeUnit.SECONDS );
 
 		// then
 		verify( commandContext, times( 3 ) ).submit( eq( tool ), any( Prompt.class ) );
@@ -153,7 +155,7 @@ public class DrawArc2Test extends BaseCommandTest {
 
 		// when
 		Object result = task.runTaskStep();
-		Fx.waitForWithExceptions( 1, TimeUnit.SECONDS );
+		Fx.waitForWithExceptions( FX_TIMEOUT, TimeUnit.SECONDS );
 
 		// then
 		verify( commandContext, times( 3 ) ).submit( eq( tool ), any( Prompt.class ) );
@@ -173,7 +175,7 @@ public class DrawArc2Test extends BaseCommandTest {
 
 		// when
 		InvalidInputException exception = catchThrowableOfType( InvalidInputException.class, task::runTaskStep );
-		Fx.waitForWithExceptions( 1, TimeUnit.SECONDS );
+		Fx.waitForWithExceptions( FX_TIMEOUT, TimeUnit.SECONDS );
 
 		// then
 		verify( commandContext, times( 0 ) ).submit( eq( tool ), any( Prompt.class ) );

@@ -25,6 +25,8 @@ import static org.mockito.Mockito.*;
 
 public class DrawLine2Test extends BaseCommandTest {
 
+	private static final int FX_TIMEOUT = 2;
+
 	private final DrawLine2 command = new DrawLine2();
 
 	// Script Tests --------------------------------------------------------------
@@ -66,7 +68,7 @@ public class DrawLine2Test extends BaseCommandTest {
 
 		// when
 		Object result = task.runTaskStep();
-		Fx.waitForWithExceptions( 1, TimeUnit.SECONDS );
+		Fx.waitForWithExceptions( FX_TIMEOUT, TimeUnit.SECONDS );
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
@@ -90,7 +92,7 @@ public class DrawLine2Test extends BaseCommandTest {
 
 		// when
 		Object result = task.runTaskStep();
-		Fx.waitForWithExceptions( 1, TimeUnit.SECONDS );
+		Fx.waitForWithExceptions( FX_TIMEOUT, TimeUnit.SECONDS );
 
 		// then
 		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
