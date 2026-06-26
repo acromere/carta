@@ -69,7 +69,7 @@ public class MeasureAngleTest extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
 		assertThat( command.getReference().stream().findFirst().orElse( null ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
 		assertThat( result ).isEqualTo( INCOMPLETE );
@@ -87,7 +87,7 @@ public class MeasureAngleTest extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
 		assertThat( command.getReference().getFirst() ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference().get( 1 ) ).isInstanceOf( DesignArc.class );
 		assertThat( command.getReference() ).hasSize( 2 );

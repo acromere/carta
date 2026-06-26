@@ -72,7 +72,7 @@ public class LayerCreateTest extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, times( 1 ) ).setCursor( Cursor.TEXT );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( Cursor.TEXT );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
 		assertThat( result ).isEqualTo( INCOMPLETE );

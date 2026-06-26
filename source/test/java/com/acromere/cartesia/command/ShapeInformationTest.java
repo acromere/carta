@@ -33,7 +33,7 @@ public class ShapeInformationTest extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, times( 1 ) ).setCursor( eq( Cursor.HAND ) );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( eq( Cursor.HAND ) );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 

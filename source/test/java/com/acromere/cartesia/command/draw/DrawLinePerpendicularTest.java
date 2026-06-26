@@ -71,7 +71,7 @@ public class DrawLinePerpendicularTest extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, times( 1 ) ).setCursor( Cursor.HAND );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( Cursor.HAND );
 		assertThat( command.getReference().stream().findFirst().orElse( null ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
 		assertThat( command.getPreview() ).hasSize( 0 );
@@ -98,7 +98,7 @@ public class DrawLinePerpendicularTest extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview().stream().findFirst().orElse( null ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getPreview() ).hasSize( 1 );
@@ -123,7 +123,7 @@ public class DrawLinePerpendicularTest extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview().stream().findFirst().orElse( null ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getPreview() ).hasSize( 1 );

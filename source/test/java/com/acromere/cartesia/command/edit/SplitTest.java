@@ -72,7 +72,7 @@ public class SplitTest extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, times( 1 ) ).setCursor( Cursor.HAND );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( Cursor.HAND );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
 		assertThat( result ).isEqualTo( INCOMPLETE );
@@ -96,7 +96,7 @@ public class SplitTest extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, times( 1 ) ).setCursor( RETICLE );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
 		assertThat( result ).isEqualTo( INCOMPLETE );

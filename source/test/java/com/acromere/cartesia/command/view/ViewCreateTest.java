@@ -12,8 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowableOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class ViewCreateTest extends BaseCommandTest {
 
@@ -29,7 +28,7 @@ public class ViewCreateTest extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, times( 1 ) ).setCursor( any() );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( any() );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 

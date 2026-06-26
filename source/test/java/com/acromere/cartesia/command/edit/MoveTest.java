@@ -80,7 +80,7 @@ public class MoveTest extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, times( 1 ) ).setCursor( RETICLE );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
 		assertThat( command.getReference().stream().findFirst().orElse( null ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
 		assertThat( command.getPreview() ).hasSize( 0 );
@@ -100,7 +100,7 @@ public class MoveTest extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, times( 1 ) ).setCursor( RETICLE );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
 		assertThat( command.getReference().getFirst() ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
 		assertThat( command.getPreview().getFirst() ).isInstanceOf( DesignLine.class );

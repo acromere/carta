@@ -32,7 +32,7 @@ public class SelectByPointTest extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, times( 1 ) ).setCursor( any() );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( any() );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 

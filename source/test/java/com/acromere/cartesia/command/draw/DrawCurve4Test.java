@@ -11,6 +11,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import static com.acromere.cartesia.command.Command.Result.INCOMPLETE;
@@ -69,7 +70,7 @@ public class DrawCurve4Test extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview().stream().findFirst().orElse( null ) ).isInstanceOf( DesignCubic.class );
 		assertThat( command.getPreview() ).hasSize( 1 );
@@ -94,7 +95,7 @@ public class DrawCurve4Test extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview().stream().findFirst().orElse( null ) ).isInstanceOf( DesignCubic.class );
 		assertThat( command.getPreview() ).hasSize( 1 );
@@ -111,17 +112,15 @@ public class DrawCurve4Test extends BaseCommandTest {
 	void testExecuteWithTwoParameters() throws Exception {
 		// given
 		CommandTask task = new CommandTask( commandContext, tool, null, null, command, "-3,0", "-1,3" );
-		// Use the CLOSED_HAND cursor as a reticle cursor
-		when( tool.getReticleCursor() ).thenReturn( Cursor.CLOSED_HAND );
 
 		// when
 		Object result = task.runTaskStep();
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
+		verify( tool, timeout(FX_TIMEOUT).times( 1 ) ).setCursor( RETICLE );
 		assertThat( command.getReference() ).hasSize( 0 );
-		assertThat( command.getPreview().stream().findFirst().orElse( null ) ).isInstanceOf( DesignCubic.class );
+		assertThat( Objects.requireNonNull( command.getPreview().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignCubic.class );
 		assertThat( command.getPreview() ).hasSize( 1 );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
@@ -144,7 +143,7 @@ public class DrawCurve4Test extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview().stream().findFirst().orElse( null ) ).isInstanceOf( DesignCubic.class );
 		assertThat( command.getPreview() ).hasSize( 1 );

@@ -40,7 +40,7 @@ public class CameraZoomTest extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, times( 1 ) ).setCursor( null );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( null );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
