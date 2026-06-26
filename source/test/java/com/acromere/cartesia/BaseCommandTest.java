@@ -3,10 +3,10 @@ package com.acromere.cartesia;
 import com.acromere.cartesia.command.Command;
 import com.acromere.cartesia.command.CommandMetadata;
 import com.acromere.cartesia.command.CommandTrigger;
-import com.acromere.cartesia.data.DesignModel;
 import com.acromere.cartesia.data.DesignLayer;
-import com.acromere.cartesia.tool.CommandPrompt;
+import com.acromere.cartesia.data.DesignModel;
 import com.acromere.cartesia.tool.CommandContext;
+import com.acromere.cartesia.tool.CommandPrompt;
 import com.acromere.cartesia.tool.DesignContext;
 import javafx.event.EventTarget;
 import javafx.event.EventType;
@@ -23,7 +23,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.lenient;
 
 @ExtendWith( MockitoExtension.class )
@@ -69,20 +68,23 @@ public class BaseCommandTest extends BaseToolTest {
 	public void setup() throws Exception {
 		super.setup();
 
-		lenient().when( resource.getModel() ).thenReturn( design );
-		lenient().when( tool.getMod() ).thenReturn( (CartesiaMod)module );
-		lenient().when( tool.getProduct() ).thenReturn( module );
-		lenient().when( tool.getProgram() ).thenReturn( program );
-		lenient().when( tool.getDesignModel() ).thenReturn( design );
-		lenient().when( tool.getDesignContext() ).thenReturn( designContext );
-		lenient().when( tool.getCommandContext() ).thenReturn( commandContext );
-		lenient().when( tool.getSelectedLayer() ).thenReturn( selectedLayer );
-		lenient().when( tool.getCurrentLayer() ).thenReturn( currentLayer );
-		lenient().when( tool.getPreviewLayer() ).thenReturn( previewLayer );
-		lenient().when( tool.getReferenceLayer() ).thenReturn( referenceLayer );
+		// Resource mock
+		lenient().doReturn( design ).when( resource ).getModel();
+
+		// Tool mock
+		lenient().doReturn( program ).when( tool ).getProgram();
+		lenient().doReturn( module ).when( tool ).getProduct();
+		lenient().doReturn( module ).when( tool ).getMod();
+		lenient().doReturn( design ).when( tool ).getDesignModel();
+		lenient().doReturn( designContext ).when( tool ).getDesignContext();
+		lenient().doReturn( commandContext ).when(tool).getCommandContext();
+		lenient().doReturn( selectedLayer).when(tool).getSelectedLayer();
+		lenient().doReturn(currentLayer).when(tool).getCurrentLayer();
+		lenient().doReturn( previewLayer ).when( tool ).getPreviewLayer();
+		lenient().doReturn( referenceLayer ).when(tool).getReferenceLayer();
 		lenient().doReturn( RETICLE ).when( tool ).getReticleCursor();
-		lenient().when( commandContext.getTool() ).thenReturn( tool );
-		lenient().when( commandContext.getCommandPrompt() ).thenReturn( commandPrompt );
+		lenient().doReturn( tool ).when(commandContext).getTool();
+		lenient().doReturn( commandPrompt).when(commandContext).getCommandPrompt();
 	}
 
 	protected static CommandMetadata createMetadata( String action, String name, String command, Class<? extends Command> type ) {
@@ -91,7 +93,8 @@ public class BaseCommandTest extends BaseToolTest {
 
 	@SuppressWarnings( "unchecked" )
 	protected static MouseEvent createMouseEvent( CommandTrigger trigger, double x, double y ) {
-		MouseEvent event = createMouseEvent( (EventType<MouseEvent>)trigger.getEventType(),
+		MouseEvent event = createMouseEvent(
+			(EventType<MouseEvent>)trigger.getEventType(),
 			trigger.getMouseButton(),
 			trigger.hasModifier( CommandTrigger.Modifier.CONTROL ),
 			trigger.hasModifier( CommandTrigger.Modifier.SHIFT ),
@@ -106,7 +109,8 @@ public class BaseCommandTest extends BaseToolTest {
 
 	@SuppressWarnings( "unchecked" )
 	protected static ZoomEvent createZoomEvent( CommandTrigger trigger, double x, double y, double factor ) {
-		ZoomEvent event = createZoomEvent( (EventType<ZoomEvent>)trigger.getEventType(),
+		ZoomEvent event = createZoomEvent(
+			(EventType<ZoomEvent>)trigger.getEventType(),
 			trigger.hasModifier( CommandTrigger.Modifier.CONTROL ),
 			trigger.hasModifier( CommandTrigger.Modifier.SHIFT ),
 			trigger.hasModifier( CommandTrigger.Modifier.ALT ),
@@ -130,14 +134,21 @@ public class BaseCommandTest extends BaseToolTest {
 	}
 
 	protected static MouseEvent createMouseEvent(
-		Object source, EventTarget target, EventType<MouseEvent> type, MouseButton button, boolean control, boolean shift, boolean alt, boolean meta, double x, double y
+		Object source,
+		EventTarget target,
+		EventType<MouseEvent> type,
+		MouseButton button,
+		boolean control,
+		boolean shift,
+		boolean alt,
+		boolean meta,
+		double x,
+		double y
 	) {
 		return createMouseEvent( source, target, type, button, control, shift, alt, meta, x, y, 0 );
 	}
 
-	protected static MouseEvent createMouseEvent(
-		EventType<MouseEvent> type, MouseButton button, boolean control, boolean shift, boolean alt, boolean meta, double x, double y, int clicks
-	) {
+	protected static MouseEvent createMouseEvent( EventType<MouseEvent> type, MouseButton button, boolean control, boolean shift, boolean alt, boolean meta, double x, double y, int clicks ) {
 		boolean primary = button == MouseButton.PRIMARY;
 		boolean secondary = button == MouseButton.SECONDARY;
 		boolean middle = button == MouseButton.MIDDLE;
@@ -146,7 +157,17 @@ public class BaseCommandTest extends BaseToolTest {
 	}
 
 	protected static MouseEvent createMouseEvent(
-		Object source, EventTarget target, EventType<MouseEvent> type, MouseButton button, boolean control, boolean shift, boolean alt, boolean meta, double x, double y, int clicks
+		Object source,
+		EventTarget target,
+		EventType<MouseEvent> type,
+		MouseButton button,
+		boolean control,
+		boolean shift,
+		boolean alt,
+		boolean meta,
+		double x,
+		double y,
+		int clicks
 	) {
 		boolean primary = button == MouseButton.PRIMARY;
 		boolean secondary = button == MouseButton.SECONDARY;
@@ -157,7 +178,8 @@ public class BaseCommandTest extends BaseToolTest {
 
 	@SuppressWarnings( "unchecked" )
 	protected static ScrollEvent createScrollEvent( CommandTrigger trigger, double x, double y, double deltaX, double deltaY ) {
-		ScrollEvent event = createScrollEvent( (EventType<ScrollEvent>)trigger.getEventType(),
+		ScrollEvent event = createScrollEvent(
+			(EventType<ScrollEvent>)trigger.getEventType(),
 			trigger.hasModifier( CommandTrigger.Modifier.CONTROL ),
 			trigger.hasModifier( CommandTrigger.Modifier.SHIFT ),
 			trigger.hasModifier( CommandTrigger.Modifier.ALT ),
@@ -174,7 +196,8 @@ public class BaseCommandTest extends BaseToolTest {
 	}
 
 	protected static ScrollEvent createScrollEvent( EventType<ScrollEvent> type, boolean control, boolean shift, boolean alt, boolean meta, boolean direct, boolean inertia ) {
-		return new ScrollEvent( type,
+		return new ScrollEvent(
+			type,
 			0,
 			0,
 			0,
@@ -199,9 +222,20 @@ public class BaseCommandTest extends BaseToolTest {
 	}
 
 	protected static ScrollEvent createScrollEvent(
-		EventType<ScrollEvent> type, boolean control, boolean shift, boolean alt, boolean meta, boolean direct, boolean inertia, double x, double y, double deltaX, double deltaY
+		EventType<ScrollEvent> type,
+		boolean control,
+		boolean shift,
+		boolean alt,
+		boolean meta,
+		boolean direct,
+		boolean inertia,
+		double x,
+		double y,
+		double deltaX,
+		double deltaY
 	) {
-		return new ScrollEvent( type,
+		return new ScrollEvent(
+			type,
 			x,
 			y,
 			x,
@@ -230,7 +264,16 @@ public class BaseCommandTest extends BaseToolTest {
 	}
 
 	protected static ZoomEvent createZoomEvent(
-		EventType<ZoomEvent> type, boolean control, boolean shift, boolean alt, boolean meta, boolean direct, boolean inertia, double x, double y, double factor
+		EventType<ZoomEvent> type,
+		boolean control,
+		boolean shift,
+		boolean alt,
+		boolean meta,
+		boolean direct,
+		boolean inertia,
+		double x,
+		double y,
+		double factor
 	) {
 		return new ZoomEvent( type, x, y, x, y, shift, control, alt, meta, direct, inertia, factor, factor, null );
 	}
