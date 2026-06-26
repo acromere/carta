@@ -38,7 +38,7 @@ public class BaseCommandTest extends BaseToolTest {
 
 	protected static final Object BAD_PARAMETER = null;
 
-	protected static final int FX_TIMEOUT = 2000;
+	protected static final int FX_TIMEOUT = 1000;
 
 	@Mock
 	protected DesignModel design;
