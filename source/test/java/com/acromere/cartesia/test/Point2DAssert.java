@@ -12,8 +12,8 @@ public class Point2DAssert extends AbstractAssert<Point2DAssert, Point2D> {
 		super( actual, Point2DAssert.class );
 	}
 
-	public static Point2DAssert assertThat ( Point2D actual ) {
-		return new Point2DAssert(actual);
+	public static Point2DAssert assertThat( Point2D actual ) {
+		return new Point2DAssert( actual );
 	}
 
 	public Point2DAssert isCloseTo( Point2D expected ) {

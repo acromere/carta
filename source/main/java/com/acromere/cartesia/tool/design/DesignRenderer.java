@@ -1,7 +1,7 @@
 package com.acromere.cartesia.tool.design;
 
-import com.acromere.cartesia.data.DesignModel;
 import com.acromere.cartesia.data.DesignLayer;
+import com.acromere.cartesia.data.DesignModel;
 import com.acromere.cartesia.tool.Workplane;
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Point2D;

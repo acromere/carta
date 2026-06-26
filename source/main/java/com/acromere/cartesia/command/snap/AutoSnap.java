@@ -1,8 +1,8 @@
 package com.acromere.cartesia.command.snap;
 
+import com.acromere.cartesia.command.CommandTask;
 import com.acromere.cartesia.command.InvalidInputException;
 import com.acromere.cartesia.snap.Snap;
-import com.acromere.cartesia.command.CommandTask;
 import com.acromere.cartesia.tool.DesignTool;
 
 import static com.acromere.cartesia.command.Command.Result.FAILURE;

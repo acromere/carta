@@ -20,7 +20,7 @@ public class LayerCreate extends LayerCommand {
 			return INCOMPLETE;
 		}
 
-		if( task.hasParameter(0 ) ) {
+		if( task.hasParameter( 0 ) ) {
 			String name = asText( task, "layer-name", 0 );
 			DesignLayer yy = new DesignLayer().setName( name );
 			yy = addLayer( task.getTool().getSelectedLayer(), yy );

@@ -36,7 +36,7 @@ public class NestedPanePixelScaleTrial extends Application {
 		double screenScale = Screen.getPrimary().getOutputScaleX();
 		double cmPerInch = 2.54;
 
-		double scale = dpi/screenScale/cmPerInch;
+		double scale = dpi / screenScale / cmPerInch;
 		double width = 500;
 		double height = 500;
 
@@ -51,21 +51,21 @@ public class NestedPanePixelScaleTrial extends Application {
 		// 2. Scale according to the desired design scale
 		// 3. Flip the Y-axis. In theory, this should be done in step 2 also.\
 
-//		// The pre-scaled world
-//		Line preScaledLine1 = new Line( -2 * scale, -2 * scale, 2 * scale, 2 * scale );
-//		preScaledLine1.setStroke( javafx.scene.paint.Color.RED.darker().darker() );
-//		preScaledLine1.setStrokeWidth( 1 * scale );
-//		preScaledLine1.setStrokeLineCap( StrokeLineCap.ROUND );
-//		Line preScaledLine2 = new Line( -2 * scale, 2 * scale, 2 * scale, -2 * scale );
-//		preScaledLine2.setStroke( javafx.scene.paint.Color.GREEN );
-//		preScaledLine2.setStrokeWidth( 1 * scale );
-//		preScaledLine2.setStrokeLineCap( StrokeLineCap.ROUND );
-//
-//		this.preScaledWorld = new Pane();
-//		preScaledWorld.getChildren().addAll( preScaledLine1, preScaledLine2 );
-//		preScaledWorld.resizeRelocate( 0.5 * width, 0.5 * height, 0, 0 );
-//		// Don't use setScaleY(-1) because it just doesn't work as expected
-//		preScaledWorld.getTransforms().add( javafx.scene.transform.Transform.scale( 1, -1 ) );
+		//		// The pre-scaled world
+		//		Line preScaledLine1 = new Line( -2 * scale, -2 * scale, 2 * scale, 2 * scale );
+		//		preScaledLine1.setStroke( javafx.scene.paint.Color.RED.darker().darker() );
+		//		preScaledLine1.setStrokeWidth( 1 * scale );
+		//		preScaledLine1.setStrokeLineCap( StrokeLineCap.ROUND );
+		//		Line preScaledLine2 = new Line( -2 * scale, 2 * scale, 2 * scale, -2 * scale );
+		//		preScaledLine2.setStroke( javafx.scene.paint.Color.GREEN );
+		//		preScaledLine2.setStrokeWidth( 1 * scale );
+		//		preScaledLine2.setStrokeLineCap( StrokeLineCap.ROUND );
+		//
+		//		this.preScaledWorld = new Pane();
+		//		preScaledWorld.getChildren().addAll( preScaledLine1, preScaledLine2 );
+		//		preScaledWorld.resizeRelocate( 0.5 * width, 0.5 * height, 0, 0 );
+		//		// Don't use setScaleY(-1) because it just doesn't work as expected
+		//		preScaledWorld.getTransforms().add( javafx.scene.transform.Transform.scale( 1, -1 ) );
 
 		this.tool = new Pane();
 		tool.setStyle( "-fx-background-color: #222222;" );
@@ -116,8 +116,6 @@ public class NestedPanePixelScaleTrial extends Application {
 		line2.setStrokeWidth( 1 );
 		line2.setStrokeLineCap( StrokeLineCap.ROUND );
 		world.getChildren().addAll( line1, line2 );
-
-
 
 		//				Bounds worldToTool = FxUtil.localToAncestor( scaledWorld, tool );
 		//				Rectangle worldBounds = FxUtil.toRectangle( worldToTool );

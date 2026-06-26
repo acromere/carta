@@ -3,7 +3,7 @@ package com.acromere.cartesia.icon;
 public class GridHiddenIcon extends GridIcon {
 
 	protected void define() {
-		super.define(false);
+		super.define( false );
 	}
 
 	public static void main( String[] parameters ) {

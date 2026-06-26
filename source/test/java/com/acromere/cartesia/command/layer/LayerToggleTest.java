@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-public class LayerToggleTest  extends BaseCommandTest {
+public class LayerToggleTest extends BaseCommandTest {
 
 	private final LayerToggle command = new LayerToggle();
 

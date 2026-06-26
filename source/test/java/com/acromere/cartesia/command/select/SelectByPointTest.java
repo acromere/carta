@@ -10,7 +10,8 @@ import javafx.geometry.Point3D;
 import javafx.scene.input.InputEvent;
 import org.junit.jupiter.api.Test;
 
-import static com.acromere.cartesia.command.Command.Result.*;
+import static com.acromere.cartesia.command.Command.Result.INCOMPLETE;
+import static com.acromere.cartesia.command.Command.Result.SUCCESS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowableOfType;
 import static org.mockito.ArgumentMatchers.*;

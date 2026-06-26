@@ -1,15 +1,14 @@
 package com.acromere.cartesia;
 
 import com.acromere.cartesia.data.*;
-import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.data.map.DesignUnitMapper;
 import com.acromere.data.IdNode;
 import com.acromere.data.Node;
 import com.acromere.log.LazyEval;
 import com.acromere.product.Product;
 import com.acromere.util.TextUtil;
-import com.acromere.xenon.resource.Resource;
 import com.acromere.xenon.resource.Codec;
+import com.acromere.xenon.resource.Resource;
 import com.acromere.zerra.font.FontUtil;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.type.TypeReference;

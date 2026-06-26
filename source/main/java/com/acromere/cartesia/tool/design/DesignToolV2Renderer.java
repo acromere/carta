@@ -3,7 +3,6 @@ package com.acromere.cartesia.tool.design;
 import com.acromere.cartesia.DesignUnit;
 import com.acromere.cartesia.DesignValue;
 import com.acromere.cartesia.data.*;
-import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.math.CadTransform;
 import com.acromere.cartesia.tool.Workplane;
 import com.acromere.data.NodeEvent;

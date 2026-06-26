@@ -132,10 +132,7 @@ public class FlipTest extends BaseCommandTest {
 	}
 
 	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of(
-			Arguments.of( new Object[]{ BAD_POINT_PARAMETER }, "axis-anchor" ),
-			Arguments.of( new Object[]{ "-3,3", BAD_POINT_PARAMETER }, "axis-point" )
-		);
+		return Stream.of( Arguments.of( new Object[]{ BAD_POINT_PARAMETER }, "axis-anchor" ), Arguments.of( new Object[]{ "-3,3", BAD_POINT_PARAMETER }, "axis-point" ) );
 	}
 
 	@Test

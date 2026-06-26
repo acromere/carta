@@ -8,10 +8,10 @@ public class PrintDelete extends PrintCommand {
 
 	@Override
 	public Object execute( CommandTask task ) throws Exception {
-//		DesignPrint print = task.getTool().getSelectedPrint();
-//		if( print == null ) return SUCCESS;
-//
-//		task.getTool().getDesign().removePrint( print );
+		//		DesignPrint print = task.getTool().getSelectedPrint();
+		//		if( print == null ) return SUCCESS;
+		//
+		//		task.getTool().getDesign().removePrint( print );
 
 		return SUCCESS;
 	}

@@ -1,10 +1,10 @@
 package com.acromere.cartesia.command.view;
 
 import com.acromere.cartesia.BaseCommandTest;
+import com.acromere.cartesia.command.CommandTask;
 import com.acromere.cartesia.command.InvalidInputException;
 import com.acromere.cartesia.command.base.Prompt;
 import com.acromere.cartesia.data.DesignView;
-import com.acromere.cartesia.command.CommandTask;
 import org.junit.jupiter.api.Test;
 
 import static com.acromere.cartesia.command.Command.Result.INCOMPLETE;
@@ -57,7 +57,7 @@ public class ViewCreateTest extends BaseCommandTest {
 	@Test
 	void testRunTaskStepWithBadParameters() {
 		// given
-		CommandTask task = new CommandTask( commandContext, tool, null, null, command, new Object[] {null} );
+		CommandTask task = new CommandTask( commandContext, tool, null, null, command, new Object[]{ null } );
 
 		// when
 		InvalidInputException exception = catchThrowableOfType( InvalidInputException.class, task::runTaskStep );

@@ -56,7 +56,7 @@ public class DrawLinePerpendicular extends DrawCommand {
 			setCaptureUndoChanges( task, true );
 
 			Point3D shapePoint = asPoint( task, "start-point", 0 );
-			Point3D origin = asPoint( task, "origin",1 );
+			Point3D origin = asPoint( task, "origin", 1 );
 			Point3D secondPoint = asPoint( task, "end-point", 2 );
 
 			DesignShape shape = findNearestShapeAtPoint( task, shapePoint );

@@ -1,8 +1,8 @@
 package com.acromere.cartesia;
 
 import com.acromere.cartesia.tool.DesignTool;
-import com.acromere.xenon.XenonFlag;
 import com.acromere.xenon.ProgramScreenshots;
+import com.acromere.xenon.XenonFlag;
 import com.acromere.xenon.workpane.Tool;
 import com.acromere.zerra.javafx.Fx;
 import javafx.geometry.Bounds;

@@ -4,8 +4,8 @@ import com.acromere.cartesia.RbKey;
 import com.acromere.cartesia.data.DesignPrint;
 import com.acromere.product.Rb;
 import com.acromere.xenon.Xenon;
-import com.acromere.xenon.resource.Resource;
 import com.acromere.xenon.notice.Notice;
+import com.acromere.xenon.resource.Resource;
 import com.acromere.xenon.task.Task;
 import lombok.CustomLog;
 import lombok.Getter;
@@ -58,7 +58,7 @@ public class DesignAwtPrintTask extends Task<Void> {
 			@Override
 			public int print( Graphics graphics, PageFormat pageFormat, int pageIndex ) throws PrinterException {
 				// TODO This will need to be matched up with the design renderer
-				return pageIndex  <1 ? Printable.PAGE_EXISTS : Printable.NO_SUCH_PAGE;
+				return pageIndex < 1 ? Printable.PAGE_EXISTS : Printable.NO_SUCH_PAGE;
 			}
 		};
 

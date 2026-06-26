@@ -10,7 +10,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class PrintDeleteTest  extends BaseCommandTest {
+public class PrintDeleteTest extends BaseCommandTest {
 
 	private final PrintDelete command = new PrintDelete();
 

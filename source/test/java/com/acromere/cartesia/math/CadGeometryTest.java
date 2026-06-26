@@ -1,7 +1,6 @@
 package com.acromere.cartesia.math;
 
 import com.acromere.cartesia.data.*;
-import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.test.Point3DAssert;
 import javafx.geometry.Point3D;
 import javafx.scene.paint.Color;
@@ -315,7 +314,7 @@ public class CadGeometryTest {
 		assertThat( text.getY() ).isEqualTo( -5, TOLERANCE );
 		assertThat( text.getText() ).isEqualTo( "Hello, World!" );
 
-		javafx.scene.transform.Rotate fxRotate = (javafx.scene.transform.Rotate)text.getTransforms().get(1);
+		javafx.scene.transform.Rotate fxRotate = (javafx.scene.transform.Rotate)text.getTransforms().get( 1 );
 		assertThat( fxRotate.getAngle() ).isEqualTo( -rotate );
 		assertThat( fxRotate.getPivotX() ).isEqualTo( text.getX() );
 		assertThat( fxRotate.getPivotY() ).isEqualTo( text.getY() );

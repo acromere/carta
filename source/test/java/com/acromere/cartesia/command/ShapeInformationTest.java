@@ -11,7 +11,7 @@ import org.mockito.Spy;
 
 import java.util.List;
 
-import static com.acromere.cartesia.command.Command.Result.*;
+import static com.acromere.cartesia.command.Command.Result.INCOMPLETE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowableOfType;
 import static org.mockito.ArgumentMatchers.any;
@@ -55,7 +55,7 @@ public class ShapeInformationTest extends BaseCommandTest {
 		// then
 		verify( command, times( 1 ) ).clearReferenceAndPreviewWhenComplete();
 		verify( noticeManager, times( 1 ) ).addNotice( any() );
-		assertThat( result ).isEqualTo(  line );
+		assertThat( result ).isEqualTo( line );
 	}
 
 	@Test

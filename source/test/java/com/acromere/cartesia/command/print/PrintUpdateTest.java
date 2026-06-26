@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import static com.acromere.cartesia.command.Command.Result.SUCCESS;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PrintUpdateTest  extends BaseCommandTest {
+public class PrintUpdateTest extends BaseCommandTest {
 
 	private final PrintUpdate command = new PrintUpdate();
 

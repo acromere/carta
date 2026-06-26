@@ -1,8 +1,8 @@
 package com.acromere.cartesia.command.view;
 
 import com.acromere.cartesia.BaseCommandTest;
-import com.acromere.cartesia.data.DesignView;
 import com.acromere.cartesia.command.CommandTask;
+import com.acromere.cartesia.data.DesignView;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 

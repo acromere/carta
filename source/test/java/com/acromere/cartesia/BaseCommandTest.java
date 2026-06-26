@@ -77,14 +77,14 @@ public class BaseCommandTest extends BaseToolTest {
 		lenient().doReturn( module ).when( tool ).getMod();
 		lenient().doReturn( design ).when( tool ).getDesignModel();
 		lenient().doReturn( designContext ).when( tool ).getDesignContext();
-		lenient().doReturn( commandContext ).when(tool).getCommandContext();
-		lenient().doReturn( selectedLayer).when(tool).getSelectedLayer();
-		lenient().doReturn(currentLayer).when(tool).getCurrentLayer();
+		lenient().doReturn( commandContext ).when( tool ).getCommandContext();
+		lenient().doReturn( selectedLayer ).when( tool ).getSelectedLayer();
+		lenient().doReturn( currentLayer ).when( tool ).getCurrentLayer();
 		lenient().doReturn( previewLayer ).when( tool ).getPreviewLayer();
-		lenient().doReturn( referenceLayer ).when(tool).getReferenceLayer();
+		lenient().doReturn( referenceLayer ).when( tool ).getReferenceLayer();
 		lenient().doReturn( RETICLE ).when( tool ).getReticleCursor();
-		lenient().doReturn( tool ).when(commandContext).getTool();
-		lenient().doReturn( commandPrompt).when(commandContext).getCommandPrompt();
+		lenient().doReturn( tool ).when( commandContext ).getTool();
+		lenient().doReturn( commandPrompt ).when( commandContext ).getCommandPrompt();
 	}
 
 	protected static CommandMetadata createMetadata( String action, String name, String command, Class<? extends Command> type ) {

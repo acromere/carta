@@ -19,7 +19,7 @@ public class DuplexDotReticle extends DuplexReticle {
 	protected void render() {
 		super.render();
 		startPath();
-		getGraphicsContext2D().appendSVGPath( SvgIcon.circle( getC()-0.5, getC()-0.5, 2 ) );
+		getGraphicsContext2D().appendSVGPath( SvgIcon.circle( getC() - 0.5, getC() - 0.5, 2 ) );
 		fill();
 	}
 

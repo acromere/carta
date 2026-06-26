@@ -52,12 +52,16 @@ public class DesignToolPrintsGuide extends Guide {
 		design.getPrints().forEach( this::addPrint );
 
 		// Add listeners for changes
-		design.register( NodeEvent.CHILD_ADDED, e -> {
-			if( DesignModel.PRINTS.equals( e.getSetKey() ) ) Fx.run( () -> addPrint( e.getNewValue() ) );
-		} );
-		design.register( NodeEvent.CHILD_REMOVED, e -> {
-			if( DesignModel.PRINTS.equals( e.getSetKey() ) ) Fx.run( () -> removePrint( e.getOldValue() ) );
-		} );
+		design.register(
+			NodeEvent.CHILD_ADDED, e -> {
+				if( DesignModel.PRINTS.equals( e.getSetKey() ) ) Fx.run( () -> addPrint( e.getNewValue() ) );
+			}
+		);
+		design.register(
+			NodeEvent.CHILD_REMOVED, e -> {
+				if( DesignModel.PRINTS.equals( e.getSetKey() ) ) Fx.run( () -> removePrint( e.getOldValue() ) );
+			}
+		);
 	}
 
 	private void addPrint( DesignPrint print ) {

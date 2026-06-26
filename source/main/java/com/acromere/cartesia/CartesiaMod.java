@@ -20,8 +20,8 @@ import com.acromere.xenon.ActionProxy;
 import com.acromere.xenon.Module;
 import com.acromere.xenon.ToolInstanceMode;
 import com.acromere.xenon.ToolRegistration;
-import com.acromere.xenon.resource.type.ProgramHelpType;
 import com.acromere.xenon.index.IndexService;
+import com.acromere.xenon.resource.type.ProgramHelpType;
 import com.acromere.xenon.tool.settings.SettingsPageParser;
 import com.acromere.xenon.tool.settings.editor.PaintSettingEditor;
 import com.acromere.zenna.icon.EyeIcon;
@@ -90,7 +90,7 @@ public class CartesiaMod extends Module {
 		registerHelpPages();
 
 		// Register a listener to clear the Reticle cursor cache when the theme changes
-		getProgram().getWorkspaceManager().themeIdProperty().addListener( (p,o,n) -> Reticle.clearCursorCache() );
+		getProgram().getWorkspaceManager().themeIdProperty().addListener( ( p, o, n ) -> Reticle.clearCursorCache() );
 
 		log.atInfo().log( "%s started.", LazyEval.of( () -> getCard().getName() ) );
 	}
@@ -294,9 +294,7 @@ public class CartesiaMod extends Module {
 		return createIndexableDocument( "document", resourcePath, Map.of(), List.of(), null );
 	}
 
-	private Document createIndexableDocument(
-		String icon, String resourcePath, Map<String, String> values, List<String> tags, String defaultContent
-	) {
+	private Document createIndexableDocument( String icon, String resourcePath, Map<String, String> values, List<String> tags, String defaultContent ) {
 		// Create the document URI
 		String modKey = getCard().getProductKey();
 		URI uri = URI.create( ProgramHelpType.URI + ":/" + modKey + resourcePath );

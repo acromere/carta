@@ -26,9 +26,9 @@ public class EllipseArc5Icon extends DrawIcon {
 		draw( pathA, null, getLineWidth(), StrokeLineCap.ROUND, StrokeLineJoin.MITER, factor, 0, 2 * factor * getLineWidth() );
 		draw( pathB, null, getLineWidth(), StrokeLineCap.ROUND, StrokeLineJoin.MITER );
 		//draw( pathC, null, getLineWidth(), StrokeLineCap.ROUND, StrokeLineJoin.MITER, factor * getLineWidth(), 0, 2 * factor * getLineWidth() );
-//		fill( circle( 16, 16, 0.75*getDotRadius() ) );
-//		fill( circle( 16 + g, 16 - g, 0.75*getDotRadius() ) );
-//		fill( circle( 16 + h, 16 + h, 0.75*getDotRadius() ) );
+		//		fill( circle( 16, 16, 0.75*getDotRadius() ) );
+		//		fill( circle( 16 + g, 16 - g, 0.75*getDotRadius() ) );
+		//		fill( circle( 16 + h, 16 + h, 0.75*getDotRadius() ) );
 
 		fill( circle( 16, 16 - g, getDotRadius() ) );
 		fill( circle( 16 - g, 16, getDotRadius() ) );

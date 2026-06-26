@@ -112,10 +112,7 @@ public class DrawCircle2Test extends BaseCommandTest {
 	}
 
 	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of(
-			Arguments.of( new String[]{ "bad parameter" }, "center" ),
-			Arguments.of( new String[]{ "1,3", "bad parameter" }, "radius" )
-		);
+		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "center" ), Arguments.of( new String[]{ "1,3", "bad parameter" }, "radius" ) );
 	}
 
 	@Test

@@ -130,10 +130,7 @@ public class CopyTest extends BaseCommandTest {
 	}
 
 	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of(
-			Arguments.of( new Object[]{ BAD_POINT_PARAMETER }, "anchor" ),
-			Arguments.of( new Object[]{ "-3,3", BAD_POINT_PARAMETER }, "target" )
-		);
+		return Stream.of( Arguments.of( new Object[]{ BAD_POINT_PARAMETER }, "anchor" ), Arguments.of( new Object[]{ "-3,3", BAD_POINT_PARAMETER }, "target" ) );
 	}
 
 	@Test

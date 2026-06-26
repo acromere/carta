@@ -1,7 +1,6 @@
 package com.acromere.cartesia.math;
 
 import com.acromere.cartesia.data.*;
-import com.acromere.cartesia.data.*;
 import com.acromere.curve.math.Geometry;
 import com.acromere.curve.math.Vector;
 import com.acromere.zerra.font.FontUtil;

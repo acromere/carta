@@ -7,7 +7,10 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import lombok.CustomLog;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * The CommandTrigger class is used to define the user input combination to
@@ -45,7 +48,7 @@ public class CommandTrigger {
 	}
 
 	public CommandTrigger( EventType<?> type, MouseButton button, Modifier... modifiers ) {
-		this( type, button, new HashSet<>(Arrays.asList( modifiers ) ));
+		this( type, button, new HashSet<>( Arrays.asList( modifiers ) ) );
 	}
 
 	public CommandTrigger( EventType<?> type, MouseButton button, Set<Modifier> modifiers ) {

@@ -12,7 +12,7 @@ public class InvalidInputException extends CommandException {
 	private final Object value;
 
 	public InvalidInputException( Command command, String inputRbKey, Object value ) {
-		this(command, inputRbKey, value, null);
+		this( command, inputRbKey, value, null );
 	}
 
 	public InvalidInputException( Command command, String inputRbKey, Object value, Throwable cause ) {

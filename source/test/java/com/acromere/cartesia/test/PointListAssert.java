@@ -16,12 +16,12 @@ public class PointListAssert extends AbstractAssert<PointListAssert, List<Point3
 		super( actual, PointListAssert.class );
 	}
 
-	public static PointListAssert assertThat(List<Point3D> actual ) {
-		return new PointListAssert(actual);
+	public static PointListAssert assertThat( List<Point3D> actual ) {
+		return new PointListAssert( actual );
 	}
 
 	public PointListAssert areCloseTo( Point3D... expected ) {
-		return areCloseTo( Arrays.asList(expected), TOLERANCE.value );
+		return areCloseTo( Arrays.asList( expected ), TOLERANCE.value );
 	}
 
 	public PointListAssert areCloseTo( List<Point3D> points, double tolerance ) {

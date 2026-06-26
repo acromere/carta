@@ -3,7 +3,8 @@ package com.acromere.cartesia.command.camera;
 import com.acromere.cartesia.command.CommandTrigger;
 import com.acromere.cartesia.tool.CommandContext;
 import javafx.scene.input.InputEvent;
-import static com.acromere.cartesia.command.Command.Result.*;
+
+import static com.acromere.cartesia.command.Command.Result.SUCCESS;
 
 public class CameraViewRotateRight extends CameraCommand {
 

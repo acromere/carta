@@ -123,7 +123,8 @@ public class CadIntersection {
 	}
 
 	public static List<Point3D> intersectLineCurve( DesignLine a, DesignCubic b ) {
-		Intersection2D xn = Intersection2D.intersectLineBezier3( asPoint( a.getOrigin() ),
+		Intersection2D xn = Intersection2D.intersectLineBezier3(
+			asPoint( a.getOrigin() ),
 			asPoint( a.getPoint() ),
 			asPoint( b.getOrigin() ),
 			asPoint( b.getOriginControl() ),
@@ -142,7 +143,8 @@ public class CadIntersection {
 		// This results in a line and is not supported
 		if( !coplanar ) return List.of();
 
-		Intersection2D xn = Intersection2D.intersectEllipseEllipse( asPoint( a.getOrigin() ),
+		Intersection2D xn = Intersection2D.intersectEllipseEllipse(
+			asPoint( a.getOrigin() ),
 			a.getXRadius(),
 			a.getYRadius(),
 			Math.toRadians( a.calcRotate() ),
@@ -156,7 +158,8 @@ public class CadIntersection {
 	}
 
 	public static List<Point3D> intersectEllipseCurve( DesignEllipse a, DesignCubic b ) {
-		Intersection2D xn = Intersection2D.intersectEllipseBezier3( asPoint( a.getOrigin() ),
+		Intersection2D xn = Intersection2D.intersectEllipseBezier3(
+			asPoint( a.getOrigin() ),
 			a.getXRadius(),
 			a.getYRadius(),
 			Math.toRadians( a.calcRotate() ),
@@ -169,7 +172,8 @@ public class CadIntersection {
 	}
 
 	public static List<Point3D> intersectCurveCurve( DesignCubic a, DesignCubic b ) {
-		Intersection2D xn = Intersection2D.intersectBezier3Bezier3( asPoint( a.getOrigin() ),
+		Intersection2D xn = Intersection2D.intersectBezier3Bezier3(
+			asPoint( a.getOrigin() ),
 			asPoint( a.getOriginControl() ),
 			asPoint( a.getPointControl() ),
 			asPoint( a.getPoint() ),

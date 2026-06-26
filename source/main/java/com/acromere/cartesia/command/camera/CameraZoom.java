@@ -22,7 +22,7 @@ public class CameraZoom extends CameraCommand {
 			return INCOMPLETE;
 		}
 
-		if( task.getParameterCount() == 0  && task.getEvent() instanceof GestureEvent event ) {
+		if( task.getParameterCount() == 0 && task.getEvent() instanceof GestureEvent event ) {
 			Point3D point = task.getTool().screenToWorkplane( event.getX(), event.getY(), 0 );
 
 			if( event instanceof ScrollEvent scrollEvent ) {

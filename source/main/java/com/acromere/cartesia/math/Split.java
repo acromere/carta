@@ -1,7 +1,6 @@
 package com.acromere.cartesia.math;
 
 import com.acromere.cartesia.data.*;
-import com.acromere.cartesia.data.*;
 import com.acromere.transaction.Txn;
 import javafx.geometry.Point3D;
 import lombok.CustomLog;
@@ -39,7 +38,7 @@ public class Split {
 			DesignLayer layer = shape.getLayer();
 			final Collection<DesignShape> finalShapes = shapes;
 			Txn.run( () -> {
-				finalShapes.forEach( s -> layer.addShapeBeforeOrAfter(s, shape, false) );
+				finalShapes.forEach( s -> layer.addShapeBeforeOrAfter( s, shape, false ) );
 				layer.removeShape( shape );
 			} );
 		}

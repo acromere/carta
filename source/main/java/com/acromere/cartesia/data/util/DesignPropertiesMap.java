@@ -2,7 +2,6 @@ package com.acromere.cartesia.data.util;
 
 import com.acromere.cartesia.RbKey;
 import com.acromere.cartesia.data.*;
-import com.acromere.cartesia.data.*;
 import com.acromere.xenon.XenonProgramProduct;
 import com.acromere.xenon.tool.settings.SettingsPage;
 import com.acromere.xenon.tool.settings.SettingsPageParser;
@@ -53,7 +52,7 @@ public class DesignPropertiesMap {
 		try {
 			return loadSettingsPage( product, key );
 		} catch( IOException exception ) {
-			log.atError().withCause( exception).log( "Unable to load settings page=%s", propertiesPagePath + key + propertiesPageExt );
+			log.atError().withCause( exception ).log( "Unable to load settings page=%s", propertiesPagePath + key + propertiesPageExt );
 		}
 		return null;
 	}

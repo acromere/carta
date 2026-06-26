@@ -3,7 +3,6 @@ package com.acromere.cartesia.data;
 import com.acromere.cartesia.ParseUtil;
 import com.acromere.cartesia.data.util.DesignShapeOrderComparator;
 import com.acromere.cartesia.math.*;
-import com.acromere.cartesia.math.*;
 import com.acromere.data.Node;
 import com.acromere.transaction.Txn;
 import com.acromere.transaction.TxnException;

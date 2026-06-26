@@ -1,12 +1,12 @@
 package com.acromere.cartesia.command.snap;
 
 import com.acromere.cartesia.BaseCommandTest;
+import com.acromere.cartesia.command.CommandTask;
 import com.acromere.cartesia.command.CommandTrigger;
 import com.acromere.cartesia.command.InvalidInputException;
 import com.acromere.cartesia.command.base.Prompt;
 import com.acromere.cartesia.snap.Snap;
 import com.acromere.cartesia.snap.SnapNearestCp;
-import com.acromere.cartesia.command.CommandTask;
 import javafx.geometry.Point3D;
 import javafx.scene.input.InputEvent;
 import org.junit.jupiter.api.Test;

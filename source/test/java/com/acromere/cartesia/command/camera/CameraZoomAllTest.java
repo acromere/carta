@@ -2,8 +2,8 @@ package com.acromere.cartesia.command.camera;
 
 import com.acromere.cartesia.BaseCommandTest;
 import com.acromere.cartesia.command.Command;
-import com.acromere.cartesia.data.DesignLine;
 import com.acromere.cartesia.command.CommandTask;
+import com.acromere.cartesia.data.DesignLine;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

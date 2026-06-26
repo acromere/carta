@@ -105,7 +105,8 @@ public class DesignPath extends DesignShape {
 					// Convert from endpoint format to arc center format
 					double[] arcAsCenter = Geometry.arcEndpointToCenter( CadPoints.asPoint( prior ), step.data );
 					// Calculate the arc reference points
-					double[][] arcPoints = Geometry.arcReferencePoints( new double[]{ arcAsCenter[ 0 ], arcAsCenter[ 1 ], 0 },
+					double[][] arcPoints = Geometry.arcReferencePoints(
+						new double[]{ arcAsCenter[ 0 ], arcAsCenter[ 1 ], 0 },
 						new double[]{ arcAsCenter[ 2 ], arcAsCenter[ 3 ], 0 },
 						0,
 						arcAsCenter[ 4 ],
@@ -173,7 +174,8 @@ public class DesignPath extends DesignShape {
 					prior = Point.of( step.data()[ 0 ], step.data()[ 1 ] );
 				}
 				case A -> {
-					distance = Math.min( distance,
+					distance = Math.min(
+						distance,
 						Geometry.pointArcDistance( gPoint, Point.of( step.data()[ 0 ], step.data()[ 1 ] ), Point.of( step.data()[ 2 ], step.data()[ 3 ] ), 0.0, step.data()[ 4 ], step.data()[ 5 ] )
 					);
 					prior = Geometry.arcEndPoints( Point.of( step.data()[ 0 ], step.data()[ 1 ] ), Point.of( step.data()[ 2 ], step.data()[ 3 ] ), 0.0, step.data()[ 4 ], step.data()[ 5 ] )[ 1 ];

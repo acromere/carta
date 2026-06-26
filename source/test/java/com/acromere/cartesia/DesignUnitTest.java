@@ -26,14 +26,14 @@ public class DesignUnitTest extends BaseCartesiaUnitTest {
 
 	@Test
 	void testConvertTo() {
-		assertThat( DesignUnit.IN.to( 1, DesignUnit.CM )).isEqualTo( 2.54  );
-		assertThat( DesignUnit.MI.to( 1, DesignUnit.M )).isEqualTo( 1609.344  );
+		assertThat( DesignUnit.IN.to( 1, DesignUnit.CM ) ).isEqualTo( 2.54 );
+		assertThat( DesignUnit.MI.to( 1, DesignUnit.M ) ).isEqualTo( 1609.344 );
 	}
 
 	@Test
 	void testConvertFrom() {
-		assertThat( DesignUnit.CM.from( 1, DesignUnit.IN )).isEqualTo( 2.54  );
-		assertThat( DesignUnit.M.from( 1, DesignUnit.MI )).isEqualTo( 1609.344  );
+		assertThat( DesignUnit.CM.from( 1, DesignUnit.IN ) ).isEqualTo( 2.54 );
+		assertThat( DesignUnit.M.from( 1, DesignUnit.MI ) ).isEqualTo( 1609.344 );
 	}
 
 }

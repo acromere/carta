@@ -70,10 +70,12 @@ public class FontPicker extends Button {
 		ButtonBar.setButtonData( button, buttonData );
 		button.setDefaultButton( buttonData.isDefaultButton() );
 		button.setCancelButton( buttonData.isCancelButton() );
-		button.addEventHandler( ActionEvent.ACTION, e -> {
-			if( e.isConsumed() ) return;
-			setResultAndClose( buttonType );
-		} );
+		button.addEventHandler(
+			ActionEvent.ACTION, e -> {
+				if( e.isConsumed() ) return;
+				setResultAndClose( buttonType );
+			}
+		);
 
 		return button;
 	}

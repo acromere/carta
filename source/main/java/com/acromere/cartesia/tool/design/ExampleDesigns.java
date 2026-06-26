@@ -1,7 +1,6 @@
 package com.acromere.cartesia.tool.design;
 
 import com.acromere.cartesia.data.*;
-import com.acromere.cartesia.data.*;
 import javafx.geometry.Point3D;
 import javafx.scene.shape.StrokeLineCap;
 
@@ -73,13 +72,13 @@ public class ExampleDesigns {
 	public static DesignModel design1() {
 		return setDesign1( new DesignModel2D() );
 	}
-	
-	public static DesignModel setDesign1( DesignModel design) {
-		design.getAllLayers().forEach( layer -> design.getLayers().removeLayer( layer) );
+
+	public static DesignModel setDesign1( DesignModel design ) {
+		design.getAllLayers().forEach( layer -> design.getLayers().removeLayer( layer ) );
 		return addDesign1( design );
 	}
 
-	public static DesignModel addDesign1( DesignModel design) {
+	public static DesignModel addDesign1( DesignModel design ) {
 		design.setName( "Test Design" );
 
 		DesignLine greenLineA = new DesignLine( -5, 5, -3, 3 );
@@ -133,9 +132,9 @@ public class ExampleDesigns {
 		DesignArc arc1 = new DesignArc( new Point3D( 0, 0, 0 ), 10.0, 10.0, -135.0, 90.0, DesignArc.Type.OPEN );
 		DesignArc arc2 = new DesignArc( new Point3D( 0, 0, 0 ), 10.0, 10.0, 135.0, -90.0, DesignArc.Type.OPEN );
 
-		DesignEllipse ellipse1 = new DesignEllipse( new Point3D( 7, -2, 0), 1.0 );
+		DesignEllipse ellipse1 = new DesignEllipse( new Point3D( 7, -2, 0 ), 1.0 );
 		ellipse1.setFillPaint( "#C0808080" );
-		DesignEllipse ellipse2 = new DesignEllipse( new Point3D( 7, -5.5, 0), 1.0,1.5, -45.0 );
+		DesignEllipse ellipse2 = new DesignEllipse( new Point3D( 7, -5.5, 0 ), 1.0, 1.5, -45.0 );
 
 		DesignBox box1 = new DesignBox( -8, -2, 2, 1 );
 		box1.setRotate( 15.0 );

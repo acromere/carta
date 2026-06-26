@@ -1,7 +1,6 @@
 package com.acromere.cartesia.math;
 
 import com.acromere.cartesia.data.*;
-import com.acromere.cartesia.data.*;
 import javafx.geometry.Point3D;
 import org.junit.jupiter.api.Test;
 

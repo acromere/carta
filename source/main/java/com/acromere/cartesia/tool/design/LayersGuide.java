@@ -114,12 +114,16 @@ public class LayersGuide extends Guide {
 		DesignModel model = design.getDataModel();
 		model.getAllLayers().forEach( this::addLayer );
 
-		model.register( NodeEvent.CHILD_ADDED, e -> {
-			if( e.getNewValue() != null && e.getNewValue() instanceof DesignLayer layer) addLayer( layer );
-		} );
-		model.register( NodeEvent.CHILD_REMOVED, e -> {
-			if(e.getOldValue() instanceof DesignLayer layer) removeLayer( layer );
-		} );
+		model.register(
+			NodeEvent.CHILD_ADDED, e -> {
+				if( e.getNewValue() != null && e.getNewValue() instanceof DesignLayer layer ) addLayer( layer );
+			}
+		);
+		model.register(
+			NodeEvent.CHILD_REMOVED, e -> {
+				if( e.getOldValue() instanceof DesignLayer layer ) removeLayer( layer );
+			}
+		);
 
 		// Add listener for visible layer changes
 		tool.visibleLayers().addListener( (ListChangeListener<DesignLayer>)( change ) -> {

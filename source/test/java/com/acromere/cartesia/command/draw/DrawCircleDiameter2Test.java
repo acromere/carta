@@ -16,7 +16,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-public class DrawCircleDiameter2Test  extends BaseCommandTest {
+public class DrawCircleDiameter2Test extends BaseCommandTest {
 
 	private final DrawCircleDiameter2 command = new DrawCircleDiameter2();
 
@@ -56,7 +56,7 @@ public class DrawCircleDiameter2Test  extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, timeout(FX_TIMEOUT).times( 1 ) ).setCursor( RETICLE );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
 		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
 		assertThat( result ).isEqualTo( INCOMPLETE );

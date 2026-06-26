@@ -12,9 +12,8 @@ import java.util.List;
 import static com.acromere.cartesia.command.Command.Result.SUCCESS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
-public class RedoTest  extends BaseCommandTest {
+public class RedoTest extends BaseCommandTest {
 
 	@Mock
 	private UndoManager<List<NodeChange>> undoManager;

@@ -5,8 +5,8 @@ import com.acromere.product.Rb;
 import com.acromere.xenon.ProgramTool;
 import com.acromere.xenon.RbKey;
 import com.acromere.xenon.XenonProgramProduct;
-import com.acromere.xenon.resource.Resource;
 import com.acromere.xenon.resource.OpenAssetRequest;
+import com.acromere.xenon.resource.Resource;
 import com.acromere.xenon.tool.settings.SettingsPage;
 import com.acromere.xenon.tool.settings.SettingsPagePanel;
 import com.acromere.xenon.workpane.Workpane;
@@ -87,10 +87,12 @@ public class ShapePropertiesTool extends ProgramTool {
 
 	private void showPage( ShapePropertiesToolEvent event ) {
 		Fx.run( () -> {
-			SettingsPagePanel panel = settingsPagePanelCache.computeIfAbsent( event.getPage(), p -> {
-				p.setSettings( event.getSettings() );
-				return new SettingsPagePanel( p, getProgram().getSettingsManager().getOptionProviders() );
-			} );
+			SettingsPagePanel panel = settingsPagePanelCache.computeIfAbsent(
+				event.getPage(), p -> {
+					p.setSettings( event.getSettings() );
+					return new SettingsPagePanel( p, getProgram().getSettingsManager().getOptionProviders() );
+				}
+			);
 			event.getPage().setSettings( event.getSettings() );
 			scroller.setContent( panel );
 		} );

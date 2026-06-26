@@ -86,7 +86,6 @@ public class TrimTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
-
 	/**
 	 * Trim with one parameter, should prompt the user to select a shape to use
 	 * as the trim edge. The result should be incomplete.
@@ -105,7 +104,7 @@ public class TrimTest extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, timeout(FX_TIMEOUT).times( 1 ) ).setCursor( Cursor.HAND );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( Cursor.HAND );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
 		assertThat( result ).isEqualTo( INCOMPLETE );
@@ -131,10 +130,7 @@ public class TrimTest extends BaseCommandTest {
 	}
 
 	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of(
-			Arguments.of( new String[]{ "bad parameter" }, "select-trim-shape" ),
-			Arguments.of( new String[]{ "1,1", "bad parameter" }, "select-trim-edge" )
-		);
+		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "select-trim-shape" ), Arguments.of( new String[]{ "1,1", "bad parameter" }, "select-trim-edge" ) );
 	}
 
 	@Test

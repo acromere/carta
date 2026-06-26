@@ -107,9 +107,7 @@ public class SnapSelectTest extends BaseCommandTest {
 	}
 
 	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of(
-			Arguments.of( new Object[]{ snap, BAD_POINT_PARAMETER }, "select-snap-shape" )
-		);
+		return Stream.of( Arguments.of( new Object[]{ snap, BAD_POINT_PARAMETER }, "select-snap-shape" ) );
 	}
 
 	@Test

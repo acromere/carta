@@ -26,12 +26,12 @@ public abstract class LayerIcon extends SvgIcon {
 	}
 
 	protected String getCurrentPath() {
-//		String path = "M" + C + "," + (C - R2);
-//		path += "L" + (C - R2) + "," + C;
-//		path += "L" + C + "," + (C + R2);
-//		path += "L" + (C + R2) + "," + C;
-//		path += "Z";
-//		return path;
+		//		String path = "M" + C + "," + (C - R2);
+		//		path += "L" + (C - R2) + "," + C;
+		//		path += "L" + C + "," + (C + R2);
+		//		path += "L" + (C + R2) + "," + C;
+		//		path += "Z";
+		//		return path;
 		return circle( C, C, R2 );
 	}
 

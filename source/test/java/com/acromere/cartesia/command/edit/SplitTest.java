@@ -161,7 +161,7 @@ public class SplitTest extends BaseCommandTest {
 				}
 			}
 			return Boolean.FALSE;
-		});
+		} );
 		assertThat( layer.getShapes() ).matches( shapes -> {
 			for( var shape : shapes ) {
 				if( shape instanceof DesignLine line1 ) {
@@ -169,7 +169,7 @@ public class SplitTest extends BaseCommandTest {
 				}
 			}
 			return Boolean.FALSE;
-		});
+		} );
 	}
 
 }

@@ -94,7 +94,7 @@ public class DesignCubic extends DesignShape {
 
 	@Override
 	public Map<String, Object> getInformation() {
-		return Map.of( ORIGIN, getOrigin(),ORIGIN_CONTROL, getOriginControl(), POINT_CONTROL, getPointControl(), POINT, getPoint(), LENGTH, pathLength() );
+		return Map.of( ORIGIN, getOrigin(), ORIGIN_CONTROL, getOriginControl(), POINT_CONTROL, getPointControl(), POINT, getPoint(), LENGTH, pathLength() );
 	}
 
 	@Override

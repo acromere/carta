@@ -32,7 +32,7 @@ public class CommandTest extends BaseCommandTest {
 
 		// then
 		verify( command, times( 1 ) ).clearReferenceAndPreview( eq( task ) );
-		verify( tool, timeout(FX_TIMEOUT).times( 1 ) ).setCursor( eq( Cursor.DEFAULT ) );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( eq( Cursor.DEFAULT ) );
 		verify( tool, times( 1 ) ).clearSelectedShapes();
 	}
 

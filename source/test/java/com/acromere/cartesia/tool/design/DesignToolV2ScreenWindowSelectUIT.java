@@ -52,7 +52,7 @@ public class DesignToolV2ScreenWindowSelectUIT extends DesignToolV2BaseUIT {
 		List<DesignShape> selected = getTool().getSelectedShapes();
 		assertThat( selected.size() ).isEqualTo( 2 );
 		assertThat( selected.getFirst() ).isInstanceOf( DesignBox.class );
-		assertThat( selected.get(1) ).isInstanceOf( DesignPath.class );
+		assertThat( selected.get( 1 ) ).isInstanceOf( DesignPath.class );
 	}
 
 	@Test

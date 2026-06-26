@@ -8,7 +8,7 @@ import static com.acromere.cartesia.command.Command.Result.SUCCESS;
 public class ReferencePointsToggle extends Command {
 
 	@Override
-	public Object execute( CommandTask task) throws Exception {
+	public Object execute( CommandTask task ) throws Exception {
 		task.getTool().setReferenceLayerVisible( !task.getTool().isReferenceLayerVisible() );
 		return SUCCESS;
 	}

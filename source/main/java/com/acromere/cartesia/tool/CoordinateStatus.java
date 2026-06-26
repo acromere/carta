@@ -31,10 +31,10 @@ public class CoordinateStatus extends HBox {
 	public CoordinateStatus() {
 		setPrecision( 4 );
 
-		String xPrompt = Rb.textOr(  "prompt", "x", "X:" );
-		String yPrompt = Rb.textOr(  "prompt", "y", "Y:" );
-		String zPrompt = Rb.textOr(  "prompt", "z", "Z:" );
-		String zoomPrompt = Rb.textOr(  "prompt", "zoom", "ZM:" );
+		String xPrompt = Rb.textOr( "prompt", "x", "X:" );
+		String yPrompt = Rb.textOr( "prompt", "y", "Y:" );
+		String zPrompt = Rb.textOr( "prompt", "z", "Z:" );
+		String zoomPrompt = Rb.textOr( "prompt", "zoom", "ZM:" );
 
 		xCoord = new Label( "0.0" );
 		yCoord = new Label( "0.0" );

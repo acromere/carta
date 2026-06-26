@@ -15,5 +15,4 @@ public class MarkerIcon extends DrawIcon {
 		Proof.proof( new MarkerIcon() );
 	}
 
-
 }

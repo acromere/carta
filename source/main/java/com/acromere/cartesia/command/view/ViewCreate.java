@@ -1,7 +1,7 @@
 package com.acromere.cartesia.command.view;
 
-import com.acromere.cartesia.data.DesignView;
 import com.acromere.cartesia.command.CommandTask;
+import com.acromere.cartesia.data.DesignView;
 import lombok.CustomLog;
 
 import static com.acromere.cartesia.command.Command.Result.FAILURE;

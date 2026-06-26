@@ -1,7 +1,7 @@
 package com.acromere.cartesia.data.util;
 
-import com.acromere.cartesia.data.DesignModel;
 import com.acromere.cartesia.data.DesignLayer;
+import com.acromere.cartesia.data.DesignModel;
 import com.acromere.data.IdNode;
 import com.acromere.util.TextUtil;
 import com.acromere.xenon.XenonProgramProduct;

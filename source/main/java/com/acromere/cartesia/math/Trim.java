@@ -14,7 +14,7 @@ import java.util.List;
 // P |   |   |   |   |
 
 @CustomLog
-public class Trim extends CadEdit{
+public class Trim extends CadEdit {
 
 	/**
 	 * Trim the trim shape to the edge shape.

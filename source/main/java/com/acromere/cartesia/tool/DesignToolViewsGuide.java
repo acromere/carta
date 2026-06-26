@@ -52,12 +52,16 @@ public class DesignToolViewsGuide extends Guide {
 		design.getViews().forEach( this::addView );
 
 		// Add listeners for changes
-		design.register( NodeEvent.CHILD_ADDED, e -> {
-			if( DesignModel.VIEWS.equals( e.getSetKey() ) ) Fx.run( () -> addView( e.getNewValue() ) );
-		} );
-		design.register( NodeEvent.CHILD_REMOVED, e -> {
-			if( DesignModel.VIEWS.equals( e.getSetKey() ) ) Fx.run( () -> removeView( e.getOldValue() ) );
-		} );
+		design.register(
+			NodeEvent.CHILD_ADDED, e -> {
+				if( DesignModel.VIEWS.equals( e.getSetKey() ) ) Fx.run( () -> addView( e.getNewValue() ) );
+			}
+		);
+		design.register(
+			NodeEvent.CHILD_REMOVED, e -> {
+				if( DesignModel.VIEWS.equals( e.getSetKey() ) ) Fx.run( () -> removeView( e.getOldValue() ) );
+			}
+		);
 	}
 
 	private void addView( DesignView view ) {

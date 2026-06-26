@@ -7,6 +7,7 @@ import javafx.scene.shape.StrokeLineJoin;
 public class LinePerpendicularIcon extends DrawIcon {
 
 	private static final double R = 12;
+
 	private static final double G = Math.sqrt( 0.5 * (R * R) );
 
 	protected void define() {

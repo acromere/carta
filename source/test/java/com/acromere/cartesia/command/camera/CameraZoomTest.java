@@ -1,9 +1,9 @@
 package com.acromere.cartesia.command.camera;
 
 import com.acromere.cartesia.BaseCommandTest;
-import com.acromere.cartesia.command.CommandTrigger;
 import com.acromere.cartesia.command.Command;
 import com.acromere.cartesia.command.CommandTask;
+import com.acromere.cartesia.command.CommandTrigger;
 import com.acromere.cartesia.command.InvalidInputException;
 import com.acromere.cartesia.command.base.Prompt;
 import com.acromere.cartesia.command.base.Value;

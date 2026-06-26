@@ -1,6 +1,5 @@
 package com.acromere.cartesia.command;
 
-import com.acromere.cartesia.command.select.Anchor;
 import com.acromere.cartesia.command.base.GridToggle;
 import com.acromere.cartesia.command.base.ReferencePointsToggle;
 import com.acromere.cartesia.command.base.ShapeInformation;
@@ -12,10 +11,7 @@ import com.acromere.cartesia.command.measure.MeasureAngle;
 import com.acromere.cartesia.command.measure.MeasureDistance;
 import com.acromere.cartesia.command.measure.MeasureLength;
 import com.acromere.cartesia.command.measure.MeasurePoint;
-import com.acromere.cartesia.command.select.SelectByPoint;
-import com.acromere.cartesia.command.select.SelectByWindowContain;
-import com.acromere.cartesia.command.select.SelectByWindowIntersect;
-import com.acromere.cartesia.command.select.SelectToggle;
+import com.acromere.cartesia.command.select.*;
 import com.acromere.cartesia.command.snap.AutoSnap;
 import com.acromere.cartesia.command.snap.SnapGridToggle;
 import com.acromere.cartesia.command.snap.SnapSelect;

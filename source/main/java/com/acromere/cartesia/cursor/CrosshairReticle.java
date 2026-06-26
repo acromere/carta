@@ -14,7 +14,7 @@ public class CrosshairReticle extends RenderedIcon {
 
 	@Override
 	protected void render() {
-		double w = getWidth()-1;
+		double w = getWidth() - 1;
 		double a = 0;
 		double c = 0.5 * w;
 

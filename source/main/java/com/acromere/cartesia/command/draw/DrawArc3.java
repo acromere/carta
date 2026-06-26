@@ -1,11 +1,11 @@
 package com.acromere.cartesia.command.draw;
 
 import com.acromere.cartesia.RbKey;
+import com.acromere.cartesia.command.CommandTask;
 import com.acromere.cartesia.data.DesignArc;
 import com.acromere.cartesia.data.DesignLine;
 import com.acromere.cartesia.math.CadGeometry;
 import com.acromere.cartesia.tool.BaseDesignTool;
-import com.acromere.cartesia.command.CommandTask;
 import com.acromere.product.Rb;
 import com.acromere.xenon.notice.Notice;
 import javafx.geometry.Point3D;

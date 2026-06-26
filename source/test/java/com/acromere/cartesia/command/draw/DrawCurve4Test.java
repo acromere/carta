@@ -118,7 +118,7 @@ public class DrawCurve4Test extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, timeout(FX_TIMEOUT).times( 1 ) ).setCursor( RETICLE );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( Objects.requireNonNull( command.getPreview().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignCubic.class );
 		assertThat( command.getPreview() ).hasSize( 1 );

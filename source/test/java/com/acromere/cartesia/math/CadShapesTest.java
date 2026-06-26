@@ -1,7 +1,7 @@
 package com.acromere.cartesia.math;
 
-import com.acromere.cartesia.test.Point3DAssert;
 import com.acromere.cartesia.data.DesignLine;
+import com.acromere.cartesia.test.Point3DAssert;
 import com.acromere.curve.math.Constants;
 import javafx.geometry.Point3D;
 import org.junit.jupiter.api.Test;
@@ -94,9 +94,7 @@ public class CadShapesTest {
 	@Test
 	void testParseRelativePolarCoordinates() {
 		Point3D anchor = new Point3D( 1, 1, 0 );
-		Point3DAssert
-			.assertThat( CadShapes.parsePoint( "@1<180+45", anchor ) )
-			.isCloseTo( new Point3D( 1 - java.lang.Math.cos( Constants.PI_OVER_4 ), 1 - java.lang.Math.sin( Constants.PI_OVER_4 ), 0 ) );
+		Point3DAssert.assertThat( CadShapes.parsePoint( "@1<180+45", anchor ) ).isCloseTo( new Point3D( 1 - java.lang.Math.cos( Constants.PI_OVER_4 ), 1 - java.lang.Math.sin( Constants.PI_OVER_4 ), 0 ) );
 		Point3DAssert
 			.assertThat( CadShapes.parsePoint( "@1,<180+45", anchor ) )
 			.isCloseTo( new Point3D( 1 - java.lang.Math.cos( Constants.PI_OVER_4 ), 1 - java.lang.Math.sin( Constants.PI_OVER_4 ), 0 ) );

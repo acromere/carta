@@ -15,7 +15,8 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.MouseEvent;
 import lombok.CustomLog;
 
-import static com.acromere.cartesia.command.Command.Result.*;
+import static com.acromere.cartesia.command.Command.Result.FAILURE;
+import static com.acromere.cartesia.command.Command.Result.INCOMPLETE;
 
 @CustomLog
 public class MeasureAngle extends MeasureCommand {
@@ -107,7 +108,8 @@ public class MeasureAngle extends MeasureCommand {
 		if( event.getEventType() == MouseEvent.MOUSE_MOVED ) {
 			BaseDesignTool tool = (BaseDesignTool)event.getSource();
 			Point3D point = tool.screenToWorkplane( event.getX(), event.getY(), event.getZ() );
-			spin = referenceArc == null ? spin : getExtentSpin( referenceArc.getOrigin(),
+			spin = referenceArc == null ? spin : getExtentSpin(
+				referenceArc.getOrigin(),
 				referenceArc.getXRadius(),
 				referenceArc.getYRadius(),
 				referenceArc.calcRotate(),

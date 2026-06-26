@@ -1,7 +1,6 @@
 package com.acromere.cartesia.command.draw;
 
 import com.acromere.cartesia.command.Command;
-import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.math.CadGeometry;
 import javafx.geometry.Point3D;
 

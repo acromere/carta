@@ -19,7 +19,7 @@ public interface DesignTextSupport {
 
 	String FONT_NAME = "font-name";
 
-	String FONT_WEIGHT="font-weight";
+	String FONT_WEIGHT = "font-weight";
 
 	String FONT_POSTURE = "font-posture";
 

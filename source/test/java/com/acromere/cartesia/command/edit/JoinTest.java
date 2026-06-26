@@ -60,7 +60,7 @@ public class JoinTest extends BaseCommandTest {
 		when( tool.worldToScreen( eq( new Point3D( 1, 1, 0 ) ) ) ).thenReturn( new Point3D( 10, 10, 0 ) );
 
 		// The intersection point
-		when( tool.worldToScreen( eq( new Point3D( 0,2, 0 ) ) ) ).thenReturn( new Point3D( 0, 20, 0 ) );
+		when( tool.worldToScreen( eq( new Point3D( 0, 2, 0 ) ) ) ).thenReturn( new Point3D( 0, 20, 0 ) );
 
 		// when
 		Object result = task.runTaskStep();
@@ -95,7 +95,6 @@ public class JoinTest extends BaseCommandTest {
 		assertThat( command.getPreview() ).hasSize( 0 );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
-
 
 	/**
 	 * Trim with one parameter, should prompt the user to select a shape to use
@@ -141,10 +140,7 @@ public class JoinTest extends BaseCommandTest {
 	}
 
 	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of(
-			Arguments.of( new String[]{ "bad parameter" }, "select-meet-shape" ),
-			Arguments.of( new String[]{ "1,1", "bad parameter" }, "select-meet-shape" )
-		);
+		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "select-meet-shape" ), Arguments.of( new String[]{ "1,1", "bad parameter" }, "select-meet-shape" ) );
 	}
 
 	@Test
@@ -170,7 +166,7 @@ public class JoinTest extends BaseCommandTest {
 		when( tool.worldToScreen( eq( new Point3D( 1, 1, 0 ) ) ) ).thenReturn( new Point3D( 10, 10, 0 ) );
 
 		// The intersection point
-		when( tool.worldToScreen( eq( new Point3D( 0,2, 0 ) ) ) ).thenReturn( new Point3D( 0, 20, 0 ) );
+		when( tool.worldToScreen( eq( new Point3D( 0, 2, 0 ) ) ) ).thenReturn( new Point3D( 0, 20, 0 ) );
 
 		// when
 		Object result = task.runTaskStep();

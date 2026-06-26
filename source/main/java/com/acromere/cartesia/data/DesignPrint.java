@@ -12,7 +12,7 @@ public class DesignPrint extends DesignView {
 
 	/**
 	 * This corresponds to the JavaFX PageOrientation enum.
- 	 */
+	 */
 	private static final String PAGE_ORIENTATION = "page-orientation";
 
 	/**
@@ -44,17 +44,17 @@ public class DesignPrint extends DesignView {
 	}
 
 	public DesignPrint setOrigin( Point3D origin ) {
-		super.setOrigin(origin);
+		super.setOrigin( origin );
 		return this;
 	}
 
 	public DesignPrint setZoom( Double value ) {
-		super.setZoom(value);
+		super.setZoom( value );
 		return this;
 	}
 
 	public DesignPrint setRotate( Double value ) {
-		super.setRotate( value);
+		super.setRotate( value );
 		return this;
 	}
 

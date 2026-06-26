@@ -7,7 +7,8 @@ import com.acromere.cartesia.snap.Snap;
 import javafx.geometry.Point3D;
 import lombok.CustomLog;
 
-import static com.acromere.cartesia.command.Command.Result.*;
+import static com.acromere.cartesia.command.Command.Result.FAILURE;
+import static com.acromere.cartesia.command.Command.Result.INCOMPLETE;
 
 @CustomLog
 public class SnapSelect extends SnapCommand {

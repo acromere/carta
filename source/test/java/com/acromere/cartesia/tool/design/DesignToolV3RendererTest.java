@@ -1,9 +1,9 @@
 package com.acromere.cartesia.tool.design;
 
 import com.acromere.cartesia.DesignUnit;
+import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.data.DesignModel;
 import com.acromere.cartesia.data.DesignModel2D;
-import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.tool.Workplane;
 import com.acromere.curve.math.Constants;
 import javafx.beans.value.ChangeListener;

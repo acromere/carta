@@ -23,7 +23,7 @@ class MockCommand extends Command {
 	}
 
 	@Override
-	public Object execute( CommandTask task) {
+	public Object execute( CommandTask task ) {
 		if( task.getParameterCount() < expected ) return INCOMPLETE;
 		this.values = task.getParameters();
 		return SUCCESS;

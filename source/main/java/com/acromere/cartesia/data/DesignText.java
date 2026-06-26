@@ -1,7 +1,6 @@
 package com.acromere.cartesia.data;
 
 import com.acromere.cartesia.math.*;
-import com.acromere.cartesia.math.*;
 import com.acromere.data.NodeEvent;
 import com.acromere.transaction.Txn;
 import com.acromere.transaction.TxnException;

@@ -54,7 +54,7 @@ public class PrintCreateTest extends BaseCommandTest {
 	@Test
 	void testRunTaskStepWithBadParameters() {
 		// given
-		CommandTask task = new CommandTask( commandContext, tool, null, null, command, new Object[] {null} );
+		CommandTask task = new CommandTask( commandContext, tool, null, null, command, new Object[]{ null } );
 
 		// when
 		InvalidInputException exception = catchThrowableOfType( InvalidInputException.class, task::runTaskStep );

@@ -2,9 +2,9 @@ package com.acromere.cartesia.command.camera;
 
 import com.acromere.cartesia.BaseCommandTest;
 import com.acromere.cartesia.command.Command;
+import com.acromere.cartesia.command.CommandTask;
 import com.acromere.cartesia.command.InvalidInputException;
 import com.acromere.cartesia.command.base.Prompt;
-import com.acromere.cartesia.command.CommandTask;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Point3D;
 import org.junit.jupiter.api.Test;
@@ -108,10 +108,7 @@ public class CameraZoomWindowTest extends BaseCommandTest {
 	}
 
 	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of(
-			Arguments.of( new String[]{ "bad parameter" }, "zoom-window-anchor" ),
-			Arguments.of( new String[]{ "1,3", "bad parameter" }, "zoom-window-corner" )
-		);
+		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "zoom-window-anchor" ), Arguments.of( new String[]{ "1,3", "bad parameter" }, "zoom-window-corner" ) );
 	}
 
 }

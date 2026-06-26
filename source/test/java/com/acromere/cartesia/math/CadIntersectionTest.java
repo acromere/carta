@@ -1,8 +1,8 @@
 package com.acromere.cartesia.math;
 
-import com.acromere.cartesia.test.PointListAssert;
 import com.acromere.cartesia.data.DesignEllipse;
 import com.acromere.cartesia.data.DesignLine;
+import com.acromere.cartesia.test.PointListAssert;
 import javafx.geometry.Point3D;
 import org.junit.jupiter.api.Test;
 
