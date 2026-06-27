@@ -62,17 +62,15 @@ public class DrawCurve4Test extends BaseCommandTest {
 	void testRunTaskStepNoParameters() throws Exception {
 		// given
 		CommandTask task = new CommandTask( commandContext, tool, null, null, command );
-		// Use the CLOSED_HAND cursor as a reticle cursor
-		when( tool.getReticleCursor() ).thenReturn( Cursor.CLOSED_HAND );
 
 		// when
 		Object result = task.runTaskStep();
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
 		assertThat( command.getReference() ).hasSize( 0 );
-		assertThat( command.getPreview().stream().findFirst().orElse( null ) ).isInstanceOf( DesignCubic.class );
+		assertThat( Objects.requireNonNull( command.getPreview().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignCubic.class );
 		assertThat( command.getPreview() ).hasSize( 1 );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
@@ -87,17 +85,15 @@ public class DrawCurve4Test extends BaseCommandTest {
 	void testExecuteWithOneParameter() throws Exception {
 		// given
 		CommandTask task = new CommandTask( commandContext, tool, null, null, command, "-3,0" );
-		// Use the CLOSED_HAND cursor as a reticle cursor
-		when( tool.getReticleCursor() ).thenReturn( Cursor.CLOSED_HAND );
 
 		// when
 		Object result = task.runTaskStep();
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
 		assertThat( command.getReference() ).hasSize( 0 );
-		assertThat( command.getPreview().stream().findFirst().orElse( null ) ).isInstanceOf( DesignCubic.class );
+		assertThat( Objects.requireNonNull( command.getPreview().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignCubic.class );
 		assertThat( command.getPreview() ).hasSize( 1 );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
@@ -135,17 +131,15 @@ public class DrawCurve4Test extends BaseCommandTest {
 	void testExecuteWithThreeParameters() throws Exception {
 		// given
 		CommandTask task = new CommandTask( commandContext, tool, null, null, command, "-3,0", "-1,3", "1,-3" );
-		// Use the CLOSED_HAND cursor as a reticle cursor
-		when( tool.getReticleCursor() ).thenReturn( Cursor.CLOSED_HAND );
 
 		// when
 		Object result = task.runTaskStep();
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
 		assertThat( command.getReference() ).hasSize( 0 );
-		assertThat( command.getPreview().stream().findFirst().orElse( null ) ).isInstanceOf( DesignCubic.class );
+		assertThat( Objects.requireNonNull( command.getPreview().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignCubic.class );
 		assertThat( command.getPreview() ).hasSize( 1 );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}

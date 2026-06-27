@@ -85,8 +85,6 @@ public class CameraMoveTest extends BaseCommandTest {
 	void testExecuteWithOneParameter() throws Exception {
 		// given
 		CommandTask task = new CommandTask( commandContext, tool, null, null, command, "-1,1" );
-		// Use the CLOSED_HAND cursor as a reticle cursor
-		when( tool.getReticleCursor() ).thenReturn( Cursor.CLOSED_HAND );
 
 		// when
 		Object result = task.runTaskStep();
@@ -94,7 +92,7 @@ public class CameraMoveTest extends BaseCommandTest {
 		// then
 		verify( commandContext, times( 1 ) ).setTool( eq( tool ) );
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 

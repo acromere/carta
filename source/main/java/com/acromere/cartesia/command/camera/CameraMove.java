@@ -27,6 +27,9 @@ public class CameraMove extends CameraCommand {
 		boolean noEvent = event == null;
 		boolean hasEvent = !noEvent;
 
+		// If the command is already successful, return SUCCESS
+		if( paramCount == 1 && task.getParameter( 0 ) == SUCCESS ) return SUCCESS;
+
 		// Command triggered by input event
 		if( paramCount == 0 & hasEvent && event instanceof MouseEvent mouseEvent && task.getTrigger().matches( event ) ) {
 			event.consume();
@@ -63,9 +66,9 @@ public class CameraMove extends CameraCommand {
 		// With the anchor and the target, move the view point
 		if( paramCount == 2 & noEvent ) {
 			Point3D worldAnchor = asPoint( task, "pan-anchor", 0 );
-			Point3D worldCorner = asPoint( task, "pan-target", 1 );
-			if( worldAnchor != null && worldCorner != null ) {
-				Point3D worldOffset = worldAnchor.subtract( worldCorner );
+			Point3D worldTarget = asPoint( task, "pan-target", 1 );
+			if( worldAnchor != null && worldTarget != null ) {
+				Point3D worldOffset = worldAnchor.subtract( worldTarget );
 				task.getTool().setViewCenter( originalViewPoint.add( worldOffset ) );
 				return SUCCESS;
 			}
@@ -82,16 +85,15 @@ public class CameraMove extends CameraCommand {
 
 		BaseDesignTool tool = (BaseDesignTool)event.getSource();
 		Point3D anchor = originalAnchor;
-		Point3D corner = originalTransform.transform( event.getX(), event.getY(), event.getZ() );
+		Point3D target = originalTransform.transform( event.getX(), event.getY(), event.getZ() );
 
 		if( event.getEventType().equals( MouseEvent.MOUSE_DRAGGED ) ) {
-			Point3D worldOffset = anchor.subtract( corner );
+			Point3D worldOffset = anchor.subtract( target );
 			tool.setViewCenter( originalViewPoint.add( worldOffset ) );
 			event.consume();
 		} else if( event.getEventType().equals( MouseEvent.MOUSE_RELEASED ) ) {
-			// Submit a Value that completes this command successfully
-			Point3D worldOffset = anchor.subtract( corner );
-			task.getContext().submit( tool, new Value(), originalAnchor.subtract( worldOffset ) );
+			// Submit a SUCCESS Value to complete this command
+			task.getContext().submit( tool, new Value(), SUCCESS );
 			event.consume();
 		}
 	}

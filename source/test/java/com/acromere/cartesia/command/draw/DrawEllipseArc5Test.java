@@ -111,16 +111,14 @@ public class DrawEllipseArc5Test extends BaseCommandTest {
 	void testRunTaskStepNoParameters() throws Exception {
 		// given
 		CommandTask task = new CommandTask( commandContext, tool, null, null, command );
-		// Use the CLOSED_HAND cursor as a reticle cursor
-		when( tool.getReticleCursor() ).thenReturn( Cursor.CLOSED_HAND );
 
 		// when
 		Object result = task.runTaskStep();
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
-		assertThat( command.getReference().stream().findFirst().orElse( null ) ).isInstanceOf( DesignLine.class );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
+		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
 		assertThat( command.getPreview() ).hasSize( 0 );
 		assertThat( result ).isEqualTo( INCOMPLETE );
@@ -136,16 +134,14 @@ public class DrawEllipseArc5Test extends BaseCommandTest {
 	void testExecuteWithOneParameter() throws Exception {
 		// given
 		CommandTask task = new CommandTask( commandContext, tool, null, null, command, "-3,3" );
-		// Use the CLOSED_HAND cursor as a reticle cursor
-		when( tool.getReticleCursor() ).thenReturn( Cursor.CLOSED_HAND );
 
 		// when
 		Object result = task.runTaskStep();
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
-		assertThat( command.getReference().stream().findFirst().orElse( null ) ).isInstanceOf( DesignLine.class );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
+		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
 		assertThat( command.getPreview() ).hasSize( 0 );
 		assertThat( result ).isEqualTo( INCOMPLETE );
@@ -185,18 +181,16 @@ public class DrawEllipseArc5Test extends BaseCommandTest {
 	void testExecuteWithThreeParameters() throws Exception {
 		// given
 		CommandTask task = new CommandTask( commandContext, tool, null, null, command, "8,3", "7,4", "8,5" );
-		// Use the CLOSED_HAND cursor as a reticle cursor
-		when( tool.getReticleCursor() ).thenReturn( Cursor.CLOSED_HAND );
 
 		// when
 		Object result = task.runTaskStep();
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
-		assertThat( command.getReference().stream().findFirst().orElse( null ) ).isInstanceOf( DesignLine.class );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
+		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
-		assertThat( command.getPreview().stream().findFirst().orElse( null ) ).isInstanceOf( DesignArc.class );
+		assertThat( Objects.requireNonNull( command.getPreview().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignArc.class );
 		assertThat( command.getPreview() ).hasSize( 1 );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
@@ -220,7 +214,7 @@ public class DrawEllipseArc5Test extends BaseCommandTest {
 		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
 		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
-		assertThat( command.getPreview().stream().findFirst().orElse( null ) ).isInstanceOf( DesignArc.class );
+		assertThat( Objects.requireNonNull( command.getPreview().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignArc.class );
 		assertThat( command.getPreview() ).hasSize( 1 );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
@@ -235,18 +229,16 @@ public class DrawEllipseArc5Test extends BaseCommandTest {
 	void testExecuteWithFiveParameters() throws Exception {
 		// given
 		CommandTask task = new CommandTask( commandContext, tool, null, null, command, "-3,3", "-2,3" );
-		// Use the CLOSED_HAND cursor as a reticle cursor
-		when( tool.getReticleCursor() ).thenReturn( Cursor.CLOSED_HAND );
 
 		// when
 		Object result = task.runTaskStep();
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( Cursor.CLOSED_HAND );
-		assertThat( command.getReference().stream().findFirst().orElse( null ) ).isInstanceOf( DesignLine.class );
+		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
+		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
-		assertThat( command.getPreview().stream().findFirst().orElse( null ) ).isInstanceOf( DesignArc.class );
+		assertThat( Objects.requireNonNull( command.getPreview().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignArc.class );
 		assertThat( command.getPreview() ).hasSize( 1 );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
