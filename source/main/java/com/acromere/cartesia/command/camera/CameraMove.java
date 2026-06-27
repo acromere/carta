@@ -2,7 +2,7 @@ package com.acromere.cartesia.command.camera;
 
 import com.acromere.cartesia.command.CommandTask;
 import com.acromere.cartesia.command.base.Value;
-import com.acromere.cartesia.tool.BaseDesignTool;
+import com.acromere.cartesia.tool.DesignTool;
 import javafx.geometry.Point3D;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
@@ -83,7 +83,7 @@ public class CameraMove extends CameraCommand {
 		if( originalViewPoint == null ) return;
 		if( originalTransform == null ) return;
 
-		BaseDesignTool tool = (BaseDesignTool)event.getSource();
+		DesignTool tool = (DesignTool)event.getSource();
 		Point3D anchor = originalAnchor;
 		Point3D target = originalTransform.transform( event.getX(), event.getY(), event.getZ() );
 

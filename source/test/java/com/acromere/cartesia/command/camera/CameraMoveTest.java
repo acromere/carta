@@ -8,8 +8,9 @@ import com.acromere.cartesia.command.base.Prompt;
 import com.acromere.cartesia.command.base.Value;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
-import javafx.scene.Cursor;
 import javafx.scene.input.InputEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -30,7 +31,7 @@ public class CameraMoveTest extends BaseCommandTest {
 	private final CameraMove command = new CameraMove();
 
 	/**
-	 * Camera move with no parameters or event, should prompt the
+	 * Camera move with no parameters or event. Should prompt the
 	 * user to select an anchor point. The result should be incomplete.
 	 *
 	 * @throws Exception If an error occurs during the test
@@ -135,6 +136,24 @@ public class CameraMoveTest extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
+	}
+
+	@Test
+	void testCommandCompletesSuccessfullyOnMouseRelease() throws Exception {
+		// given
+		CommandTrigger trigger = getMod().getCommandMap().getTriggersByAction( "camera-move" ).iterator().next();
+		MouseEvent triggerEvent = createMouseEvent( trigger, 0, 0 );
+		CommandTask task = new CommandTask( commandContext, tool, trigger, triggerEvent, command );
+		doReturn( Point3D.ZERO ).when( tool ).screenToWorkplane( anyDouble(), anyDouble(), anyDouble() );
+		doReturn( Point3D.ZERO ).when( tool ).getViewCenter();
+		assertThat( command.execute( task ) ).isEqualTo( INCOMPLETE );
+
+		// when
+		MouseEvent releasedEvent = createMouseEvent( tool, null, MouseEvent.MOUSE_RELEASED, MouseButton.PRIMARY, false, true, false, false, 0, 0 );
+		command.handle( task, releasedEvent );
+
+		// then
+		verify( task.getContext() ).submit( eq( tool ), any( Value.class ), eq( SUCCESS ) );
 	}
 
 	private static Stream<Arguments> provideParametersForTestWithParameters() {
