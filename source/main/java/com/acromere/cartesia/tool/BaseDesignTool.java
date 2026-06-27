@@ -237,6 +237,9 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		renderer.viewZoomXProperty().addListener( ( _, _, _ ) -> updateWorkplaneBoundaries() );
 		renderer.viewZoomYProperty().addListener( ( _, _, _ ) -> updateWorkplaneBoundaries() );
 
+		// Update the zoom in the coordinate status when the zoom property changes
+		renderer.viewZoomXProperty().addListener( ( _, _, n ) -> getCommandContext().setZoom( n.doubleValue() ) );
+
 		// Register the listener to update the cursor when the reticle changes, and the cursor is also a reticle cursor
 		reticle.addListener( ( _, _, n ) -> {
 			if( getCursor() instanceof ReticleCursor ) setCursor( n.getCursor( getProgram() ) );
@@ -820,17 +823,11 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	}
 
 	private void updateWorkplaneBoundaries() {
-		// Update the workplane boundaries based on the viewport
+		// Determine the viewport boundary from the renderer layout bounds
+		Bounds viewport = getRenderer().getLayoutBounds();
 
-		// Determine the viewport boundaries in world coordinates
-		// Note that the viewport can be panned, zoomed and rotated
-		// A world rectangle could be determined from the viewport
-
-		Bounds rendererBounds = getRenderer().getLayoutBounds();
-		Bounds workplaneBounds = getRenderer().screenToWorld( rendererBounds );
-		//		log.atWarn().log( "renderer={0}", rendererBounds );
-		//		log.atConfig().withCause( new Throwable() ).log( "workplane={0}", workplaneBounds );
-		workplane.setBounds( workplaneBounds );
+		// The workplane bounds can be determined from the viewport
+		workplane.setBounds( getRenderer().screenToWorld( viewport ) );
 	}
 
 	protected class PrintAction extends ProgramAction {

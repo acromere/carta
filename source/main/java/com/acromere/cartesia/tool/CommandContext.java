@@ -257,6 +257,10 @@ public class CommandContext implements EventHandler<KeyEvent> {
 		// Do not consume key events here, let them bubble up
 	}
 
+	public void setZoom( double zoom ) {
+		getCoordinateStatus().updateZoom( zoom );
+	}
+
 	public void setMouse( MouseEvent event ) {
 		CoordinateStatus coordinateStatus = getCoordinateStatus();
 		BaseDesignTool tool = (BaseDesignTool)event.getSource();
