@@ -41,9 +41,9 @@ import java.util.List;
 @CustomLog
 public class DesignToolV3Renderer extends BaseDesignRenderer {
 
-	public static final String FX_SHAPE = "fx-shape";
+	static final String FX_PANE = "fx-pane";
 
-	private static PathElementMapper pathElementMapper = Mappers.getMapper( PathElementMapper.class );
+	private static final PathElementMapper pathElementMapper;
 
 	private DesignModel design;
 
@@ -129,6 +129,10 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	private final EventHandler<NodeEvent> workplaneChangeHandler = _ -> updateGridFxGeometry();
 
 	private final EventHandler<NodeEvent> designUnitChangeHandler = _ -> setDesignUnit( design.calcDesignUnit() );
+
+	static {
+		pathElementMapper = Mappers.getMapper( PathElementMapper.class );
+	}
 
 	// NEXT Apply lessons learned to create a new design renderer
 
@@ -305,7 +309,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 */
 	@Override
 	public boolean isLayerVisible( DesignLayer layer ) {
-		WeakReference<Pane> layerRef = layer.getValue( FX_SHAPE );
+		WeakReference<Pane> layerRef = layer.getValue( FX_PANE );
 		Pane pane = layerRef == null ? null : layerRef.get();
 		return layers.getChildren().contains( pane );
 	}
@@ -315,6 +319,14 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 */
 	@Override
 	public void setLayerVisible( DesignLayer layer, boolean visible ) {
+		// NEXT Need to take into account internal layers like reference and preview
+		// How can the renderer know what the reference and preview layers are? In
+		// V2 these layers were provided by the renderer. Should I do the same? Or
+		// should these layers be in the DesignContext? Probably. That way previews
+		// and reference can be shared across tools/renderers. Then those layers
+		// need to be shared with the renderer somehow, and designated as those
+		// layers. -- We can get them from the Design.DesignContext
+
 		// This method has a very important implementation, it is more than just
 		// setting a flag, it participates in the performance of the renderer by
 		// creating and destroying geometry. Since most layers are not visible in
@@ -327,10 +339,10 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 			layers.getChildren().add( determineLayerIndex( layer ), pane );
 		} else {
 			// Remove the FX layer from the renderer
-			WeakReference<Pane> layerRef = layer.getValue( FX_SHAPE );
+			WeakReference<Pane> layerRef = layer.getValue( FX_PANE );
 			Pane pane = layerRef == null ? null : layerRef.get();
 			if( pane != null ) layers.getChildren().remove( pane );
-			layer.setValue( FX_SHAPE, null );
+			layer.setValue( FX_PANE, null );
 		}
 	}
 
@@ -563,7 +575,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		int index = -1;
 		for( DesignLayer checkLayer : designLayers ) {
 			if( checkLayer == designLayer ) break;
-			WeakReference<Pane> layerRef = checkLayer.getValue( FX_SHAPE );
+			WeakReference<Pane> layerRef = checkLayer.getValue( FX_PANE );
 			Pane fxLayer = layerRef == null ? null : layerRef.get();
 			if( fxLayer != null ) index = fxLayers.indexOf( fxLayer );
 		}
@@ -580,14 +592,18 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	}
 
 	private Pane mapDesignLayer( DesignLayer designLayer, boolean includeShapes, boolean includeSubLayers ) {
-		Pane layer = new Pane();
-		layer.setUserData( designLayer );
-		designLayer.setValue( FX_SHAPE, new WeakReference<>( layer ) );
+		return mapDesignLayer( designLayer, new Pane(), includeShapes, includeSubLayers );
+	}
+
+	private Pane mapDesignLayer( DesignLayer designLayer, Pane pane, boolean includeShapes, boolean includeSubLayers ) {
+		// Link the DesignLayer and Pane references
+		designLayer.setValue( FX_PANE, new WeakReference<>( pane ) );
+		pane.setUserData( designLayer );
 
 		if( includeShapes ) {
 			designLayer.getShapes().forEach( designShape -> {
 				Shape shape = mapDesignShape( designShape );
-				if( shape != null ) layer.getChildren().add( shape );
+				if( shape != null ) pane.getChildren().add( shape );
 
 				// TODO Handlers need to be attached with the layer as owner
 				// i.e. designLayer.register(layer, "order", e -> changeLayerOrder() );
@@ -595,10 +611,10 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		}
 
 		if( includeSubLayers ) {
-			designLayer.getLayers().forEach( subLayer -> layer.getChildren().add( mapDesignLayer( subLayer ) ) );
+			designLayer.getLayers().forEach( subLayer -> pane.getChildren().add( mapDesignLayer( subLayer ) ) );
 		}
 
-		return layer;
+		return pane;
 	}
 
 	private Shape mapDesignShape( DesignShape designShape ) {
@@ -606,7 +622,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	}
 
 	private Shape mapDesignShape( DesignShape designShape, boolean forceUpdate ) {
-		WeakReference<Shape> reference = designShape.getValue( FX_SHAPE );
+		WeakReference<Shape> reference = designShape.getValue( FX_PANE );
 		Shape fxShape = reference == null ? null : reference.get();
 
 		// If an FX shape is already bound, don't do it again
@@ -629,7 +645,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 			return null;
 		}
 
-		designShape.setValue( FX_SHAPE, new WeakReference<>( fxShape ) );
+		designShape.setValue( FX_PANE, new WeakReference<>( fxShape ) );
 
 		fxShape.setManaged( false );
 		fxShape.setUserData( designShape );

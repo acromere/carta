@@ -75,12 +75,12 @@ public class DesignToolV3 extends BaseDesignTool {
 
 	@Override
 	public DesignLayer getPreviewLayer() {
-		return null;
+		return getDesignContext().getPreviewLayer();
 	}
 
 	@Override
 	public DesignLayer getReferenceLayer() {
-		return null;
+		return getDesignContext().getReferenceLayer();
 	}
 
 	@Override

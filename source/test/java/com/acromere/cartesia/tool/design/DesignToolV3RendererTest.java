@@ -1202,7 +1202,7 @@ public class DesignToolV3RendererTest {
 	}
 
 	private int paneIndexOfDesignLayer( Pane pane, DesignLayer layer ) {
-		WeakReference<Pane> weakLayer = layer.getValue( DesignToolV3Renderer.FX_SHAPE );
+		WeakReference<Pane> weakLayer = layer.getValue( DesignToolV3Renderer.FX_PANE );
 		if( weakLayer == null ) return -1;
 		return pane.getChildren().indexOf( weakLayer.get() );
 	}

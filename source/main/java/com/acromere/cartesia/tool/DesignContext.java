@@ -1,6 +1,7 @@
 package com.acromere.cartesia.tool;
 
 import com.acromere.cartesia.data.Design;
+import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.data.DesignShape;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,11 +18,19 @@ import lombok.Getter;
 @Getter
 public class DesignContext {
 
+	// Should these layers be here or in the design?
+	private final DesignLayer previewLayer;
+
+	private final DesignLayer referenceLayer;
+
+	@Deprecated
 	private final ObservableList<DesignShape> previewShapes;
 
 	private final ObservableList<DesignShape> selectedShapes;
 
 	public DesignContext() {
+		this.previewLayer = new DesignLayer();
+		this.referenceLayer = new DesignLayer();
 		this.previewShapes = FXCollections.synchronizedObservableList( FXCollections.observableArrayList() );
 		this.selectedShapes = FXCollections.synchronizedObservableList( FXCollections.observableArrayList() );
 	}
