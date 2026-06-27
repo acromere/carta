@@ -89,6 +89,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	protected static final String GRID_SNAP_ENABLED = "grid-snap";
 
 	// TODO This is not connected to the grid pixel threshold yet
+	// TODO Should use user visual units, not pixels
 	protected static final double MINIMUM_GRID_PIXELS = 3.0;
 
 	@Getter
