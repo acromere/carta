@@ -326,6 +326,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		// and reference can be shared across tools/renderers. Then those layers
 		// need to be shared with the renderer somehow, and designated as those
 		// layers. -- We can get them from the Design.DesignContext
+		// TODO We'll need to redo this method a bit to accomdate the reference and preview layers
+		// TODO And the mapDesignLayer also
 
 		// This method has a very important implementation, it is more than just
 		// setting a flag, it participates in the performance of the renderer by
@@ -335,7 +337,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		// when the layer is hidden, the geometry is usually not needed anymore.
 		if( visible ) {
 			// Add the FX layer to the renderer
-			Pane pane = mapDesignLayer( layer, true );
+			Pane pane = mapDesignLayer( layer );
 			layers.getChildren().add( determineLayerIndex( layer ), pane );
 		} else {
 			// Remove the FX layer from the renderer
@@ -584,31 +586,25 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	}
 
 	private Pane mapDesignLayer( DesignLayer designLayer ) {
-		return mapDesignLayer( designLayer, true, true );
+		return mapDesignLayer( designLayer, true );
 	}
 
-	private Pane mapDesignLayer( DesignLayer designLayer, boolean includeShapes ) {
-		return mapDesignLayer( designLayer, includeShapes, false );
+	private Pane mapDesignLayer( DesignLayer designLayer, boolean includeSubLayers ) {
+		return mapDesignLayer( designLayer, new Pane(), includeSubLayers );
 	}
 
-	private Pane mapDesignLayer( DesignLayer designLayer, boolean includeShapes, boolean includeSubLayers ) {
-		return mapDesignLayer( designLayer, new Pane(), includeShapes, includeSubLayers );
-	}
-
-	private Pane mapDesignLayer( DesignLayer designLayer, Pane pane, boolean includeShapes, boolean includeSubLayers ) {
+	private Pane mapDesignLayer( DesignLayer designLayer, Pane pane, boolean includeSubLayers ) {
 		// Link the DesignLayer and Pane references
 		designLayer.setValue( FX_PANE, new WeakReference<>( pane ) );
 		pane.setUserData( designLayer );
 
-		if( includeShapes ) {
-			designLayer.getShapes().forEach( designShape -> {
-				Shape shape = mapDesignShape( designShape );
-				if( shape != null ) pane.getChildren().add( shape );
+		designLayer.getShapes().forEach( designShape -> {
+			Shape shape = mapDesignShape( designShape );
+			if( shape != null ) pane.getChildren().add( shape );
 
-				// TODO Handlers need to be attached with the layer as owner
-				// i.e. designLayer.register(layer, "order", e -> changeLayerOrder() );
-			} );
-		}
+			// TODO Handlers need to be attached with the layer as owner
+			// i.e. designLayer.register(layer, "order", e -> changeLayerOrder() );
+		} );
 
 		if( includeSubLayers ) {
 			designLayer.getLayers().forEach( subLayer -> pane.getChildren().add( mapDesignLayer( subLayer ) ) );
