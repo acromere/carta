@@ -31,7 +31,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.lang.ref.WeakReference;
 import java.util.stream.Stream;
 
 import static com.acromere.cartesia.CartesiaTestTag.WHITE_BOX;
@@ -504,39 +503,39 @@ public class DesignToolV3RendererTest {
 		renderer.setLayerVisible( layer1, true );
 		renderer.setLayerVisible( layer3, true );
 		// then
-		assertThat( renderer.paneIndexOfDesignLayer( layer0 ) ).isEqualTo( -1 );
-		assertThat( renderer.paneIndexOfDesignLayer( layer1 ) ).isEqualTo( 1 );
-		assertThat( renderer.paneIndexOfDesignLayer( layer2 ) ).isEqualTo( -1 );
-		assertThat( renderer.paneIndexOfDesignLayer( layer3 ) ).isEqualTo( 0 );
-		assertThat( renderer.paneIndexOfDesignLayer( layer4 ) ).isEqualTo( -1 );
+		assertThat( renderer.getPaneIndex( layer0 ) ).isEqualTo( -1 );
+		assertThat( renderer.getPaneIndex( layer1 ) ).isEqualTo( 1 );
+		assertThat( renderer.getPaneIndex( layer2 ) ).isEqualTo( -1 );
+		assertThat( renderer.getPaneIndex( layer3 ) ).isEqualTo( 0 );
+		assertThat( renderer.getPaneIndex( layer4 ) ).isEqualTo( -1 );
 		assertThat( renderer.layersPane().getChildren().size() ).isEqualTo( 2 );
 
 		// when
 		renderer.setLayerVisible( layer2, true );
-		assertThat( renderer.paneIndexOfDesignLayer( layer0 ) ).isEqualTo( -1 );
-		assertThat( renderer.paneIndexOfDesignLayer( layer1 ) ).isEqualTo( 2 );
-		assertThat( renderer.paneIndexOfDesignLayer( layer2 ) ).isEqualTo( 1 );
-		assertThat( renderer.paneIndexOfDesignLayer( layer3 ) ).isEqualTo( 0 );
-		assertThat( renderer.paneIndexOfDesignLayer( layer4 ) ).isEqualTo( -1 );
+		assertThat( renderer.getPaneIndex( layer0 ) ).isEqualTo( -1 );
+		assertThat( renderer.getPaneIndex( layer1 ) ).isEqualTo( 2 );
+		assertThat( renderer.getPaneIndex( layer2 ) ).isEqualTo( 1 );
+		assertThat( renderer.getPaneIndex( layer3 ) ).isEqualTo( 0 );
+		assertThat( renderer.getPaneIndex( layer4 ) ).isEqualTo( -1 );
 		assertThat( renderer.layersPane().getChildren().size() ).isEqualTo( 3 );
 
 		// when
 		renderer.setLayerVisible( layer4, true );
-		assertThat( renderer.paneIndexOfDesignLayer( layer0 ) ).isEqualTo( -1 );
-		assertThat( renderer.paneIndexOfDesignLayer( layer1 ) ).isEqualTo( 3 );
-		assertThat( renderer.paneIndexOfDesignLayer( layer2 ) ).isEqualTo( 2 );
-		assertThat( renderer.paneIndexOfDesignLayer( layer3 ) ).isEqualTo( 1 );
-		assertThat( renderer.paneIndexOfDesignLayer( layer4 ) ).isEqualTo( 0 );
+		assertThat( renderer.getPaneIndex( layer0 ) ).isEqualTo( -1 );
+		assertThat( renderer.getPaneIndex( layer1 ) ).isEqualTo( 3 );
+		assertThat( renderer.getPaneIndex( layer2 ) ).isEqualTo( 2 );
+		assertThat( renderer.getPaneIndex( layer3 ) ).isEqualTo( 1 );
+		assertThat( renderer.getPaneIndex( layer4 ) ).isEqualTo( 0 );
 		assertThat( renderer.layersPane().getChildren().size() ).isEqualTo( 4 );
 
 		// when
 		renderer.setLayerVisible( layer4, false );
 		// then
-		assertThat( renderer.paneIndexOfDesignLayer( layer0 ) ).isEqualTo( -1 );
-		assertThat( renderer.paneIndexOfDesignLayer( layer1 ) ).isEqualTo( 2 );
-		assertThat( renderer.paneIndexOfDesignLayer( layer2 ) ).isEqualTo( 1 );
-		assertThat( renderer.paneIndexOfDesignLayer( layer3 ) ).isEqualTo( 0 );
-		assertThat( renderer.paneIndexOfDesignLayer( layer4 ) ).isEqualTo( -1 );
+		assertThat( renderer.getPaneIndex( layer0 ) ).isEqualTo( -1 );
+		assertThat( renderer.getPaneIndex( layer1 ) ).isEqualTo( 2 );
+		assertThat( renderer.getPaneIndex( layer2 ) ).isEqualTo( 1 );
+		assertThat( renderer.getPaneIndex( layer3 ) ).isEqualTo( 0 );
+		assertThat( renderer.getPaneIndex( layer4 ) ).isEqualTo( -1 );
 		assertThat( renderer.layersPane().getChildren().size() ).isEqualTo( 3 );
 	}
 

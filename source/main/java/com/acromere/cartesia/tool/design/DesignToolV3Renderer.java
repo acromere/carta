@@ -33,15 +33,13 @@ import org.jspecify.annotations.NonNull;
 import org.mapstruct.factory.Mappers;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @CustomLog
 public class DesignToolV3Renderer extends BaseDesignRenderer {
 
-	static final String FX_PANE = "fx-pane";
+	private static final String FX_GEOMETRY = "fx-geometry";
 
 	private static final PathElementMapper pathElementMapper;
 
@@ -319,9 +317,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 */
 	@Override
 	public boolean isLayerVisible( DesignLayer layer ) {
-		WeakReference<Pane> layerRef = layer.getValue( FX_PANE );
-		Pane pane = layerRef == null ? null : layerRef.get();
-		return layers.getChildren().contains( pane );
+		return layers.getChildren().contains( getFxGeometry( layer ) );
 	}
 
 	/**
@@ -351,10 +347,9 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 			layers.getChildren().add( determineLayerIndex( layer ), pane );
 		} else {
 			// Remove the FX layer from the renderer
-			WeakReference<Pane> layerRef = layer.getValue( FX_PANE );
-			Pane pane = layerRef == null ? null : layerRef.get();
+			Pane pane = (Pane)getFxGeometry( layer );
 			if( pane != null ) layers.getChildren().remove( pane );
-			layer.setValue( FX_PANE, null );
+			layer.setValue( FX_GEOMETRY, null );
 		}
 	}
 
@@ -587,19 +582,22 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		int index = -1;
 		for( DesignLayer checkLayer : designLayers ) {
 			if( checkLayer == designLayer ) break;
-			WeakReference<Pane> layerRef = checkLayer.getValue( FX_PANE );
-			Pane fxLayer = layerRef == null ? null : layerRef.get();
+			Pane fxLayer = (Pane)getFxGeometry( checkLayer );
 			if( fxLayer != null ) index = fxLayers.indexOf( fxLayer );
 		}
 
 		return index + 1;
 	}
 
+	/**
+	 * Get the design layer index from the existing FX layer panes.
+	 *
+	 * @param layer The design layer to get the index for.
+	 * @return The index of the design layer in the existing FX layer panes.
+	 */
 	@Note( Note.TESTING_ONLY )
-	int paneIndexOfDesignLayer( DesignLayer layer ) {
-		WeakReference<Pane> weakLayer = layer.getValue( DesignToolV3Renderer.FX_PANE );
-		if( weakLayer == null ) return -1;
-		return layersPane().getChildren().indexOf( weakLayer.get() );
+	int getPaneIndex( DesignLayer layer ) {
+		return layers.getChildren().indexOf( getFxGeometry( layer ) );
 	}
 
 	private Pane mapDesignLayer( DesignLayer designLayer ) {
@@ -612,12 +610,12 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 	private Pane mapDesignLayer( DesignLayer designLayer, Pane pane, boolean includeSubLayers ) {
 		// Link the DesignLayer and Pane references
-		designLayer.setValue( FX_PANE, new WeakReference<>( pane ) );
+		createGeometryMap( designLayer, pane );
 		pane.setUserData( designLayer );
 
 		designLayer.getShapes().forEach( designShape -> {
 			Shape shape = mapDesignShape( designShape );
-			if( shape != null ) pane.getChildren().add( shape );
+			pane.getChildren().add( shape );
 
 			// TODO Handlers need to be attached with the layer as owner
 			// i.e. designLayer.register(layer, "order", e -> changeLayerOrder() );
@@ -634,12 +632,19 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		return mapDesignShape( designShape, false );
 	}
 
+	private Node getFxGeometry( DesignDrawable designShape ) {
+		WeakReference<Map<DesignRenderer, Node>> reference = designShape.getValue( FX_GEOMETRY );
+		if( reference == null ) return null;
+		Map<DesignRenderer, Node> map = reference.get();
+		if( map == null ) return null;
+		return map.getOrDefault( this, null );
+	}
+
 	private Shape mapDesignShape( DesignShape designShape, boolean forceUpdate ) {
 		// NEXT Is it necessary for the shape to carry a reference to the renderer geometry?
 		// Because there may be multiple geometries based on the number of renderers.
 		// Can the renderers keep all references and listeners?
-		WeakReference<Shape> reference = designShape.getValue( FX_PANE );
-		Shape fxShape = reference == null ? null : reference.get();
+		Shape fxShape = (Shape)getFxGeometry( designShape );
 
 		// If an FX shape is already bound, don't do it again
 		if( fxShape != null ) return fxShape;
@@ -656,17 +661,27 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 			case TEXT -> bindTextGeometry( (DesignText)designShape );
 		};
 
-		if( fxShape == null ) {
-			log.atWarn().log( "Unable to map design shape: %s", designShape );
-			return null;
-		}
-
-		designShape.setValue( FX_PANE, new WeakReference<>( fxShape ) );
-
 		fxShape.setManaged( false );
 		fxShape.setUserData( designShape );
 
+		createGeometryMap( designShape, fxShape );
+
 		return fxShape;
+	}
+
+	/**
+	 * Create the map of geometry by renderer if needed
+	 *
+	 * @param drawable The design drawable to create the map for.
+	 * @param node The FX node to link to the map.
+	 */
+	private void createGeometryMap( DesignDrawable drawable, Node node ) {
+		WeakReference<Map<DesignRenderer, Node>> reference = drawable.getValue( FX_GEOMETRY );
+		if( reference == null ) {
+			Map<DesignRenderer, Node> map = new ConcurrentHashMap<>();
+			map.put( this, node );
+			drawable.setValue( FX_GEOMETRY, new WeakReference<>( map ) );
+		}
 	}
 
 	// TODO Finish building the bind methods for the remaining design shapes
