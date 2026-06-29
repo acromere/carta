@@ -635,6 +635,9 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	}
 
 	private Shape mapDesignShape( DesignShape designShape, boolean forceUpdate ) {
+		// NEXT Is it necessary for the shape to carry a reference to the renderer geometry?
+		// Because there may be multiple geometries based on the number of renderers.
+		// Can the renderers keep all references and listeners?
 		WeakReference<Shape> reference = designShape.getValue( FX_PANE );
 		Shape fxShape = reference == null ? null : reference.get();
 
