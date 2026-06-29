@@ -206,9 +206,9 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		viewZoomTransform.xProperty().bind( viewZoomXProperty().divide( outputScaleXProperty() ) );
 		viewZoomTransform.yProperty().bind( viewZoomYProperty().divide( outputScaleYProperty() ).negate() );
 
-		// The translate properties do not include the output scale property because
+		// The translation properties do not include the output scale property because
 		// these are parent coordinates and not local coordinates, and the parent
-		// transforms have already incorporated the output scale. The translate
+		// transforms have already incorporated the output scale. The translation
 		// properties also have to compensate for the scale acting at the center of
 		// the pane and not at the origin.
 		viewCenterTransform.xProperty().bind( getRendererCenterX().subtract( viewCenterXProperty().multiply( shapeScaleXProperty() ) ) );
@@ -325,16 +325,6 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 */
 	@Override
 	public void setLayerVisible( DesignLayer layer, boolean visible ) {
-		// NEXT Need to take into account internal layers like reference and preview
-		// How can the renderer know what the reference and preview layers are? In
-		// V2 these layers were provided by the renderer. Should I do the same? Or
-		// should these layers be in the DesignContext? Probably. That way previews
-		// and reference can be shared across tools/renderers. Then those layers
-		// need to be shared with the renderer somehow, and designated as those
-		// layers. -- We can get them from the Design.DesignContext
-		// TODO We'll need to redo this method a bit to accomdate the reference and preview layers
-		// TODO And the mapDesignLayer also
-
 		// This method has a very important implementation, it is more than just
 		// setting a flag, it participates in the performance of the renderer by
 		// creating and destroying geometry. Since most layers are not visible in
