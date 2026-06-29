@@ -240,16 +240,10 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 			setDesignModel( null );
 		} else {
 			setDesignModel( design.getDataModel() );
+
+			// NEXT Now we have access to the resource and preview layers
 		}
 	}
-
-//	/**
-//	 * {@inheritDoc}
-//	 */
-//	@Override
-//	public DesignModel getDesignModel() {
-//		return model;
-//	}
 
 	/**
 	 * {@inheritDoc}
@@ -599,6 +593,13 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		}
 
 		return index + 1;
+	}
+
+	@Note( Note.TESTING_ONLY )
+	int paneIndexOfDesignLayer( DesignLayer layer ) {
+		WeakReference<Pane> weakLayer = layer.getValue( DesignToolV3Renderer.FX_PANE );
+		if( weakLayer == null ) return -1;
+		return layersPane().getChildren().indexOf( weakLayer.get() );
 	}
 
 	private Pane mapDesignLayer( DesignLayer designLayer ) {

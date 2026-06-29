@@ -29,25 +29,6 @@ public interface DesignRenderer extends CommonToolRenderer {
 	 */
 	void setDesign( Design<? extends DesignModel> design );
 
-//	/**
-//	 * Retrieves the current {@code DesignModel} instance associated with the renderer.
-//	 *
-//	 * @return The {@code Design} instance
-//	 */
-//	@Deprecated
-//	DesignModel getDesignModel();
-
-//	/**
-//	 * Associates a {@code DesignModel} instance with the renderer, handling the
-//	 * registration and unregistration of change listeners. The method updates
-//	 * the internal state to support rendering consistent with the provided
-//	 * design. If null, the current design association is removed.
-//	 *
-//	 * @param design The {@code DesignModel} instance to associate with the renderer.
-//	 */
-//	@Deprecated
-//	void setDesignModel( DesignModel design );
-
 	/**
 	 * Retrieves the current {@code Workplane} instance associated with the renderer.
 	 *

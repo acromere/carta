@@ -504,39 +504,39 @@ public class DesignToolV3RendererTest {
 		renderer.setLayerVisible( layer1, true );
 		renderer.setLayerVisible( layer3, true );
 		// then
-		assertThat( paneIndexOfDesignLayer( renderer.layersPane(), layer0 ) ).isEqualTo( -1 );
-		assertThat( paneIndexOfDesignLayer( renderer.layersPane(), layer1 ) ).isEqualTo( 1 );
-		assertThat( paneIndexOfDesignLayer( renderer.layersPane(), layer2 ) ).isEqualTo( -1 );
-		assertThat( paneIndexOfDesignLayer( renderer.layersPane(), layer3 ) ).isEqualTo( 0 );
-		assertThat( paneIndexOfDesignLayer( renderer.layersPane(), layer4 ) ).isEqualTo( -1 );
+		assertThat( renderer.paneIndexOfDesignLayer( layer0 ) ).isEqualTo( -1 );
+		assertThat( renderer.paneIndexOfDesignLayer( layer1 ) ).isEqualTo( 1 );
+		assertThat( renderer.paneIndexOfDesignLayer( layer2 ) ).isEqualTo( -1 );
+		assertThat( renderer.paneIndexOfDesignLayer( layer3 ) ).isEqualTo( 0 );
+		assertThat( renderer.paneIndexOfDesignLayer( layer4 ) ).isEqualTo( -1 );
 		assertThat( renderer.layersPane().getChildren().size() ).isEqualTo( 2 );
 
 		// when
 		renderer.setLayerVisible( layer2, true );
-		assertThat( paneIndexOfDesignLayer( renderer.layersPane(), layer0 ) ).isEqualTo( -1 );
-		assertThat( paneIndexOfDesignLayer( renderer.layersPane(), layer1 ) ).isEqualTo( 2 );
-		assertThat( paneIndexOfDesignLayer( renderer.layersPane(), layer2 ) ).isEqualTo( 1 );
-		assertThat( paneIndexOfDesignLayer( renderer.layersPane(), layer3 ) ).isEqualTo( 0 );
-		assertThat( paneIndexOfDesignLayer( renderer.layersPane(), layer4 ) ).isEqualTo( -1 );
+		assertThat( renderer.paneIndexOfDesignLayer( layer0 ) ).isEqualTo( -1 );
+		assertThat( renderer.paneIndexOfDesignLayer( layer1 ) ).isEqualTo( 2 );
+		assertThat( renderer.paneIndexOfDesignLayer( layer2 ) ).isEqualTo( 1 );
+		assertThat( renderer.paneIndexOfDesignLayer( layer3 ) ).isEqualTo( 0 );
+		assertThat( renderer.paneIndexOfDesignLayer( layer4 ) ).isEqualTo( -1 );
 		assertThat( renderer.layersPane().getChildren().size() ).isEqualTo( 3 );
 
 		// when
 		renderer.setLayerVisible( layer4, true );
-		assertThat( paneIndexOfDesignLayer( renderer.layersPane(), layer0 ) ).isEqualTo( -1 );
-		assertThat( paneIndexOfDesignLayer( renderer.layersPane(), layer1 ) ).isEqualTo( 3 );
-		assertThat( paneIndexOfDesignLayer( renderer.layersPane(), layer2 ) ).isEqualTo( 2 );
-		assertThat( paneIndexOfDesignLayer( renderer.layersPane(), layer3 ) ).isEqualTo( 1 );
-		assertThat( paneIndexOfDesignLayer( renderer.layersPane(), layer4 ) ).isEqualTo( 0 );
+		assertThat( renderer.paneIndexOfDesignLayer( layer0 ) ).isEqualTo( -1 );
+		assertThat( renderer.paneIndexOfDesignLayer( layer1 ) ).isEqualTo( 3 );
+		assertThat( renderer.paneIndexOfDesignLayer( layer2 ) ).isEqualTo( 2 );
+		assertThat( renderer.paneIndexOfDesignLayer( layer3 ) ).isEqualTo( 1 );
+		assertThat( renderer.paneIndexOfDesignLayer( layer4 ) ).isEqualTo( 0 );
 		assertThat( renderer.layersPane().getChildren().size() ).isEqualTo( 4 );
 
 		// when
 		renderer.setLayerVisible( layer4, false );
 		// then
-		assertThat( paneIndexOfDesignLayer( renderer.layersPane(), layer0 ) ).isEqualTo( -1 );
-		assertThat( paneIndexOfDesignLayer( renderer.layersPane(), layer1 ) ).isEqualTo( 2 );
-		assertThat( paneIndexOfDesignLayer( renderer.layersPane(), layer2 ) ).isEqualTo( 1 );
-		assertThat( paneIndexOfDesignLayer( renderer.layersPane(), layer3 ) ).isEqualTo( 0 );
-		assertThat( paneIndexOfDesignLayer( renderer.layersPane(), layer4 ) ).isEqualTo( -1 );
+		assertThat( renderer.paneIndexOfDesignLayer( layer0 ) ).isEqualTo( -1 );
+		assertThat( renderer.paneIndexOfDesignLayer( layer1 ) ).isEqualTo( 2 );
+		assertThat( renderer.paneIndexOfDesignLayer( layer2 ) ).isEqualTo( 1 );
+		assertThat( renderer.paneIndexOfDesignLayer( layer3 ) ).isEqualTo( 0 );
+		assertThat( renderer.paneIndexOfDesignLayer( layer4 ) ).isEqualTo( -1 );
 		assertThat( renderer.layersPane().getChildren().size() ).isEqualTo( 3 );
 	}
 
@@ -1207,12 +1207,6 @@ public class DesignToolV3RendererTest {
 			Arguments.of( 2.75, new Point2D( -1, 0 ), new Point2D( 462.20472440944883, 500 ) ),
 			Arguments.of( 3, new Point2D( -1, 0 ), new Point2D( 462.20472440944883, 500 ) )
 		);
-	}
-
-	private int paneIndexOfDesignLayer( Pane pane, DesignLayer layer ) {
-		WeakReference<Pane> weakLayer = layer.getValue( DesignToolV3Renderer.FX_PANE );
-		if( weakLayer == null ) return -1;
-		return pane.getChildren().indexOf( weakLayer.get() );
 	}
 
 	private void assertBounds( Region region, double x, double y, double width, double height ) {

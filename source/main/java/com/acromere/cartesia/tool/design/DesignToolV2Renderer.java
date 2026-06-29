@@ -188,14 +188,6 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 		}
 	}
 
-//	/**
-//	 * {@inheritDoc}
-//	 */
-//	@Override
-//	public DesignModel getDesignModel() {
-//		return design.getDataModel();
-//	}
-
 	/**
 	 * {@inheritDoc}
 	 */
