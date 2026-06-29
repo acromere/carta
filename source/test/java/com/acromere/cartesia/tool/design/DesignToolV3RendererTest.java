@@ -1,11 +1,13 @@
 package com.acromere.cartesia.tool.design;
 
 import com.acromere.cartesia.DesignUnit;
+import com.acromere.cartesia.data.Design;
 import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.data.DesignModel;
 import com.acromere.cartesia.data.DesignModel2D;
 import com.acromere.cartesia.tool.Workplane;
 import com.acromere.curve.math.Constants;
+import com.acromere.zerra.javafx.Fx;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
@@ -71,7 +73,7 @@ public class DesignToolV3RendererTest {
 	void setUp() {
 		renderer = new DesignToolV3Renderer();
 		renderer.resizeRelocate( 0, 0, width, height );
-		renderer.setDesignModel( new DesignModel2D() );
+		renderer.setDesign( new Design<>( new DesignModel2D() ) );
 		renderer.setWorkplane( new Workplane() );
 		renderer.layout();
 
@@ -94,24 +96,26 @@ public class DesignToolV3RendererTest {
 	}
 
 	@Test
-	void setDesignModel() {
-		DesignModel design = new DesignModel2D();
-		renderer.setDesignModel( design );
-		assertThat( renderer.getDesignModel() ).isEqualTo( design );
+	void setDesign() {
+		Fx.startup();
+		Design<DesignModel2D> design = new Design<>( new DesignModel2D() );
+		renderer.setDesign( design );
+		assertThat( renderer.getDesign() ).isEqualTo( design );
 	}
 
 	@Test
-	void setDesignModelWithNull() {
+	void setDesignWithNull() {
 		// given
-		DesignModel design = new DesignModel2D();
-		renderer.setDesignModel( design );
-		assertThat( renderer.getDesignModel() ).isEqualTo( design );
+		Fx.startup();
+		Design<DesignModel2D> design = new Design<>( new DesignModel2D() );
+		renderer.setDesign( design );
+		assertThat( renderer.getDesign() ).isEqualTo( design );
 
 		// when
-		renderer.setDesignModel( null );
+		renderer.setDesign( null );
 
 		// then
-		assertThat( renderer.getDesignModel() ).isEqualTo( null );
+		assertThat( renderer.getDesign() ).isEqualTo( null );
 	}
 
 	@Test
@@ -177,9 +181,9 @@ public class DesignToolV3RendererTest {
 	@Tag( WHITE_BOX )
 	void updateDpi() {
 		// given
-		DesignModel design = ExampleDesigns.redBlueX();
-		renderer.setDesignModel( design );
-		renderer.setLayerVisible( design.getLayers().getLayers().getFirst(), true );
+		Design<DesignModel> design = new Design<>( ExampleDesigns.redBlueX() );
+		DesignModel model = design.getDataModel();
+		renderer.setLayerVisible( model.getLayers().getLayers().getFirst(), true );
 
 		// Verify the FX geometry in the renderer
 		Pane construction = (Pane)renderer.layersPane().getChildren().getFirst();
@@ -206,9 +210,9 @@ public class DesignToolV3RendererTest {
 	@Tag( WHITE_BOX )
 	void updateOutputScale() {
 		// given
-		DesignModel design = ExampleDesigns.redBlueX();
-		renderer.setDesignModel( design );
-		renderer.setLayerVisible( design.getLayers().getLayers().getFirst(), true );
+		Design<DesignModel> design = new Design<>( ExampleDesigns.redBlueX() );
+		DesignModel model = design.getDataModel();
+		renderer.setLayerVisible( model.getLayers().getLayers().getFirst(), true );
 
 		// Verify the FX geometry in the renderer
 		Pane construction = (Pane)renderer.layersPane().getChildren().getFirst();
@@ -239,9 +243,10 @@ public class DesignToolV3RendererTest {
 	@Tag( WHITE_BOX )
 	void updateDesignUnit() {
 		// given
-		DesignModel design = ExampleDesigns.redBlueX();
-		renderer.setDesignModel( design );
-		renderer.setLayerVisible( design.getLayers().getLayers().getFirst(), true );
+		Design<DesignModel> design = new Design<>( ExampleDesigns.redBlueX() );
+		DesignModel model = design.getDataModel();
+		renderer.setDesign( design );
+		renderer.setLayerVisible( model.getLayers().getLayers().getFirst(), true );
 
 		// Verify the FX geometry in the renderer
 		Pane construction = (Pane)renderer.layersPane().getChildren().getFirst();
@@ -255,7 +260,7 @@ public class DesignToolV3RendererTest {
 		Assertions.assertThat( renderer.getVisualBounds( construction ) ).isEqualTo( new BoundingBox( -207.87400817871094, -207.87400817871094, 415.7480163574219, 415.7480163574219 ) );
 
 		// when
-		design.setDesignUnit( DesignUnit.MM );
+		model.setDesignUnit( DesignUnit.MM );
 
 		// then
 		// The FX geometry should have changed in the renderer
@@ -479,19 +484,20 @@ public class DesignToolV3RendererTest {
 	@Test
 	void setLayerVisible() {
 		// given
-		DesignModel design = new DesignModel2D();
+		Design<DesignModel2D> design = new Design<>( new DesignModel2D() );
+		DesignModel2D model = design.getDataModel();
 		DesignLayer layer0 = new DesignLayer().setName( "layer0" ).setOrder( 0 );
 		DesignLayer layer1 = new DesignLayer().setName( "layer1" ).setOrder( 1 );
 		DesignLayer layer2 = new DesignLayer().setName( "layer2" ).setOrder( 2 );
 		DesignLayer layer3 = new DesignLayer().setName( "layer3" ).setOrder( 3 );
 		DesignLayer layer4 = new DesignLayer().setName( "layer4" ).setOrder( 4 );
-		design.getLayers().addLayer( layer0 );
-		design.getLayers().addLayer( layer1 );
-		design.getLayers().addLayer( layer2 );
-		design.getLayers().addLayer( layer3 );
-		design.getLayers().addLayer( layer4 );
-		renderer.setDesignModel( design );
-		assertThat( design.getAllLayers().size() ).isEqualTo( 5 );
+		model.getLayers().addLayer( layer0 );
+		model.getLayers().addLayer( layer1 );
+		model.getLayers().addLayer( layer2 );
+		model.getLayers().addLayer( layer3 );
+		model.getLayers().addLayer( layer4 );
+		renderer.setDesign( design );
+		assertThat( model.getAllLayers().size() ).isEqualTo( 5 );
 		assertThat( renderer.layersPane().getChildren().size() ).isEqualTo( 0 );
 
 		// when
@@ -536,19 +542,20 @@ public class DesignToolV3RendererTest {
 
 	@Test
 	void isLayerVisible() {
-		DesignModel design = new DesignModel2D();
+		Design<DesignModel2D> design = new Design<>( new DesignModel2D() );
+		DesignModel2D model = design.getDataModel();
 		DesignLayer layer0 = new DesignLayer().setName( "layer0" ).setOrder( 0 );
 		DesignLayer layer1 = new DesignLayer().setName( "layer1" ).setOrder( 1 );
 		DesignLayer layer2 = new DesignLayer().setName( "layer2" ).setOrder( 2 );
 		DesignLayer layer3 = new DesignLayer().setName( "layer3" ).setOrder( 3 );
 		DesignLayer layer4 = new DesignLayer().setName( "layer4" ).setOrder( 4 );
-		design.getLayers().addLayer( layer0 );
-		design.getLayers().addLayer( layer1 );
-		design.getLayers().addLayer( layer2 );
-		design.getLayers().addLayer( layer3 );
-		design.getLayers().addLayer( layer4 );
-		renderer.setDesignModel( design );
-		assertThat( design.getAllLayers().size() ).isEqualTo( 5 );
+		model.getLayers().addLayer( layer0 );
+		model.getLayers().addLayer( layer1 );
+		model.getLayers().addLayer( layer2 );
+		model.getLayers().addLayer( layer3 );
+		model.getLayers().addLayer( layer4 );
+		renderer.setDesign( design );
+		assertThat( model.getAllLayers().size() ).isEqualTo( 5 );
 		assertThat( renderer.layersPane().getChildren().size() ).isEqualTo( 0 );
 
 		assertThat( renderer.isLayerVisible( layer0 ) ).isFalse();
@@ -1167,8 +1174,9 @@ public class DesignToolV3RendererTest {
 	@MethodSource
 	void worldToScreenDoesNotChangeWithDifferentOutputScales( double outputScale, Point2D point, Point2D expected ) {
 		// given
+		Design<DesignModel2D> design = new Design<>( new DesignModel2D() );
 		renderer.resizeRelocate( 0, 0, 1000, 1000 );
-		renderer.setDesignModel( new DesignModel2D() );
+		renderer.setDesign( design );
 		renderer.setWorkplane( new Workplane() );
 		renderer.layout();
 

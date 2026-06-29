@@ -1,5 +1,6 @@
 package com.acromere.cartesia.tool.design;
 
+import com.acromere.cartesia.data.Design;
 import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.data.DesignModel;
 import com.acromere.cartesia.tool.Workplane;
@@ -12,21 +13,40 @@ import java.util.List;
 public interface DesignRenderer extends CommonToolRenderer {
 
 	/**
-	 * Retrieves the current {@code DesignModel} instance associated with the renderer.
+	 * Retrieves the current {@code Design} instance associated with the renderer.
 	 *
 	 * @return The {@code Design} instance
 	 */
-	DesignModel getDesignModel();
+	Design<? extends DesignModel> getDesign();
 
 	/**
-	 * Associates a {@code DesignModel} instance with the renderer, handling the
+	 * Associates a {@code Design} instance with the renderer, handling the
 	 * registration and unregistration of change listeners. The method updates
 	 * the internal state to support rendering consistent with the provided
 	 * design. If null, the current design association is removed.
 	 *
-	 * @param design The {@code DesignModel} instance to associate with the renderer.
+	 * @param design The {@code Design} instance to associate with the renderer.
 	 */
-	void setDesignModel( DesignModel design );
+	void setDesign( Design<? extends DesignModel> design );
+
+//	/**
+//	 * Retrieves the current {@code DesignModel} instance associated with the renderer.
+//	 *
+//	 * @return The {@code Design} instance
+//	 */
+//	@Deprecated
+//	DesignModel getDesignModel();
+
+//	/**
+//	 * Associates a {@code DesignModel} instance with the renderer, handling the
+//	 * registration and unregistration of change listeners. The method updates
+//	 * the internal state to support rendering consistent with the provided
+//	 * design. If null, the current design association is removed.
+//	 *
+//	 * @param design The {@code DesignModel} instance to associate with the renderer.
+//	 */
+//	@Deprecated
+//	void setDesignModel( DesignModel design );
 
 	/**
 	 * Retrieves the current {@code Workplane} instance associated with the renderer.

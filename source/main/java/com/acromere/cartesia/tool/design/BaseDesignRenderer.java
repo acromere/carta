@@ -1,5 +1,7 @@
 package com.acromere.cartesia.tool.design;
 
+import com.acromere.cartesia.data.Design;
+import com.acromere.cartesia.data.DesignModel;
 import com.acromere.cartesia.tool.RenderConstants;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;

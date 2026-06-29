@@ -40,8 +40,8 @@ public class DesignToolV3 extends BaseDesignTool {
 	protected void ready( OpenAssetRequest request ) throws ToolException {
 		super.ready( request );
 		Design<DesignModel2D> design = request.getResource().getModel();
-		DesignModel model = design.getDataModel();
-		getRenderer().setDesignModel( model );
+		getRenderer().setDesign( design );
+		//DesignModel model = design.getDataModel();
 
 		// DEVELOPMENT
 		//		if( Objects.equals( getProgram().getMode(), XenonMode.DEV ) ) {

@@ -45,7 +45,9 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 	private static final PathElementMapper pathElementMapper;
 
-	private DesignModel design;
+	private Design<? extends DesignModel> design;
+
+	private DesignModel model;
 
 	private Workplane workplane;
 
@@ -128,7 +130,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 	private final EventHandler<NodeEvent> workplaneChangeHandler = _ -> updateGridFxGeometry();
 
-	private final EventHandler<NodeEvent> designUnitChangeHandler = _ -> setDesignUnit( design.calcDesignUnit() );
+	private final EventHandler<NodeEvent> designUnitChangeHandler = _ -> setDesignUnit( model.calcDesignUnit() );
 
 	static {
 		pathElementMapper = Mappers.getMapper( PathElementMapper.class );
@@ -226,26 +228,40 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		getChildren().addAll( world, screen );
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public DesignModel getDesignModel() {
+	public Design<? extends DesignModel> getDesign() {
 		return design;
 	}
 
+	@Override
+	public void setDesign( Design<? extends DesignModel> design ) {
+		this.design = design;
+		if( this.design == null ) {
+			setDesignModel( null );
+		} else {
+			setDesignModel( design.getDataModel() );
+		}
+	}
+
+//	/**
+//	 * {@inheritDoc}
+//	 */
+//	@Override
+//	public DesignModel getDesignModel() {
+//		return model;
+//	}
+
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
-	public void setDesignModel( DesignModel design ) {
-		if( this.design != null ) {
-			this.design.unregister( this, DesignModel.UNIT, designUnitChangeHandler );
+	private void setDesignModel( DesignModel design ) {
+		if( this.model != null ) {
+			this.model.unregister( this, DesignModel.UNIT, designUnitChangeHandler );
 		}
 
-		this.design = design;
+		this.model = design;
 
-		if( this.design != null ) {
+		if( this.model != null ) {
 			design.register( this, DesignModel.UNIT, designUnitChangeHandler );
 			setDesignUnit( design.calcDesignUnit() );
 		}
@@ -364,7 +380,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	@Override
 	public void setVisibleLayers( @NonNull Collection<DesignLayer> layers ) {
 		// Convenience: show only the specified layers; hide all others currently visible
-		if( this.design == null ) return;
+		if( this.model == null ) return;
 
 		// Hide layers that are currently visible but not in the target collection
 		for( Node node : List.copyOf( this.layers.getChildren() ) ) {
@@ -569,7 +585,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 * @return The computed index where the design layer should be inserted among FX layers.
 	 */
 	private int determineLayerIndex( DesignLayer designLayer ) {
-		List<DesignLayer> designLayers = new ArrayList<>( design.getLayers().getAllLayers() );
+		List<DesignLayer> designLayers = new ArrayList<>( model.getLayers().getAllLayers() );
 		Collections.reverse( designLayers );
 		List<Node> fxLayers = layers.getChildren();
 

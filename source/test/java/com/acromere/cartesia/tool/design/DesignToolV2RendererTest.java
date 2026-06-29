@@ -3,6 +3,7 @@ package com.acromere.cartesia.tool.design;
 import com.acromere.cartesia.BaseCartesiaUnitTest;
 import com.acromere.cartesia.DesignUnit;
 import com.acromere.cartesia.DesignValue;
+import com.acromere.cartesia.data.Design;
 import com.acromere.cartesia.data.DesignModel;
 import com.acromere.cartesia.data.DesignModel2D;
 import com.acromere.cartesia.test.Point3DAssert;
@@ -18,17 +19,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class DesignToolV2RendererTest extends BaseCartesiaUnitTest {
 
-	private DesignModel design;
-
 	private DesignToolV2Renderer renderer;
 
 	@BeforeEach
 	protected void setup() throws Exception {
 		super.setup();
 		Fx.startup();
-		design = new DesignModel2D();
 		renderer = new DesignToolV2Renderer();
-		renderer.setDesignModel( design );
+		renderer.setDesign( new Design<>( new DesignModel2D() ) );
 		renderer.resizeRelocate( 0, 0, 100, 100 );
 	}
 

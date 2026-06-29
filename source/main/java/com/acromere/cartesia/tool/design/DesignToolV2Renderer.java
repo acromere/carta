@@ -43,7 +43,9 @@ import java.util.stream.Collectors;
 @CustomLog
 public class DesignToolV2Renderer extends BaseDesignRenderer {
 
-	private DesignModel design;
+	private Design<? extends DesignModel> design;
+
+	private DesignModel model;
 
 	@Getter
 	private Workplane workplane;
@@ -173,33 +175,45 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 		);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public DesignModel getDesignModel() {
+	public Design<? extends DesignModel> getDesign() {
 		return design;
 	}
 
+	public void setDesign( Design<? extends DesignModel> design ) {
+		this.design = design;
+		if( design == null ) {
+			setDesignModel( null );
+		} else {
+			setDesignModel( design.getDataModel() );
+		}
+	}
+
+//	/**
+//	 * {@inheritDoc}
+//	 */
+//	@Override
+//	public DesignModel getDesignModel() {
+//		return design.getDataModel();
+//	}
+
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
-	public void setDesignModel( DesignModel design ) {
-		if( this.design != null ) {
-			this.design.unregister( NodeEvent.ANY, designWatcher );
-			this.design.unregister( DesignModel.UNIT, unitValueWatcher );
+	private void setDesignModel( DesignModel design ) {
+		if( this.model != null ) {
+			this.model.unregister( NodeEvent.ANY, designWatcher );
+			this.model.unregister( DesignModel.UNIT, unitValueWatcher );
 		}
 
-		this.design = design;
+		this.model = design;
 
-		if( this.design != null ) {
+		if( this.model != null ) {
 			// Configure the rendering unit
 			renderer.setLengthUnit( RenderUnit.valueOf( design.getDesignUnit().toUpperCase() ) );
 
 			// Add listeners
-			this.design.register( DesignModel.UNIT, unitValueWatcher );
-			this.design.register( NodeEvent.ANY, designWatcher );
+			this.model.register( DesignModel.UNIT, unitValueWatcher );
+			this.model.register( NodeEvent.ANY, designWatcher );
 
 			visibleLayers.addAll( design.getAllLayers() );
 		}
@@ -784,7 +798,7 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 
 	double realToWorld( DesignValue value ) {
 		// Convert the provided value to design units and divide by the zoom factor
-		return value.to( design.calcDesignUnit() ).getValue() / getViewZoomX();
+		return value.to( model.calcDesignUnit() ).getValue() / getViewZoomX();
 	}
 
 	double realToScreen( DesignValue value ) {
@@ -853,7 +867,7 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	}
 
 	private void renderLayers() {
-		if( design == null ) return;
+		if( model == null ) return;
 
 		List<DesignLayer> orderedLayers = new ArrayList<>( getVisibleLayers() );
 
@@ -1088,13 +1102,13 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 
 	double getInternalScaleX() {
 		// TODO This value can be cached
-		double scale = DesignUnit.IN.per( design.calcDesignUnit() );
+		double scale = DesignUnit.IN.per( model.calcDesignUnit() );
 		return scale * renderer.getDpiX() * getViewZoomX();
 	}
 
 	double getInternalScaleY() {
 		// TODO This value can be cached
-		double scale = DesignUnit.IN.per( design.calcDesignUnit() );
+		double scale = DesignUnit.IN.per( model.calcDesignUnit() );
 		return scale * renderer.getDpiY() * getViewZoomY();
 	}
 

@@ -121,7 +121,7 @@ public class DesignPrintTask extends Task<Void> {
 		Class<? extends BaseDesignRenderer> rendererClass = tool.getPrintDesignRendererClass();
 		final BaseDesignRenderer renderer = rendererClass.getDeclaredConstructor().newInstance();
 		//renderer.setBackground( Background.fill( Color.LIGHTGRAY ) );
-		renderer.setDesignModel( resource.getModel() );
+		renderer.setDesign( resource.getModel() );
 		renderer.setVisibleLayers( tool.getVisibleLayers() );
 
 		renderer.setDpi( factor * 72, factor * 72 );

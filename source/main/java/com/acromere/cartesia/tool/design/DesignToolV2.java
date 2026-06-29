@@ -143,12 +143,12 @@ public class DesignToolV2 extends BaseDesignTool {
 		getToast().setVisible( false );
 
 		// Set the renderer design
-		renderer.setDesignModel( getDesignModel() );
+		renderer.setDesign( getDesign() );
 
 		// Set defaults
-		setCurrentLayer( getDesignModel().getAllLayers().getFirst() );
+		setCurrentLayer( getDesign().getDataModel().getAllLayers().getFirst() );
 
-		// Fire the design ready event (should be done after renderer.setDesign)
+		// Fire the design-ready event (should be done after renderer.setDesign)
 		fireEvent( new DesignToolEvent( this, DesignToolEvent.DESIGN_READY ) );
 
 		getResource().getUndoManager().undoAvailableProperty().addListener( ( p, o, n ) -> getUndoAction().updateEnabled() );
