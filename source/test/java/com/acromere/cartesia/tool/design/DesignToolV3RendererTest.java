@@ -71,7 +71,7 @@ public class DesignToolV3RendererTest {
 	void setUp() {
 		renderer = new DesignToolV3Renderer();
 		renderer.resizeRelocate( 0, 0, width, height );
-		renderer.setDesign( new DesignModel2D() );
+		renderer.setDesignModel( new DesignModel2D() );
 		renderer.setWorkplane( new Workplane() );
 		renderer.layout();
 
@@ -94,24 +94,24 @@ public class DesignToolV3RendererTest {
 	}
 
 	@Test
-	void setDesign() {
+	void setDesignModel() {
 		DesignModel design = new DesignModel2D();
-		renderer.setDesign( design );
-		assertThat( renderer.getDesign() ).isEqualTo( design );
+		renderer.setDesignModel( design );
+		assertThat( renderer.getDesignModel() ).isEqualTo( design );
 	}
 
 	@Test
-	void setDesignWithNull() {
+	void setDesignModelWithNull() {
 		// given
 		DesignModel design = new DesignModel2D();
-		renderer.setDesign( design );
-		assertThat( renderer.getDesign() ).isEqualTo( design );
+		renderer.setDesignModel( design );
+		assertThat( renderer.getDesignModel() ).isEqualTo( design );
 
 		// when
-		renderer.setDesign( null );
+		renderer.setDesignModel( null );
 
 		// then
-		assertThat( renderer.getDesign() ).isEqualTo( null );
+		assertThat( renderer.getDesignModel() ).isEqualTo( null );
 	}
 
 	@Test
@@ -178,7 +178,7 @@ public class DesignToolV3RendererTest {
 	void updateDpi() {
 		// given
 		DesignModel design = ExampleDesigns.redBlueX();
-		renderer.setDesign( design );
+		renderer.setDesignModel( design );
 		renderer.setLayerVisible( design.getLayers().getLayers().getFirst(), true );
 
 		// Verify the FX geometry in the renderer
@@ -207,7 +207,7 @@ public class DesignToolV3RendererTest {
 	void updateOutputScale() {
 		// given
 		DesignModel design = ExampleDesigns.redBlueX();
-		renderer.setDesign( design );
+		renderer.setDesignModel( design );
 		renderer.setLayerVisible( design.getLayers().getLayers().getFirst(), true );
 
 		// Verify the FX geometry in the renderer
@@ -240,7 +240,7 @@ public class DesignToolV3RendererTest {
 	void updateDesignUnit() {
 		// given
 		DesignModel design = ExampleDesigns.redBlueX();
-		renderer.setDesign( design );
+		renderer.setDesignModel( design );
 		renderer.setLayerVisible( design.getLayers().getLayers().getFirst(), true );
 
 		// Verify the FX geometry in the renderer
@@ -490,7 +490,7 @@ public class DesignToolV3RendererTest {
 		design.getLayers().addLayer( layer2 );
 		design.getLayers().addLayer( layer3 );
 		design.getLayers().addLayer( layer4 );
-		renderer.setDesign( design );
+		renderer.setDesignModel( design );
 		assertThat( design.getAllLayers().size() ).isEqualTo( 5 );
 		assertThat( renderer.layersPane().getChildren().size() ).isEqualTo( 0 );
 
@@ -547,7 +547,7 @@ public class DesignToolV3RendererTest {
 		design.getLayers().addLayer( layer2 );
 		design.getLayers().addLayer( layer3 );
 		design.getLayers().addLayer( layer4 );
-		renderer.setDesign( design );
+		renderer.setDesignModel( design );
 		assertThat( design.getAllLayers().size() ).isEqualTo( 5 );
 		assertThat( renderer.layersPane().getChildren().size() ).isEqualTo( 0 );
 
@@ -1168,7 +1168,7 @@ public class DesignToolV3RendererTest {
 	void worldToScreenDoesNotChangeWithDifferentOutputScales( double outputScale, Point2D point, Point2D expected ) {
 		// given
 		renderer.resizeRelocate( 0, 0, 1000, 1000 );
-		renderer.setDesign( new DesignModel2D() );
+		renderer.setDesignModel( new DesignModel2D() );
 		renderer.setWorkplane( new Workplane() );
 		renderer.layout();
 

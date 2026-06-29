@@ -41,7 +41,7 @@ public class DesignToolV3 extends BaseDesignTool {
 		super.ready( request );
 		Design<DesignModel2D> design = request.getResource().getModel();
 		DesignModel model = design.getDataModel();
-		getRenderer().setDesign( model );
+		getRenderer().setDesignModel( model );
 
 		// DEVELOPMENT
 		//		if( Objects.equals( getProgram().getMode(), XenonMode.DEV ) ) {

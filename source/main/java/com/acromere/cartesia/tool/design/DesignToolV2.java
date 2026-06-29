@@ -143,7 +143,7 @@ public class DesignToolV2 extends BaseDesignTool {
 		getToast().setVisible( false );
 
 		// Set the renderer design
-		renderer.setDesign( getDesignModel() );
+		renderer.setDesignModel( getDesignModel() );
 
 		// Set defaults
 		setCurrentLayer( getDesignModel().getAllLayers().getFirst() );

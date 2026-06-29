@@ -28,7 +28,7 @@ public class DesignToolV2RendererTest extends BaseCartesiaUnitTest {
 		Fx.startup();
 		design = new DesignModel2D();
 		renderer = new DesignToolV2Renderer();
-		renderer.setDesign( design );
+		renderer.setDesignModel( design );
 		renderer.resizeRelocate( 0, 0, 100, 100 );
 	}
 

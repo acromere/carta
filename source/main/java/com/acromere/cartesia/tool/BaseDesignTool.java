@@ -264,7 +264,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		// Set the design model
 		Design<DesignModel2D> design = request.getResource().getModel();
 		DesignModel model = design.getDataModel();
-		getRenderer().setDesign( model );
+		getRenderer().setDesignModel( model );
 
 		// Set the workplane settings TODO replace with settings eventually
 		getWorkplane().setGridStyle( GridStyle.CROSS );
@@ -338,7 +338,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		// Remove asset switch listener to unregister status bar items
 		getProgram().unregister( ResourceSwitchedEvent.SWITCHED, assetSwitchListener );
 
-		if( renderer != null ) renderer.setDesign( null );
+		if( renderer != null ) renderer.setDesignModel( null );
 
 		super.deallocate();
 	}

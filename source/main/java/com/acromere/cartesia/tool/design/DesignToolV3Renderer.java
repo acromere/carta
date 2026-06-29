@@ -230,7 +230,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public DesignModel getDesign() {
+	public DesignModel getDesignModel() {
 		return design;
 	}
 
@@ -238,7 +238,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setDesign( DesignModel design ) {
+	public void setDesignModel( DesignModel design ) {
 		if( this.design != null ) {
 			this.design.unregister( this, DesignModel.UNIT, designUnitChangeHandler );
 		}

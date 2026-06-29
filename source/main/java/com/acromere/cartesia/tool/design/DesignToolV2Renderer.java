@@ -177,7 +177,7 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public DesignModel getDesign() {
+	public DesignModel getDesignModel() {
 		return design;
 	}
 
@@ -185,7 +185,7 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setDesign( DesignModel design ) {
+	public void setDesignModel( DesignModel design ) {
 		if( this.design != null ) {
 			this.design.unregister( NodeEvent.ANY, designWatcher );
 			this.design.unregister( DesignModel.UNIT, unitValueWatcher );
