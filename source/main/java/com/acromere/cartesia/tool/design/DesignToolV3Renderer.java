@@ -317,7 +317,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 */
 	@Override
 	public boolean isLayerVisible( DesignLayer layer ) {
-		return layers.getChildren().contains( getFxGeometry( layer ) );
+		Node node = getFxGeometry( layer );
+		return layers.getChildren().contains( node );
 	}
 
 	/**
@@ -337,7 +338,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 			layers.getChildren().add( determineLayerIndex( layer ), pane );
 		} else {
 			// Remove the FX layer from the renderer
-			Pane pane = (Pane)getFxGeometry( layer );
+			Pane pane = getFxGeometry( layer );
 			if( pane != null ) layers.getChildren().remove( pane );
 			layer.setValue( FX_GEOMETRY, null );
 		}
@@ -572,7 +573,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		int index = -1;
 		for( DesignLayer checkLayer : designLayers ) {
 			if( checkLayer == designLayer ) break;
-			Pane fxLayer = (Pane)getFxGeometry( checkLayer );
+			Pane fxLayer = getFxGeometry( checkLayer );
 			if( fxLayer != null ) index = fxLayers.indexOf( fxLayer );
 		}
 
@@ -587,7 +588,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 */
 	@Note( Note.TESTING_ONLY )
 	int getPaneIndex( DesignLayer layer ) {
-		return layers.getChildren().indexOf( getFxGeometry( layer ) );
+		Node node = getFxGeometry( layer );
+		return layers.getChildren().indexOf( node );
 	}
 
 	private Pane mapDesignLayer( DesignLayer designLayer ) {
@@ -622,19 +624,17 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		return mapDesignShape( designShape, false );
 	}
 
-	private Node getFxGeometry( DesignDrawable designShape ) {
+	@SuppressWarnings( "unchecked" )
+	private <T> T getFxGeometry( DesignDrawable designShape ) {
 		WeakReference<Map<DesignRenderer, Node>> reference = designShape.getValue( FX_GEOMETRY );
 		if( reference == null ) return null;
 		Map<DesignRenderer, Node> map = reference.get();
 		if( map == null ) return null;
-		return map.getOrDefault( this, null );
+		return (T)map.getOrDefault( this, null );
 	}
 
 	private Shape mapDesignShape( DesignShape designShape, boolean forceUpdate ) {
-		// NEXT Is it necessary for the shape to carry a reference to the renderer geometry?
-		// Because there may be multiple geometries based on the number of renderers.
-		// Can the renderers keep all references and listeners?
-		Shape fxShape = (Shape)getFxGeometry( designShape );
+		Shape fxShape = getFxGeometry( designShape );
 
 		// If an FX shape is already bound, don't do it again
 		if( fxShape != null ) return fxShape;
