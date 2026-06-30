@@ -3,9 +3,11 @@ package com.acromere.cartesia.tool;
 import com.acromere.annotation.Note;
 import com.acromere.cartesia.CartesiaMod;
 import com.acromere.cartesia.RbKey;
+import com.acromere.cartesia.ShapePropertiesResourceType;
 import com.acromere.cartesia.cursor.Reticle;
 import com.acromere.cartesia.cursor.ReticleCursor;
 import com.acromere.cartesia.data.*;
+import com.acromere.cartesia.data.util.DesignPropertiesMap;
 import com.acromere.cartesia.tool.design.BaseDesignRenderer;
 import com.acromere.cartesia.tool.design.DesignToolEvent;
 import com.acromere.cartesia.tool.design.LayersGuide;
@@ -20,6 +22,7 @@ import com.acromere.xenon.resource.Resource;
 import com.acromere.xenon.resource.ResourceSwitchedEvent;
 import com.acromere.xenon.resource.type.ProgramPropertiesType;
 import com.acromere.xenon.task.Task;
+import com.acromere.xenon.tool.guide.GuideNode;
 import com.acromere.xenon.tool.guide.GuidedTool;
 import com.acromere.xenon.tool.settings.SettingsPage;
 import com.acromere.xenon.workpane.ToolException;
@@ -156,6 +159,8 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 	private final Map<String, ProgramAction> commandActions;
 
+	private final DesignPropertiesMap designPropertiesMap;
+
 	@Getter
 	private final PrintAction printAction;
 
@@ -185,6 +190,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 		// Actions
 		commandActions = new ConcurrentHashMap<>();
+		designPropertiesMap = new DesignPropertiesMap( product );
 
 		printAction = new PrintAction( product.getProgram() );
 		propertiesAction = new PropertiesAction( product.getProgram() );
@@ -282,18 +288,29 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		getRenderer().setDesign( design );
 		DesignModel model = design.getDataModel();
 
-		// Set defaults
-		// NEXT Need a first layer
-		//setCurrentLayer( getDesign().getDataModel().getAllLayers().getFirst() );
+		// TEMPORARY - Create layer
+  	String constructionLayerName = Rb.textOr( com.acromere.xenon.RbKey.LABEL, "layer-construction", "construction" ).toLowerCase();
+		DesignLayer layer = new DesignLayer().setName( constructionLayerName );
+		design.getDataModel().getLayers().addLayer( layer );
+
+		// Set the current layer
+		setCurrentLayer( getDesign().getDataModel().getAllLayers().getFirst() );
 
 		// Fire the design-ready event (should be done after renderer.setDesign)
 		fireEvent( new DesignToolEvent( this, DesignToolEvent.DESIGN_READY ) );
 
-		getResource().getUndoManager().undoAvailableProperty().addListener( ( p, o, n ) -> getUndoAction().updateEnabled() );
-		getResource().getUndoManager().redoAvailableProperty().addListener( ( p, o, n ) -> getRedoAction().updateEnabled() );
+		// Configure the undo manager
+		getResource().getUndoManager().undoAvailableProperty().addListener( ( _, _, _ ) -> getUndoAction().updateEnabled() );
+		getResource().getUndoManager().redoAvailableProperty().addListener( ( _, _, _ ) -> getRedoAction().updateEnabled() );
 
 		layersGuide.ready( request );
+		//		viewsGuide.ready( request );
+		//		printsGuide.ready( request );
+		//getGuideContext().getGuides().addAll( layersGuide, viewsGuide, printsGuide );
+		getGuideContext().getGuides().addAll( layersGuide );
+		getGuideContext().setCurrentGuide( layersGuide );
 
+		// Set defaults
 
 		// Set the workplane settings TODO replace with settings eventually
 		getWorkplane().setGridStyle( GridStyle.CROSS );
@@ -372,10 +389,19 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		super.deallocate();
 	}
 
-	//	@Override
-	//	public final XenonProgramProduct getProduct() {
-	//		return getMod();
-	//	}
+	@Override
+	protected void guideNodesSelected( Set<GuideNode> oldNodes, Set<GuideNode> newNodes ) {
+		if( getCurrentGuide() == getLayersGuide() ) {
+			newNodes.stream().findFirst().ifPresent( n -> doSetSelectedLayerById( n.getId() ) );
+			//		} else if( getCurrentGuide() == viewsGuide ) {
+			//			newNodes.stream().findFirst().ifPresent( n -> doSetCurrentViewById( n.getId() ) );
+			//		} else if( getCurrentGuide() == printsGuide ) {
+			//			newNodes.stream().findFirst().ifPresent( n -> doSetCurrentPrintById( n.getId() ) );
+		}
+	}
+
+	@Override
+	protected void guideFocusChanged( boolean focused, Set<GuideNode> nodes ) {}
 
 	@Override
 	public final CartesiaMod getMod() {
@@ -865,6 +891,64 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 		// The workplane bounds can be determined from the viewport
 		workplane.setBounds( getRenderer().screenToWorld( viewport ) );
+	}
+
+	private void doSetSelectedLayerById( String id ) {
+		getDesignModel().findLayerById( id ).ifPresent( this::setSelectedLayer );
+		log.atConfig().log( "Selected layer: %s", id );
+	}
+
+	private void doSetCurrentLayerById( String id ) {
+		getDesignModel().findLayerById( id ).ifPresent( y -> {
+			currentLayerProperty().set( y );
+			showPropertiesPage( y );
+		} );
+	}
+
+	private void doSetCurrentViewById( String id ) {
+		getDesignModel().findViewById( id ).ifPresent( v -> {
+			currentViewProperty().set( v );
+			//renderer.setView( v.getLayers(), v.getOrigin(), v.getZoom(), v.getRotate() );
+			//showPropertiesPage( v );
+		} );
+	}
+
+	private void doSetCurrentPrintById( String id ) {
+		// TODO Implement DesignTool.doSetCurrentPrintById()
+	}
+
+	private void showPropertiesPage( DesignDrawable drawable ) {
+		if( drawable != null ) {
+			// Wrap the drawable in a data node settings object
+			NodeSettings wrapper = new NodeSettings( drawable );
+
+			// Show the properties page for the drawable
+			showPropertiesPage( wrapper, drawable.getClass() );
+		}
+	}
+
+	private void showPropertiesPage( Settings settings, Class<? extends DesignDrawable> type ) {
+		SettingsPage page = designPropertiesMap.getSettingsPage( type );
+		if( page != null ) {
+			// Switch to a task thread to get the tool
+			getProgram().getTaskManager().submit( Task.of( () -> {
+				try {
+					// Open the tool but don't make it the active tool
+					getProgram().getResourceManager().openAsset( ShapePropertiesResourceType.URI, getWorkpane(), true, false ).get();
+
+					// Fire the event on the FX thread
+					Fx.run( () -> getWorkspace().getEventBus().dispatch( new ShapePropertiesToolEvent( this, ShapePropertiesToolEvent.SHOW, page, settings ) ) );
+				} catch( Exception exception ) {
+					log.atWarn( exception ).log();
+				}
+			} ) );
+		} else {
+			log.atError().log( "Unable to find properties page for %s", type.getName() );
+		}
+	}
+
+	private void hidePropertiesPage() {
+		getWorkspace().getEventBus().dispatch( new ShapePropertiesToolEvent( this, ShapePropertiesToolEvent.HIDE ) );
 	}
 
 	protected class PrintAction extends ProgramAction {
