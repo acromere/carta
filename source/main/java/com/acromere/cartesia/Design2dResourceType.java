@@ -47,7 +47,6 @@ public class Design2dResourceType extends ResourceType {
 	@Override
 	public boolean assetOpen( Xenon program, Resource resource ) {
 		initModel( resource );
-		resource.setCaptureUndoChanges( true );
 		return true;
 	}
 
