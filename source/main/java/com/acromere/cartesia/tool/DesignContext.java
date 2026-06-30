@@ -30,7 +30,9 @@ public class DesignContext {
 
 	public DesignContext() {
 		this.previewLayer = new DesignLayer();
+		this.previewLayer.setName( "preview-layer" );
 		this.referenceLayer = new DesignLayer();
+		this.referenceLayer.setName("reference-layer");
 		this.previewShapes = FXCollections.synchronizedObservableList( FXCollections.observableArrayList() );
 		this.selectedShapes = FXCollections.synchronizedObservableList( FXCollections.observableArrayList() );
 	}

@@ -39,9 +39,10 @@ public class DesignToolV3 extends BaseDesignTool {
 	@Override
 	protected void ready( OpenAssetRequest request ) throws ToolException {
 		super.ready( request );
-		Design<DesignModel2D> design = request.getResource().getModel();
-		getRenderer().setDesign( design );
-		//DesignModel model = design.getDataModel();
+
+		// super.ready() already set the design
+
+		// TODO What is special about DesignToolV3?
 
 		// DEVELOPMENT
 		//		if( Objects.equals( getProgram().getMode(), XenonMode.DEV ) ) {

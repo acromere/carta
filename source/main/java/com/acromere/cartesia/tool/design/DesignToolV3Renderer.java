@@ -43,6 +43,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 	private static final PathElementMapper pathElementMapper;
 
+	private static final Map<GeometryKey, Node> designDrawableToFxGeometry;
+
 	private Design<? extends DesignModel> design;
 
 	private DesignModel model;
@@ -132,6 +134,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 	static {
 		pathElementMapper = Mappers.getMapper( PathElementMapper.class );
+		designDrawableToFxGeometry = new ConcurrentHashMap<>();
 	}
 
 	// NEXT Apply lessons learned to create a new design renderer
@@ -233,13 +236,17 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 	@Override
 	public void setDesign( Design<? extends DesignModel> design ) {
+		if( this.design == design ) return;
+
 		this.design = design;
 		if( this.design == null ) {
 			setDesignModel( null );
 		} else {
 			setDesignModel( design.getDataModel() );
 
-			// NEXT Now we have access to the resource and preview layers
+			// Map the resource and preview layers
+			mapDesignLayer( design.getDesignContext().getPreviewLayer(), preview, false );
+			mapDesignLayer( design.getDesignContext().getReferenceLayer(), reference, false );
 		}
 	}
 
@@ -602,14 +609,33 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 	private Pane mapDesignLayer( DesignLayer designLayer, Pane pane, boolean includeSubLayers ) {
 		// Link the DesignLayer and Pane references
-		createGeometryMap( designLayer, pane );
+		putFxGeometry( designLayer, pane );
 		pane.setUserData( designLayer );
 
-		designLayer.getShapes().forEach( designShape -> {
-			Shape shape = mapDesignShape( designShape );
-			pane.getChildren().add( shape );
+		// Register event handlers for the DesignLayer
+		designLayer.register(
+			pane, NodeEvent.ANY, e -> {
+				if( e.getEventType() == NodeEvent.NODE_CHANGED ) return;
+				if( e.getEventType() == NodeEvent.VALUE_CHANGED ) return;
 
-			// TODO Handlers need to be attached with the layer as owner
+				if( e.getEventType() == NodeEvent.CHILD_ADDED ) {
+					DesignShape shape = e.getNewValue();
+					Shape fxShape = mapDesignShape( shape );
+					putFxGeometry( shape, fxShape );
+					Fx.run( () -> pane.getChildren().add( fxShape ) );
+				} else if( e.getEventType() == NodeEvent.CHILD_REMOVED ) {
+					Shape shape = getFxGeometry( e.getOldValue() );
+					Fx.run( () -> pane.getChildren().remove( shape ) );
+				}
+			}
+		);
+
+		designLayer.getShapes().forEach( shape -> {
+			Shape fxShape = mapDesignShape( shape );
+			putFxGeometry( shape, fxShape );
+			pane.getChildren().add( fxShape );
+
+			// TODO Handlers need to be attached with the pane as owner
 			// i.e. designLayer.register(layer, "order", e -> changeLayerOrder() );
 		} );
 
@@ -621,19 +647,6 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	}
 
 	private Shape mapDesignShape( DesignShape designShape ) {
-		return mapDesignShape( designShape, false );
-	}
-
-	@SuppressWarnings( "unchecked" )
-	private <T> T getFxGeometry( DesignDrawable designShape ) {
-		WeakReference<Map<DesignRenderer, Node>> reference = designShape.getValue( FX_GEOMETRY );
-		if( reference == null ) return null;
-		Map<DesignRenderer, Node> map = reference.get();
-		if( map == null ) return null;
-		return (T)map.getOrDefault( this, null );
-	}
-
-	private Shape mapDesignShape( DesignShape designShape, boolean forceUpdate ) {
 		Shape fxShape = getFxGeometry( designShape );
 
 		// If an FX shape is already bound, don't do it again
@@ -654,9 +667,14 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		fxShape.setManaged( false );
 		fxShape.setUserData( designShape );
 
-		createGeometryMap( designShape, fxShape );
-
 		return fxShape;
+	}
+
+	private record GeometryKey(DesignRenderer renderer, DesignDrawable drawable ) {}
+
+	@SuppressWarnings( "unchecked" )
+	private <T> T getFxGeometry( DesignDrawable drawable ) {
+		return (T) designDrawableToFxGeometry.get( new GeometryKey( this, drawable ) );
 	}
 
 	/**
@@ -665,13 +683,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 * @param drawable The design drawable to create the map for.
 	 * @param node The FX node to link to the map.
 	 */
-	private void createGeometryMap( DesignDrawable drawable, Node node ) {
-		WeakReference<Map<DesignRenderer, Node>> reference = drawable.getValue( FX_GEOMETRY );
-		if( reference == null ) {
-			Map<DesignRenderer, Node> map = new ConcurrentHashMap<>();
-			map.put( this, node );
-			drawable.setValue( FX_GEOMETRY, new WeakReference<>( map ) );
-		}
+	private void putFxGeometry( DesignDrawable drawable, Node node ) {
+		designDrawableToFxGeometry.put( new GeometryKey( this, drawable ), node );
 	}
 
 	// TODO Finish building the bind methods for the remaining design shapes

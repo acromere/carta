@@ -37,7 +37,7 @@ public class CameraZoomWindow extends CameraCommand {
 
 	@Override
 	public Object execute( CommandTask task ) throws Exception {
-		doNotCaptureUndoChanges( task );
+		setCaptureUndoChanges( task, false );
 
 		int paramCount = task.getParameters().length;
 		//InputEvent event = task.getEvent();

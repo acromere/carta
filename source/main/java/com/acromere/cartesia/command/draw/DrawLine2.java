@@ -18,8 +18,6 @@ public class DrawLine2 extends DrawCommand {
 
 	@Override
 	public Object execute( CommandTask task ) throws Exception {
-		setCaptureUndoChanges( task, false );
-
 		int paramCount = task.getParameterCount();
 
 		// Step 1
@@ -45,14 +43,16 @@ public class DrawLine2 extends DrawCommand {
 
 		if( paramCount >= 2 ) {
 			removeReference( task, reference );
-			setCaptureUndoChanges( task, true );
 
 			Point3D origin = asPoint( task, "start-point", 0 );
 			Point3D point = asPoint( task, "end-point", 1 );
 
 			// Start undo multi-change
+			setCaptureUndoChanges( task, true );
 			task.getTool().getCurrentLayer().addShape( new DesignLine( origin, point ) );
+			setCaptureUndoChanges( task, false );
 			// Done with undo multi-change
+
 			return SUCCESS;
 		}
 

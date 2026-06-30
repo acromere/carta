@@ -285,10 +285,6 @@ public abstract class Command {
 		return shapes.isEmpty() ? DesignShape.NONE : shapes.getFirst();
 	}
 
-	protected void doNotCaptureUndoChanges( CommandTask task ) {
-		setCaptureUndoChanges( task, false );
-	}
-
 	protected void setCaptureUndoChanges( CommandTask task, boolean enabled ) {
 		task.getTool().getResource().setCaptureUndoChanges( enabled );
 	}
