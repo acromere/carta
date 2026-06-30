@@ -32,7 +32,6 @@ import lombok.Getter;
 import org.jspecify.annotations.NonNull;
 import org.mapstruct.factory.Mappers;
 
-import java.lang.ref.WeakReference;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -43,7 +42,13 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 	private static final PathElementMapper pathElementMapper;
 
-	private static final Map<GeometryKey, Node> designDrawableToFxGeometry;
+	/**
+	 * Caution: This map is shared among all renderers of this type. This could
+	 * result in a memory leak if the FX geometry is not properly removed from the
+	 * renderers when drawables are removed from the design, tools are closed,
+	 * etc. Watch for memory leaks.
+	 */
+	private static final Map<GeometryKey, Node> drawableToGeometry;
 
 	private Design<? extends DesignModel> design;
 
@@ -134,7 +139,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 	static {
 		pathElementMapper = Mappers.getMapper( PathElementMapper.class );
-		designDrawableToFxGeometry = new ConcurrentHashMap<>();
+		drawableToGeometry = new ConcurrentHashMap<>();
 	}
 
 	// NEXT Apply lessons learned to create a new design renderer
@@ -670,11 +675,11 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		return fxShape;
 	}
 
-	private record GeometryKey(DesignRenderer renderer, DesignDrawable drawable ) {}
+	private record GeometryKey(DesignRenderer renderer, DesignDrawable drawable) {}
 
 	@SuppressWarnings( "unchecked" )
 	private <T> T getFxGeometry( DesignDrawable drawable ) {
-		return (T) designDrawableToFxGeometry.get( new GeometryKey( this, drawable ) );
+		return (T)drawableToGeometry.get( new GeometryKey( this, drawable ) );
 	}
 
 	/**
@@ -684,7 +689,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 * @param node The FX node to link to the map.
 	 */
 	private void putFxGeometry( DesignDrawable drawable, Node node ) {
-		designDrawableToFxGeometry.put( new GeometryKey( this, drawable ), node );
+		drawableToGeometry.put( new GeometryKey( this, drawable ), node );
 	}
 
 	// TODO Finish building the bind methods for the remaining design shapes
