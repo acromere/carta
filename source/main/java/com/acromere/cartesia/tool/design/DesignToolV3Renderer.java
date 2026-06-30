@@ -14,6 +14,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
@@ -356,15 +357,15 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public List<DesignLayer> getVisibleLayers() {
-		// Return the list of design layers that currently have an FX pane in the renderer,
-		// in the same order as they appear visually (top to bottom) in the layers pane.
-		return this.layers.getChildren().stream().filter( p -> p instanceof Pane ).map( p -> (DesignLayer)p.getUserData() ).toList();
-	}
+//	/**
+//	 * {@inheritDoc}
+//	 */
+//	@Override
+//	public List<DesignLayer> getVisibleLayers() {
+//		// Return the list of design layers that currently have an FX pane in the renderer,
+//		// in the same order as they appear visually (top to bottom) in the layers pane.
+//		return this.layers.getChildren().stream().filter( p -> p instanceof Pane ).map( p -> (DesignLayer)p.getUserData() ).toList();
+//	}
 
 	/**
 	 * {@inheritDoc}
@@ -387,6 +388,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		for( DesignLayer layer : layers ) {
 			if( !isLayerVisible( layer ) ) setLayerVisible( layer, true );
 		}
+
+		visibleLayers().setAll( layers );
 	}
 
 	/**

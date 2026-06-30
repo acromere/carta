@@ -38,6 +38,7 @@ public class DesignToolV3 extends BaseDesignTool {
 	 */
 	@Override
 	protected void ready( OpenAssetRequest request ) throws ToolException {
+		// Most logic has been moved to the super.ready() method
 		super.ready( request );
 
 		// super.ready() already set the design

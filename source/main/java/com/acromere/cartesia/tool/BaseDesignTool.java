@@ -7,6 +7,8 @@ import com.acromere.cartesia.cursor.Reticle;
 import com.acromere.cartesia.cursor.ReticleCursor;
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.tool.design.BaseDesignRenderer;
+import com.acromere.cartesia.tool.design.DesignToolEvent;
+import com.acromere.cartesia.tool.design.LayersGuide;
 import com.acromere.data.NodeSettings;
 import com.acromere.product.Rb;
 import com.acromere.settings.Settings;
@@ -29,6 +31,7 @@ import com.acromere.zerra.javafx.Fx;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.event.EventTarget;
@@ -91,6 +94,15 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	// TODO This is not connected to the grid pixel threshold yet
 	// TODO Should use user visual units, not pixels
 	protected static final double MINIMUM_GRID_PIXELS = 3.0;
+
+	// GUIDES
+
+	@Getter
+	private final LayersGuide layersGuide;
+
+	//	private final ViewsGuide viewsGuide;
+
+	//	private final PrintsGuide printsGuide;
 
 	@Getter
 	private final Node toast;
@@ -191,6 +203,10 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		this.toast.getStyleClass().add( "tool-toast" );
 		StackPane.setAlignment( this.toast, Pos.CENTER );
 
+		layersGuide = new LayersGuide( product, this );
+		//		viewsGuide = new ViewsGuide( product, this );
+		//		printsGuide = new PrintsGuide( product, this );
+
 		// Configure the tool renderer
 		// The renderer is configured to render to the primary screen by default,
 		// but it can be configured to render to different media just as easily.
@@ -265,6 +281,19 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		Design<? extends DesignModel> design = request.getResource().getModel();
 		getRenderer().setDesign( design );
 		DesignModel model = design.getDataModel();
+
+		// Set defaults
+		// NEXT Need a first layer
+		//setCurrentLayer( getDesign().getDataModel().getAllLayers().getFirst() );
+
+		// Fire the design-ready event (should be done after renderer.setDesign)
+		fireEvent( new DesignToolEvent( this, DesignToolEvent.DESIGN_READY ) );
+
+		getResource().getUndoManager().undoAvailableProperty().addListener( ( p, o, n ) -> getUndoAction().updateEnabled() );
+		getResource().getUndoManager().redoAvailableProperty().addListener( ( p, o, n ) -> getRedoAction().updateEnabled() );
+
+		layersGuide.ready( request );
+
 
 		// Set the workplane settings TODO replace with settings eventually
 		getWorkplane().setGridStyle( GridStyle.CROSS );
@@ -608,6 +637,14 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	@Override
 	public void setVisibleLayers( Collection<DesignLayer> layers ) {
 		getRenderer().setVisibleLayers( layers );
+	}
+
+	public ObservableList<DesignLayer> visibleLayers() {
+		return renderer.visibleLayers();
+	}
+
+	public boolean isCurrentLayer( DesignLayer layer ) {
+		return getCurrentLayer() == layer;
 	}
 
 	@Override

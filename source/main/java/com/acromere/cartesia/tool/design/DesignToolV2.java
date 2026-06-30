@@ -61,7 +61,7 @@ public class DesignToolV2 extends BaseDesignTool {
 
 	// GUIDES
 
-	private final LayersGuide layersGuide;
+	//  private final LayersGuide layersGuide;
 
 	//	private final ViewsGuide viewsGuide;
 
@@ -105,7 +105,7 @@ public class DesignToolV2 extends BaseDesignTool {
 		commandActions = new ConcurrentHashMap<>();
 		designPropertiesMap = new DesignPropertiesMap( product );
 
-		layersGuide = new LayersGuide( product, this );
+		//    layersGuide = new LayersGuide( product, this );
 		//		viewsGuide = new ViewsGuide( product, this );
 		//		printsGuide = new PrintsGuide( product, this );
 
@@ -154,12 +154,12 @@ public class DesignToolV2 extends BaseDesignTool {
 		getResource().getUndoManager().undoAvailableProperty().addListener( ( p, o, n ) -> getUndoAction().updateEnabled() );
 		getResource().getUndoManager().redoAvailableProperty().addListener( ( p, o, n ) -> getRedoAction().updateEnabled() );
 
-		layersGuide.ready( request );
+		getLayersGuide().ready( request );
 		//		viewsGuide.ready( request );
 		//		printsGuide.ready( request );
 		//getGuideContext().getGuides().addAll( layersGuide, viewsGuide, printsGuide );
-		getGuideContext().getGuides().addAll( layersGuide );
-		getGuideContext().setCurrentGuide( layersGuide );
+		getGuideContext().getGuides().addAll( getLayersGuide() );
+		getGuideContext().setCurrentGuide( getLayersGuide() );
 
 		//		// Keep the design pane centered when resizing
 		//		// These should be added before updating the pan and zoom
@@ -338,7 +338,7 @@ public class DesignToolV2 extends BaseDesignTool {
 
 	@Override
 	protected void guideNodesSelected( Set<GuideNode> oldNodes, Set<GuideNode> newNodes ) {
-		if( getCurrentGuide() == layersGuide ) {
+		if( getCurrentGuide() == getLayersGuide() ) {
 			newNodes.stream().findFirst().ifPresent( n -> doSetSelectedLayerById( n.getId() ) );
 			//		} else if( getCurrentGuide() == viewsGuide ) {
 			//			newNodes.stream().findFirst().ifPresent( n -> doSetCurrentViewById( n.getId() ) );
@@ -460,10 +460,6 @@ public class DesignToolV2 extends BaseDesignTool {
 		}
 
 		return nearest;
-	}
-
-	public boolean isCurrentLayer( DesignLayer layer ) {
-		return getCurrentLayer() == layer;
 	}
 
 	@Override

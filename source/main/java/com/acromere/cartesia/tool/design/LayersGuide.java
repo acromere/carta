@@ -4,6 +4,7 @@ import com.acromere.cartesia.RbKey;
 import com.acromere.cartesia.data.Design;
 import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.data.DesignModel;
+import com.acromere.cartesia.tool.BaseDesignTool;
 import com.acromere.cartesia.tool.DesignToolLayersGuide;
 import com.acromere.data.NodeEvent;
 import com.acromere.event.EventHandler;
@@ -47,13 +48,13 @@ public class LayersGuide extends Guide {
 
 	private final XenonProgramProduct product;
 
-	private final DesignToolV2 tool;
+	private final BaseDesignTool tool;
 
 	private final Map<DesignLayer, GuideNode> layerGuideNodes;
 
 	private final Map<GuideNode, DesignLayer> guideNodeLayers;
 
-	public LayersGuide( XenonProgramProduct product, DesignToolV2 tool ) {
+	public LayersGuide( XenonProgramProduct product, BaseDesignTool tool ) {
 		this.product = product;
 		this.tool = tool;
 		this.layerGuideNodes = new ConcurrentHashMap<>();
@@ -102,7 +103,7 @@ public class LayersGuide extends Guide {
 	 *
 	 * @param request The open asset request
 	 */
-	protected void ready( OpenAssetRequest request ) {
+	public void ready( OpenAssetRequest request ) {
 		// NOTE Layer structure changes come from the design
 		// NOTE Layer name changes come from the design
 		// NOTE Layer order changes come from the design

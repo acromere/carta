@@ -46,7 +46,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith( MockitoExtension.class )
-public class DesignToolV3RendererTest {
+public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 
 	static final double width = 1000;
 
@@ -67,6 +67,16 @@ public class DesignToolV3RendererTest {
 
 	@Mock
 	private ChangeListener<Number> valueListener;
+
+	public DesignToolV3RendererTest() {
+		super(new DesignToolV3Renderer());
+		this.renderer = (DesignToolV3Renderer)super.getRenderer();
+
+		renderer.resizeRelocate( 0, 0, width, height );
+		renderer.setDesign( new Design<>( new DesignModel2D() ) );
+		renderer.setWorkplane( new Workplane() );
+		renderer.layout();
+	}
 
 	@BeforeEach
 	void setUp() {

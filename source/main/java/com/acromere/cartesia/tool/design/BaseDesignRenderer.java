@@ -1,14 +1,18 @@
 package com.acromere.cartesia.tool.design;
 
-import com.acromere.cartesia.data.Design;
-import com.acromere.cartesia.data.DesignModel;
+import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.tool.RenderConstants;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.layout.StackPane;
 import lombok.CustomLog;
+
+import java.util.Collection;
+import java.util.List;
 
 @CustomLog
 public abstract class BaseDesignRenderer extends StackPane implements DesignRenderer, RenderConstants {
@@ -32,6 +36,10 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 	private final DoubleProperty viewZoomX;
 
 	private final DoubleProperty viewZoomY;
+
+	private final ObservableList<DesignLayer> enabledLayers;
+
+	private final ObservableList<DesignLayer> visibleLayers;
 
 	public BaseDesignRenderer() {
 		getStyleClass().add( "tool-renderer" );
@@ -65,6 +73,9 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		viewRotate = new SimpleDoubleProperty( DEFAULT_ROTATE );
 		viewZoomX = new SimpleDoubleProperty( DEFAULT_ZOOM );
 		viewZoomY = new SimpleDoubleProperty( DEFAULT_ZOOM );
+
+		enabledLayers = FXCollections.observableArrayList();
+		visibleLayers = FXCollections.observableArrayList();
 	}
 
 	/**
@@ -295,6 +306,64 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 
 		// The new view center has to be set after the new view zoom
 		setViewCenter( anchor.add( offset.multiply( 1.0 / factor ) ) );
+	}
+
+	@Override
+	public boolean isLayerEnabled( DesignLayer layer ) {
+		return enabledLayers.contains( layer );
+	}
+
+	@Override
+	public void setLayerEnabled( DesignLayer layer, boolean enabled ) {
+		if( enabled ) {
+			enabledLayers().add( layer );
+		} else {
+			enabledLayers().remove( layer );
+		}
+	}
+
+	@Override
+	public List<DesignLayer> getEnabledLayers() {
+		return List.copyOf( enabledLayers );
+	}
+
+	@Override
+	public void setEnabledLayers( Collection<DesignLayer> layers ) {
+		enabledLayers().setAll( layers );
+	}
+
+	@Override
+	public ObservableList<DesignLayer> enabledLayers() {
+		return enabledLayers;
+	}
+
+	@Override
+	public boolean isLayerVisible( DesignLayer layer ) {
+		return visibleLayers.contains( layer );
+	}
+
+	@Override
+	public void setLayerVisible( DesignLayer layer, boolean visible ) {
+		if( visible ) {
+			visibleLayers().add( layer );
+		} else {
+			visibleLayers().remove( layer );
+		}
+	}
+
+	@Override
+	public List<DesignLayer> getVisibleLayers() {
+		return List.copyOf( visibleLayers );
+	}
+
+	@Override
+	public void setVisibleLayers( Collection<DesignLayer> layers ) {
+		visibleLayers().setAll( layers );
+	}
+
+	@Override
+	public ObservableList<DesignLayer> visibleLayers() {
+		return visibleLayers;
 	}
 
 }

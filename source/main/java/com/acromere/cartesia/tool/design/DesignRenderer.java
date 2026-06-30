@@ -5,6 +5,7 @@ import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.data.DesignModel;
 import com.acromere.cartesia.tool.Workplane;
 import javafx.beans.property.DoubleProperty;
+import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 
 import java.util.Collection;
@@ -65,6 +66,28 @@ public interface DesignRenderer extends CommonToolRenderer {
 	void setGridVisible( boolean visible );
 
 	/**
+	 * Determines whether the specified design layer is enabled within the renderer.
+	 *
+	 * @param layer The design layer whose enabled flag is to be checked.
+	 * @return True if the layer is enabled, false otherwise.
+	 */
+	boolean isLayerEnabled( DesignLayer layer );
+
+	/**
+	 * Sets the enabled flag of a specific design layer in the renderer.
+	 *
+	 * @param layer The design layer whose enabled flag is being set.
+	 * @param enabled True to make the layer enabled, false to make it disabled.
+	 */
+	void setLayerEnabled( DesignLayer layer, boolean enabled );
+
+	List<DesignLayer> getEnabledLayers();
+
+	void setEnabledLayers( Collection<DesignLayer> layers );
+
+	ObservableList<DesignLayer> enabledLayers();
+
+	/**
 	 * Determines whether the specified design layer is visible within the renderer.
 	 *
 	 * @param layer The design layer whose visibility is to be checked.
@@ -86,6 +109,8 @@ public interface DesignRenderer extends CommonToolRenderer {
 	List<DesignLayer> getVisibleLayers();
 
 	void setVisibleLayers( Collection<DesignLayer> layers );
+
+	ObservableList<DesignLayer> visibleLayers();
 
 	/**
 	 * Called to request the design be rendered.

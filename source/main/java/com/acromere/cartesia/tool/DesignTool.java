@@ -13,6 +13,7 @@ import com.acromere.xenon.XenonProgramProduct;
 import com.acromere.xenon.resource.Resource;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point3D;
 import javafx.scene.Cursor;
@@ -189,6 +190,8 @@ public interface DesignTool extends RenderConstants, CommonToolRenderer {
 
 	Point3D nearestReferencePoint( Collection<DesignShape> shapes, Point3D point );
 
+	boolean isCurrentLayer( DesignLayer layer );
+
 	/**
 	 * The layer currently being edited. This is the layer used for new geometry.
 	 *
@@ -237,6 +240,8 @@ public interface DesignTool extends RenderConstants, CommonToolRenderer {
 	List<DesignLayer> getVisibleLayers();
 
 	void setVisibleLayers( Collection<DesignLayer> layers );
+
+	ObservableList<DesignLayer> visibleLayers();
 
 	DesignLayer getPreviewLayer();
 
