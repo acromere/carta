@@ -57,6 +57,8 @@ import lombok.Getter;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * The design tool is the base class for all design tools.
@@ -310,12 +312,13 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		getGuideContext().getGuides().addAll( layersGuide );
 		getGuideContext().setCurrentGuide( layersGuide );
 
-		// Set defaults
+		// NOTE Everything up to here is complete
 
-		// Set the workplane settings TODO replace with settings eventually
-		getWorkplane().setGridStyle( GridStyle.CROSS );
-		getWorkplane().setMinorGridX( "0.2" );
-		getWorkplane().setMinorGridY( "0.2" );
+		Settings productSettings = getProduct().getSettings();
+		Settings settings = getSettings();
+		Settings assetSettings = getAssetSettings();
+
+		configureWorkplane( getWorkplane(), assetSettings );
 
 		// Show the grid TODO replace with settings eventually
 		getRenderer().setGridVisible( true );
@@ -324,6 +327,10 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		if( !model.getLayers().getLayers().isEmpty() ) {
 			getRenderer().setLayerVisible( model.getLayers().getLayers().getFirst(), true );
 		}
+
+		// Get settings
+
+		// NOTE Everything from here down is complete
 
 		// Link the command context to the user interfaces
 		//addEventFilter( KeyEvent.ANY, e -> getCommandContext().handle( e ) );
@@ -334,9 +341,13 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		// Update the design context when the mouse moves
 		addEventFilter( MouseEvent.MOUSE_MOVED, e -> getCommandContext().setMouse( e ) );
 
+		// TODO Should selected layer be stored in the tool settings?
+		if( getSelectedLayer() == null ) setSelectedLayer( getCurrentLayer() );
+
 		// Swap the toast for the renderer
 		getToast().setVisible( false );
 		getRenderer().setVisible( true );
+		getCoordinateStatus().updateZoom( getViewZoom() );
 	}
 
 	@Override
@@ -375,6 +386,8 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	protected void conceal() throws ToolException {
 		unregisterActions();
 		unregisterCommandCapture();
+
+		hidePropertiesPage();
 
 		super.conceal();
 	}
@@ -865,7 +878,59 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		pullAction( "redo", redoAction );
 	}
 
-	private void capturePreviousPortal() {
+	protected void configureWorkplane( Workplane workplane, Settings settings ) {
+		workplane.setGridSystem( Grid.valueOf( settings.get( Workplane.GRID_SYSTEM, Workplane.DEFAULT_GRID_SYSTEM.name() ).toUpperCase() ) );
+		workplane.setOrigin( settings.get( Workplane.WORKPANE_ORIGIN, Workplane.DEFAULT_ORIGIN ) );
+
+		workplane.setGridAxisVisible( settings.get( Workplane.GRID_AXIS_VISIBLE, Boolean.class, Workplane.DEFAULT_GRID_AXIS_VISIBLE ) );
+		workplane.setGridAxisPaint( settings.get( Workplane.GRID_AXIS_PAINT, Workplane.DEFAULT_GRID_AXIS_PAINT ) );
+		workplane.setGridAxisWidth( settings.get( Workplane.GRID_AXIS_WIDTH, Workplane.DEFAULT_GRID_AXIS_WIDTH ) );
+
+		workplane.setMajorGridVisible( settings.get( Workplane.GRID_MAJOR_VISIBLE, Boolean.class, Workplane.DEFAULT_GRID_MAJOR_VISIBLE ) );
+		workplane.setMajorGridX( settings.get( Workplane.GRID_MAJOR_X, Workplane.DEFAULT_GRID_MAJOR_SIZE ) );
+		workplane.setMajorGridY( settings.get( Workplane.GRID_MAJOR_Y, Workplane.DEFAULT_GRID_MAJOR_SIZE ) );
+		workplane.setMajorGridPaint( settings.get( Workplane.GRID_MAJOR_PAINT, Workplane.DEFAULT_GRID_MAJOR_PAINT ) );
+		workplane.setMajorGridWidth( settings.get( Workplane.GRID_MAJOR_WIDTH, Workplane.DEFAULT_GRID_MAJOR_WIDTH ) );
+
+		workplane.setMinorGridVisible( settings.get( Workplane.GRID_MINOR_VISIBLE, Boolean.class, Workplane.DEFAULT_GRID_MINOR_VISIBLE ) );
+		workplane.setMinorGridX( settings.get( Workplane.GRID_MINOR_X, Workplane.DEFAULT_GRID_MINOR_SIZE ) );
+		workplane.setMinorGridY( settings.get( Workplane.GRID_MINOR_Y, Workplane.DEFAULT_GRID_MINOR_SIZE ) );
+		workplane.setMinorGridPaint( settings.get( Workplane.GRID_MINOR_PAINT, Workplane.DEFAULT_GRID_MINOR_PAINT ) );
+		workplane.setMinorGridWidth( settings.get( Workplane.GRID_MINOR_WIDTH, Workplane.DEFAULT_GRID_MINOR_WIDTH ) );
+
+		workplane.setSnapGridX( settings.get( Workplane.GRID_SNAP_X, Workplane.DEFAULT_GRID_SNAP_SIZE ) );
+		workplane.setSnapGridY( settings.get( Workplane.GRID_SNAP_Y, Workplane.DEFAULT_GRID_SNAP_SIZE ) );
+
+		settings.register( Workplane.GRID_SYSTEM, e -> workplane.setGridSystem( Grid.valueOf( String.valueOf( e.getNewValue() ).toUpperCase() ) ) );
+		settings.register( Workplane.GRID_ORIGIN, e -> workplane.setOrigin( String.valueOf( e.getNewValue() ) ) );
+
+		settings.register( Workplane.GRID_AXIS_VISIBLE, e -> workplane.setGridAxisVisible( Boolean.parseBoolean( String.valueOf( e.getNewValue() ) ) ) );
+		settings.register( Workplane.GRID_AXIS_PAINT, e -> workplane.setGridAxisPaint( String.valueOf( e.getNewValue() ) ) );
+		settings.register( Workplane.GRID_AXIS_WIDTH, e -> workplane.setGridAxisWidth( String.valueOf( e.getNewValue() ) ) );
+
+		settings.register( Workplane.GRID_MAJOR_VISIBLE, e -> workplane.setMajorGridVisible( Boolean.parseBoolean( String.valueOf( e.getNewValue() ) ) ) );
+		settings.register( Workplane.GRID_MAJOR_X, e -> workplane.setMajorGridX( String.valueOf( e.getNewValue() ) ) );
+		settings.register( Workplane.GRID_MAJOR_Y, e -> workplane.setMajorGridY( String.valueOf( e.getNewValue() ) ) );
+		//settings.register( DesignWorkplane.GRID_MAJOR_Z, e -> workplane.setMajorGridZ( String.valueOf( e.getNewValue() ) ) );
+		settings.register( Workplane.GRID_MAJOR_PAINT, e -> workplane.setMajorGridPaint( String.valueOf( e.getNewValue() ) ) );
+		settings.register( Workplane.GRID_MAJOR_WIDTH, e -> workplane.setMajorGridWidth( String.valueOf( e.getNewValue() ) ) );
+
+		settings.register( Workplane.GRID_MINOR_VISIBLE, e -> workplane.setMinorGridVisible( Boolean.parseBoolean( String.valueOf( e.getNewValue() ) ) ) );
+		settings.register( Workplane.GRID_MINOR_X, e -> workplane.setMinorGridX( String.valueOf( e.getNewValue() ) ) );
+		settings.register( Workplane.GRID_MINOR_Y, e -> workplane.setMinorGridY( String.valueOf( e.getNewValue() ) ) );
+		//settings.register( DesignWorkplane.GRID_MINOR_Z, e -> workplane.setMinorGridZ( String.valueOf( e.getNewValue() ) ) );
+		settings.register( Workplane.GRID_MINOR_PAINT, e -> workplane.setMinorGridPaint( String.valueOf( e.getNewValue() ) ) );
+		settings.register( Workplane.GRID_MINOR_WIDTH, e -> workplane.setMinorGridWidth( String.valueOf( e.getNewValue() ) ) );
+
+		settings.register( Workplane.GRID_SNAP_X, e -> workplane.setSnapGridX( String.valueOf( e.getNewValue() ) ) );
+		settings.register( Workplane.GRID_SNAP_Y, e -> workplane.setSnapGridY( String.valueOf( e.getNewValue() ) ) );
+		//settings.register( DesignWorkplane.GRID_SNAP_Z, e -> workplane.setSnapGridZ( String.valueOf( e.getNewValue() ) ) );
+
+		// Rebuild the grid if any workplane values change
+		//workplane.register( NodeEvent.VALUE_CHANGED, e -> rebuildGridAction.request() );
+	}
+
+	protected void capturePreviousPortal() {
 		portalStack.push( new DesignPortal( getViewCenter(), getViewZoom(), getViewRotate() ) );
 	}
 
@@ -891,6 +956,10 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 		// The workplane bounds can be determined from the viewport
 		workplane.setBounds( getRenderer().screenToWorld( viewport ) );
+	}
+
+	private List<DesignLayer> getFilteredLayers( Predicate<? super DesignLayer> filter ) {
+		return getDesignModel().getAllLayers().stream().filter( filter ).collect( Collectors.toList() );
 	}
 
 	private void doSetSelectedLayerById( String id ) {
