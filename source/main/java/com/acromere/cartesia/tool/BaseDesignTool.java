@@ -1,21 +1,25 @@
 package com.acromere.cartesia.tool;
 
 import com.acromere.annotation.Note;
-import com.acromere.cartesia.CartesiaMod;
+import com.acromere.cartesia.*;
 import com.acromere.cartesia.RbKey;
-import com.acromere.cartesia.ShapePropertiesResourceType;
 import com.acromere.cartesia.cursor.Reticle;
 import com.acromere.cartesia.cursor.ReticleCursor;
 import com.acromere.cartesia.data.*;
+import com.acromere.cartesia.data.map.DesignUnitMapper;
 import com.acromere.cartesia.data.util.DesignPropertiesMap;
 import com.acromere.cartesia.tool.design.BaseDesignRenderer;
 import com.acromere.cartesia.tool.design.DesignToolEvent;
 import com.acromere.cartesia.tool.design.LayersGuide;
 import com.acromere.data.NodeSettings;
 import com.acromere.product.Rb;
+import com.acromere.settings.MapSettings;
 import com.acromere.settings.Settings;
+import com.acromere.settings.StoredSettings;
 import com.acromere.skill.WritableIdentity;
 import com.acromere.util.DelayedAction;
+import com.acromere.util.IdGenerator;
+import com.acromere.util.TypeReference;
 import com.acromere.xenon.*;
 import com.acromere.xenon.resource.OpenAssetRequest;
 import com.acromere.xenon.resource.Resource;
@@ -29,6 +33,7 @@ import com.acromere.xenon.workpane.ToolException;
 import com.acromere.xenon.workpane.Workpane;
 import com.acromere.xenon.workspace.StatusBar;
 import com.acromere.xenon.workspace.Workspace;
+import com.acromere.zerra.color.Paints;
 import com.acromere.zerra.event.FxEventHub;
 import com.acromere.zerra.javafx.Fx;
 import javafx.beans.property.DoubleProperty;
@@ -50,6 +55,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Paint;
 import javafx.scene.transform.Transform;
 import javafx.stage.Screen;
 import lombok.CustomLog;
@@ -190,6 +196,8 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		addStylesheet( CartesiaMod.STYLESHEET );
 		getStyleClass().add( "design-tool" );
 
+		setUid( IdGenerator.getId() );
+
 		// Actions
 		commandActions = new ConcurrentHashMap<>();
 		designPropertiesMap = new DesignPropertiesMap( product );
@@ -312,13 +320,70 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		getGuideContext().getGuides().addAll( layersGuide );
 		getGuideContext().setCurrentGuide( layersGuide );
 
-		// NOTE Everything up to here is complete
+		// Default values
+		String defaultSelectSize = String.valueOf( DEFAULT_SELECT_TOLERANCE.getValue() );
+		String defaultSelectUnit = DEFAULT_SELECT_TOLERANCE.getUnit().toString().toLowerCase();
+		String defaultReferencePointType = DesignMarker.Type.CIRCLE.name().toLowerCase();
+		String defaultReferencePointSize = "10";
+		String defaultReferencePointPaint = "#808080";
+		String defaultReticle = DEFAULT_RETICLE.name().toLowerCase();
 
+		// Get the settings collections
 		Settings productSettings = getProduct().getSettings();
 		Settings settings = getSettings();
-		Settings assetSettings = getAssetSettings();
 
+		System.out.println( "uri=" + getResource().getUri() );
+		System.out.println( "uid=" + IdGenerator.getId( String.valueOf( getResource().getUri() ) ) );
+		IdGenerator.getId( String.valueOf( getResource().getUri() ) );
+
+		Settings assetSettings = getAssetSettings();
+		assert assetSettings != null;
+
+		// NEXT Why are the asset settings null?
+
+		// Workplane settings and listeners
 		configureWorkplane( getWorkplane(), assetSettings );
+
+//		// Tool settings
+//		double selectApertureSize = Double.parseDouble( productSettings.get( SELECT_APERTURE_SIZE, defaultSelectSize ) );
+//		DesignUnit selectApertureUnit = DesignUnit.valueOf( DesignUnitMapper.mapNameToAbbreviation( productSettings.get( SELECT_APERTURE_UNIT, defaultSelectUnit ) ).toUpperCase() );
+//		DesignMarker.Type referencePointType = DesignMarker.Type.valueOf( productSettings.get( REFERENCE_POINT_TYPE, defaultReferencePointType ).toUpperCase() );
+//		double referencePointSize = Double.parseDouble( productSettings.get( REFERENCE_POINT_SIZE, defaultReferencePointSize ) );
+//		Paint referencePointPaint = Paints.parse( productSettings.get( REFERENCE_POINT_PAINT, defaultReferencePointPaint ) );
+//
+//		Point3D viewPoint = ParseUtil.parsePoint3D( settings.get( SETTINGS_VIEW_POINT, "0,0,0" ) );
+//		double viewZoom = Double.parseDouble( settings.get( SETTINGS_VIEW_ZOOM, "1.0" ) );
+//		double viewRotate = Double.parseDouble( settings.get( SETTINGS_VIEW_ROTATE, "0.0" ) );
+//		setView( viewPoint, viewZoom, viewRotate );
+//		setReticle( Reticle.valueOf( productSettings.get( RETICLE, defaultReticle ).toUpperCase() ) );
+//		setSelectTolerance( new DesignValue( selectApertureSize, selectApertureUnit ) );
+//		//		designPane.setReferencePointType( referencePointType );
+//		//		designPane.setReferencePointSize( referencePointSize );
+//		//		designPane.setReferencePointPaint( referencePointPaint );
+//
+//		getDesignModel().findLayers( DesignLayer.ID, settings.get( CURRENT_LAYER, "" ) ).stream().findFirst().ifPresent( this::setCurrentLayer );
+//		getDesignModel().findViews( DesignView.ID, settings.get( CURRENT_VIEW, "" ) ).stream().findFirst().ifPresent( this::setCurrentView );
+//
+//		// Restore the list of enabled layers
+//		Set<String> enabledLayerIds = settings.get( ENABLED_LAYERS, new TypeReference<>() {}, Set.of() );
+//		getDesignModel().getAllLayers().forEach( l -> setLayerEnabled( l, enabledLayerIds.contains( l.getId() ) ) );
+//
+//		// Restore the list of visible layers
+//		Set<String> visibleLayerIds = settings.get( VISIBLE_LAYERS, new TypeReference<>() {}, Set.of() );
+//		getDesignModel().getAllLayers().forEach( l -> setLayerVisible( l, visibleLayerIds.contains( l.getId() ) ) );
+//
+//		// Restore the grid visible flag
+//		setGridVisible( Boolean.parseBoolean( settings.get( GRID_VISIBLE, DEFAULT_GRID_VISIBLE ) ) );
+//
+//		// Restore the grid snap enabled flag
+//		setGridSnapEnabled( Boolean.parseBoolean( settings.get( GRID_SNAP_ENABLED, DEFAULT_GRID_SNAP_ENABLED ) ) );
+
+		//		// Restore the reference view visibility
+		//		setReferenceLayerVisible( Boolean.parseBoolean( settings.get( REFERENCE_LAYER_VISIBLE, Boolean.TRUE.toString() ) ) );
+
+		// NOTE Everything up to here is complete
+
+
 
 		// Show the grid TODO replace with settings eventually
 		getRenderer().setGridVisible( true );
@@ -327,8 +392,6 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		if( !model.getLayers().getLayers().isEmpty() ) {
 			getRenderer().setLayerVisible( model.getLayers().getLayers().getFirst(), true );
 		}
-
-		// Get settings
 
 		// NOTE Everything from here down is complete
 
@@ -656,6 +719,31 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	@Override
 	public Bounds screenToWorld( Bounds bounds ) {
 		return getRenderer().screenToWorld( bounds );
+	}
+
+	@Override
+	public boolean isLayerEnabled( DesignLayer layer ) {
+		return getRenderer().isLayerEnabled( layer );
+	}
+
+	@Override
+	public void setLayerEnabled( DesignLayer layer, boolean visible ) {
+		getRenderer().setLayerEnabled( layer, visible );
+	}
+
+	@Override
+	public List<DesignLayer> getEnabledLayers() {
+		return new ArrayList<>( getRenderer().enabledLayers() );
+	}
+
+	@Override
+	public void setEnabledLayers( Collection<DesignLayer> layers ) {
+		getRenderer().setEnabledLayers( layers );
+	}
+
+	@Override
+	public ObservableList<DesignLayer> enabledLayers() {
+		return getRenderer().enabledLayers();
 	}
 
 	@Override

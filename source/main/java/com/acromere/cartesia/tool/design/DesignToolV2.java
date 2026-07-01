@@ -23,7 +23,6 @@ import com.acromere.xenon.resource.OpenAssetRequest;
 import com.acromere.xenon.resource.Resource;
 import com.acromere.xenon.resource.ResourceSwitchedEvent;
 import com.acromere.xenon.task.Task;
-import com.acromere.xenon.tool.guide.GuideNode;
 import com.acromere.xenon.tool.settings.SettingsPage;
 import com.acromere.xenon.workpane.ToolException;
 import com.acromere.zerra.color.Paints;
@@ -45,7 +44,6 @@ import lombok.CustomLog;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @CustomLog
@@ -477,31 +475,6 @@ public class DesignToolV2 extends BaseDesignTool {
 			if( !renderer.visibleLayers().contains( layer ) ) renderer.visibleLayers().add( layer );
 		} else {
 			renderer.visibleLayers().remove( layer );
-		}
-	}
-
-	@Override
-	public List<DesignLayer> getVisibleLayers() {
-		return new ArrayList<>( renderer.visibleLayers() );
-	}
-
-	public ObservableList<DesignLayer> visibleLayers() {
-		return renderer.visibleLayers();
-	}
-
-	public List<DesignLayer> getEnabledLayers() {
-		return new ArrayList<>( renderer.enabledLayers() );
-	}
-
-	public ObservableList<DesignLayer> enabledLayers() {
-		return renderer.enabledLayers();
-	}
-
-	public void setLayerEnabled( DesignLayer layer, boolean visible ) {
-		if( visible ) {
-			renderer.enabledLayers().add( layer );
-		} else {
-			renderer.enabledLayers().remove( layer );
 		}
 	}
 

@@ -215,6 +215,33 @@ public interface DesignTool extends RenderConstants, CommonToolRenderer {
 	ObjectProperty<DesignLayer> selectedLayerProperty();
 
 	/**
+	 * Determine if the specified layer is enabled.
+	 *
+	 * @param layer The layer to check
+	 * @return True if the layer is enabled, false otherwise
+	 */
+	boolean isLayerEnabled( DesignLayer layer );
+
+	/**
+	 * Set the enabled flag of a specific layer.
+	 *
+	 * @param layer The layer whose visibility is being set
+	 * @param visible True to make the layer visible, false to make it hidden
+	 */
+	void setLayerEnabled( DesignLayer layer, boolean visible );
+
+	/**
+	 * Get a list of the enabled layers. The list is ordered the same as the layers in the design.
+	 *
+	 * @return A list of the enabled layers
+	 */
+	List<DesignLayer> getEnabledLayers();
+
+	void setEnabledLayers( Collection<DesignLayer> layers );
+
+	ObservableList<DesignLayer> enabledLayers();
+
+	/**
 	 * Determine if the specified layer is visible.
 	 *
 	 * @param layer The layer to check
