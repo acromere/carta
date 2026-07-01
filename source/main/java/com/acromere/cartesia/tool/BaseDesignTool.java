@@ -13,9 +13,7 @@ import com.acromere.cartesia.tool.design.DesignToolEvent;
 import com.acromere.cartesia.tool.design.LayersGuide;
 import com.acromere.data.NodeSettings;
 import com.acromere.product.Rb;
-import com.acromere.settings.MapSettings;
 import com.acromere.settings.Settings;
-import com.acromere.settings.StoredSettings;
 import com.acromere.skill.WritableIdentity;
 import com.acromere.util.DelayedAction;
 import com.acromere.util.IdGenerator;
@@ -299,7 +297,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		DesignModel model = design.getDataModel();
 
 		// TEMPORARY - Create layer
-  	String constructionLayerName = Rb.textOr( com.acromere.xenon.RbKey.LABEL, "layer-construction", "construction" ).toLowerCase();
+		String constructionLayerName = Rb.textOr( com.acromere.xenon.RbKey.LABEL, "layer-construction", "construction" ).toLowerCase();
 		DesignLayer layer = new DesignLayer().setName( constructionLayerName );
 		design.getDataModel().getLayers().addLayer( layer );
 
@@ -331,62 +329,49 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		// Get the settings collections
 		Settings productSettings = getProduct().getSettings();
 		Settings settings = getSettings();
-
-		System.out.println( "uri=" + getResource().getUri() );
-		System.out.println( "uid=" + IdGenerator.getId( String.valueOf( getResource().getUri() ) ) );
-		IdGenerator.getId( String.valueOf( getResource().getUri() ) );
-
 		Settings assetSettings = getAssetSettings();
-		assert assetSettings != null;
-
-		// NEXT Why are the asset settings null?
 
 		// Workplane settings and listeners
 		configureWorkplane( getWorkplane(), assetSettings );
 
-//		// Tool settings
-//		double selectApertureSize = Double.parseDouble( productSettings.get( SELECT_APERTURE_SIZE, defaultSelectSize ) );
-//		DesignUnit selectApertureUnit = DesignUnit.valueOf( DesignUnitMapper.mapNameToAbbreviation( productSettings.get( SELECT_APERTURE_UNIT, defaultSelectUnit ) ).toUpperCase() );
-//		DesignMarker.Type referencePointType = DesignMarker.Type.valueOf( productSettings.get( REFERENCE_POINT_TYPE, defaultReferencePointType ).toUpperCase() );
-//		double referencePointSize = Double.parseDouble( productSettings.get( REFERENCE_POINT_SIZE, defaultReferencePointSize ) );
-//		Paint referencePointPaint = Paints.parse( productSettings.get( REFERENCE_POINT_PAINT, defaultReferencePointPaint ) );
-//
-//		Point3D viewPoint = ParseUtil.parsePoint3D( settings.get( SETTINGS_VIEW_POINT, "0,0,0" ) );
-//		double viewZoom = Double.parseDouble( settings.get( SETTINGS_VIEW_ZOOM, "1.0" ) );
-//		double viewRotate = Double.parseDouble( settings.get( SETTINGS_VIEW_ROTATE, "0.0" ) );
-//		setView( viewPoint, viewZoom, viewRotate );
-//		setReticle( Reticle.valueOf( productSettings.get( RETICLE, defaultReticle ).toUpperCase() ) );
-//		setSelectTolerance( new DesignValue( selectApertureSize, selectApertureUnit ) );
-//		//		designPane.setReferencePointType( referencePointType );
-//		//		designPane.setReferencePointSize( referencePointSize );
-//		//		designPane.setReferencePointPaint( referencePointPaint );
-//
-//		getDesignModel().findLayers( DesignLayer.ID, settings.get( CURRENT_LAYER, "" ) ).stream().findFirst().ifPresent( this::setCurrentLayer );
-//		getDesignModel().findViews( DesignView.ID, settings.get( CURRENT_VIEW, "" ) ).stream().findFirst().ifPresent( this::setCurrentView );
-//
-//		// Restore the list of enabled layers
-//		Set<String> enabledLayerIds = settings.get( ENABLED_LAYERS, new TypeReference<>() {}, Set.of() );
-//		getDesignModel().getAllLayers().forEach( l -> setLayerEnabled( l, enabledLayerIds.contains( l.getId() ) ) );
-//
-//		// Restore the list of visible layers
-//		Set<String> visibleLayerIds = settings.get( VISIBLE_LAYERS, new TypeReference<>() {}, Set.of() );
-//		getDesignModel().getAllLayers().forEach( l -> setLayerVisible( l, visibleLayerIds.contains( l.getId() ) ) );
-//
-//		// Restore the grid visible flag
-//		setGridVisible( Boolean.parseBoolean( settings.get( GRID_VISIBLE, DEFAULT_GRID_VISIBLE ) ) );
-//
-//		// Restore the grid snap enabled flag
-//		setGridSnapEnabled( Boolean.parseBoolean( settings.get( GRID_SNAP_ENABLED, DEFAULT_GRID_SNAP_ENABLED ) ) );
+		// Tool settings
+		double selectApertureSize = Double.parseDouble( productSettings.get( SELECT_APERTURE_SIZE, defaultSelectSize ) );
+		DesignUnit selectApertureUnit = DesignUnit.valueOf( DesignUnitMapper.mapNameToAbbreviation( productSettings.get( SELECT_APERTURE_UNIT, defaultSelectUnit ) ).toUpperCase() );
+		DesignMarker.Type referencePointType = DesignMarker.Type.valueOf( productSettings.get( REFERENCE_POINT_TYPE, defaultReferencePointType ).toUpperCase() );
+		double referencePointSize = Double.parseDouble( productSettings.get( REFERENCE_POINT_SIZE, defaultReferencePointSize ) );
+		Paint referencePointPaint = Paints.parse( productSettings.get( REFERENCE_POINT_PAINT, defaultReferencePointPaint ) );
+
+		Point3D viewPoint = ParseUtil.parsePoint3D( settings.get( SETTINGS_VIEW_POINT, "0,0,0" ) );
+		double viewZoom = Double.parseDouble( settings.get( SETTINGS_VIEW_ZOOM, "1.0" ) );
+		double viewRotate = Double.parseDouble( settings.get( SETTINGS_VIEW_ROTATE, "0.0" ) );
+		setView( viewPoint, viewZoom, viewRotate );
+		setReticle( Reticle.valueOf( productSettings.get( RETICLE, defaultReticle ).toUpperCase() ) );
+		setSelectTolerance( new DesignValue( selectApertureSize, selectApertureUnit ) );
+		//		designPane.setReferencePointType( referencePointType );
+		//		designPane.setReferencePointSize( referencePointSize );
+		//		designPane.setReferencePointPaint( referencePointPaint );
+
+		getDesignModel().findLayers( DesignLayer.ID, settings.get( CURRENT_LAYER, "" ) ).stream().findFirst().ifPresent( this::setCurrentLayer );
+		getDesignModel().findViews( DesignView.ID, settings.get( CURRENT_VIEW, "" ) ).stream().findFirst().ifPresent( this::setCurrentView );
+
+		// Restore the list of enabled layers
+		Set<String> enabledLayerIds = settings.get( ENABLED_LAYERS, new TypeReference<>() {}, Set.of() );
+		getDesignModel().getAllLayers().forEach( l -> setLayerEnabled( l, enabledLayerIds.contains( l.getId() ) ) );
+
+		// Restore the list of visible layers
+		Set<String> visibleLayerIds = settings.get( VISIBLE_LAYERS, new TypeReference<>() {}, Set.of() );
+		getDesignModel().getAllLayers().forEach( l -> setLayerVisible( l, visibleLayerIds.contains( l.getId() ) ) );
+
+		// Restore the grid visible flag
+		setGridVisible( Boolean.parseBoolean( settings.get( GRID_VISIBLE, DEFAULT_GRID_VISIBLE ) ) );
+
+		// Restore the grid snap enabled flag
+		setGridSnapEnabled( Boolean.parseBoolean( settings.get( GRID_SNAP_ENABLED, DEFAULT_GRID_SNAP_ENABLED ) ) );
 
 		//		// Restore the reference view visibility
 		//		setReferenceLayerVisible( Boolean.parseBoolean( settings.get( REFERENCE_LAYER_VISIBLE, Boolean.TRUE.toString() ) ) );
 
 		// NOTE Everything up to here is complete
-
-
-
-		// Show the grid TODO replace with settings eventually
-		getRenderer().setGridVisible( true );
 
 		// Show the first layer TODO replace with settings eventually
 		if( !model.getLayers().getLayers().isEmpty() ) {
