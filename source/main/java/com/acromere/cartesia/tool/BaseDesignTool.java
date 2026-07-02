@@ -362,10 +362,10 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		Set<String> visibleLayerIds = settings.get( VISIBLE_LAYERS, new TypeReference<>() {}, Set.of() );
 		getDesignModel().getAllLayers().forEach( l -> setLayerVisible( l, visibleLayerIds.contains( l.getId() ) ) );
 
-		// Restore the grid visible flag
+		// Restore the grid-visible flag
 		setGridVisible( Boolean.parseBoolean( settings.get( GRID_VISIBLE, DEFAULT_GRID_VISIBLE ) ) );
 
-		// Restore the grid snap enabled flag
+		// Restore the grid-snap enabled flag
 		setGridSnapEnabled( Boolean.parseBoolean( settings.get( GRID_SNAP_ENABLED, DEFAULT_GRID_SNAP_ENABLED ) ) );
 
 		//		// Restore the reference view visibility
@@ -718,7 +718,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 	@Override
 	public List<DesignLayer> getEnabledLayers() {
-		return new ArrayList<>( getRenderer().enabledLayers() );
+		return getRenderer().getEnabledLayers();
 	}
 
 	@Override

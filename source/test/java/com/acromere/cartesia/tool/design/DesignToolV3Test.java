@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -273,6 +274,78 @@ public class DesignToolV3Test extends BaseToolTest {
 
 	@Test
 	@Tag( CartesiaTestTag.WHITE_BOX )
+	void isLayerEnabled() {
+		DesignLayer layer = new DesignLayer().setName( "layer-0" );
+		tool.isLayerEnabled( layer );
+
+		// Check that it delegates to the renderer
+		verify( renderer, times( 1 ) ).isLayerEnabled( eq( layer ) );
+	}
+
+	@Test
+	@Tag( CartesiaTestTag.WHITE_BOX )
+	void setLayerEnabled() {
+		DesignLayer layer = new DesignLayer().setName( "layer-0" );
+		tool.setLayerEnabled( layer, true );
+
+		// Check that it delegates to the renderer
+		verify( renderer, times( 1 ) ).setLayerEnabled( eq( layer ), eq( true ) );
+	}
+
+	@Test
+	@Tag( CartesiaTestTag.WHITE_BOX )
+	void getEnabledLayers() {
+		tool.getEnabledLayers();
+
+		// Check that it delegates to the renderer
+		verify( renderer, times( 1 ) ).getEnabledLayers();
+	}
+
+	@Test
+	@Tag( CartesiaTestTag.WHITE_BOX )
+	void setEnabledLayers() {
+		DesignLayer layer = new DesignLayer().setName( "layer-0" );
+		tool.setEnabledLayers( Set.of( layer ) );
+
+		// Check that it delegates to the renderer
+		verify( renderer, times( 1 ) ).setEnabledLayers( eq( Set.of( layer ) ) );
+	}
+
+	@Test
+	@Tag( CartesiaTestTag.WHITE_BOX )
+	void enabledLayers() {
+		// given
+		verify( renderer, times( 2 ) ).enabledLayers();
+
+		// when
+		tool.enabledLayers();
+
+		// Check that it delegates to the renderer
+		verify( renderer, times( 3 ) ).enabledLayers();
+	}
+
+	@Test
+	@Tag( CartesiaTestTag.WHITE_BOX )
+	void isLayerVisible() {
+		DesignLayer layer = new DesignLayer().setName( "layer-0" );
+		tool.isLayerVisible( layer );
+
+		// Check that it delegates to the renderer
+		verify( renderer, times( 1 ) ).isLayerVisible( eq( layer ) );
+	}
+
+	@Test
+	@Tag( CartesiaTestTag.WHITE_BOX )
+	void setLayerVisible() {
+		DesignLayer layer = new DesignLayer().setName( "layer-0" );
+		tool.setLayerVisible( layer, true );
+
+		// Check that it delegates to the renderer
+		verify( renderer, times( 1 ) ).setLayerVisible( eq( layer ), eq( true ) );
+	}
+
+	@Test
+	@Tag( CartesiaTestTag.WHITE_BOX )
 	void getVisibleLayers() {
 		tool.getVisibleLayers();
 
@@ -288,6 +361,19 @@ public class DesignToolV3Test extends BaseToolTest {
 
 		// Check that it delegates to the renderer
 		verify( renderer, times( 1 ) ).setVisibleLayers( Set.of( layer ) );
+	}
+
+	@Test
+	@Tag( CartesiaTestTag.WHITE_BOX )
+	void visibleLayers() {
+		// given
+		verify( renderer, times( 1 ) ).visibleLayers();
+
+		// when
+		tool.visibleLayers();
+
+		// Check that it delegates to the renderer
+		verify( renderer, times( 2 ) ).visibleLayers();
 	}
 
 	@Test
