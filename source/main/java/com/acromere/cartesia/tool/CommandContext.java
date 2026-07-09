@@ -91,7 +91,8 @@ public class CommandContext implements EventHandler<KeyEvent> {
 	private Point3D worldMouse;
 
 	@Getter
-	private final CoordinateStatus coordinateStatus;
+	@Setter
+	private CoordinateStatus coordinateStatus;
 
 	private DesignTool tool;
 
@@ -101,7 +102,6 @@ public class CommandContext implements EventHandler<KeyEvent> {
 		this.commandStack = new LinkedBlockingDeque<>();
 		this.priorCommand = TextUtil.EMPTY;
 		this.inputMode = CommandContext.Input.NONE;
-		this.coordinateStatus = new CoordinateStatus();
 	}
 
 	public CommandPrompt getCommandPrompt() {

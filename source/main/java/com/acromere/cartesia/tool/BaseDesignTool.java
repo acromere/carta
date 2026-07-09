@@ -589,8 +589,15 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	@NonNull
 	public final CommandContext getCommandContext() {
 		Design<? extends DesignModel> design = getDesign();
-		if( design == null ) return CommandContext.EMPTY ;
+		if( design == null ) return CommandContext.EMPTY;
+
 		CommandContext context = design.getCommandContext();
+		if( context == null ) {
+			context = new CommandContext();
+			context.setCoordinateStatus( new CoordinateStatus() );
+			design.setCommandContext( context );
+		}
+
 		context.setTool( this );
 		return context;
 	}
