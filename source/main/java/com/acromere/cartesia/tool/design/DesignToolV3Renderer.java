@@ -142,8 +142,6 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		drawableToGeometry = new ConcurrentHashMap<>();
 	}
 
-	// NEXT Apply lessons learned to create a new design renderer
-
 	/**
 	 * Create a new renderer. This class is intended to only be used by {@link
 	 * DesignToolV3} and should not be instantiated directly otherwise except for
@@ -379,7 +377,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 */
 	@Override
 	public void render() {
-
+		// Should not need this method for the V3 renderer.
 	}
 
 	/**
@@ -669,6 +667,16 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	}
 
 	// TODO Finish building the bind methods for the remaining design shapes
+	// arc - done
+	// box - done
+	// cubic - done
+	// ellipse - done
+	// line - done
+	// marker - done
+	// offset
+	// path - done
+	// quad - done
+	// text - done
 
 	private Arc bindArcGeometry( DesignArc designArc ) {
 		Arc arc = new Arc();
