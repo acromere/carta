@@ -401,14 +401,9 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 	}
 
 	public List<DesignShape> worldPointFind( Point3D anchor, DesignValue tolerance ) {
-		return worldPointFind( anchor, realToWorld( tolerance ) );
-	}
+		double radius = realToWorld( tolerance );
+		Point3D radii = new Point3D( radius, radius, 0 );
 
-	public List<DesignShape> worldPointFind( Point3D anchor, double radius ) {
-		return worldPointFind( anchor, new Point3D( radius, radius, 0 ) );
-	}
-
-	public List<DesignShape> worldPointFind( Point3D anchor, Point3D radii ) {
 		DesignEllipse selector = new DesignEllipse( anchor, radii );
 		return doFindByShape( selector, true );
 	}
