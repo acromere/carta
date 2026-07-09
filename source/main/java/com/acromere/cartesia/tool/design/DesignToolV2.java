@@ -37,6 +37,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
@@ -738,30 +739,15 @@ public class DesignToolV2 extends BaseDesignTool {
 		List<DesignShape> shapes = worldPointFind( point );
 
 		if( shapes.isEmpty() ) {
-			setSelectedShapes( shapes, toggle );
+			selectShapes( shapes, toggle );
 		} else {
-			setSelectedShapes( List.of( shapes.getFirst() ), toggle );
+			selectShapes( List.of( shapes.getFirst() ), toggle );
 		}
 	}
 
 	public void worldWindowSelect( Point3D a, Point3D b, boolean intersect, boolean toggle ) {
-		setSelectedShapes( renderer.worldWindowFind( a, b, intersect ), toggle );
+		selectShapes( renderer.worldWindowFind( a, b, intersect ), toggle );
 	}
-
-//	public void setSelectedShapes( List<DesignShape> shapes, boolean toggle ) {
-//		ObservableList<DesignShape> selectedShapes = getDesignContext().getSelectedShapes();
-//		if( toggle ) {
-//			shapes.forEach( shape -> {
-//				if( shape.isSelected() ) {
-//					selectedShapes.remove( shape );
-//				} else {
-//					selectedShapes.add( shape );
-//				}
-//			} );
-//		} else {
-//			selectedShapes.setAll( shapes );
-//		}
-//	}
 
 	public Class<? extends BaseDesignRenderer> getPrintDesignRendererClass() {
 		return DesignToolV2Renderer.class;

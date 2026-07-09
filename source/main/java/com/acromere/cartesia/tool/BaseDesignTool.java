@@ -58,6 +58,7 @@ import javafx.scene.transform.Transform;
 import javafx.stage.Screen;
 import lombok.CustomLog;
 import lombok.Getter;
+import org.jspecify.annotations.NonNull;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -578,15 +579,17 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	}
 
 	@Override
+	@NonNull
 	public final DesignContext getDesignContext() {
 		Design<? extends DesignModel> design = getAssetModel();
-		return design == null ? null : design.getDesignContext();
+		return design == null ? DesignContext.EMPTY : design.getDesignContext();
 	}
 
 	@Override
+	@NonNull
 	public final CommandContext getCommandContext() {
 		Design<? extends DesignModel> design = getDesign();
-		if( design == null ) return null;
+		if( design == null ) return CommandContext.EMPTY ;
 		CommandContext context = design.getCommandContext();
 		context.setTool( this );
 		return context;
@@ -951,6 +954,21 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		return getDesignContext().selectedShapes();
 	}
 
+	protected void selectShapes( List<DesignShape> shapes, boolean toggle ) {
+		final ObservableList<DesignShape> selectedShapes = selectedShapes();
+		if( toggle ) {
+			shapes.forEach( shape -> {
+				if( shape.isSelected() ) {
+					selectedShapes.remove( shape );
+				} else {
+					selectedShapes.add( shape );
+				}
+			} );
+		} else {
+			selectedShapes.setAll( shapes );
+		}
+	}
+
 	protected CommandPrompt getCommandPrompt() {
 		return getCommandContext().getCommandPrompt();
 	}
@@ -982,12 +1000,12 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	}
 
 	protected void registerCommandCapture() {
-		// If there is already a command capture handler then remove it
+		// If there is already a command capture handler, then remove it
 		// (because it may belong to a different design)
 		unregisterCommandCapture();
 
 		// Add the design command capture handler. This captures all key events that
-		// make it to the tool and forwards them to the command context which
+		// make it to the tool and forwards them to the command context, which
 		// will help determine what to do.
 		addEventHandler( KeyEvent.ANY, getCommandContext() );
 	}
