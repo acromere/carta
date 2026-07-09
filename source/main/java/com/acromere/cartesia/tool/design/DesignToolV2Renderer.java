@@ -751,46 +751,6 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 		return renderer.parentToLocal( parentBounds );
 	}
 
-	public List<DesignShape> worldPointFind( Point3D anchor, DesignValue tolerance ) {
-		return worldPointFind( anchor, realToWorld( tolerance ) );
-	}
-
-	public List<DesignShape> worldPointFind( Point3D anchor, double radius ) {
-		return worldPointFind( anchor, new Point3D( radius, radius, 0 ) );
-	}
-
-	public List<DesignShape> worldPointFind( Point3D anchor, Point3D radii ) {
-		DesignEllipse selector = new DesignEllipse( anchor, radii );
-		return doFindByShape( selector, true );
-	}
-
-	/**
-	 * Find the nodes contained by, or intersecting, the window specified by points a and b.
-	 *
-	 * @param a One corner of the window
-	 * @param b The other corner of the window
-	 * @param intersect True to select shapes by intersection
-	 * @return The set of discovered nodes
-	 */
-	public List<DesignShape> worldWindowFind( Point3D a, Point3D b, boolean intersect ) {
-		double x = Math.min( a.getX(), b.getX() );
-		double y = Math.min( a.getY(), b.getY() );
-		double w = Math.abs( a.getX() - b.getX() );
-		double h = Math.abs( a.getY() - b.getY() );
-
-		DesignBox selector = new DesignBox( x, y, w, h );
-		return doFindByShape( selector, intersect );
-	}
-
-	double realToWorld( DesignValue value ) {
-		// Convert the provided value to design units and divide by the zoom factor
-		return value.to( model.calcDesignUnit() ).value() / getViewZoomX();
-	}
-
-	double realToScreen( DesignValue value ) {
-		return value.to( DesignUnit.IN ).value() * getDpiX();
-	}
-
 	// Rendering -----------------------------------------------------------------
 
 	public void print( double factor ) {

@@ -1,5 +1,7 @@
 package com.acromere.cartesia.tool.design;
 
+import com.acromere.cartesia.DesignUnit;
+import com.acromere.cartesia.DesignValue;
 import com.acromere.cartesia.data.DesignBox;
 import com.acromere.cartesia.data.DesignEllipse;
 import com.acromere.cartesia.data.DesignLayer;
@@ -376,6 +378,61 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 
 	public List<DesignShape> getVisibleShapes() {
 		return getVisibleLayers().stream().flatMap( l -> l.getShapes().stream() ).collect( Collectors.toList() );
+	}
+
+	// Selecting
+
+	public List<DesignShape> worldPointFind( Point3D anchor, DesignValue tolerance ) {
+		return worldPointFind( anchor, realToWorld( tolerance ) );
+	}
+
+	public List<DesignShape> worldPointFind( Point3D anchor, double radius ) {
+		return worldPointFind( anchor, new Point3D( radius, radius, 0 ) );
+	}
+
+	public List<DesignShape> worldPointFind( Point3D anchor, Point3D radii ) {
+		DesignEllipse selector = new DesignEllipse( anchor, radii );
+		return doFindByShape( selector, true );
+	}
+
+	/**
+	 * Convert the provided value to world units
+	 *
+	 * @param value The value to convert
+	 * @return The value in world units
+	 */
+	double realToWorld( DesignValue value ) {
+		// Convert the provided value to design units and divide by the zoom factor
+		return value.to( getDesign().getDataModel().calcDesignUnit() ).value() / getViewZoomX();
+	}
+
+	/**
+	 * Convert the provided value to screen units
+	 *
+	 * @param value The value to convert
+	 * @return The value in screen units
+	 */
+	double realToScreen( DesignValue value ) {
+		// Convert the provided value to inches and multiply by DPI
+		return value.to( DesignUnit.IN ).value() * getDpiX();
+	}
+
+	/**
+	 * Find the nodes contained by, or intersecting, the window specified by points a and b.
+	 *
+	 * @param a One corner of the window
+	 * @param b The other corner of the window
+	 * @param intersect True to select shapes by intersection
+	 * @return The set of discovered nodes
+	 */
+	public List<DesignShape> worldWindowFind( Point3D a, Point3D b, boolean intersect ) {
+		double x = Math.min( a.getX(), b.getX() );
+		double y = Math.min( a.getY(), b.getY() );
+		double w = Math.abs( a.getX() - b.getX() );
+		double h = Math.abs( a.getY() - b.getY() );
+
+		DesignBox selector = new DesignBox( x, y, w, h );
+		return doFindByShape( selector, intersect );
 	}
 
 	/**
