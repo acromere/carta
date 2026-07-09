@@ -349,39 +349,29 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		super.setLayerVisible( layer, visible );
 	}
 
-	//	/**
-	//	 * {@inheritDoc}
-	//	 */
-	//	@Override
-	//	public List<DesignLayer> getVisibleLayers() {
-	//		// Return the list of design layers that currently have an FX pane in the renderer,
-	//		// in the same order as they appear visually (top to bottom) in the layers pane.
-	//		return this.layers.getChildren().stream().filter( p -> p instanceof Pane ).map( p -> (DesignLayer)p.getUserData() ).toList();
-	//	}
+	// Maintain the super implementation
+	// public List<DesignLayer> getVisibleLayers()
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void setVisibleLayers( @NonNull Collection<DesignLayer> layers ) {
-		// Convenience: show only the specified layers; hide all others currently visible
 		if( this.model == null ) return;
 
-		// Hide layers that are currently visible but not in the target collection
-		for( Node node : List.copyOf( this.layers.getChildren() ) ) {
-			if( !(node instanceof Pane pane) ) continue;
-			Object userData = pane.getUserData();
-			if( userData instanceof DesignLayer existing && !layers.contains( existing ) ) {
-				setLayerVisible( existing, false );
-			}
-		}
+		// Optimization: show only the specified layers; hide all others currently visible
+
+		// Hide layers that are currently visible and not in the target collection
+		getVisibleLayers().forEach( existing -> {
+			if( !layers.contains( existing ) ) setLayerVisible( existing, false );
+		} );
 
 		// Show any requested layers that are not already visible
-		for( DesignLayer layer : layers ) {
+		layers.forEach( layer -> {
 			if( !isLayerVisible( layer ) ) setLayerVisible( layer, true );
-		}
+		});
 
-		visibleLayers().setAll( layers );
+		super.setVisibleLayers( layers );
 	}
 
 	/**
