@@ -930,11 +930,6 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		return portalStack.isEmpty() ? DesignPortal.DEFAULT : portalStack.pop();
 	}
 
-	@Override
-	public void clearSelectedShapes() {
-		getDesignContext().getSelectedShapes().clear();
-	}
-
 	/**
 	 * Get a copy of the selected shapes list. The returned list is safe to modify
 	 * and will not affect the internal selected shapes list.
@@ -943,7 +938,17 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	 */
 	@Override
 	public List<DesignShape> getSelectedShapes() {
-		return new ArrayList<>( getDesignContext().getSelectedShapes() );
+		return List.copyOf( getDesignContext().getSelectedShapes() );
+	}
+
+	@Override
+	public void setSelectedShapes( List<DesignShape> shapes, boolean selected ) {
+		shapes.forEach( shape -> shape.setSelected( selected ) );
+		getDesignContext().setSelectedShapes( shapes, selected );
+	}
+
+	public ObservableList<DesignShape> selectedShapes() {
+		return getDesignContext().selectedShapes();
 	}
 
 	protected CommandPrompt getCommandPrompt() {

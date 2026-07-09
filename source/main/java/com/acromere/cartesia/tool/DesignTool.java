@@ -386,8 +386,6 @@ public interface DesignTool extends RenderConstants, CommonToolRenderer {
 
 	List<DesignShape> worldPointSyncSelect( Point3D mouse );
 
-	void clearSelectedShapes();
-
 	void screenPointSelect( Point3D mouse );
 
 	void screenPointSelect( Point3D mouse, boolean toggle );
@@ -401,6 +399,12 @@ public interface DesignTool extends RenderConstants, CommonToolRenderer {
 	void worldWindowSelect( Point3D a, Point3D b, boolean intersect, boolean toggle );
 
 	List<DesignShape> getSelectedShapes();
+
+	void setSelectedShapes(List<DesignShape> shapes, boolean selected );
+
+	default void clearSelectedShapes() {
+		setSelectedShapes( getSelectedShapes(), false );
+	}
 
 	DesignPortal getPriorPortal();
 

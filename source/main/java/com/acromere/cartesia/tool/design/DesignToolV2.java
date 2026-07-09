@@ -11,7 +11,10 @@ import com.acromere.cartesia.data.util.DesignPropertiesMap;
 import com.acromere.cartesia.math.CadPoints;
 import com.acromere.cartesia.snap.Snap;
 import com.acromere.cartesia.snap.SnapGrid;
-import com.acromere.cartesia.tool.*;
+import com.acromere.cartesia.tool.BaseDesignTool;
+import com.acromere.cartesia.tool.DesignPortal;
+import com.acromere.cartesia.tool.GridStyle;
+import com.acromere.cartesia.tool.ShapePropertiesToolEvent;
 import com.acromere.data.IdNode;
 import com.acromere.data.MultiNodeSettings;
 import com.acromere.data.NodeSettings;
@@ -28,10 +31,12 @@ import com.acromere.xenon.workpane.ToolException;
 import com.acromere.zerra.color.Paints;
 import com.acromere.zerra.javafx.Fx;
 import com.acromere.zerra.javafx.FxUtil;
-import javafx.beans.property.*;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
@@ -292,8 +297,7 @@ public class DesignToolV2 extends BaseDesignTool {
 		// Update the design context when the mouse moves
 		addEventFilter( MouseEvent.MOUSE_MOVED, e -> getCommandContext().setMouse( e ) );
 
-		getDesignContext().getPreviewShapes().addListener( this::onPreviewShapesChanged );
-		getDesignContext().getSelectedShapes().addListener( this::onSelectedShapesChanged );
+		getDesignContext().selectedShapes().addListener( this::onSelectedShapesChanged );
 
 		// Update the select aperture when the mouse moves
 		addEventFilter(
@@ -744,20 +748,20 @@ public class DesignToolV2 extends BaseDesignTool {
 		setSelectedShapes( renderer.worldWindowFind( a, b, intersect ), toggle );
 	}
 
-	private void setSelectedShapes( List<DesignShape> shapes, boolean toggle ) {
-		ObservableList<DesignShape> selectedShapes = getDesignContext().getSelectedShapes();
-		if( toggle ) {
-			shapes.forEach( shape -> {
-				if( shape.isSelected() ) {
-					selectedShapes.remove( shape );
-				} else {
-					selectedShapes.add( shape );
-				}
-			} );
-		} else {
-			selectedShapes.setAll( shapes );
-		}
-	}
+//	public void setSelectedShapes( List<DesignShape> shapes, boolean toggle ) {
+//		ObservableList<DesignShape> selectedShapes = getDesignContext().getSelectedShapes();
+//		if( toggle ) {
+//			shapes.forEach( shape -> {
+//				if( shape.isSelected() ) {
+//					selectedShapes.remove( shape );
+//				} else {
+//					selectedShapes.add( shape );
+//				}
+//			} );
+//		} else {
+//			selectedShapes.setAll( shapes );
+//		}
+//	}
 
 	public Class<? extends BaseDesignRenderer> getPrintDesignRendererClass() {
 		return DesignToolV2Renderer.class;
@@ -799,17 +803,6 @@ public class DesignToolV2 extends BaseDesignTool {
 	private void doStoreVisibleLayers( ListChangeListener.Change<? extends DesignLayer> c ) {
 		c.next();
 		getSettings().set( VISIBLE_LAYERS, c.getList().stream().map( IdNode::getId ).collect( Collectors.toSet() ) );
-	}
-
-	private void onPreviewShapesChanged( ListChangeListener.Change<? extends DesignShape> c ) {
-		// Set the preview property of the shape
-		while( c.next() ) {
-			c.getRemoved().forEach( s -> s.setSelected( false ) );
-			c.getAddedSubList().forEach( s -> s.setSelected( true ) );
-		}
-
-		// Request a render
-		renderer.render();
 	}
 
 	private void onSelectedShapesChanged( ListChangeListener.Change<? extends DesignShape> c ) {

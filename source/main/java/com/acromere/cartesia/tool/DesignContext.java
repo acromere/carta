@@ -7,6 +7,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
 
+import java.util.List;
+
 /**
  * The DesignContext is for sharing design-related information between design
  * tools. It should only be accessed through the design tool and its associated
@@ -23,18 +25,30 @@ public class DesignContext {
 
 	private final DesignLayer referenceLayer;
 
-	@Deprecated
-	private final ObservableList<DesignShape> previewShapes;
-
 	private final ObservableList<DesignShape> selectedShapes;
 
 	public DesignContext() {
 		this.previewLayer = new DesignLayer();
 		this.previewLayer.setName( "preview-layer" );
 		this.referenceLayer = new DesignLayer();
-		this.referenceLayer.setName("reference-layer");
-		this.previewShapes = FXCollections.synchronizedObservableList( FXCollections.observableArrayList() );
+		this.referenceLayer.setName( "reference-layer" );
 		this.selectedShapes = FXCollections.synchronizedObservableList( FXCollections.observableArrayList() );
+	}
+
+	public List<DesignShape> getSelectedShapes() {
+		return List.copyOf( selectedShapes );
+	}
+
+	public void setSelectedShapes( List<DesignShape> shapes, boolean selected ) {
+		if( selected ) {
+			selectedShapes.addAll( shapes );
+		} else {
+			selectedShapes.removeAll( shapes );
+		}
+	}
+
+	public ObservableList<DesignShape> selectedShapes() {
+		return selectedShapes;
 	}
 
 }
