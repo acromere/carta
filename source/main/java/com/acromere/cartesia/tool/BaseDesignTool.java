@@ -909,6 +909,11 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	// NEXT Insert common design tool implementations here
 	// Many implementations found in DesignToolV2 can be moved here
 
+	public void showCommandPrompt() {
+		Fx.run( this::registerStatusBarItems );
+		Fx.run( this::requestFocus );
+	}
+
 	@Override
 	public BaseDesignRenderer getScreenDesignRenderer() {
 		return renderer;

@@ -788,15 +788,6 @@ public class DesignToolV2 extends BaseDesignTool {
 		return portalStack.isEmpty() ? DesignPortal.DEFAULT : portalStack.pop();
 	}
 
-	public void showCommandPrompt() {
-		Fx.run( this::registerStatusBarItems );
-		Fx.run( this::requestFocus );
-	}
-
-	public BaseDesignRenderer getScreenDesignRenderer() {
-		return renderer;
-	}
-
 	public Class<? extends BaseDesignRenderer> getPrintDesignRendererClass() {
 		return DesignToolV2Renderer.class;
 	}
