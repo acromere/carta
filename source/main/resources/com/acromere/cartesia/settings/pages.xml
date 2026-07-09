@@ -4,7 +4,7 @@
 
 	<page id="product-page">
 		<group id="common">
-			<setting key="reticle" editor="combobox">
+			<setting key="reticule" editor="combobox">
 				<option key="duplex"/>
 				<option key="duplex_wide"/>
 				<option key="duplex_pixel"/>

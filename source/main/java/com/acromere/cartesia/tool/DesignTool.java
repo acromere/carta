@@ -4,7 +4,7 @@ import com.acromere.annotation.Note;
 import com.acromere.cartesia.CartesiaMod;
 import com.acromere.cartesia.DesignUnit;
 import com.acromere.cartesia.DesignValue;
-import com.acromere.cartesia.cursor.Reticle;
+import com.acromere.cartesia.cursor.Reticule;
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.tool.design.BaseDesignRenderer;
 import com.acromere.cartesia.tool.design.CommonToolRenderer;
@@ -43,7 +43,7 @@ public interface DesignTool extends RenderConstants, CommonToolRenderer {
 
 	DesignValue DEFAULT_SELECT_TOLERANCE = new DesignValue( 2, DesignUnit.MM );
 
-	Reticle DEFAULT_RETICLE = Reticle.DUPLEX;
+	Reticule DEFAULT_RETICULE = Reticule.DUPLEX;
 
 	String DEFAULT_APERTURE_DRAW = "#c0c000ff";
 
@@ -138,25 +138,25 @@ public interface DesignTool extends RenderConstants, CommonToolRenderer {
 	DesignView createView();
 
 	/**
-	 * Get the reticle for this tool.
+	 * Get the reticule for this tool.
 	 *
-	 * @return The reticle for this tool
+	 * @return The reticule for this tool
 	 */
-	Reticle getReticle();
+	Reticule getReticule();
 
 	/**
-	 * Set the reticle for this tool.
+	 * Set the reticule for this tool.
 	 *
-	 * @param reticle The reticle for this tool
+	 * @param reticule The reticule for this tool
 	 */
-	void setReticle( Reticle reticle );
+	void setReticule( Reticule reticule );
 
 	/**
-	 * Get the reticle cursor for this tool.
+	 * Get the reticule cursor for this tool.
 	 *
 	 * @return The cursor for this tool.
 	 */
-	Cursor getReticleCursor();
+	Cursor getReticuleCursor();
 
 	/**
 	 * Set the camera viewport using a screen-based rectangular viewport. The

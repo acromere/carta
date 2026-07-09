@@ -82,7 +82,7 @@ public class BaseCommandTest extends BaseToolTest {
 		lenient().doReturn( currentLayer ).when( tool ).getCurrentLayer();
 		lenient().doReturn( previewLayer ).when( tool ).getPreviewLayer();
 		lenient().doReturn( referenceLayer ).when( tool ).getReferenceLayer();
-		lenient().doReturn( RETICLE ).when( tool ).getReticleCursor();
+		lenient().doReturn( RETICLE ).when( tool ).getReticuleCursor();
 		lenient().doReturn( tool ).when( commandContext ).getTool();
 		lenient().doReturn( commandPrompt ).when( commandContext ).getCommandPrompt();
 	}

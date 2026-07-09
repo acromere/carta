@@ -7,13 +7,13 @@ import javafx.scene.image.Image;
 import lombok.CustomLog;
 
 @CustomLog
-public class ReticleCursor extends ImageCursor {
+public class ReticuleCursor extends ImageCursor {
 
-	private final Reticle reticle;
+	private final Reticule reticule;
 
-	public ReticleCursor( Reticle reticle ) {
-		super( toImage( reticle.getIcon() ), 0.5 * (reticle.getIcon().getWidth()) - 1, 0.5 * (reticle.getIcon().getHeight() - 1) );
-		this.reticle = reticle;
+	public ReticuleCursor( Reticule reticule ) {
+		super( toImage( reticule.getIcon() ), 0.5 * (reticule.getIcon().getWidth()) - 1, 0.5 * (reticule.getIcon().getHeight() - 1) );
+		this.reticule = reticule;
 	}
 
 	protected static Image toImage( RenderedIcon icon ) {
@@ -25,7 +25,7 @@ public class ReticleCursor extends ImageCursor {
 
 	@Override
 	public String toString() {
-		return reticle.name();
+		return reticule.name();
 	}
 
 }

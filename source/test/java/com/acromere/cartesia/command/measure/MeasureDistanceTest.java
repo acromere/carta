@@ -59,7 +59,7 @@ public class MeasureDistanceTest extends BaseCommandTest {
 	void testRunTaskStepNoParameters() throws Exception {
 		// given
 		CommandTask task = new CommandTask( commandContext, tool, null, null, command );
-		when( tool.getReticleCursor() ).thenReturn( Cursor.CROSSHAIR );
+		when( tool.getReticuleCursor() ).thenReturn( Cursor.CROSSHAIR );
 
 		// when
 		Object result = task.runTaskStep();
@@ -77,7 +77,7 @@ public class MeasureDistanceTest extends BaseCommandTest {
 	void testRunTaskStepWithOneParameters() throws Exception {
 		// given
 		CommandTask task = new CommandTask( commandContext, tool, null, null, command, "8,3" );
-		when( tool.getReticleCursor() ).thenReturn( Cursor.CROSSHAIR );
+		when( tool.getReticuleCursor() ).thenReturn( Cursor.CROSSHAIR );
 
 		// when
 		Object result = task.runTaskStep();

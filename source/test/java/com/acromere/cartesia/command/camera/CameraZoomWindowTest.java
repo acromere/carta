@@ -36,7 +36,7 @@ public class CameraZoomWindowTest extends BaseCommandTest {
 	void testRunTaskStepNoParameters() throws Exception {
 		// given
 		CommandTask task = new CommandTask( commandContext, tool, null, null, command );
-		when( tool.getReticleCursor() ).thenReturn( null );
+		when( tool.getReticuleCursor() ).thenReturn( null );
 		when( tool.getResource() ).thenReturn( resource );
 
 		// when

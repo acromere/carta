@@ -64,8 +64,8 @@ public class MeasurePointTest extends BaseCommandTest {
 	void testRunTaskStepNoParameters() throws Exception {
 		// given
 		CommandTask task = new CommandTask( commandContext, tool, null, null, command );
-		// Use the CROSSHAIR cursor as a reticle cursor
-		when( tool.getReticleCursor() ).thenReturn( Cursor.CROSSHAIR );
+		// Use the CROSSHAIR cursor as a reticule cursor
+		when( tool.getReticuleCursor() ).thenReturn( Cursor.CROSSHAIR );
 
 		// when
 		Object result = task.runTaskStep();

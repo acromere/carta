@@ -2,7 +2,7 @@ package com.acromere.cartesia;
 
 import com.acromere.cartesia.command.CommandMap;
 import com.acromere.cartesia.command.CommandMetadata;
-import com.acromere.cartesia.cursor.Reticle;
+import com.acromere.cartesia.cursor.Reticule;
 import com.acromere.cartesia.data.util.DesignLayerOptionProvider;
 import com.acromere.cartesia.data.util.DesignUnitOptionProvider;
 import com.acromere.cartesia.data.util.MarkerTypeOptionProvider;
@@ -90,7 +90,7 @@ public class CartesiaMod extends Module {
 		registerHelpPages();
 
 		// Register a listener to clear the Reticle cursor cache when the theme changes
-		getProgram().getWorkspaceManager().themeIdProperty().addListener( ( p, o, n ) -> Reticle.clearCursorCache() );
+		getProgram().getWorkspaceManager().themeIdProperty().addListener( ( p, o, n ) -> Reticule.clearCursorCache() );
 
 		log.atInfo().log( "%s started.", LazyEval.of( () -> getCard().getName() ) );
 	}

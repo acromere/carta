@@ -3,8 +3,8 @@ package com.acromere.cartesia.tool;
 import com.acromere.annotation.Note;
 import com.acromere.cartesia.*;
 import com.acromere.cartesia.RbKey;
-import com.acromere.cartesia.cursor.Reticle;
-import com.acromere.cartesia.cursor.ReticleCursor;
+import com.acromere.cartesia.cursor.Reticule;
+import com.acromere.cartesia.cursor.ReticuleCursor;
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.data.map.DesignUnitMapper;
 import com.acromere.cartesia.data.util.DesignPropertiesMap;
@@ -70,7 +70,7 @@ import java.util.stream.Collectors;
 @CustomLog
 public abstract class BaseDesignTool extends GuidedTool implements DesignTool, EventTarget, WritableIdentity {
 
-	protected static final String RETICLE = "reticle";
+	protected static final String RETICULE = "reticule";
 
 	protected static final String SELECT_APERTURE_SIZE = "select-aperture-size";
 
@@ -150,11 +150,11 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	// TOOL PROPERTIES
 
 	/**
-	 * The reticle is the more specialized equivalent of the crosshair cursor.
-	 * Whenever the program uses the crosshair cursor, it should use the reticle
+	 * The reticule is the more specialized equivalent of the crosshair cursor.
+	 * Whenever the program uses the crosshair cursor, it should use the reticule
 	 * cursor.
 	 */
-	private final ObjectProperty<Reticle> reticle;
+	private final ObjectProperty<Reticule> reticule;
 
 	// The renderer might also have some properties that should be exposed
 
@@ -250,12 +250,12 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		this.toast.setVisible( true );
 		this.renderer.setVisible( false );
 
-		// Initialize the reticle
-		reticle = new SimpleObjectProperty<>( DEFAULT_RETICLE );
+		// Initialize the reticule
+		reticule = new SimpleObjectProperty<>( DEFAULT_RETICULE );
 		selectTolerance = new SimpleObjectProperty<>( DEFAULT_SELECT_TOLERANCE );
 
 		// Initialize the cursor to the default cursor
-		// There is debate whether this should be the reticle
+		// There is debate whether this should be the reticule
 		setCursor( Cursor.DEFAULT );
 
 		selectedLayer = new SimpleObjectProperty<>();
@@ -278,9 +278,9 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		// Update the zoom in the coordinate status when the zoom property changes
 		renderer.viewZoomXProperty().addListener( ( _, _, n ) -> getCommandContext().setZoom( n.doubleValue() ) );
 
-		// Register the listener to update the cursor when the reticle changes, and the cursor is also a reticle cursor
-		reticle.addListener( ( _, _, n ) -> {
-			if( getCursor() instanceof ReticleCursor ) setCursor( n.getCursor( getProgram() ) );
+		// Register the listener to update the cursor when the reticule changes, and the cursor is also a reticule cursor
+		reticule.addListener( ( _, _, n ) -> {
+			if( getCursor() instanceof ReticuleCursor ) setCursor( n.getCursor( getProgram() ) );
 		} );
 
 		// Add the components to the parent
@@ -332,7 +332,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		String defaultReferencePointType = DesignMarker.Type.CIRCLE.name().toLowerCase();
 		String defaultReferencePointSize = "10";
 		String defaultReferencePointPaint = "#808080";
-		String defaultReticle = DEFAULT_RETICLE.name().toLowerCase();
+		String defaultReticule = DEFAULT_RETICULE.name().toLowerCase();
 
 		setSelectTolerance( DEFAULT_SELECT_TOLERANCE );
 
@@ -384,7 +384,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		//		setReferenceLayerVisible( Boolean.parseBoolean( settings.get( REFERENCE_LAYER_VISIBLE, Boolean.TRUE.toString() ) ) );
 
 		// Settings listeners
-		productSettings.bind( RETICLE, DEFAULT_RETICLE, e -> setReticle( Reticle.valueOf( String.valueOf( e.getNewValue() ).toUpperCase() ) ) );
+		productSettings.bind( RETICULE, DEFAULT_RETICULE, e -> this.setReticule( Reticule.valueOf( String.valueOf( e.getNewValue() ).toUpperCase() ) ) );
 		productSettings.bind( SELECT_APERTURE_SIZE, DEFAULT_SELECT_TOLERANCE, e -> setSelectTolerance( new DesignValue( Double.parseDouble( (String)e.getNewValue() ), getSelectTolerance().unit() ) ) );
 		productSettings.bind(
 			SELECT_APERTURE_UNIT,
@@ -704,22 +704,20 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 	@Override
 	@Note( Note.FX_THREAD )
-	public final ReticleCursor getReticleCursor() {
-		return getReticle().getCursor( getProgram() );
+	public final ReticuleCursor getReticuleCursor() {
+		return this.getReticule().getCursor( getProgram() );
 	}
 
-	@Override
-	public Reticle getReticle() {
-		return reticle.get();
+	public Reticule getReticule() {
+		return reticule.get();
 	}
 
-	@Override
-	public void setReticle( Reticle reticle ) {
-		this.reticle.set( reticle );
+	public void setReticule( Reticule reticule ) {
+		this.reticule.set( reticule );
 	}
 
-	public ObjectProperty<Reticle> reticle() {
-		return reticle;
+	public ObjectProperty<Reticule> reticule() {
+		return reticule;
 	}
 
 	@Override

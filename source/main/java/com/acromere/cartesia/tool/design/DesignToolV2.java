@@ -4,7 +4,7 @@ import com.acromere.cartesia.DesignUnit;
 import com.acromere.cartesia.DesignValue;
 import com.acromere.cartesia.ParseUtil;
 import com.acromere.cartesia.ShapePropertiesResourceType;
-import com.acromere.cartesia.cursor.Reticle;
+import com.acromere.cartesia.cursor.Reticule;
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.data.map.DesignUnitMapper;
 import com.acromere.cartesia.data.util.DesignPropertiesMap;
@@ -111,7 +111,7 @@ public class DesignToolV2 extends BaseDesignTool {
 		renderer.setSelectedDrawPaint( DEFAULT_SELECTED_DRAW );
 		renderer.setSelectedFillPaint( DEFAULT_SELECTED_FILL );
 
-		// TODO Move this to tool settings like reticle and aperture
+		// TODO Move this to tool settings like reticule and aperture
 		renderer.getWorkplane().setGridStyle( GridStyle.DOT );
 
 		portalStack = new Stack<>();
@@ -181,7 +181,7 @@ public class DesignToolV2 extends BaseDesignTool {
 		String defaultReferencePointType = DesignMarker.Type.CIRCLE.name().toLowerCase();
 		String defaultReferencePointSize = "10";
 		String defaultReferencePointPaint = "#808080";
-		String defaultReticle = DEFAULT_RETICLE.name().toLowerCase();
+		String defaultReticle = DEFAULT_RETICULE.name().toLowerCase();
 
 		// Get tool settings
 		double selectApertureSize = Double.parseDouble( productSettings.get( SELECT_APERTURE_SIZE, defaultSelectSize ) );
@@ -194,7 +194,7 @@ public class DesignToolV2 extends BaseDesignTool {
 		double viewZoom = Double.parseDouble( settings.get( SETTINGS_VIEW_ZOOM, "1.0" ) );
 		double viewRotate = Double.parseDouble( settings.get( SETTINGS_VIEW_ROTATE, "0.0" ) );
 		setView( viewPoint, viewZoom, viewRotate );
-		setReticle( Reticle.valueOf( productSettings.get( RETICLE, defaultReticle ).toUpperCase() ) );
+		this.setReticule( Reticule.valueOf( productSettings.get( RETICULE, defaultReticle ).toUpperCase() ) );
 		setSelectTolerance( new DesignValue( selectApertureSize, selectApertureUnit ) );
 		//		designPane.setReferencePointType( referencePointType );
 		//		designPane.setReferencePointSize( referencePointSize );
@@ -221,7 +221,7 @@ public class DesignToolV2 extends BaseDesignTool {
 		//		setReferenceLayerVisible( Boolean.parseBoolean( settings.get( REFERENCE_LAYER_VISIBLE, Boolean.TRUE.toString() ) ) );
 
 		// Settings listeners
-		productSettings.register( RETICLE, e -> setReticle( Reticle.valueOf( String.valueOf( e.getNewValue() ).toUpperCase() ) ) );
+		productSettings.register( RETICULE, e -> this.setReticule( Reticule.valueOf( String.valueOf( e.getNewValue() ).toUpperCase() ) ) );
 		productSettings.register( SELECT_APERTURE_SIZE, e -> setSelectTolerance( new DesignValue( Double.parseDouble( (String)e.getNewValue() ), getSelectTolerance().unit() ) ) );
 		productSettings.register( SELECT_APERTURE_UNIT, e -> setSelectTolerance( new DesignValue( getSelectTolerance().value(), DesignUnit.valueOf( ((String)e.getNewValue()).toUpperCase() ) ) ) );
 		//productSettings.register( REFERENCE_POINT_TYPE, e -> designPane.setReferencePointType( DesignMarker.Type.valueOf( String.valueOf( e.getNewValue() ).toUpperCase() ) ) );

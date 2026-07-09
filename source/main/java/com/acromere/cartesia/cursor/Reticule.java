@@ -10,7 +10,7 @@ import java.util.Map;
 
 @Getter
 @CustomLog
-public enum Reticle {
+public enum Reticule {
 
 	DUPLEX( new DuplexReticle( 0.8 ) ),
 	DUPLEX_WIDE( new DuplexReticle( 0.7 ) ),
@@ -22,18 +22,18 @@ public enum Reticle {
 	DUPLEX_CIRCLE( new DuplexCircleReticle( 0.8 ) ),
 	CROSSHAIR( new CrosshairReticle() );
 
-	private static final Map<Reticle, ReticleCursor> cursorCache = new EnumMap<>( Reticle.class );
+	private static final Map<Reticule, ReticuleCursor> cursorCache = new EnumMap<>( Reticule.class );
 
 	final RenderedIcon icon;
 
-	Reticle( RenderedIcon icon ) {
+	Reticule( RenderedIcon icon ) {
 		this.icon = icon;
 	}
 
-	public ReticleCursor getCursor( XenonProgram program ) {
+	public ReticuleCursor getCursor( XenonProgram program ) {
 		if( cursorCache.containsKey( this ) ) return cursorCache.get( this );
 		icon.setTheme( program.getWorkspaceManager().getThemeMetadata().getMotif() );
-		ReticleCursor cursor = new ReticleCursor( this );
+		ReticuleCursor cursor = new ReticuleCursor( this );
 		cursorCache.put( this, cursor );
 		return cursor;
 	}

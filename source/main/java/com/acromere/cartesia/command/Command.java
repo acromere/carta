@@ -256,12 +256,12 @@ public abstract class Command {
 	}
 
 	protected void promptForPoint( CommandTask task, String key ) {
-		Fx.run( () -> task.getTool().setCursor( task.getTool().getReticleCursor() ) );
+		Fx.run( () -> task.getTool().setCursor( task.getTool().getReticuleCursor() ) );
 		promptForValue( task, key, CommandContext.Input.POINT );
 	}
 
 	protected void promptForWindow( CommandTask task, String key ) {
-		Fx.run( () -> task.getTool().setCursor( task.getTool().getReticleCursor() ) );
+		Fx.run( () -> task.getTool().setCursor( task.getTool().getReticuleCursor() ) );
 		promptForValue( task, key, CommandContext.Input.POINT );
 	}
 
