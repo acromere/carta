@@ -1,7 +1,8 @@
 package com.acromere.cartesia.tool.design;
 
+import com.acromere.annotation.Note;
+import com.acromere.cartesia.CartesiaNote;
 import com.acromere.cartesia.DesignUnit;
-import com.acromere.cartesia.DesignValue;
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.math.CadTransform;
 import com.acromere.cartesia.tool.Workplane;
@@ -29,7 +30,6 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Shape;
 import javafx.scene.transform.Transform;
 import lombok.CustomLog;
 import lombok.Getter;
@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @CustomLog
 public class DesignToolV2Renderer extends BaseDesignRenderer {
@@ -175,10 +174,12 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 		);
 	}
 
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public Design<? extends DesignModel> getDesign() {
 		return design;
 	}
 
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public void setDesign( Design<? extends DesignModel> design ) {
 		this.design = design;
 		if( design == null ) {
@@ -214,6 +215,7 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public void setWorkplane( Workplane workplane ) {
 		// TODO Disconnect listeners
 
@@ -231,36 +233,43 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	}
 
 	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public void setDpi( double dpiX, double dpiY ) {
 		renderer.setDpi( dpiX, dpiY );
 	}
 
 	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public double getDpiX() {
 		return renderer.getDpiX();
 	}
 
 	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public void setDpiX( double dpi ) {
 		renderer.setDpiX( dpi );
 	}
 
 	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public DoubleProperty dpiXProperty() {
 		return renderer.dpiXProperty();
 	}
 
 	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public double getDpiY() {
 		return renderer.getDpiY();
 	}
 
 	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public void setDpiY( double dpi ) {
 		renderer.setDpiY( dpi );
 	}
 
 	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public DoubleProperty dpiYProperty() {
 		return renderer.dpiYProperty();
 	}
@@ -293,6 +302,8 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public boolean isLayerVisible( DesignLayer layer ) {
 		return visibleLayers.contains( layer );
 	}
@@ -300,6 +311,8 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public List<DesignLayer> getVisibleLayers() {
 		return visibleLayers;
 	}
@@ -308,6 +321,7 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	 * {@inheritDoc}
 	 */
 	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public void setVisibleLayers( Collection<DesignLayer> layers ) {
 		visibleLayers.clear();
 		visibleLayers.addAll( layers );
@@ -318,6 +332,7 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	 * {@inheritDoc}
 	 */
 	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public void setLayerVisible( DesignLayer layer, boolean visible ) {
 		if( visible ) {
 			visibleLayers.add( layer );
@@ -327,12 +342,16 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 		render();
 	}
 
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public ObservableList<DesignLayer> visibleLayers() {
 		return visibleLayers;
 	}
 
 	// Enabled Layers ------------------------------------------------------------
 
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public boolean isLayerEnabled( DesignLayer layer ) {
 		return enabledLayers.contains( layer );
 	}
@@ -342,6 +361,8 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	 *
 	 * @return A list of the enabled layers
 	 */
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public List<DesignLayer> getEnabledLayers() {
 		return enabledLayers;
 	}
@@ -351,6 +372,8 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	 *
 	 * @param layers The list of enabled layers
 	 */
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public void setEnabledLayers( Collection<DesignLayer> layers ) {
 		enabledLayers.clear();
 		enabledLayers.addAll( layers );
@@ -362,6 +385,8 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	 *
 	 * @return The enabled layers property
 	 */
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public ObservableList<DesignLayer> enabledLayers() {
 		return enabledLayers;
 	}
@@ -541,6 +566,8 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	 *
 	 * @return The viewpoint of the renderer
 	 */
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public Point3D getViewCenter() {
 		return new Point3D( renderer.getViewpointX(), renderer.getViewpointY(), 0 );
 	}
@@ -551,15 +578,20 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	 * @param viewpoint The viewpoint to set
 	 */
 	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public void setViewCenter( Point3D viewpoint ) {
 		renderer.setViewpoint( viewpoint.getX(), viewpoint.getY() );
 		super.setViewCenter( viewpoint );
 	}
 
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public DoubleProperty viewCenterXProperty() {
 		return renderer.viewpointXProperty();
 	}
 
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public DoubleProperty viewCenterYProperty() {
 		return renderer.viewpointYProperty();
 	}
@@ -570,6 +602,7 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	 * @return The view rotate of the renderer
 	 */
 	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public double getViewRotate() {
 		return renderer.getViewRotate();
 	}
@@ -580,49 +613,67 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	 * @param angle The angle to set
 	 */
 	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public void setViewRotate( double angle ) {
 		renderer.setViewRotate( angle );
 	}
 
 	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public DoubleProperty viewRotateProperty() {
 		return renderer.viewRotateProperty();
 	}
 
 	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public void setViewZoom( double zoomX, double zoomY ) {
 		renderer.setZoom( zoomX, zoomY );
 	}
 
 	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public void setViewZoom( Point2D zoom ) {
 		renderer.setZoom( zoom.getX(), zoom.getY() );
 	}
 
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public double getViewZoomX() {
 		return renderer.getZoomX();
 	}
 
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public double getViewZoomY() {
 		return renderer.getZoomY();
 	}
 
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public DoubleProperty viewZoomXProperty() {
 		return renderer.zoomXProperty();
 	}
 
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public DoubleProperty viewZoomYProperty() {
 		return renderer.zoomYProperty();
 	}
 
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public Transform getWorldToScreenTransform() {
 		return renderer.getWorldToScreenTransform();
 	}
 
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public Point2D screenToWorld( double x, double y ) {
 		return renderer.parentToLocal( x, y );
 	}
 
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public Point2D screenToWorld( Point2D point ) {
 		return renderer.parentToLocal( point );
 	}
@@ -630,6 +681,8 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public Point3D screenToWorld( double x, double y, double z ) {
 		return renderer.parentToLocal( x, y, z );
 	}
@@ -637,6 +690,8 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public Point3D screenToWorld( Point3D point ) {
 		return renderer.parentToLocal( point );
 	}
@@ -644,6 +699,8 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public Bounds screenToWorld( Bounds bounds ) {
 		return renderer.parentToLocal( bounds );
 	}
@@ -651,6 +708,8 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public Point2D worldToScreen( double x, double y ) {
 		return renderer.localToParent( x, y );
 	}
@@ -658,6 +717,8 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public Point2D worldToScreen( Point2D point ) {
 		return renderer.localToParent( point );
 	}
@@ -665,6 +726,8 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public Point3D worldToScreen( double x, double y, double z ) {
 		return renderer.localToParent( x, y, z );
 	}
@@ -672,6 +735,8 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public Point3D worldToScreen( Point3D point ) {
 		return renderer.localToParent( point );
 	}
@@ -679,6 +744,8 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public Bounds worldToScreen( Bounds bounds ) {
 		return renderer.localToParent( bounds );
 	}
@@ -711,6 +778,8 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public Transform getScreenToWorldTransform() {
 		return renderer.getScreenToWorldTransform();
 	}

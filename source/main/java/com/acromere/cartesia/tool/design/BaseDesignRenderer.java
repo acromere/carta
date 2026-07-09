@@ -1,5 +1,7 @@
 package com.acromere.cartesia.tool.design;
 
+import com.acromere.annotation.Note;
+import com.acromere.cartesia.CartesiaNote;
 import com.acromere.cartesia.DesignUnit;
 import com.acromere.cartesia.DesignValue;
 import com.acromere.cartesia.data.DesignBox;
@@ -331,6 +333,7 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 	}
 
 	@Override
+	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
 	public List<DesignLayer> getEnabledLayers() {
 		return List.copyOf( enabledLayers );
 	}
