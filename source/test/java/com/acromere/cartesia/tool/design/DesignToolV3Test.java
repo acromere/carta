@@ -367,13 +367,13 @@ public class DesignToolV3Test extends BaseToolTest {
 	@Tag( CartesiaTestTag.WHITE_BOX )
 	void visibleLayers() {
 		// given
-		verify( renderer, times( 1 ) ).visibleLayers();
+		verify( renderer, times( 4 ) ).visibleLayers();
 
 		// when
 		tool.visibleLayers();
 
 		// Check that it delegates to the renderer
-		verify( renderer, times( 2 ) ).visibleLayers();
+		verify( renderer, times( 5 ) ).visibleLayers();
 	}
 
 	@Test

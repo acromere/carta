@@ -329,15 +329,6 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean isLayerVisible( DesignLayer layer ) {
-		Node node = getFxGeometry( layer );
-		return layers.getChildren().contains( node );
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public void setLayerVisible( DesignLayer layer, boolean visible ) {
 		// This method has a very important implementation, it is more than just
 		// setting a flag, it participates in the performance of the renderer by
@@ -355,6 +346,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 			if( pane != null ) layers.getChildren().remove( pane );
 			layer.setValue( FX_GEOMETRY, null );
 		}
+
+		super.setLayerVisible( layer, visible );
 	}
 
 //	/**
