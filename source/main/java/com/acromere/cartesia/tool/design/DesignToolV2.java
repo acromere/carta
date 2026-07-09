@@ -3,53 +3,41 @@ package com.acromere.cartesia.tool.design;
 import com.acromere.cartesia.DesignUnit;
 import com.acromere.cartesia.DesignValue;
 import com.acromere.cartesia.ParseUtil;
-import com.acromere.cartesia.ShapePropertiesResourceType;
 import com.acromere.cartesia.cursor.Reticule;
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.data.map.DesignUnitMapper;
-import com.acromere.cartesia.data.util.DesignPropertiesMap;
 import com.acromere.cartesia.math.CadPoints;
 import com.acromere.cartesia.snap.Snap;
 import com.acromere.cartesia.snap.SnapGrid;
 import com.acromere.cartesia.tool.BaseDesignTool;
-import com.acromere.cartesia.tool.DesignPortal;
 import com.acromere.cartesia.tool.GridStyle;
-import com.acromere.cartesia.tool.ShapePropertiesToolEvent;
 import com.acromere.data.IdNode;
 import com.acromere.data.MultiNodeSettings;
-import com.acromere.data.NodeSettings;
 import com.acromere.settings.Settings;
 import com.acromere.util.TypeReference;
-import com.acromere.xenon.ProgramAction;
 import com.acromere.xenon.XenonProgramProduct;
 import com.acromere.xenon.resource.OpenAssetRequest;
 import com.acromere.xenon.resource.Resource;
-import com.acromere.xenon.resource.ResourceSwitchedEvent;
-import com.acromere.xenon.task.Task;
-import com.acromere.xenon.tool.settings.SettingsPage;
 import com.acromere.xenon.workpane.ToolException;
 import com.acromere.zerra.color.Paints;
 import com.acromere.zerra.javafx.Fx;
 import com.acromere.zerra.javafx.FxUtil;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
-import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.input.GestureEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.paint.Paint;
-import javafx.scene.transform.Transform;
 import lombok.CustomLog;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @CustomLog
@@ -59,17 +47,7 @@ public class DesignToolV2 extends BaseDesignTool {
 
 	// KEYS
 
-	private static final String CURRENT_LAYER = "current-layer";
-
-	private static final String SELECTED_LAYER = "selected-layer";
-
 	// GUIDES
-
-	//  private final LayersGuide layersGuide;
-
-	//	private final ViewsGuide viewsGuide;
-
-	//	private final PrintsGuide printsGuide;
 
 	// RENDERER
 
@@ -77,30 +55,14 @@ public class DesignToolV2 extends BaseDesignTool {
 
 	private final DesignToolV2Renderer renderer;
 
-	private final DesignPropertiesMap designPropertiesMap;
-
-	// OPTIONAL TOOL PROPERTIES
-	// The renderer might also have some properties that should be exposed
-
 	// ACTIONS
-
-	private final Map<String, ProgramAction> commandActions;
 
 	private BooleanProperty gridSnapEnabled;
 
 	private BooleanProperty showHotspotEnabled;
 
-	private ChangeListener<Boolean> gridVisibleToggleHandler;
-
-	private ChangeListener<Boolean> snapGridToggleHandler;
-
-	private com.acromere.event.EventHandler<ResourceSwitchedEvent> assetSwitchListener;
-
 	public DesignToolV2( XenonProgramProduct product, Resource resource ) {
 		super( product, resource, new DesignToolV2Renderer() );
-
-		commandActions = new ConcurrentHashMap<>();
-		designPropertiesMap = new DesignPropertiesMap( product );
 
 		//    layersGuide = new LayersGuide( product, this );
 		//		viewsGuide = new ViewsGuide( product, this );
@@ -328,84 +290,80 @@ public class DesignToolV2 extends BaseDesignTool {
 		renderer.render();
 	}
 
-//	@Override
-//	protected void guideNodesSelected( Set<GuideNode> oldNodes, Set<GuideNode> newNodes ) {
-//		if( getCurrentGuide() == getLayersGuide() ) {
-//			newNodes.stream().findFirst().ifPresent( n -> doSetSelectedLayerById( n.getId() ) );
-//			//		} else if( getCurrentGuide() == viewsGuide ) {
-//			//			newNodes.stream().findFirst().ifPresent( n -> doSetCurrentViewById( n.getId() ) );
-//			//		} else if( getCurrentGuide() == printsGuide ) {
-//			//			newNodes.stream().findFirst().ifPresent( n -> doSetCurrentPrintById( n.getId() ) );
-//		}
-//	}
-//
-//	@Override
-//	protected void guideFocusChanged( boolean focused, Set<GuideNode> nodes ) {}
+	//	@Override
+	//	protected void guideNodesSelected( Set<GuideNode> oldNodes, Set<GuideNode> newNodes ) {
+	//		if( getCurrentGuide() == getLayersGuide() ) {
+	//			newNodes.stream().findFirst().ifPresent( n -> doSetSelectedLayerById( n.getId() ) );
+	//			//		} else if( getCurrentGuide() == viewsGuide ) {
+	//			//			newNodes.stream().findFirst().ifPresent( n -> doSetCurrentViewById( n.getId() ) );
+	//			//		} else if( getCurrentGuide() == printsGuide ) {
+	//			//			newNodes.stream().findFirst().ifPresent( n -> doSetCurrentPrintById( n.getId() ) );
+	//		}
+	//	}
+	//
+	//	@Override
+	//	protected void guideFocusChanged( boolean focused, Set<GuideNode> nodes ) {}
 
-	@Override
-	public Point3D getViewCenter() {
-		return renderer.getViewCenter();
-	}
+	//	@Override
+	//	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
+	//	public Point3D getViewCenter() {
+	//		return renderer.getViewCenter();
+	//	}
+	//
+	//	@Override
+	//	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
+	//	public void setViewCenter( Point3D point ) {
+	//		renderer.setViewCenter( point );
+	//	}
+	//
+	//	@Override
+	//	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
+	//	public double getDpi() {
+	//		return renderer.getDpiX();
+	//	}
+	//
+	//	@Override
+	//	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
+	//	public void setDpi( double dpi ) {
+	//		renderer.setDpi( dpi, dpi );
+	//	}
 
-	@Override
-	public void setViewCenter( Point3D point ) {
-		renderer.setViewCenter( point );
-	}
+	//	@Override
+	//	public double getViewZoom() {
+	//		return renderer.getViewZoomX();
+	//	}
 
-	public DoubleProperty viewpointXProperty() {
-		return renderer.viewCenterXProperty();
-	}
+	//	@Override
+	//	public void setViewZoom( double viewZoom ) {
+	//		renderer.setViewZoom( viewZoom, viewZoom );
+	//	}
 
-	public DoubleProperty viewpointYProperty() {
-		return renderer.viewCenterYProperty();
-	}
+	//	@Override
+	//	public double getViewRotate() {
+	//		return renderer.getViewRotate();
+	//	}
 
-	@Override
-	public double getDpi() {
-		return renderer.getDpiX();
-	}
+	//	@Override
+	//	public void setViewRotate( double angle ) {
+	//		renderer.setViewRotate( angle );
+	//	}
 
-	@Override
-	public void setDpi( double dpi ) {
-		renderer.setDpi( dpi, dpi );
-	}
+	//	@Override
+	//	public void setView( DesignPortal portal ) {
+	//		setView( portal.center(), portal.zoom(), portal.rotate() );
+	//	}
 
-	@Override
-	public double getViewZoom() {
-		return renderer.getViewZoomX();
-	}
+	//	@Override
+	//	public void setView( Point3D center, double zoom ) {
+	//		setView( center, zoom, getViewRotate() );
+	//	}
 
-	@Override
-	public void setViewZoom( double viewZoom ) {
-		renderer.setViewZoom( viewZoom, viewZoom );
-	}
-
-	@Override
-	public double getViewRotate() {
-		return renderer.getViewRotate();
-	}
-
-	@Override
-	public void setViewRotate( double angle ) {
-		renderer.setViewRotate( angle );
-	}
-
-	@Override
-	public void setView( DesignPortal portal ) {
-		setView( portal.center(), portal.zoom(), portal.rotate() );
-	}
-
-	@Override
-	public void setView( Point3D center, double zoom ) {
-		setView( center, zoom, getViewRotate() );
-	}
-
-	@Override
-	public void setView( Point3D center, double zoom, double rotate ) {
-		renderer.setViewCenter( center );
-		renderer.setViewZoom( zoom, zoom );
-		renderer.setViewRotate( rotate );
-	}
+	//	@Override
+	//	public void setView( Point3D center, double zoom, double rotate ) {
+	//		renderer.setViewCenter( center );
+	//		renderer.setViewZoom( zoom, zoom );
+	//		renderer.setViewRotate( rotate );
+	//	}
 
 	public ObjectProperty<DesignShape> selectAperture() {
 		return renderer.selectAperture();
@@ -534,65 +492,77 @@ public class DesignToolV2 extends BaseDesignTool {
 		return snapToGrid( new Point3D( x, y, z ) );
 	}
 
-	@Override
-	public Transform getWorldToScreenTransform() {
-		return renderer == null ? Fx.IDENTITY_TRANSFORM : renderer.getWorldToScreenTransform();
-	}
-
-	@Override
-	public Point2D worldToScreen( double x, double y ) {
-		return renderer == null ? Point2D.ZERO : renderer.localToParent( x, y );
-	}
-
-	@Override
-	public Point2D worldToScreen( Point2D point ) {
-		return renderer == null ? Point2D.ZERO : renderer.localToParent( point );
-	}
-
-	@Override
-	public Point3D worldToScreen( double x, double y, double z ) {
-		return renderer == null ? Point3D.ZERO : renderer.localToParent( x, y, z );
-	}
-
-	@Override
-	public Point3D worldToScreen( Point3D point ) {
-		return renderer == null ? Point3D.ZERO : renderer.localToParent( point );
-	}
-
-	@Override
-	public Bounds worldToScreen( Bounds bounds ) {
-		return renderer == null ? Fx.EMPTY_BOUNDS : renderer.localToParent( bounds );
-	}
-
-	@Override
-	public Transform getScreenToWorldTransform() {
-		return renderer == null ? Fx.IDENTITY_TRANSFORM : renderer.getScreenToWorldTransform();
-	}
-
-	@Override
-	public Point2D screenToWorld( double x, double y ) {
-		return renderer == null ? Point2D.ZERO : renderer.parentToLocal( x, y );
-	}
-
-	@Override
-	public Point2D screenToWorld( Point2D point ) {
-		return renderer == null ? Point2D.ZERO : renderer.parentToLocal( point );
-	}
-
-	@Override
-	public Point3D screenToWorld( double x, double y, double z ) {
-		return renderer == null ? Point3D.ZERO : renderer.parentToLocal( x, y, z );
-	}
-
-	@Override
-	public Point3D screenToWorld( Point3D point ) {
-		return renderer == null ? Point3D.ZERO : renderer.parentToLocal( point );
-	}
-
-	@Override
-	public Bounds screenToWorld( Bounds bounds ) {
-		return renderer == null ? Fx.EMPTY_BOUNDS : renderer.parentToLocal( bounds );
-	}
+	//	@Override
+	//	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
+	//	public Transform getWorldToScreenTransform() {
+	//		return renderer == null ? Fx.IDENTITY_TRANSFORM : renderer.getWorldToScreenTransform();
+	//	}
+	//
+	//	@Override
+	//	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
+	//	public Point2D worldToScreen( double x, double y ) {
+	//		return renderer == null ? Point2D.ZERO : renderer.localToParent( x, y );
+	//	}
+	//
+	//	@Override
+	//	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
+	//	public Point2D worldToScreen( Point2D point ) {
+	//		return renderer == null ? Point2D.ZERO : renderer.localToParent( point );
+	//	}
+	//
+	//	@Override
+	//	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
+	//	public Point3D worldToScreen( double x, double y, double z ) {
+	//		return renderer == null ? Point3D.ZERO : renderer.localToParent( x, y, z );
+	//	}
+	//
+	//	@Override
+	//	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
+	//	public Point3D worldToScreen( Point3D point ) {
+	//		return renderer == null ? Point3D.ZERO : renderer.localToParent( point );
+	//	}
+	//
+	//	@Override
+	//	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
+	//	public Bounds worldToScreen( Bounds bounds ) {
+	//		return renderer == null ? Fx.EMPTY_BOUNDS : renderer.localToParent( bounds );
+	//	}
+	//
+	//	@Override
+	//	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
+	//	public Transform getScreenToWorldTransform() {
+	//		return renderer == null ? Fx.IDENTITY_TRANSFORM : renderer.getScreenToWorldTransform();
+	//	}
+	//
+	//	@Override
+	//	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
+	//	public Point2D screenToWorld( double x, double y ) {
+	//		return renderer == null ? Point2D.ZERO : renderer.parentToLocal( x, y );
+	//	}
+	//
+	//	@Override
+	//	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
+	//	public Point2D screenToWorld( Point2D point ) {
+	//		return renderer == null ? Point2D.ZERO : renderer.parentToLocal( point );
+	//	}
+	//
+	//	@Override
+	//	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
+	//	public Point3D screenToWorld( double x, double y, double z ) {
+	//		return renderer == null ? Point3D.ZERO : renderer.parentToLocal( x, y, z );
+	//	}
+	//
+	//	@Override
+	//	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
+	//	public Point3D screenToWorld( Point3D point ) {
+	//		return renderer == null ? Point3D.ZERO : renderer.parentToLocal( point );
+	//	}
+	//
+	//	@Override
+	//	@Note( CartesiaNote.IN_DESIGN_TOOL_NEXT )
+	//	public Bounds screenToWorld( Bounds bounds ) {
+	//		return renderer == null ? Fx.EMPTY_BOUNDS : renderer.parentToLocal( bounds );
+	//	}
 
 	@Override
 	public boolean isGridVisible() {
@@ -753,109 +723,32 @@ public class DesignToolV2 extends BaseDesignTool {
 		return DesignToolV2Renderer.class;
 	}
 
-//	private List<DesignLayer> getFilteredLayers( Predicate<? super DesignLayer> filter ) {
-//		return getDesignModel().getAllLayers().stream().filter( filter ).collect( Collectors.toList() );
-//	}
-//
-//	private void doSetSelectedLayerById( String id ) {
-//		getDesignModel().findLayerById( id ).ifPresent( this::setSelectedLayer );
-//		log.atConfig().log( "Selected layer: %s", id );
-//	}
-//
-//	private void doSetCurrentLayerById( String id ) {
-//		getDesignModel().findLayerById( id ).ifPresent( y -> {
-//			currentLayerProperty().set( y );
-//			showPropertiesPage( y );
-//		} );
-//	}
-//
-//	private void doSetCurrentViewById( String id ) {
-//		getDesignModel().findViewById( id ).ifPresent( v -> {
-//			currentViewProperty().set( v );
-//			//renderer.setView( v.getLayers(), v.getOrigin(), v.getZoom(), v.getRotate() );
-//			//showPropertiesPage( v );
-//		} );
-//	}
-//
-//	private void doSetCurrentPrintById( String id ) {
-//		// TODO Implement DesignTool.doSetCurrentPrintById()
-//	}
-
-	private void doStoreEnabledLayers( ListChangeListener.Change<? extends DesignLayer> c ) {
-		c.next();
-		getSettings().set( ENABLED_LAYERS, c.getList().stream().map( IdNode::getId ).collect( Collectors.toSet() ) );
-	}
-
-	private void doStoreVisibleLayers( ListChangeListener.Change<? extends DesignLayer> c ) {
-		c.next();
-		getSettings().set( VISIBLE_LAYERS, c.getList().stream().map( IdNode::getId ).collect( Collectors.toSet() ) );
-	}
-
-	private void onSelectedShapesChanged( ListChangeListener.Change<? extends DesignShape> c ) {
-		while( c.next() ) {
-			c.getRemoved().forEach( s -> s.setSelected( false ) );
-			c.getAddedSubList().forEach( s -> s.setSelected( true ) );
-
-			int size = c.getList().size();
-
-			if( size == 0 ) {
-				showPropertiesPage( getSelectedLayer() );
-			} else if( size == 1 ) {
-				c.getList().stream().findFirst().ifPresent( this::showPropertiesPage );
-			} else {
-				// If all selected shapes are of the same type then show the properties page for that type
-				Class<? extends DesignDrawable> type = c.getList().getFirst().getClass();
-
-				// Otherwise show the general DesignShape properties page
-				for( DesignShape shape : c.getList() ) {
-					if( shape.getClass() != type ) {
-						type = DesignShape.class;
-						break;
-					}
-				}
-
-				showPropertiesPage( new MultiNodeSettings( c.getList() ), type );
-			}
-		}
-
-		// Request a render
-		renderer.render();
-
-		getDeleteAction().updateEnabled();
-	}
-
-	private void showPropertiesPage( DesignDrawable drawable ) {
-		if( drawable != null ) {
-			// Wrap the drawable in a data node settings object
-			NodeSettings wrapper = new NodeSettings( drawable );
-
-			// Show the properties page for the drawable
-			showPropertiesPage( wrapper, drawable.getClass() );
-		}
-	}
-
-	private void showPropertiesPage( Settings settings, Class<? extends DesignDrawable> type ) {
-		SettingsPage page = designPropertiesMap.getSettingsPage( type );
-		if( page != null ) {
-			// Switch to a task thread to get the tool
-			getProgram().getTaskManager().submit( Task.of( () -> {
-				try {
-					// Open the tool but don't make it the active tool
-					getProgram().getResourceManager().openAsset( ShapePropertiesResourceType.URI, getWorkpane(), true, false ).get();
-
-					// Fire the event on the FX thread
-					Fx.run( () -> getWorkspace().getEventBus().dispatch( new ShapePropertiesToolEvent( this, ShapePropertiesToolEvent.SHOW, page, settings ) ) );
-				} catch( Exception exception ) {
-					log.atWarn( exception ).log();
-				}
-			} ) );
-		} else {
-			log.atError().log( "Unable to find properties page for %s", type.getName() );
-		}
-	}
-
-	private void hidePropertiesPage() {
-		getWorkspace().getEventBus().dispatch( new ShapePropertiesToolEvent( this, ShapePropertiesToolEvent.HIDE ) );
-	}
+	//	private List<DesignLayer> getFilteredLayers( Predicate<? super DesignLayer> filter ) {
+	//		return getDesignModel().getAllLayers().stream().filter( filter ).collect( Collectors.toList() );
+	//	}
+	//
+	//	private void doSetSelectedLayerById( String id ) {
+	//		getDesignModel().findLayerById( id ).ifPresent( this::setSelectedLayer );
+	//		log.atConfig().log( "Selected layer: %s", id );
+	//	}
+	//
+	//	private void doSetCurrentLayerById( String id ) {
+	//		getDesignModel().findLayerById( id ).ifPresent( y -> {
+	//			currentLayerProperty().set( y );
+	//			showPropertiesPage( y );
+	//		} );
+	//	}
+	//
+	//	private void doSetCurrentViewById( String id ) {
+	//		getDesignModel().findViewById( id ).ifPresent( v -> {
+	//			currentViewProperty().set( v );
+	//			//renderer.setView( v.getLayers(), v.getOrigin(), v.getZoom(), v.getRotate() );
+	//			//showPropertiesPage( v );
+	//		} );
+	//	}
+	//
+	//	private void doSetCurrentPrintById( String id ) {
+	//		// TODO Implement DesignTool.doSetCurrentPrintById()
+	//	}
 
 }

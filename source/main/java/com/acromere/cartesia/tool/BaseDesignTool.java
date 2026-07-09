@@ -11,6 +11,8 @@ import com.acromere.cartesia.data.util.DesignPropertiesMap;
 import com.acromere.cartesia.tool.design.BaseDesignRenderer;
 import com.acromere.cartesia.tool.design.DesignToolEvent;
 import com.acromere.cartesia.tool.design.LayersGuide;
+import com.acromere.data.IdNode;
+import com.acromere.data.MultiNodeSettings;
 import com.acromere.data.NodeSettings;
 import com.acromere.product.Rb;
 import com.acromere.settings.Settings;
@@ -37,6 +39,7 @@ import com.acromere.zerra.javafx.Fx;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -90,6 +93,8 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	protected static final String SETTINGS_VIEW_ROTATE = "view-rotate";
 
 	protected static final String CURRENT_LAYER = "current-layer";
+
+	protected static final String SELECTED_LAYER = "selected-layer";
 
 	protected static final String CURRENT_VIEW = "current-view";
 
@@ -178,7 +183,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 	private final Map<String, ProgramAction> commandActions;
 
-	private final DesignPropertiesMap designPropertiesMap;
+	protected final DesignPropertiesMap designPropertiesMap;
 
 	@Getter
 	private final PrintAction printAction;
@@ -1230,7 +1235,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		// TODO Implement DesignTool.doSetCurrentPrintById()
 	}
 
-	private void showPropertiesPage( DesignDrawable drawable ) {
+	protected void showPropertiesPage( DesignDrawable drawable ) {
 		if( drawable != null ) {
 			// Wrap the drawable in a data node settings object
 			NodeSettings wrapper = new NodeSettings( drawable );
@@ -1240,7 +1245,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		}
 	}
 
-	private void showPropertiesPage( Settings settings, Class<? extends DesignDrawable> type ) {
+	protected void showPropertiesPage( Settings settings, Class<? extends DesignDrawable> type ) {
 		SettingsPage page = designPropertiesMap.getSettingsPage( type );
 		if( page != null ) {
 			// Switch to a task thread to get the tool
@@ -1260,8 +1265,51 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		}
 	}
 
-	private void hidePropertiesPage() {
+	protected void hidePropertiesPage() {
 		getWorkspace().getEventBus().dispatch( new ShapePropertiesToolEvent( this, ShapePropertiesToolEvent.HIDE ) );
+	}
+
+	protected void doStoreEnabledLayers( ListChangeListener.Change<? extends DesignLayer> c ) {
+		c.next();
+		getSettings().set( ENABLED_LAYERS, c.getList().stream().map( IdNode::getId ).collect( Collectors.toSet() ) );
+	}
+
+	protected void doStoreVisibleLayers( ListChangeListener.Change<? extends DesignLayer> c ) {
+		c.next();
+		getSettings().set( VISIBLE_LAYERS, c.getList().stream().map( IdNode::getId ).collect( Collectors.toSet() ) );
+	}
+
+	protected void onSelectedShapesChanged( ListChangeListener.Change<? extends DesignShape> c ) {
+		while( c.next() ) {
+			c.getRemoved().forEach( s -> s.setSelected( false ) );
+			c.getAddedSubList().forEach( s -> s.setSelected( true ) );
+
+			int size = c.getList().size();
+
+			if( size == 0 ) {
+				showPropertiesPage( getSelectedLayer() );
+			} else if( size == 1 ) {
+				c.getList().stream().findFirst().ifPresent( this::showPropertiesPage );
+			} else {
+				// If all selected shapes are of the same type then show the properties page for that type
+				Class<? extends DesignDrawable> type = c.getList().getFirst().getClass();
+
+				// Otherwise show the general DesignShape properties page
+				for( DesignShape shape : c.getList() ) {
+					if( shape.getClass() != type ) {
+						type = DesignShape.class;
+						break;
+					}
+				}
+
+				showPropertiesPage( new MultiNodeSettings( c.getList() ), type );
+			}
+		}
+
+		// Request a render
+		renderer.render();
+
+		getDeleteAction().updateEnabled();
 	}
 
 	protected class PrintAction extends ProgramAction {
