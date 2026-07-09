@@ -75,11 +75,6 @@ public class DesignToolV2 extends BaseDesignTool {
 
 	private final DesignPropertiesMap designPropertiesMap;
 
-	// TOOL PROPERTIES
-	// The renderer might also have some properties that should be exposed
-
-	private final ObjectProperty<DesignValue> selectTolerance;
-
 	// OPTIONAL TOOL PROPERTIES
 	// The renderer might also have some properties that should be exposed
 
@@ -118,8 +113,6 @@ public class DesignToolV2 extends BaseDesignTool {
 
 		// TODO Move this to tool settings like reticle and aperture
 		renderer.getWorkplane().setGridStyle( GridStyle.DOT );
-
-		selectTolerance = new SimpleObjectProperty<>( DEFAULT_SELECT_TOLERANCE );
 
 		portalStack = new Stack<>();
 
@@ -183,8 +176,8 @@ public class DesignToolV2 extends BaseDesignTool {
 
 		Settings productSettings = getProduct().getSettings();
 		Settings settings = getSettings();
-		String defaultSelectSize = String.valueOf( DEFAULT_SELECT_TOLERANCE.getValue() );
-		String defaultSelectUnit = DEFAULT_SELECT_TOLERANCE.getUnit().toString().toLowerCase();
+		String defaultSelectSize = String.valueOf( DEFAULT_SELECT_TOLERANCE.value() );
+		String defaultSelectUnit = DEFAULT_SELECT_TOLERANCE.unit().toString().toLowerCase();
 		String defaultReferencePointType = DesignMarker.Type.CIRCLE.name().toLowerCase();
 		String defaultReferencePointSize = "10";
 		String defaultReferencePointPaint = "#808080";
@@ -229,8 +222,8 @@ public class DesignToolV2 extends BaseDesignTool {
 
 		// Settings listeners
 		productSettings.register( RETICLE, e -> setReticle( Reticle.valueOf( String.valueOf( e.getNewValue() ).toUpperCase() ) ) );
-		productSettings.register( SELECT_APERTURE_SIZE, e -> setSelectTolerance( new DesignValue( Double.parseDouble( (String)e.getNewValue() ), getSelectTolerance().getUnit() ) ) );
-		productSettings.register( SELECT_APERTURE_UNIT, e -> setSelectTolerance( new DesignValue( getSelectTolerance().getValue(), DesignUnit.valueOf( ((String)e.getNewValue()).toUpperCase() ) ) ) );
+		productSettings.register( SELECT_APERTURE_SIZE, e -> setSelectTolerance( new DesignValue( Double.parseDouble( (String)e.getNewValue() ), getSelectTolerance().unit() ) ) );
+		productSettings.register( SELECT_APERTURE_UNIT, e -> setSelectTolerance( new DesignValue( getSelectTolerance().value(), DesignUnit.valueOf( ((String)e.getNewValue()).toUpperCase() ) ) ) );
 		//productSettings.register( REFERENCE_POINT_TYPE, e -> designPane.setReferencePointType( DesignMarker.Type.valueOf( String.valueOf( e.getNewValue() ).toUpperCase() ) ) );
 		//productSettings.register( REFERENCE_POINT_SIZE, e -> designPane.setReferencePointSize( Double.parseDouble( (String)e.getNewValue() ) ) );
 		//productSettings.register( REFERENCE_POINT_PAINT, e -> designPane.setReferencePointPaint( Paints.parse( String.valueOf( e.getNewValue() ).toUpperCase() ) ) );
@@ -411,21 +404,6 @@ public class DesignToolV2 extends BaseDesignTool {
 		renderer.setViewCenter( center );
 		renderer.setViewZoom( zoom, zoom );
 		renderer.setViewRotate( rotate );
-	}
-
-	@Override
-	public void setSelectTolerance( DesignValue aperture ) {
-		selectTolerance().set( aperture );
-	}
-
-	@Override
-	public DesignValue getSelectTolerance() {
-		return selectTolerance.get();
-	}
-
-	@Override
-	public ObjectProperty<DesignValue> selectTolerance() {
-		return selectTolerance;
 	}
 
 	public ObjectProperty<DesignShape> selectAperture() {

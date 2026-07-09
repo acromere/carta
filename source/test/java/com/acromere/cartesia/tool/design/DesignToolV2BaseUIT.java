@@ -67,12 +67,12 @@ public abstract class DesignToolV2BaseUIT extends BaseCartesiaUiTest {
 		assertThat( getTool().getEnabledLayers().size() ).isEqualTo( 0 );
 		assertThat( getTool().getVisibleShapes().size() ).isEqualTo( 0 );
 
-		assertThat( getTool().getSelectTolerance().getValue() ).isEqualTo( 2 );
-		assertThat( getTool().getSelectTolerance().getUnit() ).isEqualTo( DesignUnit.MM );
+		assertThat( getTool().getSelectTolerance().value() ).isEqualTo( 2 );
+		assertThat( getTool().getSelectTolerance().unit() ).isEqualTo( DesignUnit.MM );
 	}
 
 	protected double getWorldSelectTolerance() {
-		return getTool().getSelectTolerance().to( getDesignModel().calcDesignUnit() ).getValue() / getTool().getViewZoom();
+		return getTool().getSelectTolerance().to( getDesignModel().calcDesignUnit() ).value() / getTool().getViewZoom();
 	}
 
 	protected void useBoxLayer() throws TimeoutException, InterruptedException {

@@ -1,20 +1,11 @@
 package com.acromere.cartesia;
 
-import lombok.Getter;
+import org.jspecify.annotations.NonNull;
 
-@Getter
-public class DesignValue {
-
-	private final double value;
-
-	private final DesignUnit unit;
-
-	public DesignValue( double value, DesignUnit unit ) {
-		this.value = value;
-		this.unit = unit;
-	}
+public record DesignValue(double value, DesignUnit unit) {
 
 	@Override
+	@NonNull
 	public String toString() {
 		return "DesignValue{" + "value=" + value + ", unit=" + unit + '}';
 	}

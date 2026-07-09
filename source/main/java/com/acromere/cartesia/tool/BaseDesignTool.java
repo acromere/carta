@@ -134,6 +134,9 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	 */
 	private final ObjectProperty<DesignLayer> selectedLayer;
 
+	/**
+	 * @deprecated In favor of portalStack
+	 */
 	@Deprecated
 	private final ObjectProperty<DesignView> currentView;
 	// gridVisible
@@ -144,6 +147,8 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	// rotate
 	// zoom
 
+	// TOOL PROPERTIES
+
 	/**
 	 * The reticle is the more specialized equivalent of the crosshair cursor.
 	 * Whenever the program uses the crosshair cursor, it should use the reticle
@@ -151,8 +156,10 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	 */
 	private final ObjectProperty<Reticle> reticle;
 
-	// selectedShapes
-	// visibleShapes
+	// The renderer might also have some properties that should be exposed
+
+	private final ObjectProperty<DesignValue> selectTolerance;
+
 	// portal (viewport)
 
 	// LAYERS
@@ -245,6 +252,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 		// Initialize the reticle
 		reticle = new SimpleObjectProperty<>( DEFAULT_RETICLE );
+		selectTolerance = new SimpleObjectProperty<>( DEFAULT_SELECT_TOLERANCE );
 
 		// Initialize the cursor to the default cursor
 		// There is debate whether this should be the reticle
@@ -319,12 +327,14 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		getGuideContext().setCurrentGuide( layersGuide );
 
 		// Default values
-		String defaultSelectSize = String.valueOf( DEFAULT_SELECT_TOLERANCE.getValue() );
-		String defaultSelectUnit = DEFAULT_SELECT_TOLERANCE.getUnit().toString().toLowerCase();
+		String defaultSelectSize = String.valueOf( DEFAULT_SELECT_TOLERANCE.value() );
+		String defaultSelectUnit = DEFAULT_SELECT_TOLERANCE.unit().toString().toLowerCase();
 		String defaultReferencePointType = DesignMarker.Type.CIRCLE.name().toLowerCase();
 		String defaultReferencePointSize = "10";
 		String defaultReferencePointPaint = "#808080";
 		String defaultReticle = DEFAULT_RETICLE.name().toLowerCase();
+
+		setSelectTolerance( DEFAULT_SELECT_TOLERANCE );
 
 		// Get the settings collections
 		Settings productSettings = getProduct().getSettings();
@@ -345,8 +355,6 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		double viewZoom = Double.parseDouble( settings.get( SETTINGS_VIEW_ZOOM, "1.0" ) );
 		double viewRotate = Double.parseDouble( settings.get( SETTINGS_VIEW_ROTATE, "0.0" ) );
 		setView( viewPoint, viewZoom, viewRotate );
-		//setReticle( Reticle.valueOf( productSettings.get( RETICLE, defaultReticle ).toUpperCase() ) );
-		//setSelectTolerance( new DesignValue( selectApertureSize, selectApertureUnit ) );
 		//		designPane.setReferencePointType( referencePointType );
 		//		designPane.setReferencePointSize( referencePointSize );
 		//		designPane.setReferencePointPaint( referencePointPaint );
@@ -377,92 +385,94 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 		// Settings listeners
 		productSettings.bind( RETICLE, DEFAULT_RETICLE, e -> setReticle( Reticle.valueOf( String.valueOf( e.getNewValue() ).toUpperCase() ) ) );
-		productSettings.bind( SELECT_APERTURE_SIZE, defaultSelectSize, e -> setSelectTolerance( new DesignValue( Double.parseDouble( (String)e.getNewValue() ), getSelectTolerance().getUnit() ) ) );
-		// FIXME This one didn't work because of a double "get"
-		// Also, because the line above set it to null
-		//productSettings.bind( SELECT_APERTURE_UNIT, defaultSelectUnit, e -> setSelectTolerance( new DesignValue( getSelectTolerance().getValue(), DesignUnit.valueOf( ((String)e.getNewValue()).toUpperCase() ) ) ) );
+		productSettings.bind( SELECT_APERTURE_SIZE, DEFAULT_SELECT_TOLERANCE, e -> setSelectTolerance( new DesignValue( Double.parseDouble( (String)e.getNewValue() ), getSelectTolerance().unit() ) ) );
+		productSettings.bind(
+			SELECT_APERTURE_UNIT,
+			DEFAULT_SELECT_TOLERANCE,
+			e -> setSelectTolerance( new DesignValue( getSelectTolerance().value(), DesignUnitMapper.map( ((String)e.getNewValue()) ) ) )
+		);
 		// NOTE Everything up to here is complete
 		// NEXT Replace all "set" above and "register" below with settings.bind()
 		//productSettings.register( REFERENCE_POINT_TYPE, e -> designPane.setReferencePointType( DesignMarker.Type.valueOf( String.valueOf( e.getNewValue() ).toUpperCase() ) ) );
 		//productSettings.register( REFERENCE_POINT_SIZE, e -> designPane.setReferencePointSize( Double.parseDouble( (String)e.getNewValue() ) ) );
 		//productSettings.register( REFERENCE_POINT_PAINT, e -> designPane.setReferencePointPaint( Paints.parse( String.valueOf( e.getNewValue() ).toUpperCase() ) ) );
 
-//		// Add view point property listener
-//		renderer.viewCenterXProperty().addListener( ( p, o, n ) -> {
-//			getStorePreviousViewAction().request();
-//			Point3D vp = renderer.getViewCenter();
-//			settings.set( SETTINGS_VIEW_POINT, vp.getX() + "," + vp.getY() + ",0" );
-//			//doUpdateGridBounds();
-//		} );
-//		renderer.viewCenterYProperty().addListener( ( p, o, n ) -> {
-//			getStorePreviousViewAction().request();
-//			Point3D vp = renderer.getViewCenter();
-//			settings.set( SETTINGS_VIEW_POINT, vp.getX() + "," + vp.getY() + ",0" );
-//			//doUpdateGridBounds();
-//		} );
-//
-//		// Add view rotate property listener
-//		renderer.viewRotateProperty().addListener( ( p, o, n ) -> {
-//			getStorePreviousViewAction().request();
-//			settings.set( SETTINGS_VIEW_ROTATE, n.doubleValue() );
-//			//doUpdateGridBounds();
-//		} );
-//
-//		// Add view zoom property listener
-//		renderer.viewZoomXProperty().addListener( ( p, o, n ) -> {
-//			getStorePreviousViewAction().request();
-//			getCoordinateStatus().updateZoom( n.doubleValue() );
-//			settings.set( SETTINGS_VIEW_ZOOM, n.doubleValue() );
-//			//doUpdateGridBounds();
-//		} );
-//		renderer.viewZoomYProperty().addListener( ( p, o, n ) -> {
-//			getStorePreviousViewAction().request();
-//			getCoordinateStatus().updateZoom( n.doubleValue() );
-//			settings.set( SETTINGS_VIEW_ZOOM, n.doubleValue() );
-//			//doUpdateGridBounds();
-//		} );
-//
-//		// Add enabled layers listener
-//		enabledLayers().addListener( this::doStoreEnabledLayers );
-//
-//		// Add visible layers listener
-//		visibleLayers().addListener( this::doStoreVisibleLayers );
-//
-//		// Add current layer property listener
-//		currentLayerProperty().addListener( ( p, o, n ) -> settings.set( CURRENT_LAYER, n.getId() ) );
-//
-//		// Add the selected layer property listener to show its properties page
-//		selectedLayerProperty().addListener( ( p, o, n ) -> showPropertiesPage( n ) );
-//
-//		// Add the selected layer property listener to store the selected layer in the settings
-//		selectedLayerProperty().addListener( ( p, o, n ) -> settings.set( SELECTED_LAYER, n.getId() ) );
-//
-//		// Add current view property listener
-//		currentViewProperty().addListener( ( p, o, n ) -> settings.set( CURRENT_VIEW, n.getId() ) );
-//
-//		// Add grid visible property listener
-//		gridVisible().addListener( ( p, o, n ) -> settings.set( GRID_VISIBLE, String.valueOf( n ) ) );
-//
-//		// Add grid visible property listener
-//		gridSnapEnabled().addListener( ( p, o, n ) -> settings.set( GRID_SNAP_ENABLED, String.valueOf( n ) ) );
-//
-//		//		// Add reference points visible property listener
-//		//		designPane.referenceLayerVisible().addListener( ( p, o, n ) -> settings.set( REFERENCE_LAYER_VISIBLE, String.valueOf( n ) ) );
-//
-//		// Update the design context when the mouse moves
-//		addEventFilter( MouseEvent.MOUSE_MOVED, e -> getCommandContext().setMouse( e ) );
-//
-//		getDesignContext().getPreviewShapes().addListener( this::onPreviewShapesChanged );
-//		getDesignContext().getSelectedShapes().addListener( this::onSelectedShapesChanged );
-//
-//		// Update the select aperture when the mouse moves
-//		addEventFilter(
-//			MouseEvent.MOUSE_MOVED, e -> {
-//				if( getCommandContext().isEmptyMode() ) {
-//					setSelectAperture( new Point3D( e.getX(), e.getY(), e.getZ() ), new Point3D( e.getX(), e.getY(), e.getZ() ) );
-//				}
-//			}
-//		);
+		//		// Add view point property listener
+		//		renderer.viewCenterXProperty().addListener( ( p, o, n ) -> {
+		//			getStorePreviousViewAction().request();
+		//			Point3D vp = renderer.getViewCenter();
+		//			settings.set( SETTINGS_VIEW_POINT, vp.getX() + "," + vp.getY() + ",0" );
+		//			//doUpdateGridBounds();
+		//		} );
+		//		renderer.viewCenterYProperty().addListener( ( p, o, n ) -> {
+		//			getStorePreviousViewAction().request();
+		//			Point3D vp = renderer.getViewCenter();
+		//			settings.set( SETTINGS_VIEW_POINT, vp.getX() + "," + vp.getY() + ",0" );
+		//			//doUpdateGridBounds();
+		//		} );
+		//
+		//		// Add view rotate property listener
+		//		renderer.viewRotateProperty().addListener( ( p, o, n ) -> {
+		//			getStorePreviousViewAction().request();
+		//			settings.set( SETTINGS_VIEW_ROTATE, n.doubleValue() );
+		//			//doUpdateGridBounds();
+		//		} );
+		//
+		//		// Add view zoom property listener
+		//		renderer.viewZoomXProperty().addListener( ( p, o, n ) -> {
+		//			getStorePreviousViewAction().request();
+		//			getCoordinateStatus().updateZoom( n.doubleValue() );
+		//			settings.set( SETTINGS_VIEW_ZOOM, n.doubleValue() );
+		//			//doUpdateGridBounds();
+		//		} );
+		//		renderer.viewZoomYProperty().addListener( ( p, o, n ) -> {
+		//			getStorePreviousViewAction().request();
+		//			getCoordinateStatus().updateZoom( n.doubleValue() );
+		//			settings.set( SETTINGS_VIEW_ZOOM, n.doubleValue() );
+		//			//doUpdateGridBounds();
+		//		} );
+		//
+		//		// Add enabled layers listener
+		//		enabledLayers().addListener( this::doStoreEnabledLayers );
+		//
+		//		// Add visible layers listener
+		//		visibleLayers().addListener( this::doStoreVisibleLayers );
+		//
+		//		// Add current layer property listener
+		//		currentLayerProperty().addListener( ( p, o, n ) -> settings.set( CURRENT_LAYER, n.getId() ) );
+		//
+		//		// Add the selected layer property listener to show its properties page
+		//		selectedLayerProperty().addListener( ( p, o, n ) -> showPropertiesPage( n ) );
+		//
+		//		// Add the selected layer property listener to store the selected layer in the settings
+		//		selectedLayerProperty().addListener( ( p, o, n ) -> settings.set( SELECTED_LAYER, n.getId() ) );
+		//
+		//		// Add current view property listener
+		//		currentViewProperty().addListener( ( p, o, n ) -> settings.set( CURRENT_VIEW, n.getId() ) );
+		//
+		//		// Add grid visible property listener
+		//		gridVisible().addListener( ( p, o, n ) -> settings.set( GRID_VISIBLE, String.valueOf( n ) ) );
+		//
+		//		// Add grid visible property listener
+		//		gridSnapEnabled().addListener( ( p, o, n ) -> settings.set( GRID_SNAP_ENABLED, String.valueOf( n ) ) );
+		//
+		//		//		// Add reference points visible property listener
+		//		//		designPane.referenceLayerVisible().addListener( ( p, o, n ) -> settings.set( REFERENCE_LAYER_VISIBLE, String.valueOf( n ) ) );
+		//
+		//		// Update the design context when the mouse moves
+		//		addEventFilter( MouseEvent.MOUSE_MOVED, e -> getCommandContext().setMouse( e ) );
+		//
+		//		getDesignContext().getPreviewShapes().addListener( this::onPreviewShapesChanged );
+		//		getDesignContext().getSelectedShapes().addListener( this::onSelectedShapesChanged );
+		//
+		//		// Update the select aperture when the mouse moves
+		//		addEventFilter(
+		//			MouseEvent.MOUSE_MOVED, e -> {
+		//				if( getCommandContext().isEmptyMode() ) {
+		//					setSelectAperture( new Point3D( e.getX(), e.getY(), e.getZ() ), new Point3D( e.getX(), e.getY(), e.getZ() ) );
+		//				}
+		//			}
+		//		);
 
 		// NOTE Everything from here down is complete
 
@@ -710,6 +720,21 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 	public ObjectProperty<Reticle> reticle() {
 		return reticle;
+	}
+
+	@Override
+	public DesignValue getSelectTolerance() {
+		return selectTolerance.get();
+	}
+
+	@Override
+	public void setSelectTolerance( DesignValue aperture ) {
+		selectTolerance().set( aperture );
+	}
+
+	@Override
+	public ObjectProperty<DesignValue> selectTolerance() {
+		return selectTolerance;
 	}
 
 	@Override

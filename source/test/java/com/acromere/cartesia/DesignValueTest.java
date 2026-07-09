@@ -10,8 +10,8 @@ public class DesignValueTest extends BaseCartesiaUnitTest {
 	void to() {
 		DesignValue value = new DesignValue( 1, DesignUnit.M );
 		DesignValue result = value.to( DesignUnit.MM );
-		assertThat( result.getValue() ).isEqualTo( 1000 );
-		assertThat( result.getUnit() ).isEqualTo( DesignUnit.MM );
+		assertThat( result.value() ).isEqualTo( 1000 );
+		assertThat( result.unit() ).isEqualTo( DesignUnit.MM );
 	}
 
 }

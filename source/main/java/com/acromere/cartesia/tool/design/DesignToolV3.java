@@ -1,7 +1,7 @@
 package com.acromere.cartesia.tool.design;
 
-import com.acromere.cartesia.DesignValue;
-import com.acromere.cartesia.data.*;
+import com.acromere.cartesia.data.DesignLayer;
+import com.acromere.cartesia.data.DesignShape;
 import com.acromere.cartesia.tool.BaseDesignTool;
 import com.acromere.cartesia.tool.DesignPortal;
 import com.acromere.xenon.XenonProgramProduct;
@@ -10,7 +10,6 @@ import com.acromere.xenon.resource.Resource;
 import com.acromere.xenon.workpane.ToolException;
 import com.acromere.zerra.javafx.Fx;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
 import javafx.geometry.Point3D;
 import javafx.scene.paint.Paint;
 import lombok.CustomLog;
@@ -53,21 +52,6 @@ public class DesignToolV3 extends BaseDesignTool {
 		//				getRenderer().setLayerVisible( developmentDesign.getLayers().getLayers().getFirst(), true );
 		//			}
 		//		}
-	}
-
-	@Override
-	public DesignValue getSelectTolerance() {
-		return null;
-	}
-
-	@Override
-	public void setSelectTolerance( DesignValue aperture ) {
-
-	}
-
-	@Override
-	public ObjectProperty<DesignValue> selectTolerance() {
-		return null;
 	}
 
 	@Override

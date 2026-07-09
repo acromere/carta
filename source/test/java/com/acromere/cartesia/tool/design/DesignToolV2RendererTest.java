@@ -4,7 +4,6 @@ import com.acromere.cartesia.BaseCartesiaUnitTest;
 import com.acromere.cartesia.DesignUnit;
 import com.acromere.cartesia.DesignValue;
 import com.acromere.cartesia.data.Design;
-import com.acromere.cartesia.data.DesignModel;
 import com.acromere.cartesia.data.DesignModel2D;
 import com.acromere.cartesia.test.Point3DAssert;
 import com.acromere.cartesia.tool.DesignTool;
@@ -110,7 +109,7 @@ public class DesignToolV2RendererTest extends BaseCartesiaUnitTest {
 
 	@Test
 	void parentToLocal() {
-		double oneCentimeterPerInch = new DesignValue( 1, DesignUnit.CM ).to( DesignUnit.IN ).getValue();
+		double oneCentimeterPerInch = new DesignValue( 1, DesignUnit.CM ).to( DesignUnit.IN ).value();
 		double pixelsPerCentimeter = renderer.getDpiX() * oneCentimeterPerInch;
 
 		// Check the center
@@ -127,7 +126,7 @@ public class DesignToolV2RendererTest extends BaseCartesiaUnitTest {
 
 	@Test
 	void localToParent() {
-		double oneCentimeterPerInch = new DesignValue( 1, DesignUnit.CM ).to( DesignUnit.IN ).getValue();
+		double oneCentimeterPerInch = new DesignValue( 1, DesignUnit.CM ).to( DesignUnit.IN ).value();
 		double pixelsPerCentimeter = renderer.getDpiX() * oneCentimeterPerInch;
 
 		// Check the center
@@ -153,7 +152,7 @@ public class DesignToolV2RendererTest extends BaseCartesiaUnitTest {
 
 	@Test
 	void realToScreen() {
-		double oneMillimeterPerInch = new DesignValue( 1, DesignUnit.MM ).to( DesignUnit.IN ).getValue();
+		double oneMillimeterPerInch = new DesignValue( 1, DesignUnit.MM ).to( DesignUnit.IN ).value();
 		double pixelsPerMillimeter = renderer.getDpiX() * oneMillimeterPerInch;
 
 		// when

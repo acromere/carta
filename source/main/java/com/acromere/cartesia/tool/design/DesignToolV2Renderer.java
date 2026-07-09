@@ -790,11 +790,11 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 
 	double realToWorld( DesignValue value ) {
 		// Convert the provided value to design units and divide by the zoom factor
-		return value.to( model.calcDesignUnit() ).getValue() / getViewZoomX();
+		return value.to( model.calcDesignUnit() ).value() / getViewZoomX();
 	}
 
 	double realToScreen( DesignValue value ) {
-		return value.to( DesignUnit.IN ).getValue() * getDpiX();
+		return value.to( DesignUnit.IN ).value() * getDpiX();
 	}
 
 	// Rendering -----------------------------------------------------------------
