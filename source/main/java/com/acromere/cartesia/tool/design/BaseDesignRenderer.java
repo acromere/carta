@@ -1,18 +1,24 @@
 package com.acromere.cartesia.tool.design;
 
+import com.acromere.cartesia.data.DesignBox;
+import com.acromere.cartesia.data.DesignEllipse;
 import com.acromere.cartesia.data.DesignLayer;
+import com.acromere.cartesia.data.DesignShape;
 import com.acromere.cartesia.tool.RenderConstants;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Shape;
 import lombok.CustomLog;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CustomLog
 public abstract class BaseDesignRenderer extends StackPane implements DesignRenderer, RenderConstants {
@@ -364,6 +370,67 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 	@Override
 	public ObservableList<DesignLayer> visibleLayers() {
 		return visibleLayers;
+	}
+
+	// Visible Shapes ------------------------------------------------------------
+
+	public List<DesignShape> getVisibleShapes() {
+		return getVisibleLayers().stream().flatMap( l -> l.getShapes().stream() ).collect( Collectors.toList() );
+	}
+
+	/**
+	 * Select nodes using a shape. The selecting shape can be any shape but it
+	 * usually a {@link DesignEllipse} or a {@link DesignBox}. Returns the list
+	 * of discovered shapes in order from top to bottom.
+	 * <p>
+	 * The selector shape is defined in world coordinates.
+	 *
+	 * @param selector The selecting shape
+	 * @param intersect True to select shapes by intersection
+	 * @return The list of discovered shapes
+	 */
+	protected List<DesignShape> doFindByShape( final DesignShape selector, final boolean intersect ) {
+		// Ensure the selector does not have a draw width
+		selector.setDrawWidth( "0" );
+		selector.setDrawPaint( "#ff00ffff" );
+		selector.setFillPaint( "#ff00ffff" );
+
+		// This method should be thread agnostic. It should be safe to call from any thread.
+		return getVisibleShapes().stream().filter( shape -> matches( selector, shape, intersect ) ).collect( Collectors.toList() );
+	}
+
+	/**
+	 * Test if the selector shape should select the specific shape. The intersect
+	 * parameter indicates if the selector needs to contain or just intersect the
+	 * shape.
+	 * <p>
+	 * Both the selector and the shape are defined in world coordinates.
+	 *
+	 * @param selector The selector shape
+	 * @param shape The shape to test
+	 * @param intersect The intersect flag
+	 * @return True if the selector shape should select the shape
+	 */
+	private boolean matches( DesignShape selector, DesignShape shape, boolean intersect ) {
+		Bounds selectorBounds = selector.getSelectBounds();
+		Bounds shapeBounds = shape.getSelectBounds();
+
+		// This first test is an optimization for fully excluded shapes
+		if( !selectorBounds.intersects( shapeBounds ) ) return false;
+
+		// This second test is an optimization for fully contained shapes
+		if( selectorBounds.contains( shapeBounds ) ) return true;
+
+		// This is the slow but accurate test if the shape is matched when the selector is not a box
+		Shape fxSelector = selector.getFxShape();
+		Shape fxShape = shape.getFxShape();
+
+		// Check if the selector should match the shape
+		if( intersect ) {
+			return !((javafx.scene.shape.Path)Shape.intersect( fxShape, fxSelector )).getElements().isEmpty();
+		} else {
+			return ((javafx.scene.shape.Path)Shape.subtract( fxShape, fxSelector )).getElements().isEmpty();
+		}
 	}
 
 }
