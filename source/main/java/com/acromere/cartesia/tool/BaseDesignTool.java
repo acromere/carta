@@ -119,6 +119,11 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	@Getter
 	private final BaseDesignRenderer renderer;
 
+	/**
+	 * The stack of portals the user has used to view the design in this tool.
+	 */
+	private final Stack<DesignPortal> portalStack;
+
 	// FX properties (what others should be here?)
 
 	// Current:
@@ -192,21 +197,20 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	@Getter
 	private final DelayedAction storePreviousViewAction;
 
-	private final Stack<DesignPortal> portalStack;
-
 	private com.acromere.event.EventHandler<ResourceSwitchedEvent> assetSwitchListener;
 
 	protected BaseDesignTool( XenonProgramProduct product, Resource resource, BaseDesignRenderer renderer ) {
 		super( product, resource );
+		setUid( IdGenerator.getId() );
 		addStylesheet( CartesiaMod.STYLESHEET );
 		getStyleClass().add( "design-tool" );
 
-		setUid( IdGenerator.getId() );
-
-		// Actions
+		// Fields
+		portalStack = new Stack<>();
 		commandActions = new ConcurrentHashMap<>();
 		designPropertiesMap = new DesignPropertiesMap( product );
 
+		// Actions
 		printAction = new PrintAction( product.getProgram() );
 		propertiesAction = new PropertiesAction( product.getProgram() );
 		deleteAction = new DeleteAction( product.getProgram() );
@@ -216,8 +220,6 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		storePreviousViewAction = new DelayedAction( getProgram().getTaskManager().getExecutor(), this::capturePreviousPortal );
 		storePreviousViewAction.setMinTriggerLimit( 1000 );
 		storePreviousViewAction.setMaxTriggerLimit( 5000 );
-
-		portalStack = new Stack<>();
 
 		// Create the tool toast
 		this.toast = new Label( Rb.text( RbKey.LABEL, "loading-asset", resource.getName() ) + " ..." );
@@ -917,6 +919,15 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	@Override
 	public BaseDesignRenderer getScreenDesignRenderer() {
 		return renderer;
+	}
+
+	@Override
+	public DesignPortal getPriorPortal() {
+		// Remove the current portal
+		if( !portalStack.isEmpty() ) portalStack.pop();
+
+		// Return the prior portal
+		return portalStack.isEmpty() ? DesignPortal.DEFAULT : portalStack.pop();
 	}
 
 	protected CommandPrompt getCommandPrompt() {

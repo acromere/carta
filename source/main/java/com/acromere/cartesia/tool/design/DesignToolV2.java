@@ -71,8 +71,6 @@ public class DesignToolV2 extends BaseDesignTool {
 
 	private final DesignToolV2Renderer renderer;
 
-	private final Stack<DesignPortal> portalStack;
-
 	private final DesignPropertiesMap designPropertiesMap;
 
 	// OPTIONAL TOOL PROPERTIES
@@ -113,8 +111,6 @@ public class DesignToolV2 extends BaseDesignTool {
 
 		// TODO Move this to tool settings like reticule and aperture
 		renderer.getWorkplane().setGridStyle( GridStyle.DOT );
-
-		portalStack = new Stack<>();
 
 		// NOTE Settings and settings listeners should go in the ready() method
 	}
@@ -777,15 +773,6 @@ public class DesignToolV2 extends BaseDesignTool {
 	@Override
 	public List<DesignShape> getSelectedShapes() {
 		return new ArrayList<>( getDesignContext().getSelectedShapes() );
-	}
-
-	@Override
-	public DesignPortal getPriorPortal() {
-		// Remove the current portal
-		if( !portalStack.isEmpty() ) portalStack.pop();
-
-		// Return the prior portal
-		return portalStack.isEmpty() ? DesignPortal.DEFAULT : portalStack.pop();
 	}
 
 	public Class<? extends BaseDesignRenderer> getPrintDesignRendererClass() {
