@@ -3,7 +3,6 @@ package com.acromere.cartesia.tool.design;
 import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.data.DesignShape;
 import com.acromere.cartesia.tool.BaseDesignTool;
-import com.acromere.cartesia.tool.DesignPortal;
 import com.acromere.xenon.XenonProgramProduct;
 import com.acromere.xenon.resource.OpenAssetRequest;
 import com.acromere.xenon.resource.Resource;
@@ -189,11 +188,6 @@ public class DesignToolV3 extends BaseDesignTool {
 	}
 
 	@Override
-	public void clearSelectedShapes() {
-
-	}
-
-	@Override
 	public void screenPointSelect( Point3D mouse ) {
 
 	}
@@ -221,16 +215,6 @@ public class DesignToolV3 extends BaseDesignTool {
 	@Override
 	public void worldWindowSelect( Point3D a, Point3D b, boolean intersect, boolean toggle ) {
 
-	}
-
-	@Override
-	public List<DesignShape> getSelectedShapes() {
-		return List.of();
-	}
-
-	@Override
-	public DesignPortal getPriorPortal() {
-		return null;
 	}
 
 	@Override

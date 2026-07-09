@@ -759,22 +759,6 @@ public class DesignToolV2 extends BaseDesignTool {
 		}
 	}
 
-	@Override
-	public void clearSelectedShapes() {
-		getDesignContext().getSelectedShapes().clear();
-	}
-
-	/**
-	 * Get a copy of the selected shapes list. The returned list is safe to modify
-	 * and will not affect the internal selected shapes list.
-	 *
-	 * @return A copy of the selected shapes list.
-	 */
-	@Override
-	public List<DesignShape> getSelectedShapes() {
-		return new ArrayList<>( getDesignContext().getSelectedShapes() );
-	}
-
 	public Class<? extends BaseDesignRenderer> getPrintDesignRendererClass() {
 		return DesignToolV2Renderer.class;
 	}
