@@ -20,6 +20,8 @@ import java.util.List;
 @Getter
 public class DesignContext {
 
+	public static final DesignContext EMPTY = new DesignContext();
+
 	// Should these layers be here or in the design?
 	private final DesignLayer previewLayer;
 

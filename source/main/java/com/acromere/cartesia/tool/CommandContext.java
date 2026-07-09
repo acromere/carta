@@ -42,6 +42,8 @@ import static com.acromere.cartesia.command.CommandMap.NONE;
 @CustomLog
 public class CommandContext implements EventHandler<KeyEvent> {
 
+	public static final CommandContext EMPTY = new CommandContext();
+
 	public enum Input {
 		NONE,
 		NUMBER,
