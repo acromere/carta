@@ -14,7 +14,6 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
@@ -51,10 +50,19 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 */
 	private static final Map<GeometryKey, Node> drawableToGeometry;
 
+	/**
+	 * Reference to the Design.
+	 */
 	private Design<? extends DesignModel> design;
 
+	/**
+	 * Reference to the Design data model.
+	 */
 	private DesignModel model;
 
+	/**
+	 * Reference to the DesignTool workplane.
+	 */
 	private Workplane workplane;
 
 	/**
@@ -79,18 +87,28 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	@Getter
 	final Pane world;
 
-	// The geometry in this pane is configured by the workplane but managed
-	// internally so that it can be optimized the use of the FX geometry.
+	/**
+	 * The geometry in this pane is configured by the workplane but managed
+	 * internally so that it can be optimized the use of the FX geometry.
+	 */
 	@Getter
 	final Pane grid;
 
-	// The design pane contains all the design layers.
+	/**
+	 * This pane contains all the design layers.
+	 */
 	@Getter
 	final Pane layers;
 
+	/**
+	 * The reference geometry layer.
+	 */
 	@Getter
 	final Pane reference;
 
+	/**
+	 * The preview geometry layer.
+	 */
 	@Getter
 	final Pane preview;
 
@@ -114,25 +132,6 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 	@Getter( AccessLevel.PACKAGE )
 	private final Translate viewCenterTransform;
-
-	/**
-	 * A flag indicating whether the FX geometry is currently being updated.
-	 * This variable is primarily used to prevent redundant or recursive updates
-	 * during the rendering process, ensuring the update operations are executed
-	 * efficiently and without conflicts.
-	 */
-	private boolean updatingFxGeometry;
-
-	/**
-	 * A flag indicating that the grid is currently regenerating.
-	 */
-	private boolean gridRegeneratingFlag;
-
-	/**
-	 * A flag indicating that the grid was requested to be regenerated while it
-	 * was regenerating, and therefore needs to be regenerated again.
-	 */
-	boolean needsExtraRegeneration;
 
 	private final EventHandler<NodeEvent> workplaneChangeHandler = _ -> updateGridFxGeometry();
 
@@ -350,15 +349,15 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		super.setLayerVisible( layer, visible );
 	}
 
-//	/**
-//	 * {@inheritDoc}
-//	 */
-//	@Override
-//	public List<DesignLayer> getVisibleLayers() {
-//		// Return the list of design layers that currently have an FX pane in the renderer,
-//		// in the same order as they appear visually (top to bottom) in the layers pane.
-//		return this.layers.getChildren().stream().filter( p -> p instanceof Pane ).map( p -> (DesignLayer)p.getUserData() ).toList();
-//	}
+	//	/**
+	//	 * {@inheritDoc}
+	//	 */
+	//	@Override
+	//	public List<DesignLayer> getVisibleLayers() {
+	//		// Return the list of design layers that currently have an FX pane in the renderer,
+	//		// in the same order as they appear visually (top to bottom) in the layers pane.
+	//		return this.layers.getChildren().stream().filter( p -> p instanceof Pane ).map( p -> (DesignLayer)p.getUserData() ).toList();
+	//	}
 
 	/**
 	 * {@inheritDoc}
@@ -544,11 +543,6 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 	@Note( Note.THREAD_SAFE )
 	void updateGridFxGeometry() {
-		if( gridRegeneratingFlag ) {
-			needsExtraRegeneration = true;
-			return;
-		}
-
 		// Get a local reference for thread safety
 		final Workplane workplane = this.workplane;
 
@@ -556,11 +550,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 			if( workplane == null ) {
 				grid.getChildren().clear();
 			} else {
-				needsExtraRegeneration = false;
-				gridRegeneratingFlag = true;
 				workplane.getGridSystem().updateFxGeometryGrid( workplane, getShapeScaleX(), grid.getChildren() );
-				if( needsExtraRegeneration ) workplane.getGridSystem().updateFxGeometryGrid( workplane, getShapeScaleX(), grid.getChildren() );
-				gridRegeneratingFlag = false;
 			}
 		} );
 	}
