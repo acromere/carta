@@ -380,7 +380,25 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		return getVisibleLayers().stream().flatMap( l -> l.getShapes().stream() ).collect( Collectors.toList() );
 	}
 
-	// Selecting
+	// Selecting -----------------------------------------------------------------
+
+	/**
+	 * Find the nodes contained by, or intersecting, the window specified by points a and b.
+	 *
+	 * @param a One corner of the window
+	 * @param b The other corner of the window
+	 * @param intersect True to select shapes by intersection
+	 * @return The set of discovered nodes
+	 */
+	public List<DesignShape> worldWindowFind( Point3D a, Point3D b, boolean intersect ) {
+		double x = Math.min( a.getX(), b.getX() );
+		double y = Math.min( a.getY(), b.getY() );
+		double w = Math.abs( a.getX() - b.getX() );
+		double h = Math.abs( a.getY() - b.getY() );
+
+		DesignBox selector = new DesignBox( x, y, w, h );
+		return doFindByShape( selector, intersect );
+	}
 
 	public List<DesignShape> worldPointFind( Point3D anchor, DesignValue tolerance ) {
 		return worldPointFind( anchor, realToWorld( tolerance ) );
@@ -415,24 +433,6 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 	double realToScreen( DesignValue value ) {
 		// Convert the provided value to inches and multiply by DPI
 		return value.to( DesignUnit.IN ).value() * getDpiX();
-	}
-
-	/**
-	 * Find the nodes contained by, or intersecting, the window specified by points a and b.
-	 *
-	 * @param a One corner of the window
-	 * @param b The other corner of the window
-	 * @param intersect True to select shapes by intersection
-	 * @return The set of discovered nodes
-	 */
-	public List<DesignShape> worldWindowFind( Point3D a, Point3D b, boolean intersect ) {
-		double x = Math.min( a.getX(), b.getX() );
-		double y = Math.min( a.getY(), b.getY() );
-		double w = Math.abs( a.getX() - b.getX() );
-		double h = Math.abs( a.getY() - b.getY() );
-
-		DesignBox selector = new DesignBox( x, y, w, h );
-		return doFindByShape( selector, intersect );
 	}
 
 	/**

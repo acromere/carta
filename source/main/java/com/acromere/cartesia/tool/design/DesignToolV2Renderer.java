@@ -615,17 +615,6 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 		return renderer.zoomYProperty();
 	}
 
-	/**
-	 * Request that geometry be rendered. This method will collapse multiple
-	 * sequential render requests to improve performance. This method is safe to
-	 * call from any thread.
-	 */
-	public void render() {
-		//log.atConfig().log("request render");
-		//Fx.run( new RenderTrigger() );
-		Fx.run( this::doRender );
-	}
-
 	public Transform getWorldToScreenTransform() {
 		return renderer.getWorldToScreenTransform();
 	}
@@ -752,6 +741,17 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	}
 
 	// Rendering -----------------------------------------------------------------
+
+	/**
+	 * Request that geometry be rendered. This method will collapse multiple
+	 * sequential render requests to improve performance. This method is safe to
+	 * call from any thread.
+	 */
+	public void render() {
+		//log.atConfig().log("request render");
+		//Fx.run( new RenderTrigger() );
+		Fx.run( this::doRender );
+	}
 
 	public void print( double factor ) {
 		renderer.widthProperty().unbind();
