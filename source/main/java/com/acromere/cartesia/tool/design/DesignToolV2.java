@@ -57,10 +57,6 @@ public class DesignToolV2 extends BaseDesignTool {
 
 	// ACTIONS
 
-	private BooleanProperty gridSnapEnabled;
-
-	private BooleanProperty showHotspotEnabled;
-
 	public DesignToolV2( XenonProgramProduct product, Resource resource ) {
 		super( product, resource, new DesignToolV2Renderer() );
 
@@ -563,50 +559,6 @@ public class DesignToolV2 extends BaseDesignTool {
 	//	public Bounds screenToWorld( Bounds bounds ) {
 	//		return renderer == null ? Fx.EMPTY_BOUNDS : renderer.parentToLocal( bounds );
 	//	}
-
-	@Override
-	public boolean isGridVisible() {
-		return renderer.isGridVisible();
-	}
-
-	@Override
-	public void setGridVisible( boolean visible ) {
-		renderer.setGridVisible( visible );
-	}
-
-	@Override
-	public BooleanProperty gridVisible() {
-		return renderer.gridVisible();
-	}
-
-	@Override
-	public boolean isGridSnapEnabled() {
-		return gridSnapEnabled == null ? DEFAULT_GRID_SNAP_ENABLED : gridSnapEnabled().get();
-	}
-
-	@Override
-	public void setGridSnapEnabled( boolean enabled ) {
-		gridSnapEnabled().set( enabled );
-	}
-
-	@Override
-	public BooleanProperty gridSnapEnabled() {
-		if( gridSnapEnabled == null ) gridSnapEnabled = new SimpleBooleanProperty( DEFAULT_GRID_SNAP_ENABLED );
-		return gridSnapEnabled;
-	}
-
-	public boolean isShowHotspotEnabled() {
-		return showHotspotEnabled == null ? DEFAULT_SHOW_HOTSPOT_ENABLED : showHotspotEnabled().get();
-	}
-
-	public void setShowHotspotEnabled( boolean enabled ) {
-		showHotspotEnabled.set( enabled );
-	}
-
-	public BooleanProperty showHotspotEnabled() {
-		if( showHotspotEnabled == null ) showHotspotEnabled = new SimpleBooleanProperty( DEFAULT_SHOW_HOTSPOT_ENABLED );
-		return showHotspotEnabled;
-	}
 
 	/**
 	 * Set the select aperture window. Points are specified in screen coordinates.

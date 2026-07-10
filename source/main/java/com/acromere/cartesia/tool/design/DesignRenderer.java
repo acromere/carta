@@ -4,6 +4,7 @@ import com.acromere.cartesia.data.Design;
 import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.data.DesignModel;
 import com.acromere.cartesia.tool.Workplane;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
@@ -64,6 +65,13 @@ public interface DesignRenderer extends CommonToolRenderer {
 	 * @param visible True to make the grid visible, false to hide it.
 	 */
 	void setGridVisible( boolean visible );
+
+	/**
+	 * Get the grid visible property.
+	 *
+	 * @return The grid visible property.
+	 */
+	BooleanProperty gridVisible();
 
 	/**
 	 * Determines whether the specified design layer is enabled within the renderer.

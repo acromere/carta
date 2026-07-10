@@ -36,9 +36,7 @@ import com.acromere.xenon.workspace.Workspace;
 import com.acromere.zerra.color.Paints;
 import com.acromere.zerra.event.FxEventHub;
 import com.acromere.zerra.javafx.Fx;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -159,6 +157,10 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	// zoom
 
 	// TOOL PROPERTIES
+
+	private BooleanProperty gridSnapEnabled;
+
+	private BooleanProperty showHotspotEnabled;
 
 	/**
 	 * The reticule is the more specialized equivalent of the crosshair cursor.
@@ -399,11 +401,16 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 			DEFAULT_SELECT_TOLERANCE,
 			e -> setSelectTolerance( new DesignValue( getSelectTolerance().value(), DesignUnitMapper.map( ((String)e.getNewValue()) ) ) )
 		);
+
 		// NOTE Everything up to here is complete
 		// NEXT Replace all "set" above and "register" below with settings.bind()
-		//productSettings.register( REFERENCE_POINT_TYPE, e -> designPane.setReferencePointType( DesignMarker.Type.valueOf( String.valueOf( e.getNewValue() ).toUpperCase() ) ) );
-		//productSettings.register( REFERENCE_POINT_SIZE, e -> designPane.setReferencePointSize( Double.parseDouble( (String)e.getNewValue() ) ) );
-		//productSettings.register( REFERENCE_POINT_PAINT, e -> designPane.setReferencePointPaint( Paints.parse( String.valueOf( e.getNewValue() ).toUpperCase() ) ) );
+		//productSettings.register( REFERENCE_POINT_TYPE, e -> renderer.setReferencePointType( DesignMarker.Type.valueOf( String.valueOf( e.getNewValue() ).toUpperCase() ) ) );
+		//productSettings.register( REFERENCE_POINT_SIZE, e -> renderer.setReferencePointSize( Double.parseDouble( (String)e.getNewValue() ) ) );
+		//productSettings.register( REFERENCE_POINT_PAINT, e -> renderer.setReferencePointPaint( Paints.parse( String.valueOf( e.getNewValue() ).toUpperCase() ) ) );
+
+		// Listeners to store settings ---------------------------------------------
+
+		// FIXME Adding this listeners cause the unit tests to fail becuase the listeners
 
 		//		// Add view point property listener
 		//		renderer.viewCenterXProperty().addListener( ( p, o, n ) -> {
@@ -830,6 +837,50 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	@Override
 	public Bounds screenToWorld( Bounds bounds ) {
 		return getRenderer().screenToWorld( bounds );
+	}
+
+	@Override
+	public boolean isGridVisible() {
+		return renderer.isGridVisible();
+	}
+
+	@Override
+	public void setGridVisible( boolean visible ) {
+		renderer.setGridVisible( visible );
+	}
+
+	@Override
+	public BooleanProperty gridVisible() {
+		return renderer.gridVisible();
+	}
+
+	@Override
+	public boolean isGridSnapEnabled() {
+		return gridSnapEnabled == null ? DEFAULT_GRID_SNAP_ENABLED : gridSnapEnabled().get();
+	}
+
+	@Override
+	public void setGridSnapEnabled( boolean enabled ) {
+		gridSnapEnabled().set( enabled );
+	}
+
+	@Override
+	public BooleanProperty gridSnapEnabled() {
+		if( gridSnapEnabled == null ) gridSnapEnabled = new SimpleBooleanProperty( DEFAULT_GRID_SNAP_ENABLED );
+		return gridSnapEnabled;
+	}
+
+	public boolean isShowHotspotEnabled() {
+		return showHotspotEnabled == null ? DEFAULT_SHOW_HOTSPOT_ENABLED : showHotspotEnabled().get();
+	}
+
+	public void setShowHotspotEnabled( boolean enabled ) {
+		showHotspotEnabled.set( enabled );
+	}
+
+	public BooleanProperty showHotspotEnabled() {
+		if( showHotspotEnabled == null ) showHotspotEnabled = new SimpleBooleanProperty( DEFAULT_SHOW_HOTSPOT_ENABLED );
+		return showHotspotEnabled;
 	}
 
 	@Override

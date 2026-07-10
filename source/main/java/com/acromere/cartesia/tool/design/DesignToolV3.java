@@ -122,35 +122,35 @@ public class DesignToolV3 extends BaseDesignTool {
 		return null;
 	}
 
-	@Override
-	public boolean isGridVisible() {
-		return false;
-	}
+//	@Override
+//	public boolean isGridVisible() {
+//		return false;
+//	}
+//
+//	@Override
+//	public void setGridVisible( boolean visible ) {
+//
+//	}
+//
+//	@Override
+//	public BooleanProperty gridVisible() {
+//		return null;
+//	}
 
-	@Override
-	public void setGridVisible( boolean visible ) {
-
-	}
-
-	@Override
-	public BooleanProperty gridVisible() {
-		return null;
-	}
-
-	@Override
-	public boolean isGridSnapEnabled() {
-		return false;
-	}
-
-	@Override
-	public void setGridSnapEnabled( boolean enabled ) {
-
-	}
-
-	@Override
-	public BooleanProperty gridSnapEnabled() {
-		return null;
-	}
+//	@Override
+//	public boolean isGridSnapEnabled() {
+//		return false;
+//	}
+//
+//	@Override
+//	public void setGridSnapEnabled( boolean enabled ) {
+//
+//	}
+//
+//	@Override
+//	public BooleanProperty gridSnapEnabled() {
+//		return null;
+//	}
 
 	@Override
 	public void setSelectAperture( Point3D anchor, Point3D mouse ) {

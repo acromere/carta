@@ -56,6 +56,13 @@ public class DesignToolV3Test extends BaseToolTest {
 		assertThat( resourceModel ).isEqualTo( design );
 		assertThat( resourceModel.getDataModel() ).isEqualTo( model );
 		assertThat( tool.getDesignModel() ).isEqualTo( model );
+
+		// Post-setup checks
+		verify( renderer, times( 4 ) ).visibleLayers();
+		verify( renderer, times( 2 ) ).enabledLayers();
+
+		// Reset the invocation counts
+		Mockito.clearInvocations( renderer );
 	}
 
 	@Test
@@ -315,13 +322,13 @@ public class DesignToolV3Test extends BaseToolTest {
 	@Tag( CartesiaTestTag.WHITE_BOX )
 	void enabledLayers() {
 		// given
-		verify( renderer, times( 2 ) ).enabledLayers();
+		verify( renderer, times( 0 ) ).enabledLayers();
 
 		// when
 		tool.enabledLayers();
 
 		// Check that it delegates to the renderer
-		verify( renderer, times( 3 ) ).enabledLayers();
+		verify( renderer, times( 1 ) ).enabledLayers();
 	}
 
 	@Test
@@ -367,13 +374,13 @@ public class DesignToolV3Test extends BaseToolTest {
 	@Tag( CartesiaTestTag.WHITE_BOX )
 	void visibleLayers() {
 		// given
-		verify( renderer, times( 4 ) ).visibleLayers();
+		verify( renderer, times( 0 ) ).visibleLayers();
 
 		// when
 		tool.visibleLayers();
 
 		// Check that it delegates to the renderer
-		verify( renderer, times( 5 ) ).visibleLayers();
+		verify( renderer, times( 1 ) ).visibleLayers();
 	}
 
 	@Test

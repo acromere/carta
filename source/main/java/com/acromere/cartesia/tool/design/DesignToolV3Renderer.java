@@ -12,6 +12,7 @@ import com.acromere.event.EventHandler;
 import com.acromere.zerra.javafx.Fx;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Bounds;
@@ -320,6 +321,11 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 			grid.setVisible( false );
 			grid.getChildren().clear();
 		}
+	}
+
+	@Override
+	public BooleanProperty gridVisible() {
+		return grid.visibleProperty();
 	}
 
 	/**
