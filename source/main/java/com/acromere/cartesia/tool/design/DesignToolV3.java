@@ -7,7 +7,6 @@ import com.acromere.xenon.XenonProgramProduct;
 import com.acromere.xenon.resource.OpenAssetRequest;
 import com.acromere.xenon.resource.Resource;
 import com.acromere.xenon.workpane.ToolException;
-import javafx.beans.property.BooleanProperty;
 import javafx.geometry.Point3D;
 import javafx.scene.paint.Paint;
 import lombok.CustomLog;
@@ -101,56 +100,6 @@ public class DesignToolV3 extends BaseDesignTool {
 	public Point3D scaleWorldToScreen( Point3D point ) {
 		return null;
 	}
-
-	@Override
-	public Point3D screenToWorkplane( Point3D point ) {
-		return getRenderer().screenToWorld( point );
-	}
-
-	@Override
-	public Point3D screenToWorkplane( double x, double y, double z ) {
-		return getRenderer().screenToWorld( x, y, z );
-	}
-
-	@Override
-	public Point3D snapToGrid( Point3D point ) {
-		return null;
-	}
-
-	@Override
-	public Point3D snapToGrid( double x, double y, double z ) {
-		return null;
-	}
-
-//	@Override
-//	public boolean isGridVisible() {
-//		return false;
-//	}
-//
-//	@Override
-//	public void setGridVisible( boolean visible ) {
-//
-//	}
-//
-//	@Override
-//	public BooleanProperty gridVisible() {
-//		return null;
-//	}
-
-//	@Override
-//	public boolean isGridSnapEnabled() {
-//		return false;
-//	}
-//
-//	@Override
-//	public void setGridSnapEnabled( boolean enabled ) {
-//
-//	}
-//
-//	@Override
-//	public BooleanProperty gridSnapEnabled() {
-//		return null;
-//	}
 
 	@Override
 	public void setSelectAperture( Point3D anchor, Point3D mouse ) {

@@ -8,6 +8,8 @@ import com.acromere.cartesia.cursor.ReticuleCursor;
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.data.map.DesignUnitMapper;
 import com.acromere.cartesia.data.util.DesignPropertiesMap;
+import com.acromere.cartesia.snap.Snap;
+import com.acromere.cartesia.snap.SnapGrid;
 import com.acromere.cartesia.tool.design.BaseDesignRenderer;
 import com.acromere.cartesia.tool.design.DesignToolEvent;
 import com.acromere.cartesia.tool.design.LayersGuide;
@@ -71,6 +73,8 @@ import java.util.stream.Collectors;
  */
 @CustomLog
 public abstract class BaseDesignTool extends GuidedTool implements DesignTool, EventTarget, WritableIdentity {
+
+	protected static final Snap gridSnap = new SnapGrid();
 
 	// GUIDES
 
@@ -791,6 +795,27 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	@Override
 	public Bounds screenToWorld( Bounds bounds ) {
 		return getRenderer().screenToWorld( bounds );
+	}
+
+	@Override
+	public Point3D screenToWorkplane( Point3D point ) {
+		return screenToWorkplane( point.getX(), point.getY(), point.getZ() );
+	}
+
+	@Override
+	public Point3D screenToWorkplane( double x, double y, double z ) {
+		Point3D worldPoint = screenToWorld( x, y, z );
+		return isGridSnapEnabled() ? gridSnap.snap( this, worldPoint ) : worldPoint;
+	}
+
+	@Override
+	public Point3D snapToGrid( Point3D point ) {
+		return isGridSnapEnabled() ? gridSnap.snap( this, point ) : point;
+	}
+
+	@Override
+	public Point3D snapToGrid( double x, double y, double z ) {
+		return snapToGrid( new Point3D( x, y, z ) );
 	}
 
 	@Override
