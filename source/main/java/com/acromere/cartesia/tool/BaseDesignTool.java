@@ -366,93 +366,82 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 			e -> setSelectTolerance( new DesignValue( getSelectTolerance().value(), DesignUnitMapper.map( ((String)e.getNewValue()) ) ) )
 		);
 
-		// NOTE Everything up to here is complete
-		// NEXT Replace all "set" above and "register" below with settings.bind()
+		// TODO Set the reference point settings on the renderer
 		//productSettings.register( REFERENCE_POINT_TYPE, e -> renderer.setReferencePointType( DesignMarker.Type.valueOf( String.valueOf( e.getNewValue() ).toUpperCase() ) ) );
 		//productSettings.register( REFERENCE_POINT_SIZE, e -> renderer.setReferencePointSize( Double.parseDouble( (String)e.getNewValue() ) ) );
 		//productSettings.register( REFERENCE_POINT_PAINT, e -> renderer.setReferencePointPaint( Paints.parse( String.valueOf( e.getNewValue() ).toUpperCase() ) ) );
 
-		// Listeners to store settings ---------------------------------------------
-
-		// FIXME Adding this listeners cause the unit tests to fail
-		// because the listeners change the state of the tool during the tests
+		// Renderer property listeners ---------------------------------------------
 
 		// Add view point property listener
 		renderer.viewCenterXProperty().addListener( ( p, o, n ) -> {
 			getStorePreviousViewAction().request();
 			Point3D vp = renderer.getViewCenter();
 			settings.set( SETTINGS_VIEW_POINT, vp.getX() + "," + vp.getY() + ",0" );
-			//doUpdateGridBounds();
 		} );
 		renderer.viewCenterYProperty().addListener( ( p, o, n ) -> {
 			getStorePreviousViewAction().request();
 			Point3D vp = renderer.getViewCenter();
 			settings.set( SETTINGS_VIEW_POINT, vp.getX() + "," + vp.getY() + ",0" );
-			//doUpdateGridBounds();
 		} );
 
-		//		// Add view rotate property listener
-		//		renderer.viewRotateProperty().addListener( ( p, o, n ) -> {
-		//			getStorePreviousViewAction().request();
-		//			settings.set( SETTINGS_VIEW_ROTATE, n.doubleValue() );
-		//			//doUpdateGridBounds();
-		//		} );
-		//
-		//		// Add view zoom property listener
-		//		renderer.viewZoomXProperty().addListener( ( p, o, n ) -> {
-		//			getStorePreviousViewAction().request();
-		//			getCoordinateStatus().updateZoom( n.doubleValue() );
-		//			settings.set( SETTINGS_VIEW_ZOOM, n.doubleValue() );
-		//			//doUpdateGridBounds();
-		//		} );
-		//		renderer.viewZoomYProperty().addListener( ( p, o, n ) -> {
-		//			getStorePreviousViewAction().request();
-		//			getCoordinateStatus().updateZoom( n.doubleValue() );
-		//			settings.set( SETTINGS_VIEW_ZOOM, n.doubleValue() );
-		//			//doUpdateGridBounds();
-		//		} );
-		//
-		//		// Add enabled layers listener
-		//		enabledLayers().addListener( this::doStoreEnabledLayers );
-		//
-		//		// Add visible layers listener
-		//		visibleLayers().addListener( this::doStoreVisibleLayers );
-		//
-		//		// Add current layer property listener
-		//		currentLayerProperty().addListener( ( p, o, n ) -> settings.set( CURRENT_LAYER, n.getId() ) );
-		//
-		//		// Add the selected layer property listener to show its properties page
-		//		selectedLayerProperty().addListener( ( p, o, n ) -> showPropertiesPage( n ) );
-		//
-		//		// Add the selected layer property listener to store the selected layer in the settings
-		//		selectedLayerProperty().addListener( ( p, o, n ) -> settings.set( SELECTED_LAYER, n.getId() ) );
-		//
-		//		// Add current view property listener
-		//		currentViewProperty().addListener( ( p, o, n ) -> settings.set( CURRENT_VIEW, n.getId() ) );
-		//
-		//		// Add grid visible property listener
-		//		gridVisible().addListener( ( p, o, n ) -> settings.set( GRID_VISIBLE, String.valueOf( n ) ) );
-		//
-		//		// Add grid visible property listener
-		//		gridSnapEnabled().addListener( ( p, o, n ) -> settings.set( GRID_SNAP_ENABLED, String.valueOf( n ) ) );
-		//
-		//		//		// Add reference points visible property listener
-		//		//		designPane.referenceLayerVisible().addListener( ( p, o, n ) -> settings.set( REFERENCE_LAYER_VISIBLE, String.valueOf( n ) ) );
-		//
-		//		// Update the design context when the mouse moves
-		//		addEventFilter( MouseEvent.MOUSE_MOVED, e -> getCommandContext().setMouse( e ) );
-		//
-		//		getDesignContext().getPreviewShapes().addListener( this::onPreviewShapesChanged );
-		//		getDesignContext().getSelectedShapes().addListener( this::onSelectedShapesChanged );
-		//
-		//		// Update the select aperture when the mouse moves
-		//		addEventFilter(
-		//			MouseEvent.MOUSE_MOVED, e -> {
-		//				if( getCommandContext().isEmptyMode() ) {
-		//					setSelectAperture( new Point3D( e.getX(), e.getY(), e.getZ() ), new Point3D( e.getX(), e.getY(), e.getZ() ) );
-		//				}
-		//			}
-		//		);
+		// Add view rotate property listener
+		renderer.viewRotateProperty().addListener( ( p, o, n ) -> {
+			getStorePreviousViewAction().request();
+			settings.set( SETTINGS_VIEW_ROTATE, n.doubleValue() );
+		} );
+
+		// Add view zoom property listener
+		renderer.viewZoomXProperty().addListener( ( p, o, n ) -> {
+			getStorePreviousViewAction().request();
+			getCoordinateStatus().updateZoom( n.doubleValue() );
+			settings.set( SETTINGS_VIEW_ZOOM, n.doubleValue() );
+		} );
+		renderer.viewZoomYProperty().addListener( ( p, o, n ) -> {
+			getStorePreviousViewAction().request();
+			getCoordinateStatus().updateZoom( n.doubleValue() );
+			settings.set( SETTINGS_VIEW_ZOOM, n.doubleValue() );
+		} );
+
+		// Add enabled layers listener
+		enabledLayers().addListener( this::doStoreEnabledLayers );
+
+		// Add visible layers listener
+		visibleLayers().addListener( this::doStoreVisibleLayers );
+
+		// Add current layer property listener
+		currentLayerProperty().addListener( ( p, o, n ) -> settings.set( CURRENT_LAYER, n.getId() ) );
+
+		// Add the selected layer property listener to show its properties page
+		selectedLayerProperty().addListener( ( p, o, n ) -> showPropertiesPage( n ) );
+
+		// Add the selected layer property listener to store the selected layer in the settings
+		selectedLayerProperty().addListener( ( p, o, n ) -> settings.set( SELECTED_LAYER, n.getId() ) );
+
+		// Add current view property listener
+		currentViewProperty().addListener( ( p, o, n ) -> settings.set( CURRENT_VIEW, n.getId() ) );
+
+		// Add grid visible property listener
+		gridVisible().addListener( ( p, o, n ) -> settings.set( GRID_VISIBLE, String.valueOf( n ) ) );
+
+		// Add grid visible property listener
+		gridSnapEnabled().addListener( ( p, o, n ) -> settings.set( GRID_SNAP_ENABLED, String.valueOf( n ) ) );
+
+		//		// Add reference points visible property listener
+		//		designPane.referenceLayerVisible().addListener( ( p, o, n ) -> settings.set( REFERENCE_LAYER_VISIBLE, String.valueOf( n ) ) );
+
+		getDesignContext().selectedShapes().addListener( this::onSelectedShapesChanged );
+
+		// Update the select aperture when the mouse moves
+		addEventFilter(
+			MouseEvent.MOUSE_MOVED, e -> {
+				if( getCommandContext().isEmptyMode() ) {
+					setSelectAperture( new Point3D( e.getX(), e.getY(), e.getZ() ), new Point3D( e.getX(), e.getY(), e.getZ() ) );
+				}
+			}
+		);
+
+		// NOTE Everything up to here is complete
 
 		// NOTE Everything from here down is complete
 

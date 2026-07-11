@@ -7,7 +7,6 @@ import com.acromere.cartesia.data.Design;
 import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.data.DesignModel;
 import com.acromere.cartesia.tool.DesignPortal;
-import com.acromere.cartesia.tool.DesignTool;
 import com.acromere.xenon.resource.OpenAssetRequest;
 import com.acromere.xenon.resource.Resource;
 import com.acromere.zerra.javafx.Fx;
@@ -47,7 +46,7 @@ public class DesignToolV3Test extends BaseToolTest {
 		resource.setModel( design );
 
 		renderer = Mockito.spy( new DesignToolV3Renderer() );
-		tool = new DesignToolV3( module, resource, renderer );
+		tool = Mockito.spy( new DesignToolV3( module, resource, renderer ) );
 		tool.getSettings().delete();
 
 		OpenAssetRequest request = new OpenAssetRequest();
@@ -60,8 +59,12 @@ public class DesignToolV3Test extends BaseToolTest {
 		assertThat( tool.getDesignModel() ).isEqualTo( model );
 
 		// Post-setup checks
-		verify( renderer, times( 4 ) ).visibleLayers();
-		verify( renderer, times( 2 ) ).enabledLayers();
+		verify( renderer, times( 5 ) ).visibleLayers();
+		verify( renderer, times( 3 ) ).enabledLayers();
+		verify( renderer, times( 1 ) ).gridVisible();
+		verify( tool, times( 1 ) ).currentLayerProperty();
+		verify( tool, times( 2 ) ).selectedLayerProperty();
+		verify( tool, times( 2 ) ).gridSnapEnabled();
 
 		// Reset the invocation counts
 		Mockito.clearInvocations( renderer );
