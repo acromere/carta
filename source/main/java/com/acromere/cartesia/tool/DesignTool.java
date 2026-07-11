@@ -24,6 +24,42 @@ import java.util.List;
 
 public interface DesignTool extends RenderConstants, CommonToolRenderer {
 
+	String RETICULE = "reticule";
+
+	String SELECT_APERTURE_SIZE = "select-aperture-size";
+
+	String SELECT_APERTURE_UNIT = "select-aperture-unit";
+
+	String REFERENCE_POINT_SIZE = "reference-point-size";
+
+	String REFERENCE_POINT_TYPE = "reference-point-type";
+
+	String REFERENCE_POINT_PAINT = "reference-point-paint";
+
+	String SETTINGS_VIEW_ZOOM = "view-zoom";
+
+	String SETTINGS_VIEW_POINT = "view-point";
+
+	String SETTINGS_VIEW_ROTATE = "view-rotate";
+
+	String CURRENT_LAYER = "current-layer";
+
+	String SELECTED_LAYER = "selected-layer";
+
+	String CURRENT_VIEW = "current-view";
+
+	String ENABLED_LAYERS = "enabled-layers";
+
+	String VISIBLE_LAYERS = "visible-layers";
+
+	String GRID_VISIBLE = "grid-visible";
+
+	String GRID_SNAP_ENABLED = "grid-snap";
+
+	// TODO This is not connected to the grid pixel threshold yet
+	// TODO Should use user visual units, not pixels
+	double MINIMUM_GRID_PIXELS = 3.0;
+
 	/**
 	 * The default zoom magnification reached by applying zoom in or out the {@link #DEFAULT_ZOOM_STEPS} times.
 	 */

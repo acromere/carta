@@ -72,42 +72,6 @@ import java.util.stream.Collectors;
 @CustomLog
 public abstract class BaseDesignTool extends GuidedTool implements DesignTool, EventTarget, WritableIdentity {
 
-	protected static final String RETICULE = "reticule";
-
-	protected static final String SELECT_APERTURE_SIZE = "select-aperture-size";
-
-	protected static final String SELECT_APERTURE_UNIT = "select-aperture-unit";
-
-	protected static final String REFERENCE_POINT_SIZE = "reference-point-size";
-
-	protected static final String REFERENCE_POINT_TYPE = "reference-point-type";
-
-	protected static final String REFERENCE_POINT_PAINT = "reference-point-paint";
-
-	protected static final String SETTINGS_VIEW_ZOOM = "view-zoom";
-
-	protected static final String SETTINGS_VIEW_POINT = "view-point";
-
-	protected static final String SETTINGS_VIEW_ROTATE = "view-rotate";
-
-	protected static final String CURRENT_LAYER = "current-layer";
-
-	protected static final String SELECTED_LAYER = "selected-layer";
-
-	protected static final String CURRENT_VIEW = "current-view";
-
-	protected static final String ENABLED_LAYERS = "enabled-layers";
-
-	protected static final String VISIBLE_LAYERS = "visible-layers";
-
-	protected static final String GRID_VISIBLE = "grid-visible";
-
-	protected static final String GRID_SNAP_ENABLED = "grid-snap";
-
-	// TODO This is not connected to the grid pixel threshold yet
-	// TODO Should use user visual units, not pixels
-	protected static final double MINIMUM_GRID_PIXELS = 3.0;
-
 	// GUIDES
 
 	@Getter
@@ -410,22 +374,23 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 		// Listeners to store settings ---------------------------------------------
 
-		// FIXME Adding this listeners cause the unit tests to fail becuase the listeners
+		// FIXME Adding this listeners cause the unit tests to fail
+		// because the listeners change the state of the tool during the tests
 
-		//		// Add view point property listener
-		//		renderer.viewCenterXProperty().addListener( ( p, o, n ) -> {
-		//			getStorePreviousViewAction().request();
-		//			Point3D vp = renderer.getViewCenter();
-		//			settings.set( SETTINGS_VIEW_POINT, vp.getX() + "," + vp.getY() + ",0" );
-		//			//doUpdateGridBounds();
-		//		} );
-		//		renderer.viewCenterYProperty().addListener( ( p, o, n ) -> {
-		//			getStorePreviousViewAction().request();
-		//			Point3D vp = renderer.getViewCenter();
-		//			settings.set( SETTINGS_VIEW_POINT, vp.getX() + "," + vp.getY() + ",0" );
-		//			//doUpdateGridBounds();
-		//		} );
-		//
+		// Add view point property listener
+		renderer.viewCenterXProperty().addListener( ( p, o, n ) -> {
+			getStorePreviousViewAction().request();
+			Point3D vp = renderer.getViewCenter();
+			settings.set( SETTINGS_VIEW_POINT, vp.getX() + "," + vp.getY() + ",0" );
+			//doUpdateGridBounds();
+		} );
+		renderer.viewCenterYProperty().addListener( ( p, o, n ) -> {
+			getStorePreviousViewAction().request();
+			Point3D vp = renderer.getViewCenter();
+			settings.set( SETTINGS_VIEW_POINT, vp.getX() + "," + vp.getY() + ",0" );
+			//doUpdateGridBounds();
+		} );
+
 		//		// Add view rotate property listener
 		//		renderer.viewRotateProperty().addListener( ( p, o, n ) -> {
 		//			getStorePreviousViewAction().request();
