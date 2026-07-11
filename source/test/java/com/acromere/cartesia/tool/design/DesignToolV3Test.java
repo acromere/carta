@@ -7,6 +7,7 @@ import com.acromere.cartesia.data.Design;
 import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.data.DesignModel;
 import com.acromere.cartesia.tool.DesignPortal;
+import com.acromere.cartesia.tool.DesignTool;
 import com.acromere.xenon.resource.OpenAssetRequest;
 import com.acromere.xenon.resource.Resource;
 import com.acromere.zerra.javafx.Fx;
@@ -47,6 +48,7 @@ public class DesignToolV3Test extends BaseToolTest {
 
 		renderer = Mockito.spy( new DesignToolV3Renderer() );
 		tool = new DesignToolV3( module, resource, renderer );
+		tool.getSettings().delete();
 
 		OpenAssetRequest request = new OpenAssetRequest();
 		request.setResource( resource );
@@ -82,7 +84,7 @@ public class DesignToolV3Test extends BaseToolTest {
 	@Test
 	void setViewCenter() {
 		// given
-		Point3D center = new Point3D( 1, 2, 3 );
+		Point3D center = new Point3D( 3, 2, 1 );
 
 		// when
 		tool.setViewCenter( center );
