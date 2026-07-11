@@ -18,6 +18,7 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Point3D;
 import javafx.scene.Cursor;
 import javafx.scene.paint.Paint;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Collection;
 import java.util.List;
@@ -129,6 +130,7 @@ public interface DesignTool extends RenderConstants, CommonToolRenderer {
 	 */
 	CommandContext getCommandContext();
 
+	@NonNull
 	Workplane getWorkplane();
 
 	/**
@@ -136,6 +138,7 @@ public interface DesignTool extends RenderConstants, CommonToolRenderer {
 	 *
 	 * @return The workplane grid system
 	 */
+	@NonNull
 	Grid getGridSystem();
 
 	/**

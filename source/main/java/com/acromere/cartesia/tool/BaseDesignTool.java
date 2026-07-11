@@ -12,7 +12,7 @@ import com.acromere.cartesia.snap.Snap;
 import com.acromere.cartesia.snap.SnapGrid;
 import com.acromere.cartesia.tool.design.BaseDesignRenderer;
 import com.acromere.cartesia.tool.design.DesignToolEvent;
-import com.acromere.cartesia.tool.design.LayersGuide;
+import com.acromere.cartesia.tool.design.LayerGuide;
 import com.acromere.data.IdNode;
 import com.acromere.data.MultiNodeSettings;
 import com.acromere.data.NodeSettings;
@@ -74,17 +74,35 @@ import java.util.stream.Collectors;
 @CustomLog
 public abstract class BaseDesignTool extends GuidedTool implements DesignTool, EventTarget, WritableIdentity {
 
+	/**
+	 * All tools share the same grid snap object
+	 */
 	protected static final Snap gridSnap = new SnapGrid();
 
 	// GUIDES
 
+	/**
+	 * The layer guide for this tool.
+	 */
 	@Getter
-	private final LayersGuide layersGuide;
+	private final LayerGuide layerGuide;
 
-	//	private final ViewsGuide viewsGuide;
+	/**
+	 * The view guide for this tool.
+	 */
+	//	private final ViewGuide viewGuide;
 
-	//	private final PrintsGuide printsGuide;
+	/**
+	 * The print guide for this tool.
+	 */
+	//	private final PrintGuide printGuide;
 
+	/**
+	 * The toast prompt for the tool. Shows initialization messages to the user.
+	 * Initially this shows the resource is "loading" but then may show other
+	 * messages if there was an error or other problem. If the resource is
+	 * successfully loaded, the toast prompt is hidden.
+	 */
 	@Getter
 	private final Node toast;
 
@@ -116,13 +134,12 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	 */
 	@Deprecated
 	private final ObjectProperty<DesignView> currentView;
-	// gridVisible
-	// gridSnapEnabled
 
 	// Proposed:
-	// viewpoint
-	// rotate
-	// zoom
+	// gridVisible - renderer property
+	// viewpoint - renderer property
+	// rotate - renderer property
+	// zoom - renderer property
 
 	// TOOL PROPERTIES
 
@@ -202,7 +219,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		this.toast.getStyleClass().add( "tool-toast" );
 		StackPane.setAlignment( this.toast, Pos.CENTER );
 
-		layersGuide = new LayersGuide( product, this );
+		layerGuide = new LayerGuide( product, this );
 		//		viewsGuide = new ViewsGuide( product, this );
 		//		printsGuide = new PrintsGuide( product, this );
 
@@ -297,12 +314,12 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		getResource().getUndoManager().undoAvailableProperty().addListener( ( _, _, _ ) -> getUndoAction().updateEnabled() );
 		getResource().getUndoManager().redoAvailableProperty().addListener( ( _, _, _ ) -> getRedoAction().updateEnabled() );
 
-		layersGuide.ready( request );
+		layerGuide.ready( request );
 		//		viewsGuide.ready( request );
 		//		printsGuide.ready( request );
 		//getGuideContext().getGuides().addAll( layersGuide, viewsGuide, printsGuide );
-		getGuideContext().getGuides().addAll( layersGuide );
-		getGuideContext().setCurrentGuide( layersGuide );
+		getGuideContext().getGuides().addAll( layerGuide );
+		getGuideContext().setCurrentGuide( layerGuide );
 
 		// Default values
 		String defaultSelectSize = String.valueOf( DEFAULT_SELECT_TOLERANCE.value() );
@@ -521,7 +538,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 	@Override
 	protected void guideNodesSelected( Set<GuideNode> oldNodes, Set<GuideNode> newNodes ) {
-		if( getCurrentGuide() == getLayersGuide() ) {
+		if( getCurrentGuide() == getLayerGuide() ) {
 			newNodes.stream().findFirst().ifPresent( n -> doSetSelectedLayerById( n.getId() ) );
 			//		} else if( getCurrentGuide() == viewsGuide ) {
 			//			newNodes.stream().findFirst().ifPresent( n -> doSetCurrentViewById( n.getId() ) );
@@ -573,12 +590,12 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	}
 
 	@Override
-	public final Workplane getWorkplane() {
+	public final @NonNull Workplane getWorkplane() {
 		return workplane;
 	}
 
 	@Override
-	public final Grid getGridSystem() {
+	public final @NonNull Grid getGridSystem() {
 		return getWorkplane().getGridSystem();
 	}
 

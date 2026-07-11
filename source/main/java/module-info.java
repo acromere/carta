@@ -22,6 +22,7 @@ module com.acromere.carta {
 	requires javafx.base;
 	requires javaluator;
 	requires org.jsoup;
+	requires jsr305;
 
 	// Public APIs
 	exports com.acromere.cartesia;

@@ -96,12 +96,12 @@ public class DesignToolV2 extends BaseDesignTool {
 		getResource().getUndoManager().undoAvailableProperty().addListener( ( p, o, n ) -> getUndoAction().updateEnabled() );
 		getResource().getUndoManager().redoAvailableProperty().addListener( ( p, o, n ) -> getRedoAction().updateEnabled() );
 
-		getLayersGuide().ready( request );
+		getLayerGuide().ready( request );
 		//		viewsGuide.ready( request );
 		//		printsGuide.ready( request );
 		//getGuideContext().getGuides().addAll( layersGuide, viewsGuide, printsGuide );
-		getGuideContext().getGuides().addAll( getLayersGuide() );
-		getGuideContext().setCurrentGuide( getLayersGuide() );
+		getGuideContext().getGuides().addAll( getLayerGuide() );
+		getGuideContext().setCurrentGuide( getLayerGuide() );
 
 		//		// Keep the design pane centered when resizing
 		//		// These should be added before updating the pan and zoom

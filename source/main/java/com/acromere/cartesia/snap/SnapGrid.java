@@ -4,6 +4,9 @@ import com.acromere.cartesia.math.CadPoints;
 import com.acromere.cartesia.tool.DesignTool;
 import javafx.geometry.Point3D;
 
+import javax.annotation.concurrent.ThreadSafe;
+
+@ThreadSafe
 public class SnapGrid implements Snap {
 
 	@Override

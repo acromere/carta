@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @CustomLog
-public class LayersGuide extends Guide {
+public class LayerGuide extends Guide {
 
 	// ICONS
 
@@ -54,7 +54,7 @@ public class LayersGuide extends Guide {
 
 	private final Map<GuideNode, DesignLayer> guideNodeLayers;
 
-	public LayersGuide( XenonProgramProduct product, BaseDesignTool tool ) {
+	public LayerGuide( XenonProgramProduct product, BaseDesignTool tool ) {
 		this.product = product;
 		this.tool = tool;
 		this.layerGuideNodes = new ConcurrentHashMap<>();
