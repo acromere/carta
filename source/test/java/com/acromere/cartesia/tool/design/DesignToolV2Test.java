@@ -1,5 +1,6 @@
 package com.acromere.cartesia.tool.design;
 
+import com.acromere.annotation.Note;
 import com.acromere.cartesia.BaseToolTest;
 import com.acromere.cartesia.test.Point3DAssert;
 import com.acromere.cartesia.tool.Grid;
@@ -13,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Note( "All V2 tests have been implemented in V3 as of 2026-07-11" )
 public class DesignToolV2Test extends BaseToolTest {
 
 	private static final double DPC = FxRenderer2d.DEFAULT_DPI / 2.54;

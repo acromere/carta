@@ -7,12 +7,8 @@ import com.acromere.cartesia.cursor.Reticule;
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.data.map.DesignUnitMapper;
 import com.acromere.cartesia.math.CadPoints;
-import com.acromere.cartesia.snap.Snap;
-import com.acromere.cartesia.snap.SnapGrid;
 import com.acromere.cartesia.tool.BaseDesignTool;
 import com.acromere.cartesia.tool.GridStyle;
-import com.acromere.data.IdNode;
-import com.acromere.data.MultiNodeSettings;
 import com.acromere.settings.Settings;
 import com.acromere.util.TypeReference;
 import com.acromere.xenon.XenonProgramProduct;
@@ -22,10 +18,7 @@ import com.acromere.xenon.workpane.ToolException;
 import com.acromere.zerra.color.Paints;
 import com.acromere.zerra.javafx.Fx;
 import com.acromere.zerra.javafx.FxUtil;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.collections.ListChangeListener;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point3D;
 import javafx.scene.input.GestureEvent;
@@ -50,8 +43,6 @@ public class DesignToolV2 extends BaseDesignTool {
 	// GUIDES
 
 	// RENDERER
-
-	private static final Snap gridSnap = new SnapGrid();
 
 	private final DesignToolV2Renderer renderer;
 
@@ -465,27 +456,6 @@ public class DesignToolV2 extends BaseDesignTool {
 		double scaleX = renderer.getInternalScaleX();
 		double scaleY = renderer.getInternalScaleY();
 		return new Point3D( point.getX() * scaleX, point.getY() * scaleY, point.getZ() );
-	}
-
-	@Override
-	public Point3D screenToWorkplane( Point3D point ) {
-		return screenToWorkplane( point.getX(), point.getY(), point.getZ() );
-	}
-
-	@Override
-	public Point3D screenToWorkplane( double x, double y, double z ) {
-		Point3D worldPoint = screenToWorld( x, y, z );
-		return isGridSnapEnabled() ? gridSnap.snap( this, worldPoint ) : worldPoint;
-	}
-
-	@Override
-	public Point3D snapToGrid( Point3D point ) {
-		return isGridSnapEnabled() ? gridSnap.snap( this, point ) : point;
-	}
-
-	@Override
-	public Point3D snapToGrid( double x, double y, double z ) {
-		return snapToGrid( new Point3D( x, y, z ) );
 	}
 
 	//	@Override
