@@ -462,10 +462,6 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 			}
 		);
 
-		// NOTE Everything up to here is complete
-
-		// NOTE Everything from here down is complete
-
 		// Link the command context to the user interfaces
 		//addEventFilter( KeyEvent.ANY, e -> getCommandContext().handle( e ) );
 		addEventFilter( MouseEvent.ANY, e -> getCommandContext().handle( e ) );
@@ -475,7 +471,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		// Update the design context when the mouse moves
 		addEventFilter( MouseEvent.MOUSE_MOVED, e -> getCommandContext().setMouse( e ) );
 
-		// TODO Should selected layer be stored in the tool settings?
+		// TODO Should selected layer be stored in the tool settings or the asset settings?
 		if( getSelectedLayer() == null ) setSelectedLayer( getCurrentLayer() );
 
 		// Swap the toast for the renderer
@@ -488,8 +484,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	protected void allocate() throws ToolException {
 		super.allocate();
 
-		CommandContext commandContext = getCommandContext();
-		if( commandContext != null ) commandContext.setLastUserTool( this );
+		getCommandContext().setLastUserTool( this );
 
 		// Add asset switch listener to remove command prompt
 		getProgram().register(
@@ -506,8 +501,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		super.activate();
 		if( !getResource().isLoaded() ) return;
 
-		CommandContext commandContext = getCommandContext();
-		if( commandContext != null ) commandContext.setLastUserTool( this );
+		getCommandContext().setLastUserTool( this );
 
 		registerStatusBarItems();
 		registerCommandCapture();
@@ -683,20 +677,26 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		return getRenderer().dpiXProperty();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	@Deprecated
 	public DesignView getCurrentView() {
 		return currentView.get();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	@Deprecated
 	public void setCurrentView( DesignView view ) {
 		currentView.set( Objects.requireNonNull( view ) );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	@Deprecated
 	public ObjectProperty<DesignView> currentViewProperty() {
 		return currentView;
 	}
@@ -734,12 +734,17 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		return selectTolerance;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	@Deprecated
 	public void setScreenViewport( Bounds viewport ) {
 		setWorldViewport( screenToWorld( viewport ) );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setWorldViewport( Bounds viewport ) {
 		Bounds toolBounds = getBoundsInLocal();
@@ -754,112 +759,178 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		setView( worldCenter, zoom );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Transform getWorldToScreenTransform() {
 		return getRenderer().getWorldToScreenTransform();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Point2D worldToScreen( double x, double y ) {
 		return getRenderer().worldToScreen( x, y );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Point2D worldToScreen( Point2D point ) {
 		return getRenderer().worldToScreen( point );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Point3D worldToScreen( double x, double y, double z ) {
 		return getRenderer().worldToScreen( x, y, z );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Point3D worldToScreen( Point3D point ) {
 		return getRenderer().worldToScreen( point );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Bounds worldToScreen( Bounds bounds ) {
 		return getRenderer().worldToScreen( bounds );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Transform getScreenToWorldTransform() {
 		return getRenderer().getScreenToWorldTransform();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Point2D screenToWorld( double x, double y ) {
 		return getRenderer().screenToWorld( x, y );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Point2D screenToWorld( Point2D point ) {
 		return getRenderer().screenToWorld( point );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Point3D screenToWorld( double x, double y, double z ) {
 		return getRenderer().screenToWorld( x, y, z );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Point3D screenToWorld( Point3D point ) {
 		return getRenderer().screenToWorld( point );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Bounds screenToWorld( Bounds bounds ) {
 		return getRenderer().screenToWorld( bounds );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Point3D screenToWorkplane( Point3D point ) {
 		return screenToWorkplane( point.getX(), point.getY(), point.getZ() );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Point3D screenToWorkplane( double x, double y, double z ) {
 		Point3D worldPoint = screenToWorld( x, y, z );
 		return isGridSnapEnabled() ? gridSnap.snap( this, worldPoint ) : worldPoint;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Point3D snapToGrid( Point3D point ) {
 		return isGridSnapEnabled() ? gridSnap.snap( this, point ) : point;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Point3D snapToGrid( double x, double y, double z ) {
 		return snapToGrid( new Point3D( x, y, z ) );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isGridVisible() {
 		return renderer.isGridVisible();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setGridVisible( boolean visible ) {
 		renderer.setGridVisible( visible );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public BooleanProperty gridVisible() {
 		return renderer.gridVisible();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isGridSnapEnabled() {
 		return gridSnapEnabled == null ? DEFAULT_GRID_SNAP_ENABLED : gridSnapEnabled().get();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setGridSnapEnabled( boolean enabled ) {
 		gridSnapEnabled().set( enabled );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public BooleanProperty gridSnapEnabled() {
 		if( gridSnapEnabled == null ) gridSnapEnabled = new SimpleBooleanProperty( DEFAULT_GRID_SNAP_ENABLED );
@@ -879,84 +950,137 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		return showHotspotEnabled;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isLayerEnabled( DesignLayer layer ) {
 		return getRenderer().isLayerEnabled( layer );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setLayerEnabled( DesignLayer layer, boolean visible ) {
 		getRenderer().setLayerEnabled( layer, visible );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<DesignLayer> getEnabledLayers() {
 		return getRenderer().getEnabledLayers();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setEnabledLayers( Collection<DesignLayer> layers ) {
 		getRenderer().setEnabledLayers( layers );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public ObservableList<DesignLayer> enabledLayers() {
 		return getRenderer().enabledLayers();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isLayerVisible( DesignLayer layer ) {
 		return getRenderer().isLayerVisible( layer );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setLayerVisible( DesignLayer layer, boolean visible ) {
 		getRenderer().setLayerVisible( layer, visible );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<DesignLayer> getVisibleLayers() {
 		return getRenderer().getVisibleLayers();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setVisibleLayers( Collection<DesignLayer> layers ) {
 		getRenderer().setVisibleLayers( layers );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public ObservableList<DesignLayer> visibleLayers() {
 		return renderer.visibleLayers();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public boolean isCurrentLayer( DesignLayer layer ) {
 		return getCurrentLayer() == layer;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public DesignLayer getCurrentLayer() {
 		return currentLayer.get();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setCurrentLayer( DesignLayer layer ) {
 		currentLayer.set( Objects.requireNonNull( layer ) );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public ObjectProperty<DesignLayer> currentLayerProperty() {
 		return currentLayer;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public DesignLayer getSelectedLayer() {
 		return selectedLayer.get();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setSelectedLayer( DesignLayer layer ) {
 		selectedLayer.set( Objects.requireNonNull( layer ) );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public ObjectProperty<DesignLayer> selectedLayerProperty() {
 		return selectedLayer;
@@ -970,19 +1094,29 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		Fx.onFxOrCurrent( () -> getRenderer().zoom( anchor, factor ) );
 	}
 
-	// NEXT Insert common design tool implementations here
+	// TODO Insert common design tool implementations here
 	// Many implementations found in DesignToolV2 can be moved here
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void showCommandPrompt() {
 		Fx.run( this::registerStatusBarItems );
 		Fx.run( this::requestFocus );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public BaseDesignRenderer getScreenDesignRenderer() {
 		return renderer;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public DesignPortal getPriorPortal() {
 		// Remove the current portal
@@ -993,26 +1127,31 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	}
 
 	/**
-	 * Get a copy of the selected shapes list. The returned list is safe to modify
-	 * and will not affect the internal selected shapes list.
-	 *
-	 * @return A copy of the selected shapes list.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public List<DesignShape> getSelectedShapes() {
 		return List.copyOf( getDesignContext().getSelectedShapes() );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setSelectedShapes( List<DesignShape> shapes, boolean selected ) {
 		shapes.forEach( shape -> shape.setSelected( selected ) );
 		getDesignContext().setSelectedShapes( shapes, selected );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public ObservableList<DesignShape> selectedShapes() {
 		return getDesignContext().selectedShapes();
 	}
 
+	// NEXT Work on selecting shapes
 	protected void selectShapes( List<DesignShape> shapes, boolean toggle ) {
 		final ObservableList<DesignShape> selectedShapes = selectedShapes();
 		if( toggle ) {
@@ -1028,7 +1167,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		}
 	}
 
-	protected CommandPrompt getCommandPrompt() {
+	private CommandPrompt getCommandPrompt() {
 		return getCommandContext().getCommandPrompt();
 	}
 
@@ -1036,7 +1175,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		return getCommandContext().getCoordinateStatus();
 	}
 
-	protected void registerStatusBarItems() {
+	private void registerStatusBarItems() {
 		Fx.run( () -> {
 			Workspace workspace = getWorkspace();
 			if( workspace == null ) return;
@@ -1047,7 +1186,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		} );
 	}
 
-	protected void unregisterStatusBarItems() {
+	private void unregisterStatusBarItems() {
 		Fx.run( () -> {
 			Workspace workspace = getWorkspace();
 			if( workspace == null ) return;
@@ -1058,7 +1197,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		} );
 	}
 
-	protected void registerCommandCapture() {
+	private void registerCommandCapture() {
 		// If there is already a command capture handler, then remove it
 		// (because it may belong to a different design)
 		unregisterCommandCapture();
@@ -1070,13 +1209,13 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	}
 
 	@SuppressWarnings( "unchecked" )
-	protected void unregisterCommandCapture() {
+	private void unregisterCommandCapture() {
 		Workpane workpane = getWorkpane();
 		EventHandler<KeyEvent> handler = (EventHandler<KeyEvent>)workpane.getProperties().get( "design-tool-command-capture" );
 		if( handler != null ) workpane.removeEventHandler( KeyEvent.ANY, handler );
 	}
 
-	protected void registerActions() {
+	private void registerActions() {
 		pushAction( "print", printAction );
 		pushAction( "properties", propertiesAction );
 		pushAction( "delete", deleteAction );
@@ -1138,7 +1277,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		pushTools( tools.toString() );
 	}
 
-	protected void unregisterActions() {
+	private void unregisterActions() {
 		pullMenus();
 		pullTools();
 
@@ -1226,7 +1365,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		//workplane.register( NodeEvent.VALUE_CHANGED, e -> rebuildGridAction.request() );
 	}
 
-	protected void capturePreviousPortal() {
+	private void capturePreviousPortal() {
 		portalStack.push( new DesignPortal( getViewCenter(), getViewZoom(), getViewRotate() ) );
 	}
 
@@ -1292,7 +1431,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		}
 	}
 
-	protected void showPropertiesPage( Settings settings, Class<? extends DesignDrawable> type ) {
+	private void showPropertiesPage( Settings settings, Class<? extends DesignDrawable> type ) {
 		SettingsPage page = designPropertiesMap.getSettingsPage( type );
 		if( page != null ) {
 			// Switch to a task thread to get the tool
@@ -1312,7 +1451,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		}
 	}
 
-	protected void hidePropertiesPage() {
+	private void hidePropertiesPage() {
 		getWorkspace().getEventBus().dispatch( new ShapePropertiesToolEvent( this, ShapePropertiesToolEvent.HIDE ) );
 	}
 
@@ -1431,7 +1570,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 		@Override
 		public boolean isEnabled() {
-			return getDesignContext() != null && !getSelectedShapes().isEmpty();
+			return !getSelectedShapes().isEmpty();
 		}
 
 		@Override

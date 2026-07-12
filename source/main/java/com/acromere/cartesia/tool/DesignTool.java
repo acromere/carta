@@ -202,6 +202,7 @@ public interface DesignTool extends RenderConstants, CommonToolRenderer {
 	 * appropriate center and zoom will be calculated and used to set the view.
 	 *
 	 * @param viewport The screen viewport
+	 * @deprecated In favor of {@link #setCurrentView(DesignView)}
 	 */
 	@Deprecated
 	void setScreenViewport( Bounds viewport );
@@ -437,9 +438,17 @@ public interface DesignTool extends RenderConstants, CommonToolRenderer {
 
 	void worldWindowSelect( Point3D a, Point3D b, boolean intersect, boolean toggle );
 
+	/**
+	 * Get a copy of the selected shapes list. The returned list is safe to modify
+	 * and will not affect the internal selected shapes list.
+	 *
+	 * @return A copy of the selected shapes list.
+	 */
 	List<DesignShape> getSelectedShapes();
 
 	void setSelectedShapes(List<DesignShape> shapes, boolean selected );
+
+	ObservableList<DesignShape> selectedShapes();
 
 	default void clearSelectedShapes() {
 		setSelectedShapes( getSelectedShapes(), false );
