@@ -27,11 +27,9 @@ import javafx.scene.input.TouchEvent;
 import javafx.scene.paint.Paint;
 import lombok.CustomLog;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @CustomLog
 public class DesignToolV2 extends BaseDesignTool {
@@ -558,87 +556,6 @@ public class DesignToolV2 extends BaseDesignTool {
 		}
 
 		renderer.setSelectAperture( selectAperture );
-	}
-
-	@Override
-	public List<DesignShape> screenPointSyncFindOne( Point3D mouse ) {
-		// This is a finding operation
-		return screenPointFind( mouse ).stream().findFirst().stream().collect( Collectors.toList() );
-	}
-
-	@Override
-	public List<DesignShape> worldPointSyncFindOne( Point3D point ) {
-		// This is a finding operation
-		return worldPointFind( point ).stream().findFirst().stream().collect( Collectors.toList() );
-	}
-
-	@Override
-	public List<DesignShape> screenPointSyncFindAll( Point3D mouse ) {
-		// This is a finding operation
-		return screenPointFind( mouse );
-	}
-
-	@Override
-	public List<DesignShape> worldPointSyncFindAll( Point3D point ) {
-		// This is a finding operation
-		return worldPointFind( point );
-	}
-
-	@Override
-	public List<DesignShape> screenPointSyncSelect( Point3D mouse ) {
-		// This is a selecting operation
-		screenPointSelect( mouse );
-		return new ArrayList<>( getSelectedShapes() );
-	}
-
-	@Override
-	public List<DesignShape> worldPointSyncSelect( Point3D point ) {
-		// This is a selecting operation
-		worldPointSelect( point );
-		return new ArrayList<>( getSelectedShapes() );
-	}
-
-	@Override
-	public void screenPointSelect( Point3D mouse ) {
-		screenPointSelect( mouse, false );
-	}
-
-	@Override
-	public void screenPointSelect( Point3D mouse, boolean toggle ) {
-		worldPointSelect( renderer.parentToLocal( mouse ), toggle );
-	}
-
-	@Override
-	public void screenWindowSelect( Point3D a, Point3D b, boolean intersect, boolean toggle ) {
-		worldWindowSelect( renderer.parentToLocal( a ), renderer.parentToLocal( b ), intersect, toggle );
-	}
-
-	@Override
-	public void worldPointSelect( Point3D point ) {
-		worldPointSelect( point, false );
-	}
-
-	private List<DesignShape> screenPointFind( Point3D mouse ) {
-		return worldPointFind( renderer.parentToLocal( mouse ) );
-	}
-
-	private List<DesignShape> worldPointFind( Point3D point ) {
-		return renderer.worldPointFind( point, getSelectTolerance() );
-	}
-
-	@Override
-	public void worldPointSelect( Point3D point, boolean toggle ) {
-		List<DesignShape> shapes = worldPointFind( point );
-
-		if( shapes.isEmpty() ) {
-			selectShapes( shapes, toggle );
-		} else {
-			selectShapes( List.of( shapes.getFirst() ), toggle );
-		}
-	}
-
-	public void worldWindowSelect( Point3D a, Point3D b, boolean intersect, boolean toggle ) {
-		selectShapes( renderer.worldWindowFind( a, b, intersect ), toggle );
 	}
 
 	public Class<? extends BaseDesignRenderer> getPrintDesignRendererClass() {

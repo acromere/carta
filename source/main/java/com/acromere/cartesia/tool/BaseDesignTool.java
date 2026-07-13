@@ -1143,6 +1143,128 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		getDesignContext().setSelectedShapes( shapes, selected );
 	}
 
+	// NEXT Work on selecting shapes
+
+	/**
+	 * Set the select aperture window. Points are specified in screen coordinates.
+	 *
+	 * @param anchor The anchor point
+	 * @param mouse The mouse point
+	 */
+	@Override
+	public void setSelectAperture( Point3D anchor, Point3D mouse ) {
+		// NEXT Rework select aperture handling in V3
+		// It wasn't very efficient in the V2 design tool
+
+//		if( anchor == null || mouse == null ) {
+//			renderer.setSelectAperture( null );
+//			return;
+//		}
+//
+//		// Set the select aperture
+//		DesignShape selectAperture;
+//		if( anchor.equals( mouse ) ) {
+//			if( isShowHotspotEnabled() ) {
+//				double size = renderer.realToScreen( getSelectTolerance() );
+//				selectAperture = new DesignEllipse( mouse, size );
+//			} else {
+//				selectAperture = null;
+//			}
+//		} else {
+//			Bounds box = FxUtil.bounds( anchor, mouse );
+//			selectAperture = new DesignBox( box );
+//		}
+//
+//		renderer.setSelectAperture( selectAperture );
+	}
+
+	@Override
+	public List<DesignShape> screenPointSyncFindOne( Point3D mouse ) {
+		// This is a finding operation
+		return screenPointFind( mouse ).stream().findFirst().stream().collect( Collectors.toList() );
+	}
+
+	@Override
+	public List<DesignShape> worldPointSyncFindOne( Point3D point ) {
+		// This is a finding operation
+		return worldPointFind( point ).stream().findFirst().stream().collect( Collectors.toList() );
+	}
+
+	@Override
+	public List<DesignShape> screenPointSyncFindAll( Point3D mouse ) {
+		// This is a finding operation
+		return screenPointFind( mouse );
+	}
+
+	@Override
+	public List<DesignShape> worldPointSyncFindAll( Point3D point ) {
+		// This is a finding operation
+		return worldPointFind( point );
+	}
+
+	@Override
+	public List<DesignShape> screenPointSyncSelect( Point3D mouse ) {
+		// This is a selecting operation
+		screenPointSelect( mouse );
+		return new ArrayList<>( getSelectedShapes() );
+	}
+
+	@Override
+	public List<DesignShape> worldPointSyncSelect( Point3D point ) {
+		// This is a selecting operation
+		worldPointSelect( point );
+		return new ArrayList<>( getSelectedShapes() );
+	}
+
+	@Override
+	public void screenPointSelect( Point3D mouse ) {
+		screenPointSelect( mouse, false );
+	}
+
+	@Override
+	public void screenPointSelect( Point3D mouse, boolean toggle ) {
+		worldPointSelect( renderer.parentToLocal( mouse ), toggle );
+	}
+
+	@Override
+	public void screenWindowSelect( Point3D a, Point3D b, boolean intersect, boolean toggle ) {
+		worldWindowSelect( renderer.parentToLocal( a ), renderer.parentToLocal( b ), intersect, toggle );
+	}
+
+	@Override
+	public void worldPointSelect( Point3D point ) {
+		worldPointSelect( point, false );
+	}
+
+	protected List<DesignShape> screenPointFind( Point3D mouse ) {
+		return worldPointFind( renderer.parentToLocal( mouse ) );
+	}
+
+	protected List<DesignShape> worldPointFind( Point3D point ) {
+		return renderer.worldPointFind( point, getSelectTolerance() );
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void worldPointSelect( Point3D point, boolean toggle ) {
+		List<DesignShape> shapes = worldPointFind( point );
+
+		if( shapes.isEmpty() ) {
+			selectShapes( shapes, toggle );
+		} else {
+			selectShapes( List.of( shapes.getFirst() ), toggle );
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void worldWindowSelect( Point3D a, Point3D b, boolean intersect, boolean toggle ) {
+		selectShapes( renderer.worldWindowFind( a, b, intersect ), toggle );
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -1151,7 +1273,6 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		return getDesignContext().selectedShapes();
 	}
 
-	// NEXT Work on selecting shapes
 	protected void selectShapes( List<DesignShape> shapes, boolean toggle ) {
 		final ObservableList<DesignShape> selectedShapes = selectedShapes();
 		if( toggle ) {
