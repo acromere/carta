@@ -9,14 +9,19 @@ import com.acromere.cartesia.data.DesignEllipse;
 import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.data.DesignShape;
 import com.acromere.cartesia.tool.RenderConstants;
+import com.acromere.zerra.color.Colors;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
 import lombok.CustomLog;
 
@@ -50,6 +55,12 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 	private final ObservableList<DesignLayer> enabledLayers;
 
 	private final ObservableList<DesignLayer> visibleLayers;
+
+	private final SimpleObjectProperty<DesignShape> selectAperture;
+
+	private final SimpleStringProperty apertureDrawPaint;
+
+	private final SimpleStringProperty apertureFillPaint;
 
 	public BaseDesignRenderer() {
 		getStyleClass().add( "tool-renderer" );
@@ -86,6 +97,11 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 
 		enabledLayers = FXCollections.observableArrayList();
 		visibleLayers = FXCollections.observableArrayList();
+
+		selectAperture = new SimpleObjectProperty<>();
+		apertureDrawPaint = new SimpleStringProperty( Colors.toString( Colors.translucent( Color.YELLOW, 0.8 ) ) );
+		apertureFillPaint = new SimpleStringProperty( Colors.toString( Colors.translucent( Color.YELLOW, 0.2 ) ) );
+
 	}
 
 	/**
@@ -384,6 +400,64 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 	}
 
 	// Selecting -----------------------------------------------------------------
+
+	@Override
+	public void setSelectAperture( DesignShape aperture ) {
+		// The selector shape is defined in world coordinates
+		if( aperture != null ) {
+			if( aperture instanceof DesignEllipse ) {
+				aperture.setDrawPaint( "#00000000" );
+			} else if( aperture instanceof DesignBox ) {
+				aperture.setDrawPaint( getApertureDrawPaint() );
+			}
+			aperture.setFillPaint( getApertureFillPaint() );
+		}
+		selectAperture.set( aperture );
+	}
+
+	public DesignShape getSelectAperture() {
+		return selectAperture.get();
+	}
+
+	public SimpleObjectProperty<DesignShape> selectAperture() {
+		return selectAperture;
+	}
+
+	public Paint calcApertureDrawPaint() {
+		// TODO Cache this value for rendering performance
+		return Colors.parse( getApertureDrawPaint() );
+	}
+
+	public String getApertureDrawPaint() {
+		return apertureDrawPaint.get();
+	}
+
+	public void setApertureDrawPaint( String paint ) {
+		apertureDrawPaint.set( paint );
+		if( selectAperture.get() != null ) selectAperture.get().setDrawPaint( paint );
+	}
+
+	public SimpleStringProperty apertureDrawPaint() {
+		return apertureDrawPaint;
+	}
+
+	public Paint calcApertureFillPaint() {
+		// TODO Cache this value for rendering performance
+		return Colors.parse( getApertureFillPaint() );
+	}
+
+	public String getApertureFillPaint() {
+		return apertureFillPaint.get();
+	}
+
+	public void setApertureFillPaint( String paint ) {
+		apertureFillPaint.set( paint );
+		if( selectAperture.get() != null ) selectAperture.get().setFillPaint( paint );
+	}
+
+	public SimpleStringProperty apertureFillPaint() {
+		return apertureFillPaint;
+	}
 
 	/**
 	 * Find the nodes contained by, or intersecting, the window specified by points a and b.

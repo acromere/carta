@@ -51,8 +51,6 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 
 	private final FxRenderer2d renderer;
 
-	private final SimpleObjectProperty<DesignShape> selectAperture;
-
 	private final ObservableList<DesignLayer> enabledLayers;
 
 	private final ObservableList<DesignLayer> visibleLayers;
@@ -70,10 +68,6 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	private SimpleBooleanProperty referencePointsVisible;
 
 	private SimpleBooleanProperty constructionPointsVisible;
-
-	private final SimpleStringProperty apertureDrawPaint;
-
-	private final SimpleStringProperty apertureFillPaint;
 
 	private final SimpleStringProperty selectedDrawPaint;
 
@@ -107,9 +101,6 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 		// did not work correctly.
 		setMinSize( 0, 0 );
 
-		selectAperture = new SimpleObjectProperty<>();
-		apertureDrawPaint = new SimpleStringProperty( Colors.toString( Colors.translucent( Color.YELLOW, 0.8 ) ) );
-		apertureFillPaint = new SimpleStringProperty( Colors.toString( Colors.translucent( Color.YELLOW, 0.2 ) ) );
 		selectedDrawPaint = new SimpleStringProperty( Colors.toString( Colors.translucent( Color.MAGENTA, 0.8 ) ) );
 		selectedFillPaint = new SimpleStringProperty( Colors.toString( Colors.translucent( Color.MAGENTA, 0.2 ) ) );
 
@@ -154,9 +145,9 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 		renderer.widthProperty().addListener( ( p, o, n ) -> render() );
 		renderer.heightProperty().addListener( ( p, o, n ) -> render() );
 
-		selectAperture.addListener( (ChangeListener<? super DesignShape>)( p, o, n ) -> render() );
-		visibleLayers.addListener( (ListChangeListener<? super DesignLayer>)( c ) -> render() );
-		enabledLayers.addListener( (ListChangeListener<? super DesignLayer>)( c ) -> render() );
+		visibleLayers().addListener( (ListChangeListener<? super DesignLayer>)( c ) -> render() );
+		enabledLayers().addListener( (ListChangeListener<? super DesignLayer>)( c ) -> render() );
+		selectAperture().addListener( (ChangeListener<? super DesignShape>)( p, o, n ) -> render() );
 
 		// TODO This may overwhelm the FX thread
 		previewLayer.register(
@@ -392,62 +383,6 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	}
 
 	// Select Aperture -----------------------------------------------------------
-
-	public void setSelectAperture( DesignShape aperture ) {
-		if( aperture != null ) {
-			if( aperture instanceof DesignEllipse ) {
-				aperture.setDrawPaint( "#00000000" );
-			} else if( aperture instanceof DesignBox ) {
-				aperture.setDrawPaint( getApertureDrawPaint() );
-			}
-			aperture.setFillPaint( getApertureFillPaint() );
-		}
-		selectAperture.set( aperture );
-	}
-
-	public DesignShape getSelectAperture() {
-		return selectAperture.get();
-	}
-
-	public SimpleObjectProperty<DesignShape> selectAperture() {
-		return selectAperture;
-	}
-
-	public Paint calcApertureDrawPaint() {
-		// TODO Cache this value for rendering performance
-		return Colors.parse( getApertureDrawPaint() );
-	}
-
-	public String getApertureDrawPaint() {
-		return apertureDrawPaint.get();
-	}
-
-	public void setApertureDrawPaint( String paint ) {
-		apertureDrawPaint.set( paint );
-		if( selectAperture.get() != null ) selectAperture.get().setDrawPaint( paint );
-	}
-
-	public SimpleStringProperty apertureDrawPaint() {
-		return apertureDrawPaint;
-	}
-
-	public Paint calcApertureFillPaint() {
-		// TODO Cache this value for rendering performance
-		return Colors.parse( getApertureFillPaint() );
-	}
-
-	public String getApertureFillPaint() {
-		return apertureFillPaint.get();
-	}
-
-	public void setApertureFillPaint( String paint ) {
-		apertureFillPaint.set( paint );
-		if( selectAperture.get() != null ) selectAperture.get().setFillPaint( paint );
-	}
-
-	public SimpleStringProperty apertureFillPaint() {
-		return apertureFillPaint;
-	}
 
 	// Selected Paints -----------------------------------------------------------
 
@@ -1088,8 +1023,8 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	}
 
 	private void renderSelectAperture() {
-		if( selectAperture == null ) return;
-		DesignShape aperture = selectAperture.get();
+		if( selectAperture() == null ) return;
+		DesignShape aperture = selectAperture().get();
 		if( aperture == null ) return;
 
 		Paint fillColor = setFillPen( aperture, false, null );

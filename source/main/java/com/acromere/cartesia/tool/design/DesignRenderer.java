@@ -3,6 +3,7 @@ package com.acromere.cartesia.tool.design;
 import com.acromere.cartesia.data.Design;
 import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.data.DesignModel;
+import com.acromere.cartesia.data.DesignShape;
 import com.acromere.cartesia.tool.Workplane;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -208,4 +209,5 @@ public interface DesignRenderer extends CommonToolRenderer {
 
 	DoubleProperty viewZoomYProperty();
 
+	void setSelectAperture( DesignShape aperture );
 }
