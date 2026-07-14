@@ -31,11 +31,12 @@ public abstract class BaseDesignRendererTest {
 		Fx.startup();
 	}
 
-	// TODO More enabled layer unit tests
 	@Test
 	void enabledLayers() {
 		// given
-		List<DesignLayer> layers = List.of( new DesignLayer() );
+		DesignLayer first = new DesignLayer();
+		DesignLayer second = new DesignLayer();
+		List<DesignLayer> layers = List.of( first, second );
 		getRenderer().setEnabledLayers( layers );
 
 		// when
@@ -43,13 +44,37 @@ public abstract class BaseDesignRendererTest {
 
 		// then
 		assertThat( enabledLayers ).isEqualTo( layers );
+		assertThat( getRenderer().getEnabledLayers() ).isEqualTo( layers );
+		assertThat( getRenderer().isLayerEnabled( first ) ).isTrue();
+		assertThat( getRenderer().isLayerEnabled( second ) ).isTrue();
 	}
 
-	// TODO More visible layer unit tests
+	@Test
+	void setLayerEnabled() {
+		// given
+		DesignLayer layer = new DesignLayer();
+
+		// when
+		getRenderer().setLayerEnabled( layer, true );
+
+		// then
+		assertThat( getRenderer().isLayerEnabled( layer ) ).isTrue();
+		assertThat( getRenderer().getEnabledLayers() ).containsExactly( layer );
+
+		// when
+		getRenderer().setLayerEnabled( layer, false );
+
+		// then
+		assertThat( getRenderer().isLayerEnabled( layer ) ).isFalse();
+		assertThat( getRenderer().getEnabledLayers() ).isEmpty();
+	}
+
 	@Test
 	void visibleLayers() {
 		// given
-		List<DesignLayer> layers = List.of( new DesignLayer() );
+		DesignLayer first = new DesignLayer();
+		DesignLayer second = new DesignLayer();
+		List<DesignLayer> layers = List.of( first, second );
 		getRenderer().setVisibleLayers( layers );
 
 		// when
@@ -57,6 +82,29 @@ public abstract class BaseDesignRendererTest {
 
 		// then
 		assertThat( visibleLayers ).isEqualTo( layers );
+		assertThat( getRenderer().getVisibleLayers() ).isEqualTo( layers );
+		assertThat( getRenderer().isLayerVisible( first ) ).isTrue();
+		assertThat( getRenderer().isLayerVisible( second ) ).isTrue();
+	}
+
+	@Test
+	void setLayerVisible() {
+		// given
+		DesignLayer layer = new DesignLayer();
+
+		// when
+		getRenderer().setLayerVisible( layer, true );
+
+		// then
+		assertThat( getRenderer().isLayerVisible( layer ) ).isTrue();
+		assertThat( getRenderer().getVisibleLayers() ).containsExactly( layer );
+
+		// when
+		getRenderer().setLayerVisible( layer, false );
+
+		// then
+		assertThat( getRenderer().isLayerVisible( layer ) ).isFalse();
+		assertThat( getRenderer().getVisibleLayers() ).isEmpty();
 	}
 
 	@Test
