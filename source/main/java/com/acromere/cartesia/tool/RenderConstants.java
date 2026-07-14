@@ -1,6 +1,8 @@
 package com.acromere.cartesia.tool;
 
 import com.acromere.cartesia.DesignUnit;
+import com.acromere.cartesia.data.DesignBox;
+import com.acromere.cartesia.data.DesignShape;
 import javafx.geometry.Point3D;
 
 public interface RenderConstants {
@@ -16,6 +18,8 @@ public interface RenderConstants {
 	double DEFAULT_ROTATE = 0;
 
 	double DEFAULT_ZOOM = 1;
+
+	DesignShape DEFAULT_SELECT_APERTURE = new DesignBox( 0, 0, 0, 0 );
 
 	/**
 	 * The default JavaFx refresh rate of 60 Hz.

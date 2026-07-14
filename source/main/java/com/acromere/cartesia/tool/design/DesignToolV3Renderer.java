@@ -655,8 +655,6 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		return fxShape;
 	}
 
-	private record GeometryKey(DesignRenderer renderer, DesignDrawable drawable) {}
-
 	@SuppressWarnings( "unchecked" )
 	private <T> T getFxGeometry( DesignDrawable drawable ) {
 		return (T)drawableToGeometry.get( new GeometryKey( this, drawable ) );
@@ -947,5 +945,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		shape.getStrokeDashArray().setAll( dashBinding.get() );
 		dashBinding.addListener( ( _, _, n ) -> shape.getStrokeDashArray().setAll( n ) );
 	}
+
+	private record GeometryKey(DesignRenderer renderer, DesignDrawable drawable) {}
 
 }

@@ -98,7 +98,7 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		enabledLayers = FXCollections.observableArrayList();
 		visibleLayers = FXCollections.observableArrayList();
 
-		selectAperture = new SimpleObjectProperty<>();
+		selectAperture = new SimpleObjectProperty<>( DEFAULT_SELECT_APERTURE );
 		apertureDrawPaint = new SimpleStringProperty( Colors.toString( Colors.translucent( Color.YELLOW, 0.8 ) ) );
 		apertureFillPaint = new SimpleStringProperty( Colors.toString( Colors.translucent( Color.YELLOW, 0.2 ) ) );
 
@@ -403,8 +403,10 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 
 	@Override
 	public void setSelectAperture( DesignShape aperture ) {
+		if( aperture == null ) aperture = DEFAULT_SELECT_APERTURE;
+
 		// The selector shape is defined in world coordinates
-		if( aperture != null ) {
+		if( aperture != DEFAULT_SELECT_APERTURE ) {
 			if( aperture instanceof DesignEllipse ) {
 				aperture.setDrawPaint( "#00000000" );
 			} else if( aperture instanceof DesignBox ) {
@@ -434,7 +436,7 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 
 	public void setApertureDrawPaint( String paint ) {
 		apertureDrawPaint.set( paint );
-		if( selectAperture.get() != null ) selectAperture.get().setDrawPaint( paint );
+		if( selectAperture.get() != null && selectAperture.get() != DEFAULT_SELECT_APERTURE ) selectAperture.get().setDrawPaint( paint );
 	}
 
 	public SimpleStringProperty apertureDrawPaint() {
@@ -452,7 +454,7 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 
 	public void setApertureFillPaint( String paint ) {
 		apertureFillPaint.set( paint );
-		if( selectAperture.get() != null ) selectAperture.get().setFillPaint( paint );
+		if( selectAperture.get() != null && selectAperture.get() != DEFAULT_SELECT_APERTURE ) selectAperture.get().setFillPaint( paint );
 	}
 
 	public SimpleStringProperty apertureFillPaint() {

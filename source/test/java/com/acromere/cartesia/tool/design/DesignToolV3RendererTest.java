@@ -2,6 +2,7 @@ package com.acromere.cartesia.tool.design;
 
 import com.acromere.cartesia.DesignUnit;
 import com.acromere.cartesia.data.Design;
+import com.acromere.cartesia.data.DesignBox;
 import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.data.DesignModel;
 import com.acromere.cartesia.data.DesignModel2D;
@@ -146,6 +147,15 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 
 		// then
 		assertThat( renderer.getWorkplane() ).isEqualTo( null );
+	}
+
+	@Test
+	void defaultSelectAperture() {
+		DesignBox aperture = (DesignBox)BaseDesignRenderer.DEFAULT_SELECT_APERTURE;
+		assertThat( renderer.getSelectAperture() ).isEqualTo( aperture );
+		assertThat( renderer.getSelectAperture() ).isInstanceOf( DesignBox.class );
+		assertThat( renderer.getSelectAperture().getOrigin() ).isEqualTo( aperture.getOrigin() );
+		assertThat( aperture.getSize() ).isEqualTo( new Point3D( 0, 0, 0 ) );
 	}
 
 	@Test
