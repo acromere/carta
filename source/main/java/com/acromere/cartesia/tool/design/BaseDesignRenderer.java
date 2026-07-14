@@ -403,18 +403,25 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 
 	@Override
 	public void setSelectAperture( DesignShape aperture ) {
-		if( aperture == null ) aperture = DEFAULT_SELECT_APERTURE;
+//		if( aperture == null ) aperture = DEFAULT_SELECT_APERTURE;
+//
+//		// The selector shape is defined in world coordinates
+//		if( aperture != DEFAULT_SELECT_APERTURE ) {
+//			if( aperture instanceof DesignEllipse ) {
+//				aperture.setDrawPaint( "#00000000" );
+//			} else if( aperture instanceof DesignBox ) {
+//				aperture.setDrawPaint( getApertureDrawPaint() );
+//			}
+//			aperture.setFillPaint( getApertureFillPaint() );
+//		}
 
-		// The selector shape is defined in world coordinates
-		if( aperture != DEFAULT_SELECT_APERTURE ) {
-			if( aperture instanceof DesignEllipse ) {
-				aperture.setDrawPaint( "#00000000" );
-			} else if( aperture instanceof DesignBox ) {
-				aperture.setDrawPaint( getApertureDrawPaint() );
-			}
+		if( aperture == null ) {
+			selectAperture.set( DEFAULT_SELECT_APERTURE );
+		} else {
+			aperture.setDrawPaint( getApertureDrawPaint() );
 			aperture.setFillPaint( getApertureFillPaint() );
+			selectAperture.set( aperture );
 		}
-		selectAperture.set( aperture );
 	}
 
 	public DesignShape getSelectAperture() {

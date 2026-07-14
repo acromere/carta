@@ -120,7 +120,7 @@ public abstract class BaseDesignRendererTest {
 	@Test
 	void selectApertureWithBox() {
 		// given
-		DesignBox aperture = new DesignBox();
+		DesignBox aperture = new DesignBox(0,0,0,0);
 
 		// when
 		getRenderer().setSelectAperture( aperture );
@@ -134,21 +134,21 @@ public abstract class BaseDesignRendererTest {
 	@Test
 	void selectApertureWithEllipse() {
 		// given
-		DesignEllipse aperture = new DesignEllipse();
+		DesignEllipse aperture = new DesignEllipse(Point3D.ZERO, 0.0);
 
 		// when
 		getRenderer().setSelectAperture( aperture );
 
 		// then
 		assertThat( getRenderer().getSelectAperture() ).isEqualTo( aperture );
-		assertThat( aperture.getDrawPaint() ).isEqualTo( "#00000000" );
+		assertThat( aperture.getDrawPaint() ).isEqualTo( getRenderer().getApertureDrawPaint() );
 		assertThat( aperture.getFillPaint() ).isEqualTo( getRenderer().getApertureFillPaint() );
 	}
 
 	@Test
 	void selectApertureWithNullUsesEmptyAperture() {
 		// given
-		getRenderer().setSelectAperture( new DesignBox() );
+		getRenderer().setSelectAperture( new DesignBox(0,0,0,0) );
 
 		// when
 		getRenderer().setSelectAperture( null );

@@ -233,6 +233,31 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		getChildren().addAll( world, screen );
 	}
 
+	/**
+	 * Set the select aperture. Design tools should set the select aperture to
+	 * one of a set of predefined apertures. Constantly using new objects for the
+	 * aperture will reduce performance. Tools should reuse the same aperture
+	 * instances as much as possible. Once the aperture shape is set, tools are
+	 * free to update the shape outside the renderer and the renderer will update
+	 * it according. Only change the select aperture when changing selection
+	 * modes, such as from point selection to box selection.
+	 *
+	 * @param aperture The select aperture.
+	 */
+	@Override
+	public void setSelectAperture( DesignShape aperture ) {
+		super.setSelectAperture( aperture );
+
+		// This implementation choice requires some special attention to the shapes
+		// being passed to this method. In particular, it is poor practice to
+		// constantly send new design shape objects to this method. Under normal
+		// circumstances, only three apertures should be used, the default aperture,
+		// the point select aperture and the box select aperture. This method is
+		// implemented this way to not restrict future other apertures, but caution
+		// should be taken to ensure that the shapes are not constantly new objects.
+		if( aperture != null ) mapDesignShape( aperture );
+	}
+
 	@Override
 	public Design<? extends DesignModel> getDesign() {
 		return design;
@@ -373,7 +398,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		// Show any requested layers that are not already visible
 		layers.forEach( layer -> {
 			if( !isLayerVisible( layer ) ) setLayerVisible( layer, true );
-		});
+		} );
 
 		super.setVisibleLayers( layers );
 	}
