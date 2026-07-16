@@ -262,7 +262,6 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 			reference.getChildren().removeAll( DEFAULT_SELECT_APERTURE.getFxShape() );
 		} else {
 			reference.getChildren().addAll( aperture.getFxShape() );
-			System.out.println( "Aperture added to reference layer" );
 		}
 	}
 

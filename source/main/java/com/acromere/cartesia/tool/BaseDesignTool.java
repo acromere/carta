@@ -345,7 +345,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 		// Tool settings
 		double selectApertureSize = Double.parseDouble( productSettings.get( SELECT_APERTURE_SIZE, defaultSelectSize ) );
-		DesignUnit selectApertureUnit = DesignUnit.valueOf( DesignUnitMapper.mapNameToAbbreviation( productSettings.get( SELECT_APERTURE_UNIT, defaultSelectUnit ) ).toUpperCase() );
+		DesignUnit selectApertureUnit = DesignUnitMapper.map( productSettings.get( SELECT_APERTURE_UNIT, defaultSelectUnit ) );
 		DesignMarker.Type referencePointType = DesignMarker.Type.valueOf( productSettings.get( REFERENCE_POINT_TYPE, defaultReferencePointType ).toUpperCase() );
 		double referencePointSize = Double.parseDouble( productSettings.get( REFERENCE_POINT_SIZE, defaultReferencePointSize ) );
 		Paint referencePointPaint = Paints.parse( productSettings.get( REFERENCE_POINT_PAINT, defaultReferencePointPaint ) );
@@ -1158,29 +1158,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	 */
 	@Override
 	public void setSelectAperture( Point3D anchor, Point3D mouse ) {
-		// NEXT Rework select aperture handling in V3
-		// It wasn't very efficient in the V2 design tool
-
-		//		if( anchor == null || mouse == null ) {
-		//			renderer.setSelectAperture( null );
-		//			return;
-		//		}
-		//
-		//		// Set the select aperture
-		//		DesignShape selectAperture;
-		//		if( anchor.equals( mouse ) ) {
-		//			if( isShowHotspotEnabled() ) {
-		//				double size = renderer.realToScreen( getSelectTolerance() );
-		//				selectAperture = new DesignEllipse( mouse, size );
-		//			} else {
-		//				selectAperture = null;
-		//			}
-		//		} else {
-		//			Bounds box = FxUtil.bounds( anchor, mouse );
-		//			selectAperture = new DesignBox( box );
-		//		}
-		//
-		//		renderer.setSelectAperture( selectAperture );
+		// FIXME DesignTool.setSelectAperture(Point3D,Point3D) may not be used in the V3 tool
 	}
 
 	@Override
