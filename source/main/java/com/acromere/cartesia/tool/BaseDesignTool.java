@@ -79,7 +79,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	 */
 	protected static final Snap gridSnap = new SnapGrid();
 
-	protected static final DesignEllipse POINT_SELECT_APERTURE = new DesignEllipse( 0, 0, 0.15 );
+	protected static final DesignEllipse POINT_SELECT_APERTURE = new DesignEllipse( 0, 0, 0 );
 
 	protected static final DesignBox WINDOW_SELECT_APERTURE = new DesignBox( 0, 0, 0, 0 );
 
@@ -457,7 +457,13 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 		getDesignContext().selectedShapes().addListener( this::onSelectedShapesChanged );
 
-		// Update the select aperture when the mouse moves
+		// Select aperture
+
+		if( isShowHotspotEnabled() ) {
+			double radius = model.calcDesignUnit().from( selectApertureSize, selectApertureUnit );
+			POINT_SELECT_APERTURE.setRadius( radius );
+			getReferenceLayer().addShape( POINT_SELECT_APERTURE );
+		}
 		addEventFilter(
 			MouseEvent.MOUSE_MOVED, e -> {
 				// Just update the point select aperture if the hotspot is enabled
@@ -481,8 +487,6 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		getToast().setVisible( false );
 		getRenderer().setVisible( true );
 		getCoordinateStatus().updateZoom( getViewZoom() );
-
-		if( isShowHotspotEnabled() ) getReferenceLayer().addShape( POINT_SELECT_APERTURE );
 	}
 
 	@Override
