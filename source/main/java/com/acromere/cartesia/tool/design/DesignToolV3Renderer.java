@@ -256,6 +256,14 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		// implemented this way to not restrict future other apertures, but caution
 		// should be taken to ensure that the shapes are not constantly new objects.
 		if( aperture != null ) mapDesignShape( aperture );
+
+		if( aperture == null || aperture == DEFAULT_SELECT_APERTURE ) {
+			// Remove geometry
+			reference.getChildren().removeAll( DEFAULT_SELECT_APERTURE.getFxShape() );
+		} else {
+			reference.getChildren().addAll( aperture.getFxShape() );
+			System.out.println( "Aperture added to reference layer" );
+		}
 	}
 
 	@Override

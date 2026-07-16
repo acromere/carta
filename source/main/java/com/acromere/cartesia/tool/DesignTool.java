@@ -96,7 +96,7 @@ public interface DesignTool extends RenderConstants, ToolRenderer {
 
 	boolean DEFAULT_GRID_SNAP_ENABLED = true;
 
-	boolean DEFAULT_SHOW_HOTSPOT_ENABLED = false;
+	boolean DEFAULT_SHOW_HOTSPOT_ENABLED = true;
 
 	boolean DEFAULT_GRID_VISIBLE = true;
 

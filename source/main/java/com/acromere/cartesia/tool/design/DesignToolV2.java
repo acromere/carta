@@ -251,7 +251,8 @@ public class DesignToolV2 extends BaseDesignTool {
 		addEventFilter(
 			MouseEvent.MOUSE_MOVED, e -> {
 				if( getCommandContext().isEmptyMode() ) {
-					setSelectAperture( new Point3D( e.getX(), e.getY(), e.getZ() ), new Point3D( e.getX(), e.getY(), e.getZ() ) );
+					Point3D p = new Point3D( e.getX(), e.getY(), e.getZ() );
+					setSelectAperture( p, p );
 				}
 			}
 		);

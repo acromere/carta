@@ -98,7 +98,6 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		selectAperture = new SimpleObjectProperty<>( DEFAULT_SELECT_APERTURE );
 		apertureDrawPaint = new SimpleStringProperty( Colors.toString( Colors.translucent( Color.YELLOW, 0.8 ) ) );
 		apertureFillPaint = new SimpleStringProperty( Colors.toString( Colors.translucent( Color.YELLOW, 0.2 ) ) );
-
 	}
 
 	/**
@@ -400,19 +399,7 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 
 	@Override
 	public void setSelectAperture( DesignShape aperture ) {
-//		if( aperture == null ) aperture = DEFAULT_SELECT_APERTURE;
-//
-//		// The selector shape is defined in world coordinates
-//		if( aperture != DEFAULT_SELECT_APERTURE ) {
-//			if( aperture instanceof DesignEllipse ) {
-//				aperture.setDrawPaint( "#00000000" );
-//			} else if( aperture instanceof DesignBox ) {
-//				aperture.setDrawPaint( getApertureDrawPaint() );
-//			}
-//			aperture.setFillPaint( getApertureFillPaint() );
-//		}
-
-		if( aperture == null ) {
+		if( aperture == null || aperture == DEFAULT_SELECT_APERTURE ) {
 			selectAperture.set( DEFAULT_SELECT_APERTURE );
 		} else {
 			aperture.setDrawPaint( getApertureDrawPaint() );

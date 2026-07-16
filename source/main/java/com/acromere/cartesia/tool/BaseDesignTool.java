@@ -79,6 +79,10 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	 */
 	protected static final Snap gridSnap = new SnapGrid();
 
+	protected static final DesignEllipse POINT_SELECT_APERTURE = new DesignEllipse( 0, 0, 0.15 );
+
+	protected static final DesignBox WINDOW_SELECT_APERTURE = new DesignBox( 0, 0, 0, 0 );
+
 	// GUIDES
 
 	/**
@@ -456,9 +460,8 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		// Update the select aperture when the mouse moves
 		addEventFilter(
 			MouseEvent.MOUSE_MOVED, e -> {
-				if( getCommandContext().isEmptyMode() ) {
-					setSelectAperture( new Point3D( e.getX(), e.getY(), e.getZ() ), new Point3D( e.getX(), e.getY(), e.getZ() ) );
-				}
+				// Just update the point select aperture if the hotspot is enabled
+				if( isShowHotspotEnabled() ) POINT_SELECT_APERTURE.setOrigin( screenToWorld( e.getX(), e.getY(), e.getZ() ) );
 			}
 		);
 
@@ -478,6 +481,8 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		getToast().setVisible( false );
 		getRenderer().setVisible( true );
 		getCoordinateStatus().updateZoom( getViewZoom() );
+
+		if( isShowHotspotEnabled() ) getReferenceLayer().addShape( POINT_SELECT_APERTURE );
 	}
 
 	@Override
@@ -1156,26 +1161,26 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		// NEXT Rework select aperture handling in V3
 		// It wasn't very efficient in the V2 design tool
 
-//		if( anchor == null || mouse == null ) {
-//			renderer.setSelectAperture( null );
-//			return;
-//		}
-//
-//		// Set the select aperture
-//		DesignShape selectAperture;
-//		if( anchor.equals( mouse ) ) {
-//			if( isShowHotspotEnabled() ) {
-//				double size = renderer.realToScreen( getSelectTolerance() );
-//				selectAperture = new DesignEllipse( mouse, size );
-//			} else {
-//				selectAperture = null;
-//			}
-//		} else {
-//			Bounds box = FxUtil.bounds( anchor, mouse );
-//			selectAperture = new DesignBox( box );
-//		}
-//
-//		renderer.setSelectAperture( selectAperture );
+		//		if( anchor == null || mouse == null ) {
+		//			renderer.setSelectAperture( null );
+		//			return;
+		//		}
+		//
+		//		// Set the select aperture
+		//		DesignShape selectAperture;
+		//		if( anchor.equals( mouse ) ) {
+		//			if( isShowHotspotEnabled() ) {
+		//				double size = renderer.realToScreen( getSelectTolerance() );
+		//				selectAperture = new DesignEllipse( mouse, size );
+		//			} else {
+		//				selectAperture = null;
+		//			}
+		//		} else {
+		//			Bounds box = FxUtil.bounds( anchor, mouse );
+		//			selectAperture = new DesignBox( box );
+		//		}
+		//
+		//		renderer.setSelectAperture( selectAperture );
 	}
 
 	@Override

@@ -52,6 +52,10 @@ public class DesignEllipse extends DesignShape {
 		this( null, 0.0 );
 	}
 
+	public DesignEllipse( double x, double y, double radius ) {
+		this( new Point3D( x, y, 0 ), radius );
+	}
+
 	public DesignEllipse( Point3D origin, Double radius ) {
 		this( origin, radius, radius );
 	}
