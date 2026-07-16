@@ -1,11 +1,7 @@
 package com.acromere.cartesia.tool.design;
 
 import com.acromere.cartesia.DesignUnit;
-import com.acromere.cartesia.data.Design;
-import com.acromere.cartesia.data.DesignBox;
-import com.acromere.cartesia.data.DesignLayer;
-import com.acromere.cartesia.data.DesignModel;
-import com.acromere.cartesia.data.DesignModel2D;
+import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.tool.Workplane;
 import com.acromere.curve.math.Constants;
 import com.acromere.zerra.javafx.Fx;
@@ -151,11 +147,9 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 
 	@Test
 	void defaultSelectAperture() {
-		DesignBox aperture = (DesignBox)BaseDesignRenderer.DEFAULT_SELECT_APERTURE;
-		assertThat( renderer.getSelectAperture() ).isEqualTo( aperture );
-		assertThat( renderer.getSelectAperture() ).isInstanceOf( DesignBox.class );
-		assertThat( renderer.getSelectAperture().getOrigin() ).isEqualTo( aperture.getOrigin() );
-		assertThat( aperture.getSize() ).isEqualTo( new Point3D( 0, 0, 0 ) );
+		assertThat( renderer.getSelectAperture() ).isInstanceOf( DesignNil.class );
+		assertThat( renderer.getSelectAperture().getOrigin() ).isEqualTo( Point3D.ZERO );
+		assertThat( renderer.getSelectAperture() ).isEqualTo( BaseDesignRenderer.DEFAULT_SELECT_APERTURE );
 	}
 
 	@Test

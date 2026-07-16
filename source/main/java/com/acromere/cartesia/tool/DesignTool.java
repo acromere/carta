@@ -7,7 +7,7 @@ import com.acromere.cartesia.DesignValue;
 import com.acromere.cartesia.cursor.Reticule;
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.tool.design.BaseDesignRenderer;
-import com.acromere.cartesia.tool.design.CommonToolRenderer;
+import com.acromere.cartesia.tool.design.ToolRenderer;
 import com.acromere.xenon.XenonProgram;
 import com.acromere.xenon.XenonProgramProduct;
 import com.acromere.xenon.resource.Resource;
@@ -23,7 +23,7 @@ import org.jspecify.annotations.NonNull;
 import java.util.Collection;
 import java.util.List;
 
-public interface DesignTool extends RenderConstants, CommonToolRenderer {
+public interface DesignTool extends RenderConstants, ToolRenderer {
 
 	String RETICULE = "reticule";
 

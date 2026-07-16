@@ -5,7 +5,6 @@ import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.data.DesignModel;
 import com.acromere.cartesia.data.DesignShape;
 import com.acromere.cartesia.tool.Workplane;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
@@ -13,7 +12,9 @@ import javafx.geometry.Point2D;
 import java.util.Collection;
 import java.util.List;
 
-public interface DesignRenderer extends CommonToolRenderer {
+public interface DesignRenderer extends ToolRenderer {
+
+	// TODO Are there more methods that could be moved to ToolRenderer?
 
 	/**
 	 * Retrieves the current {@code Design} instance associated with the renderer.
@@ -49,30 +50,6 @@ public interface DesignRenderer extends CommonToolRenderer {
 	 * @param workplane The {@code Workplane} instance to associate with the renderer.
 	 */
 	void setWorkplane( Workplane workplane );
-
-	/**
-	 * Determines whether the grid is currently visible in the renderer.
-	 *
-	 * @return true if the grid is visible, false otherwise.
-	 */
-	boolean isGridVisible();
-
-	/**
-	 * Sets the visibility of the grid in the renderer. When the grid is made
-	 * visible, the required grid geometry is created and added to the rendering
-	 * system. Conversely, when the grid is hidden, its geometry is removed to
-	 * optimize rendering performance.
-	 *
-	 * @param visible True to make the grid visible, false to hide it.
-	 */
-	void setGridVisible( boolean visible );
-
-	/**
-	 * Get the grid visible property.
-	 *
-	 * @return The grid visible property.
-	 */
-	BooleanProperty gridVisible();
 
 	/**
 	 * Determines whether the specified design layer is enabled within the renderer.

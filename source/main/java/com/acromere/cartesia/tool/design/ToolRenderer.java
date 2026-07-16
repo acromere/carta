@@ -1,5 +1,7 @@
 package com.acromere.cartesia.tool.design;
 
+import com.acromere.cartesia.tool.RenderConstants;
+import javafx.beans.property.BooleanProperty;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
@@ -10,7 +12,31 @@ import javafx.scene.transform.Transform;
  * common that design tools delegate to their respective design renderer
  * implementations for many of these methods.
  */
-public interface CommonToolRenderer {
+public interface ToolRenderer extends RenderConstants {
+
+	/**
+	 * Determines whether the grid is currently visible in the renderer.
+	 *
+	 * @return true if the grid is visible, false otherwise.
+	 */
+	boolean isGridVisible();
+
+	/**
+	 * Sets the visibility of the grid in the renderer. When the grid is made
+	 * visible, the required grid geometry is created and added to the rendering
+	 * system. Conversely, when the grid is hidden, its geometry is removed to
+	 * optimize rendering performance.
+	 *
+	 * @param visible True to make the grid visible, false to hide it.
+	 */
+	void setGridVisible( boolean visible );
+
+	/**
+	 * Get the grid visible property.
+	 *
+	 * @return The grid visible property.
+	 */
+	BooleanProperty gridVisible();
 
 	/**
 	 * Retrieves the current center point of the view in world coordinates.

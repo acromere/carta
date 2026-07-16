@@ -3,7 +3,7 @@ package com.acromere.cartesia.tool.design;
 import com.acromere.cartesia.data.DesignBox;
 import com.acromere.cartesia.data.DesignEllipse;
 import com.acromere.cartesia.data.DesignLayer;
-import com.acromere.cartesia.data.DesignShape;
+import com.acromere.cartesia.data.DesignNil;
 import com.acromere.zerra.javafx.Fx;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point3D;
@@ -108,19 +108,9 @@ public abstract class BaseDesignRendererTest {
 	}
 
 	@Test
-	void selectApertureDefaultsToEmptyAperture() {
-		DesignShape aperture = BaseDesignRenderer.DEFAULT_SELECT_APERTURE;
-		assertThat( getRenderer().getSelectAperture() ).isInstanceOf( DesignBox.class );
-		assertThat( aperture.getOrigin() ).isEqualTo( new Point3D( 0, 0, 0 ) );
-		assertThat( aperture.getBounds().getWidth() ).isEqualTo( 0 );
-		assertThat( aperture.getBounds().getHeight() ).isEqualTo( 0 );
-		assertThat( getRenderer().getSelectAperture() ).isEqualTo( aperture );
-	}
-
-	@Test
 	void selectApertureWithBox() {
 		// given
-		DesignBox aperture = new DesignBox(0,0,0,0);
+		DesignBox aperture = new DesignBox( 0, 0, 0, 0 );
 
 		// when
 		getRenderer().setSelectAperture( aperture );
@@ -134,7 +124,7 @@ public abstract class BaseDesignRendererTest {
 	@Test
 	void selectApertureWithEllipse() {
 		// given
-		DesignEllipse aperture = new DesignEllipse(Point3D.ZERO, 0.0);
+		DesignEllipse aperture = new DesignEllipse( Point3D.ZERO, 0.0 );
 
 		// when
 		getRenderer().setSelectAperture( aperture );
@@ -146,9 +136,19 @@ public abstract class BaseDesignRendererTest {
 	}
 
 	@Test
+	void defaultSelectAperture() {
+		assertThat( getRenderer().getSelectAperture() ).isEqualTo( BaseDesignRenderer.DEFAULT_SELECT_APERTURE );
+		assertThat( getRenderer().getSelectAperture() ).isInstanceOf( DesignNil.class );
+		assertThat( getRenderer().getSelectAperture().getOrigin() ).isEqualTo( new Point3D( 0, 0, 0 ) );
+		assertThat( getRenderer().getSelectAperture().getBounds().getWidth() ).isEqualTo( 0 );
+		assertThat( getRenderer().getSelectAperture().getBounds().getHeight() ).isEqualTo( 0 );
+	}
+
+	@Test
 	void selectApertureWithNullUsesEmptyAperture() {
 		// given
-		getRenderer().setSelectAperture( new DesignBox(0,0,0,0) );
+		getRenderer().setSelectAperture( new DesignBox( 0, 0, 0, 0 ) );
+		assertThat( getRenderer().getSelectAperture() ).isNotEqualTo( BaseDesignRenderer.DEFAULT_SELECT_APERTURE );
 
 		// when
 		getRenderer().setSelectAperture( null );
