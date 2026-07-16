@@ -53,6 +53,7 @@ public class DesignToolV3Test extends BaseToolTest {
 		renderer = Mockito.spy( new DesignToolV3Renderer() );
 		tool = Mockito.spy( new DesignToolV3( module, resource, renderer ) );
 		tool.getSettings().delete();
+		getMod().getSettings().delete();
 
 		OpenAssetRequest request = new OpenAssetRequest();
 		request.setResource( resource );
