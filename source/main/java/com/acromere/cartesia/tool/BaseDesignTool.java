@@ -1273,6 +1273,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		} else {
 			selectedShapes.setAll( shapes );
 		}
+		log.atConfig().log( "Shapes selected={0}", shapes );
 	}
 
 	private CommandPrompt getCommandPrompt() {

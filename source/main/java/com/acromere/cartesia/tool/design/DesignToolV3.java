@@ -141,10 +141,10 @@ public class DesignToolV3 extends BaseDesignTool {
 
 	}
 
-	@Override
-	public void screenPointSelect( Point3D mouse, boolean toggle ) {
-
-	}
+//	@Override
+//	public void screenPointSelect( Point3D mouse, boolean toggle ) {
+//
+//	}
 
 	@Override
 	public void screenWindowSelect( Point3D a, Point3D b, boolean intersect, boolean toggle ) {
