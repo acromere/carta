@@ -1,4 +1,4 @@
-package com.acromere.cartesia.data.util;
+package com.acromere.cartesia.settings;
 
 import com.acromere.cartesia.DesignUnit;
 import com.acromere.cartesia.RbKey;

@@ -1,4 +1,4 @@
-package com.acromere.cartesia;
+package com.acromere.cartesia.settings;
 
 import com.acromere.xenon.tool.settings.SettingOptionProvider;
 import javafx.scene.text.Font;
