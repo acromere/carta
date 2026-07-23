@@ -303,11 +303,6 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		getRenderer().setDesign( design );
 		DesignModel model = design.getDataModel();
 
-		// TEMPORARY - Create layer
-		String constructionLayerName = Rb.textOr( com.acromere.xenon.RbKey.LABEL, "layer-construction", "construction" ).toLowerCase();
-		DesignLayer layer = new DesignLayer().setName( constructionLayerName );
-		design.getDataModel().getLayers().addLayer( layer );
-
 		// Set the current layer
 		setCurrentLayer( getDesign().getDataModel().getAllLayers().getFirst() );
 
