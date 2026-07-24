@@ -56,6 +56,7 @@ public class DesignToolV3Test extends BaseToolTest {
 		// Before calling tool.ready(), reset the module and tool settings
 		getMod().getSettings().delete();
 		tool.getSettings().delete();
+		getProgram().getSettingsManager().getAssetSettings( resource ).delete();
 
 		OpenAssetRequest request = new OpenAssetRequest();
 		request.setResource( resource );
