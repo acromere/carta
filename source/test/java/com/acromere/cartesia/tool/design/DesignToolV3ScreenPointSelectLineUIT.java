@@ -24,6 +24,7 @@ public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 		useLineLayer();
 	}
 
+	// NEXT This shows that line select is not working
 	@Test
 	void screenPointSelectLine() throws Exception {
 		// given

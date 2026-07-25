@@ -68,7 +68,7 @@ public class DesignToolV3Test extends BaseToolTest {
 		assertThat( tool.getDesignModel() ).isEqualTo( model );
 
 		// Post-setup checks
-		verify( renderer, times( 3 ) ).visibleLayers();
+		verify( renderer, times( 2 ) ).visibleLayers();
 		verify( renderer, times( 2 ) ).enabledLayers();
 		verify( renderer, times( 1 ) ).gridVisible();
 		verify( tool, times( 1 ) ).currentLayerProperty();

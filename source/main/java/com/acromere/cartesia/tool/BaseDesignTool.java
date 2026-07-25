@@ -363,10 +363,6 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		// Restore the list of visible layers
 		Set<String> visibleLayerIds = settings.get( VISIBLE_LAYERS, new TypeReference<>() {}, Set.of() );
 		getDesignModel().getAllLayers().forEach( l -> setLayerVisible( l, visibleLayerIds.contains( l.getId() ) ) );
-		// TEMPORARY Show the first layer
-		if( !model.getLayers().getLayers().isEmpty() ) {
-			getRenderer().setLayerVisible( model.getLayers().getLayers().getFirst(), true );
-		}
 
 		// Restore the grid-visible flag
 		setGridVisible( Boolean.parseBoolean( settings.get( GRID_VISIBLE, DEFAULT_GRID_VISIBLE ) ) );
