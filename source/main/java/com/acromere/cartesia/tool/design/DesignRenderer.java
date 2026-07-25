@@ -187,4 +187,13 @@ public interface DesignRenderer extends ToolRenderer {
 	DoubleProperty viewZoomYProperty();
 
 	void setSelectAperture( DesignShape aperture );
+
+	List<DesignShape> doFindByShape( DesignShape aperture, boolean intersect );
+
+	/**
+	 * Must match the {@link javafx.scene.Node#setVisible(boolean)} method
+	 *
+	 * @param visible The visible flag
+	 */
+	void setVisible( boolean visible );
 }

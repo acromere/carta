@@ -563,6 +563,10 @@ public class DesignToolV2 extends BaseDesignTool {
 		return DesignToolV2Renderer.class;
 	}
 
+	protected List<DesignShape> worldPointFind( Point3D point ) {
+		return renderer.worldPointFind( point, getSelectTolerance() );
+	}
+
 	//	private List<DesignLayer> getFilteredLayers( Predicate<? super DesignLayer> filter ) {
 	//		return getDesignModel().getAllLayers().stream().filter( filter ).collect( Collectors.toList() );
 	//	}

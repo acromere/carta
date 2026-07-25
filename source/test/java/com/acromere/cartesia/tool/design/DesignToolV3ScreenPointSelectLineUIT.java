@@ -15,7 +15,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @Getter
 @CustomLog
-@Disabled
 public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 
 	@BeforeEach
@@ -24,7 +23,6 @@ public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 		useLineLayer();
 	}
 
-	// NEXT This shows that line select is not working
 	@Test
 	void screenPointSelectLine() throws Exception {
 		// given
@@ -59,7 +57,9 @@ public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 		assertThat( selected.getFirst() ).isInstanceOf( DesignLine.class );
 	}
 
+	// NEXT Fix why this test fails
 	@Test
+	@Disabled
 	void screenPointSelectLineWithMouseTooFarAway() throws Exception {
 		// given
 

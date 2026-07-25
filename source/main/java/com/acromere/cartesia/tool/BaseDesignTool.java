@@ -253,6 +253,8 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		reticule = new SimpleObjectProperty<>( DEFAULT_RETICULE );
 		selectTolerance = new SimpleObjectProperty<>( DEFAULT_SELECT_TOLERANCE );
 
+		setSelectTolerance( selectTolerance.get() );
+
 		// Initialize the cursor to the default cursor
 		// There is debate whether this should be the reticule
 		setCursor( Cursor.DEFAULT );
@@ -327,8 +329,6 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		String defaultReferencePointSize = "10";
 		String defaultReferencePointPaint = "#808080";
 		String defaultReticule = DEFAULT_RETICULE.name().toLowerCase();
-
-		setSelectTolerance( DEFAULT_SELECT_TOLERANCE );
 
 		// Get the settings collections
 		Settings productSettings = getProduct().getSettings();
@@ -727,6 +727,11 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	@Override
 	public void setSelectTolerance( DesignValue aperture ) {
 		selectTolerance().set( aperture );
+		if( getDesignModel() != null  ) {
+			DesignUnit modelUnit = getDesignModel().calcDesignUnit();
+			double radius = aperture.unit().to( aperture.value(), modelUnit );
+			POINT_SELECT_APERTURE.setRadius( radius );
+		}
 	}
 
 	@Override
@@ -1131,7 +1136,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	 */
 	@Override
 	public List<DesignShape> getSelectedShapes() {
-		return List.copyOf( getDesignContext().getSelectedShapes() );
+		return getDesignContext().getSelectedShapes();
 	}
 
 	/**
@@ -1201,12 +1206,12 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 	@Override
 	public void screenPointSelect( Point3D mouse, boolean toggle ) {
-		worldPointSelect( renderer.parentToLocal( mouse ), toggle );
+		worldPointSelect( renderer.screenToWorld( mouse ), toggle );
 	}
 
 	@Override
 	public void screenWindowSelect( Point3D a, Point3D b, boolean intersect, boolean toggle ) {
-		worldWindowSelect( renderer.parentToLocal( a ), renderer.parentToLocal( b ), intersect, toggle );
+		worldWindowSelect( renderer.screenToWorld( a ), renderer.screenToWorld( b ), intersect, toggle );
 	}
 
 	@Override
@@ -1215,11 +1220,12 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	}
 
 	protected List<DesignShape> screenPointFind( Point3D mouse ) {
-		return worldPointFind( renderer.parentToLocal( mouse ) );
+		return worldPointFind( renderer.screenToWorld( mouse ) );
 	}
 
 	protected List<DesignShape> worldPointFind( Point3D point ) {
-		return renderer.worldPointFind( point, getSelectTolerance() );
+		POINT_SELECT_APERTURE.setOrigin( point );
+		return renderer.doFindByShape( POINT_SELECT_APERTURE, true );
 	}
 
 	/**
@@ -1252,7 +1258,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	}
 
 	protected void selectShapes( List<DesignShape> shapes, boolean toggle ) {
-		final ObservableList<DesignShape> selectedShapes = selectedShapes();
+		final ObservableList<DesignShape> selectedShapes = getDesignContext().selectedShapes();
 		if( toggle ) {
 			shapes.forEach( shape -> {
 				if( shape.isSelected() ) {

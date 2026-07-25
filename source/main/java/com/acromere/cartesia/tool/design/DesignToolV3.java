@@ -101,70 +101,72 @@ public class DesignToolV3 extends BaseDesignTool {
 		return null;
 	}
 
-	@Override
-	public void setSelectAperture( Point3D anchor, Point3D mouse ) {
+//	@Override
+//	public void setSelectAperture( Point3D anchor, Point3D mouse ) {
+//
+//	}
+//
+//	@Override
+//	public List<DesignShape> screenPointSyncFindOne( Point3D mouse ) {
+//		return List.of();
+//	}
+//
+//	@Override
+//	public List<DesignShape> worldPointSyncFindOne( Point3D mouse ) {
+//		return List.of();
+//	}
+//
+//	@Override
+//	public List<DesignShape> screenPointSyncFindAll( Point3D mouse ) {
+//		return List.of();
+//	}
+//
+//	@Override
+//	public List<DesignShape> worldPointSyncFindAll( Point3D mouse ) {
+//		return List.of();
+//	}
+//
+//	@Override
+//	public List<DesignShape> screenPointSyncSelect( Point3D mouse ) {
+//		return List.of();
+//	}
+//
+//	@Override
+//	public List<DesignShape> worldPointSyncSelect( Point3D mouse ) {
+//		return List.of();
+//	}
 
-	}
-
-	@Override
-	public List<DesignShape> screenPointSyncFindOne( Point3D mouse ) {
-		return List.of();
-	}
-
-	@Override
-	public List<DesignShape> worldPointSyncFindOne( Point3D mouse ) {
-		return List.of();
-	}
-
-	@Override
-	public List<DesignShape> screenPointSyncFindAll( Point3D mouse ) {
-		return List.of();
-	}
-
-	@Override
-	public List<DesignShape> worldPointSyncFindAll( Point3D mouse ) {
-		return List.of();
-	}
-
-	@Override
-	public List<DesignShape> screenPointSyncSelect( Point3D mouse ) {
-		return List.of();
-	}
-
-	@Override
-	public List<DesignShape> worldPointSyncSelect( Point3D mouse ) {
-		return List.of();
-	}
-
-	@Override
-	public void screenPointSelect( Point3D mouse ) {
-
-	}
+//	@Override
+//	public void screenPointSelect( Point3D mouse ) {
+//
+//	}
 
 //	@Override
 //	public void screenPointSelect( Point3D mouse, boolean toggle ) {
 //
 //	}
 
-	@Override
-	public void screenWindowSelect( Point3D a, Point3D b, boolean intersect, boolean toggle ) {
+//	@Override
+//	public void screenWindowSelect( Point3D a, Point3D b, boolean intersect, boolean toggle ) {
+//
+//	}
+//
+//	@Override
+//	public void worldPointSelect( Point3D point ) {
+//
+//	}
 
-	}
+//	@Override
+//	public void worldPointSelect( Point3D point, boolean toggle ) {
+//		// NEXT Implement select shapes by point
+//		// Use the DEFAULT_POINT_APERTURE
+//		//getPointSelectAperture();
+//	}
 
-	@Override
-	public void worldPointSelect( Point3D point ) {
-
-	}
-
-	@Override
-	public void worldPointSelect( Point3D point, boolean toggle ) {
-
-	}
-
-	@Override
-	public void worldWindowSelect( Point3D a, Point3D b, boolean intersect, boolean toggle ) {
-
-	}
+//	@Override
+//	public void worldWindowSelect( Point3D a, Point3D b, boolean intersect, boolean toggle ) {
+//
+//	}
 
 	@Override
 	public Class<? extends BaseDesignRenderer> getPrintDesignRendererClass() {
