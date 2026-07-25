@@ -1,8 +1,8 @@
 {
   "codec-version" : "1",
-  "id" : "afe23840-8f5a-4b70-94da-2bd4a430710b",
+  "id" : "bfb64032-cc60-4509-8805-d50d50fbdc6a",
   "layers" : {
-    "724608c2-f558-4230-a596-a09555b53f94" : {
+    "f825dfe2-f0bd-4fbc-8745-1a6967a11dde" : {
       "draw-cap" : "round",
       "draw-paint" : "#808080ff",
       "draw-width" : "0.05",
@@ -10,16 +10,299 @@
       "font-strikethrough" : "false",
       "font-underline" : "false",
       "font-weight" : "normal",
-      "id" : "724608c2-f558-4230-a596-a09555b53f94",
+      "id" : "f825dfe2-f0bd-4fbc-8745-1a6967a11dde",
       "layers" : { },
-      "name" : "construcción",
-      "shapes" : { },
+      "name" : "Construction",
+      "shapes" : {
+        "15952d08-569f-4313-ae03-c7d7faaafbbc" : {
+          "draw-cap" : "ROUND",
+          "draw-paint" : "#008000",
+          "draw-width" : "1.0",
+          "fill-paint" : "none",
+          "id" : "15952d08-569f-4313-ae03-c7d7faaafbbc",
+          "order" : 0,
+          "origin" : "-5.0,5.0,0.0",
+          "point" : "-3.0,3.0,0.0",
+          "shape" : "line"
+        },
+        "16825da9-a6db-4831-82d1-e544fb1a18c1" : {
+          "draw-paint" : "none",
+          "fill-paint" : "#20808040",
+          "id" : "16825da9-a6db-4831-82d1-e544fb1a18c1",
+          "origin" : "-3.0,-4.0,0.0",
+          "shape" : "path",
+          "steps" : [ "M -3.0 -4.0", "B -3.0 -3.0 -1.0 -3.0 0.0 -4.0", "B 1.0 -5.0 3.0 -5.0 3.0 -4.0", "B 3.0 -3.0 1.0 -3.0 0.0 -4.0", "B -1.0 -5.0 -3.0 -5.0 -3.0 -4.0", "Z" ]
+        },
+        "17a5b2b8-f911-447d-979f-daec2a35d8c2" : {
+          "draw-paint" : "none",
+          "fill-paint" : "#80C08080",
+          "id" : "17a5b2b8-f911-447d-979f-daec2a35d8c2",
+          "origin" : "-8.0,-6.0,0.0",
+          "shape" : "box",
+          "size" : "2.0,3.0,0.0"
+        },
+        "201642d8-672b-41cd-b611-03876ed14f7a" : {
+          "draw-cap" : "BUTT",
+          "draw-paint" : "#800000",
+          "draw-width" : "1.0",
+          "fill-paint" : "none",
+          "id" : "201642d8-672b-41cd-b611-03876ed14f7a",
+          "order" : 1,
+          "origin" : "3.0,-1.0,0.0",
+          "point" : "5.0,1.0,0.0",
+          "shape" : "line"
+        },
+        "2368452c-9c53-4d4e-a6d3-3095b1578c92" : {
+          "draw-paint" : "#C080FF",
+          "fill-paint" : "none",
+          "id" : "2368452c-9c53-4d4e-a6d3-3095b1578c92",
+          "origin" : "-4.0,-2.0,0.0",
+          "shape" : "marker",
+          "size" : "1",
+          "type" : "star"
+        },
+        "276ae72f-10ac-47f2-8588-ac03a132ff60" : {
+          "draw-paint" : "none",
+          "fill-paint" : "none",
+          "id" : "276ae72f-10ac-47f2-8588-ac03a132ff60",
+          "origin" : "7.0,-5.5,0.0",
+          "radii" : "1.0,1.5,0.0",
+          "rotate" : "-45.0",
+          "shape" : "ellipse"
+        },
+        "287f7fdc-1487-492f-8099-0515a49dded0" : {
+          "draw-cap" : "ROUND",
+          "draw-paint" : "#008000",
+          "draw-width" : "1.0",
+          "fill-paint" : "none",
+          "id" : "287f7fdc-1487-492f-8099-0515a49dded0",
+          "order" : 0,
+          "origin" : "-1.0,4.0,0.0",
+          "point" : "1.0,4.0,0.0",
+          "shape" : "line"
+        },
+        "30c507c5-ab19-4fd2-9f63-6867d5b13be8" : {
+          "draw-cap" : "BUTT",
+          "draw-paint" : "#800000",
+          "draw-width" : "1.0",
+          "fill-paint" : "none",
+          "id" : "30c507c5-ab19-4fd2-9f63-6867d5b13be8",
+          "order" : 1,
+          "origin" : "-5.0,1.0,0.0",
+          "point" : "-3.0,-1.0,0.0",
+          "shape" : "line"
+        },
+        "318f71c1-aa0e-49cd-8e45-9014fac23581" : {
+          "draw-paint" : "none",
+          "fill-paint" : "none",
+          "id" : "318f71c1-aa0e-49cd-8e45-9014fac23581",
+          "origin" : "-8.0,-2.0,0.0",
+          "rotate" : "15.0",
+          "shape" : "box",
+          "size" : "2.0,1.0,0.0"
+        },
+        "409c9d89-c40b-4935-84cc-78dfaca6f49c" : {
+          "control" : "-7.0,2.0,0.0",
+          "draw-paint" : "none",
+          "fill-paint" : "none",
+          "id" : "409c9d89-c40b-4935-84cc-78dfaca6f49c",
+          "origin" : "-6.0,3.0,0.0",
+          "point" : "-6.0,1.0,0.0",
+          "shape" : "quad"
+        },
+        "46b7e5dd-3896-4b77-b21c-2354f8be440f" : {
+          "draw-cap" : "BUTT",
+          "draw-paint" : "#800000",
+          "draw-width" : "1.0",
+          "fill-paint" : "none",
+          "id" : "46b7e5dd-3896-4b77-b21c-2354f8be440f",
+          "order" : 1,
+          "origin" : "-1.0,0.0,0.0",
+          "point" : "1.0,0.0,0.0",
+          "shape" : "line"
+        },
+        "6015793a-22f8-4f7e-b879-8a928ce75464" : {
+          "draw-paint" : "none",
+          "fill-paint" : "none",
+          "id" : "6015793a-22f8-4f7e-b879-8a928ce75464",
+          "origin" : "6.0,4.0,0.0",
+          "origin-control" : "7.0,5.0,0.0",
+          "point" : "8.0,4.0,0.0",
+          "point-control" : "7.0,3.0,0.0",
+          "shape" : "curve"
+        },
+        "66addb79-0cb4-4115-93c3-43fe577bf06a" : {
+          "draw-paint" : "none",
+          "fill-paint" : "none",
+          "id" : "66addb79-0cb4-4115-93c3-43fe577bf06a",
+          "origin" : "6.0,2.0,0.0",
+          "origin-control" : "6.0,4.0,0.0",
+          "point" : "8.0,2.0,0.0",
+          "point-control" : "8.0,4.0,0.0",
+          "shape" : "curve"
+        },
+        "75a091b7-285b-4d7f-b3f4-e8072550b2bd" : {
+          "draw-paint" : "none",
+          "fill-paint" : "none",
+          "id" : "75a091b7-285b-4d7f-b3f4-e8072550b2bd",
+          "origin" : "7.0,1.0,0.0",
+          "origin-control" : "6.0,0.0,0.0",
+          "point" : "7.0,1.0,0.0",
+          "point-control" : "8.0,0.0,0.0",
+          "shape" : "curve"
+        },
+        "85a83b07-acf4-496f-90df-b91f10b39e85" : {
+          "draw-paint" : "none",
+          "fill-paint" : "#80C0FF",
+          "id" : "85a83b07-acf4-496f-90df-b91f10b39e85",
+          "origin" : "-1.5,-6.0,0.0",
+          "shape" : "text",
+          "text" : "Sweet"
+        },
+        "8741f0c2-6a23-4e2e-b87c-16b35614200d" : {
+          "draw-cap" : "SQUARE",
+          "draw-paint" : "#000080",
+          "draw-width" : "1.0",
+          "fill-paint" : "none",
+          "id" : "8741f0c2-6a23-4e2e-b87c-16b35614200d",
+          "order" : 0,
+          "origin" : "-1.0,2.0,0.0",
+          "point" : "1.0,2.0,0.0",
+          "shape" : "line"
+        },
+        "889c70ae-8b90-4244-abb9-fd759152258f" : {
+          "draw-paint" : "none",
+          "fill-paint" : "#80C0FF",
+          "id" : "889c70ae-8b90-4244-abb9-fd759152258f",
+          "origin" : "3.0,-7.0,0.0",
+          "rotate" : "45.0",
+          "shape" : "text",
+          "text" : "World"
+        },
+        "90abf3cd-67cf-4b0e-96e1-49ca1491a9f5" : {
+          "draw-cap" : "ROUND",
+          "draw-paint" : "#008000",
+          "draw-width" : "1.0",
+          "fill-paint" : "none",
+          "id" : "90abf3cd-67cf-4b0e-96e1-49ca1491a9f5",
+          "order" : 0,
+          "origin" : "3.0,3.0,0.0",
+          "point" : "5.0,5.0,0.0",
+          "shape" : "line"
+        },
+        "987867de-fbaa-4367-9d95-467e5eb8c5af" : {
+          "draw-paint" : "none",
+          "extent" : -90.0,
+          "fill-paint" : "none",
+          "id" : "987867de-fbaa-4367-9d95-467e5eb8c5af",
+          "origin" : "0.0,0.0,0.0",
+          "radii" : "10.0,10.0,0.0",
+          "shape" : "arc",
+          "start" : 135.0,
+          "type" : "OPEN"
+        },
+        "9a256b1f-837d-4ba4-9a06-6c46e893feea" : {
+          "draw-paint" : "none",
+          "extent" : 90.0,
+          "fill-paint" : "none",
+          "id" : "9a256b1f-837d-4ba4-9a06-6c46e893feea",
+          "origin" : "0.0,0.0,0.0",
+          "radii" : "10.0,10.0,0.0",
+          "shape" : "arc",
+          "start" : -135.0,
+          "type" : "OPEN"
+        },
+        "a3068792-9c6e-4b76-838a-def5552b4511" : {
+          "draw-cap" : "SQUARE",
+          "draw-paint" : "#000080",
+          "draw-width" : "1.0",
+          "fill-paint" : "none",
+          "id" : "a3068792-9c6e-4b76-838a-def5552b4511",
+          "order" : 0,
+          "origin" : "-5.0,3.0,0.0",
+          "point" : "-3.0,1.0,0.0",
+          "shape" : "line"
+        },
+        "aa908ff3-c55b-40bb-8377-c73ecdb5fde9" : {
+          "draw-paint" : "none",
+          "fill-paint" : "#C0808080",
+          "id" : "aa908ff3-c55b-40bb-8377-c73ecdb5fde9",
+          "origin" : "7.0,-2.0,0.0",
+          "radii" : "1.0,1.0,0.0",
+          "shape" : "circle"
+        },
+        "ab9d0f66-fa8d-444e-8fd9-94293f53e992" : {
+          "draw-paint" : "#80C0FF",
+          "fill-paint" : "none",
+          "id" : "ab9d0f66-fa8d-444e-8fd9-94293f53e992",
+          "origin" : "0.0,-2.0,0.0",
+          "shape" : "marker",
+          "size" : "2",
+          "type" : "cross"
+        },
+        "b781bc63-414a-416a-97a1-f931989fa2f3" : {
+          "control" : "-7.0,2.0,0.0",
+          "draw-paint" : "none",
+          "fill-paint" : "none",
+          "id" : "b781bc63-414a-416a-97a1-f931989fa2f3",
+          "origin" : "-8.0,3.0,0.0",
+          "point" : "-8.0,1.0,0.0",
+          "shape" : "quad"
+        },
+        "cc4c28bf-bda7-42cc-82f2-a94ad6a8e07c" : {
+          "control" : "-7.0,2.0,0.0",
+          "draw-paint" : "none",
+          "fill-paint" : "none",
+          "id" : "cc4c28bf-bda7-42cc-82f2-a94ad6a8e07c",
+          "origin" : "-8.0,4.0,0.0",
+          "point" : "-6.0,4.0,0.0",
+          "shape" : "quad"
+        },
+        "d436cd62-1c4b-44ee-80b6-2586df2f17ae" : {
+          "draw-paint" : "none",
+          "fill-paint" : "#80C0FF",
+          "id" : "d436cd62-1c4b-44ee-80b6-2586df2f17ae",
+          "origin" : "-5.0,-5.0,0.0",
+          "rotate" : "-45.0",
+          "shape" : "text",
+          "text" : "Hello"
+        },
+        "d7d68dc9-48b3-4b82-861a-cadcd781bddf" : {
+          "draw-paint" : "#80FFC0",
+          "fill-paint" : "none",
+          "id" : "d7d68dc9-48b3-4b82-861a-cadcd781bddf",
+          "origin" : "4.0,-2.0,0.0",
+          "shape" : "marker",
+          "size" : "1",
+          "type" : "cg"
+        },
+        "ee5b8d52-ee95-40ec-9c7d-0ad3e060ab82" : {
+          "control" : "-7.0,2.0,0.0",
+          "draw-paint" : "none",
+          "fill-paint" : "none",
+          "id" : "ee5b8d52-ee95-40ec-9c7d-0ad3e060ab82",
+          "origin" : "-8.0,0.0,0.0",
+          "point" : "-6.0,0.0,0.0",
+          "shape" : "quad"
+        },
+        "fefa3a6b-f15e-4ac9-8398-fa5f6d0dd3f2" : {
+          "draw-cap" : "SQUARE",
+          "draw-paint" : "#000080",
+          "draw-width" : "1.0",
+          "fill-paint" : "none",
+          "id" : "fefa3a6b-f15e-4ac9-8398-fa5f6d0dd3f2",
+          "order" : 0,
+          "origin" : "3.0,1.0,0.0",
+          "point" : "5.0,3.0,0.0",
+          "shape" : "line"
+        }
+      },
       "text-draw-cap" : "round",
       "text-draw-width" : "0.05",
       "text-fill-paint" : "#000000ff",
       "text-size" : "1"
     },
-    "7df6db23-3d34-4dfe-991b-6cb8b11948d4" : {
+    "f9ecb951-6d5d-41a0-8679-ec5f82e6cf14" : {
       "draw-cap" : "round",
       "draw-paint" : "#808080ff",
       "draw-width" : "0.05",
@@ -27,33 +310,291 @@
       "font-strikethrough" : "false",
       "font-underline" : "false",
       "font-weight" : "normal",
-      "id" : "7df6db23-3d34-4dfe-991b-6cb8b11948d4",
+      "id" : "f9ecb951-6d5d-41a0-8679-ec5f82e6cf14",
       "layers" : { },
-      "name" : "construcción",
+      "name" : "Construction",
       "shapes" : {
-        "a0cb7b69-1cfd-4356-a29e-1c5b0e506313" : {
+        "018609c7-2ea2-4120-9480-0ba0d03b3d26" : {
+          "draw-paint" : "none",
+          "fill-paint" : "#C0808080",
+          "id" : "018609c7-2ea2-4120-9480-0ba0d03b3d26",
+          "origin" : "7.0,-2.0,0.0",
+          "radii" : "1.0,1.0,0.0",
+          "shape" : "circle"
+        },
+        "06a64166-bc11-442f-ae2a-58ed85fd3d98" : {
+          "draw-paint" : "#80C0FF",
+          "fill-paint" : "none",
+          "id" : "06a64166-bc11-442f-ae2a-58ed85fd3d98",
+          "origin" : "0.0,-2.0,0.0",
+          "shape" : "marker",
+          "size" : "2",
+          "type" : "cross"
+        },
+        "0aeac002-61c0-4ba9-ba20-7d1e4b35d94b" : {
+          "draw-paint" : "none",
+          "fill-paint" : "#80C0FF",
+          "id" : "0aeac002-61c0-4ba9-ba20-7d1e4b35d94b",
+          "origin" : "-1.5,-6.0,0.0",
+          "shape" : "text",
+          "text" : "Sweet"
+        },
+        "0b658c8d-82bc-41e2-82cf-b9fb1d9d29c1" : {
+          "draw-cap" : "SQUARE",
+          "draw-paint" : "#000080",
+          "draw-width" : "1.0",
+          "fill-paint" : "none",
+          "id" : "0b658c8d-82bc-41e2-82cf-b9fb1d9d29c1",
+          "order" : 0,
+          "origin" : "3.0,1.0,0.0",
+          "point" : "5.0,3.0,0.0",
+          "shape" : "line"
+        },
+        "0f233205-96f0-4dab-aa80-d175ebbc46b7" : {
+          "draw-paint" : "#80FFC0",
+          "fill-paint" : "none",
+          "id" : "0f233205-96f0-4dab-aa80-d175ebbc46b7",
+          "origin" : "4.0,-2.0,0.0",
+          "shape" : "marker",
+          "size" : "1",
+          "type" : "cg"
+        },
+        "13f3d758-5c69-43a0-a737-94cc0ba24531" : {
+          "control" : "-7.0,2.0,0.0",
           "draw-paint" : "none",
           "fill-paint" : "none",
-          "id" : "a0cb7b69-1cfd-4356-a29e-1c5b0e506313",
+          "id" : "13f3d758-5c69-43a0-a737-94cc0ba24531",
+          "origin" : "-8.0,4.0,0.0",
+          "point" : "-6.0,4.0,0.0",
+          "shape" : "quad"
+        },
+        "34e1a85a-0d38-4b28-8e1f-34e09830744d" : {
+          "control" : "-7.0,2.0,0.0",
+          "draw-paint" : "none",
+          "fill-paint" : "none",
+          "id" : "34e1a85a-0d38-4b28-8e1f-34e09830744d",
+          "origin" : "-8.0,0.0,0.0",
+          "point" : "-6.0,0.0,0.0",
+          "shape" : "quad"
+        },
+        "48b54ba7-4236-4bff-8e81-0ab2f1f44b19" : {
+          "draw-paint" : "none",
+          "fill-paint" : "#20808040",
+          "id" : "48b54ba7-4236-4bff-8e81-0ab2f1f44b19",
+          "origin" : "-3.0,-4.0,0.0",
+          "shape" : "path",
+          "steps" : [ "M -3.0 -4.0", "B -3.0 -3.0 -1.0 -3.0 0.0 -4.0", "B 1.0 -5.0 3.0 -5.0 3.0 -4.0", "B 3.0 -3.0 1.0 -3.0 0.0 -4.0", "B -1.0 -5.0 -3.0 -5.0 -3.0 -4.0", "Z" ]
+        },
+        "50811638-df58-4cfc-8f85-ef83212b68e2" : {
+          "draw-paint" : "none",
+          "fill-paint" : "none",
+          "id" : "50811638-df58-4cfc-8f85-ef83212b68e2",
+          "origin" : "-8.0,-2.0,0.0",
+          "rotate" : "15.0",
+          "shape" : "box",
+          "size" : "2.0,1.0,0.0"
+        },
+        "594848f4-122c-4089-8279-7bc2db54b5ec" : {
+          "draw-cap" : "ROUND",
+          "draw-paint" : "#008000",
+          "draw-width" : "1.0",
+          "fill-paint" : "none",
+          "id" : "594848f4-122c-4089-8279-7bc2db54b5ec",
+          "order" : 0,
+          "origin" : "-1.0,4.0,0.0",
+          "point" : "1.0,4.0,0.0",
+          "shape" : "line"
+        },
+        "603d0ebe-7049-48f8-ad21-0900b893f86b" : {
+          "draw-cap" : "BUTT",
+          "draw-paint" : "#800000",
+          "draw-width" : "1.0",
+          "fill-paint" : "none",
+          "id" : "603d0ebe-7049-48f8-ad21-0900b893f86b",
+          "order" : 1,
+          "origin" : "-1.0,0.0,0.0",
+          "point" : "1.0,0.0,0.0",
+          "shape" : "line"
+        },
+        "61134ff2-1a0a-4e15-9209-e1951e33932a" : {
+          "draw-paint" : "none",
+          "fill-paint" : "#80C08080",
+          "id" : "61134ff2-1a0a-4e15-9209-e1951e33932a",
+          "origin" : "-8.0,-6.0,0.0",
+          "shape" : "box",
+          "size" : "2.0,3.0,0.0"
+        },
+        "69d7cff5-588d-45b0-a835-d1272b6bfea6" : {
+          "draw-paint" : "none",
+          "fill-paint" : "none",
+          "id" : "69d7cff5-588d-45b0-a835-d1272b6bfea6",
+          "origin" : "7.0,1.0,0.0",
+          "origin-control" : "6.0,0.0,0.0",
+          "point" : "7.0,1.0,0.0",
+          "point-control" : "8.0,0.0,0.0",
+          "shape" : "curve"
+        },
+        "7091d3be-c953-4a83-befc-493677058667" : {
+          "draw-cap" : "ROUND",
+          "draw-paint" : "#008000",
+          "draw-width" : "1.0",
+          "fill-paint" : "none",
+          "id" : "7091d3be-c953-4a83-befc-493677058667",
+          "order" : 0,
+          "origin" : "-5.0,5.0,0.0",
+          "point" : "-3.0,3.0,0.0",
+          "shape" : "line"
+        },
+        "830598b5-ba0c-45f7-96b3-5385ba09b9c1" : {
+          "control" : "-7.0,2.0,0.0",
+          "draw-paint" : "none",
+          "fill-paint" : "none",
+          "id" : "830598b5-ba0c-45f7-96b3-5385ba09b9c1",
+          "origin" : "-6.0,3.0,0.0",
+          "point" : "-6.0,1.0,0.0",
+          "shape" : "quad"
+        },
+        "860fdc3f-4c99-4718-85a9-88f512718c55" : {
+          "draw-paint" : "none",
+          "extent" : 90.0,
+          "fill-paint" : "none",
+          "id" : "860fdc3f-4c99-4718-85a9-88f512718c55",
           "origin" : "0.0,0.0,0.0",
-          "point" : "1.0,1.0,0.0",
+          "radii" : "10.0,10.0,0.0",
+          "shape" : "arc",
+          "start" : -135.0,
+          "type" : "OPEN"
+        },
+        "930f6030-4786-4a14-965f-0c688ae21c0d" : {
+          "draw-paint" : "none",
+          "fill-paint" : "#80C0FF",
+          "id" : "930f6030-4786-4a14-965f-0c688ae21c0d",
+          "origin" : "-5.0,-5.0,0.0",
+          "rotate" : "-45.0",
+          "shape" : "text",
+          "text" : "Hello"
+        },
+        "9b038083-c059-41a2-ac46-4e585542b865" : {
+          "draw-cap" : "SQUARE",
+          "draw-paint" : "#000080",
+          "draw-width" : "1.0",
+          "fill-paint" : "none",
+          "id" : "9b038083-c059-41a2-ac46-4e585542b865",
+          "order" : 0,
+          "origin" : "-1.0,2.0,0.0",
+          "point" : "1.0,2.0,0.0",
           "shape" : "line"
         },
-        "b98ab0fa-3ab6-4e31-a75b-6f200d198d7b" : {
-          "draw-paint" : "none",
+        "9d1f5538-4f5d-4475-a124-c68f533dabfc" : {
+          "draw-cap" : "BUTT",
+          "draw-paint" : "#800000",
+          "draw-width" : "1.0",
           "fill-paint" : "none",
-          "id" : "b98ab0fa-3ab6-4e31-a75b-6f200d198d7b",
-          "origin" : "4.0,4.0,0.0",
-          "point" : "-4.0,-2.0,0.0",
+          "id" : "9d1f5538-4f5d-4475-a124-c68f533dabfc",
+          "order" : 1,
+          "origin" : "-5.0,1.0,0.0",
+          "point" : "-3.0,-1.0,0.0",
           "shape" : "line"
         },
-        "dd37dbe4-1e74-4014-b43a-9d5569e48448" : {
+        "9ff698c5-8994-4681-bf1c-5880c0a258e8" : {
+          "draw-paint" : "none",
+          "fill-paint" : "#80C0FF",
+          "id" : "9ff698c5-8994-4681-bf1c-5880c0a258e8",
+          "origin" : "3.0,-7.0,0.0",
+          "rotate" : "45.0",
+          "shape" : "text",
+          "text" : "World"
+        },
+        "a3bc7828-a5d6-4bfb-bbac-7dbf65effb44" : {
+          "draw-cap" : "BUTT",
+          "draw-paint" : "#800000",
+          "draw-width" : "1.0",
+          "fill-paint" : "none",
+          "id" : "a3bc7828-a5d6-4bfb-bbac-7dbf65effb44",
+          "order" : 1,
+          "origin" : "3.0,-1.0,0.0",
+          "point" : "5.0,1.0,0.0",
+          "shape" : "line"
+        },
+        "aa25e3ec-ad64-4d37-bebc-d7e40131eec5" : {
           "draw-paint" : "none",
           "fill-paint" : "none",
-          "id" : "dd37dbe4-1e74-4014-b43a-9d5569e48448",
-          "origin" : "-2.1,2.8000000000000003,0.0",
-          "point" : "3.0,-2.0,0.0",
+          "id" : "aa25e3ec-ad64-4d37-bebc-d7e40131eec5",
+          "origin" : "6.0,2.0,0.0",
+          "origin-control" : "6.0,4.0,0.0",
+          "point" : "8.0,2.0,0.0",
+          "point-control" : "8.0,4.0,0.0",
+          "shape" : "curve"
+        },
+        "ae90c422-d00f-4cc3-ba17-f0cb6fd60f80" : {
+          "draw-paint" : "none",
+          "fill-paint" : "none",
+          "id" : "ae90c422-d00f-4cc3-ba17-f0cb6fd60f80",
+          "origin" : "7.0,-5.5,0.0",
+          "radii" : "1.0,1.5,0.0",
+          "rotate" : "-45.0",
+          "shape" : "ellipse"
+        },
+        "b6ae5708-2cc3-4d81-8d4a-e082fef2cde0" : {
+          "draw-paint" : "none",
+          "extent" : -90.0,
+          "fill-paint" : "none",
+          "id" : "b6ae5708-2cc3-4d81-8d4a-e082fef2cde0",
+          "origin" : "0.0,0.0,0.0",
+          "radii" : "10.0,10.0,0.0",
+          "shape" : "arc",
+          "start" : 135.0,
+          "type" : "OPEN"
+        },
+        "b96ef62d-88b0-47e1-9c8b-cc39765d358e" : {
+          "draw-paint" : "none",
+          "fill-paint" : "none",
+          "id" : "b96ef62d-88b0-47e1-9c8b-cc39765d358e",
+          "origin" : "6.0,4.0,0.0",
+          "origin-control" : "7.0,5.0,0.0",
+          "point" : "8.0,4.0,0.0",
+          "point-control" : "7.0,3.0,0.0",
+          "shape" : "curve"
+        },
+        "c34da816-bfe4-4525-9e44-d52d722ca26e" : {
+          "draw-cap" : "SQUARE",
+          "draw-paint" : "#000080",
+          "draw-width" : "1.0",
+          "fill-paint" : "none",
+          "id" : "c34da816-bfe4-4525-9e44-d52d722ca26e",
+          "order" : 0,
+          "origin" : "-5.0,3.0,0.0",
+          "point" : "-3.0,1.0,0.0",
           "shape" : "line"
+        },
+        "d98306e3-40db-46b7-bcc2-1d89ae859225" : {
+          "draw-cap" : "ROUND",
+          "draw-paint" : "#008000",
+          "draw-width" : "1.0",
+          "fill-paint" : "none",
+          "id" : "d98306e3-40db-46b7-bcc2-1d89ae859225",
+          "order" : 0,
+          "origin" : "3.0,3.0,0.0",
+          "point" : "5.0,5.0,0.0",
+          "shape" : "line"
+        },
+        "e383074c-d209-41eb-85d5-34d54d991b2b" : {
+          "draw-paint" : "#C080FF",
+          "fill-paint" : "none",
+          "id" : "e383074c-d209-41eb-85d5-34d54d991b2b",
+          "origin" : "-4.0,-2.0,0.0",
+          "shape" : "marker",
+          "size" : "1",
+          "type" : "star"
+        },
+        "f5a1876f-f766-4442-9a94-e704b77eec91" : {
+          "control" : "-7.0,2.0,0.0",
+          "draw-paint" : "none",
+          "fill-paint" : "none",
+          "id" : "f5a1876f-f766-4442-9a94-e704b77eec91",
+          "origin" : "-8.0,3.0,0.0",
+          "point" : "-8.0,1.0,0.0",
+          "shape" : "quad"
         }
       },
       "text-draw-cap" : "round",
@@ -62,5 +603,6 @@
       "text-size" : "1"
     }
   },
+  "name" : "Test Design",
   "unit" : "cm"
 }
