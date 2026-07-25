@@ -66,7 +66,7 @@ public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 		// Need to get the selector outside the stroke width of the line
 		// 0.03 is just over half the line stroke width
 
-		Point3D offset = new Point3D( 0.03 + getWorldSelectTolerance(), 0, 0 );
+		Point3D offset = new Point3D( 0.03 + getWorldSelectTolerance()* 2, 0, 0 );
 		Point3D point = new Point3D( 1, 1, 0 ).add( offset );
 		Point3D mouse = getTool().worldToScreen( point );
 

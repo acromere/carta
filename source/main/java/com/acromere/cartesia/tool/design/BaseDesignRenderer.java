@@ -537,6 +537,8 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		Bounds selectorBounds = selector.getSelectBounds();
 		Bounds shapeBounds = shape.getSelectBounds();
 
+		System.out.println( "selector=" + selector + " shape=" + shape );
+
 		// This first test is an optimization for fully excluded shapes
 		if( !selectorBounds.intersects( shapeBounds ) ) return false;
 
