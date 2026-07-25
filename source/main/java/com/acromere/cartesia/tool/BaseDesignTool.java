@@ -556,6 +556,8 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 	@Override
 	public final DesignModel getDesignModel() {
+		Design<? extends DesignModel> design = getDesign();
+		if( design == null ) return null;
 		return getDesign().getDataModel();
 	}
 
