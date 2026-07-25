@@ -368,9 +368,9 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 	@Override
 	public void setLayerVisible( DesignLayer layer, boolean visible ) {
 		if( visible ) {
-			visibleLayers().add( layer );
+			visibleLayers.add( layer );
 		} else {
-			visibleLayers().remove( layer );
+			visibleLayers.remove( layer );
 		}
 	}
 
@@ -381,7 +381,7 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 
 	@Override
 	public void setVisibleLayers( Collection<DesignLayer> layers ) {
-		visibleLayers().setAll( layers );
+		visibleLayers.setAll( layers );
 	}
 
 	@Override
