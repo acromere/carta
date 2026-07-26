@@ -72,7 +72,8 @@ public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 	}
 
 	protected double getWorldSelectTolerance() {
-		return getTool().getSelectTolerance().to( getDesignModel().calcDesignUnit() ).value() / getTool().getViewZoom();
+		// Convert from select aperture units to design model units
+		return getTool().getSelectTolerance().to( getDesignModel().calcDesignUnit() ).value();
 	}
 
 	protected void useBoxLayer() throws TimeoutException, InterruptedException {

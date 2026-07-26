@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Getter
 @CustomLog
@@ -26,6 +26,7 @@ public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 	@Test
 	void screenPointSelectLine() throws Exception {
 		// given
+		assertThat( getTool().getSelectedShapes() ).hasSize( 0 );
 		Point3D mouse = getTool().worldToScreen( new Point3D( 0, 0, 0 ) );
 
 		// when - select once
@@ -40,10 +41,10 @@ public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 	@Test
 	void screenPointSelectLineWithMouseCloseEnough() throws Exception {
 		// given
+		assertThat( getTool().getSelectedShapes() ).hasSize( 0 );
 
 		// Need to get the selector inside the stroke width of the line
 		// 0.02 is just under half the line stroke width
-
 		Point3D offset = new Point3D( 0.02 + getWorldSelectTolerance(), 0, 0 );
 		Point3D point = new Point3D( 1, 1, 0 ).add( offset );
 		Point3D mouse = getTool().worldToScreen( point );
@@ -57,15 +58,14 @@ public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 		assertThat( selected.getFirst() ).isInstanceOf( DesignLine.class );
 	}
 
-	// NEXT Fix why this test fails
 	@Test
 	@Disabled
 	void screenPointSelectLineWithMouseTooFarAway() throws Exception {
 		// given
+		assertThat( getTool().getSelectedShapes() ).hasSize( 0 );
 
 		// Need to get the selector outside the stroke width of the line
 		// 0.03 is just over half the line stroke width
-
 		Point3D offset = new Point3D( 0.03 + getWorldSelectTolerance()* 2, 0, 0 );
 		Point3D point = new Point3D( 1, 1, 0 ).add( offset );
 		Point3D mouse = getTool().worldToScreen( point );
@@ -74,8 +74,7 @@ public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 		getTool().screenPointSelect( mouse, false );
 
 		// then
-		List<DesignShape> selected = getTool().getSelectedShapes();
-		assertThat( selected.size() ).isEqualTo( 0 );
+		assertThat( getTool().getSelectedShapes() ).hasSize( 0 );
 	}
 
 }

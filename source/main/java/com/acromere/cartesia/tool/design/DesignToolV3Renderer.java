@@ -527,7 +527,13 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		return getWorldToScreenTransform().transform( bounds );
 	}
 
-	final Pane layersPane() {
+	@Override
+	public List<DesignShape> doFindByShape( final DesignShape selector, final boolean intersect ) {
+		mapDesignShape( selector );
+		return super.doFindByShape( selector, intersect );
+	}
+
+		final Pane layersPane() {
 		return layers;
 	}
 

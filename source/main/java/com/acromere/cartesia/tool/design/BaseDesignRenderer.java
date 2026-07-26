@@ -512,10 +512,10 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 	 * @return The list of discovered shapes
 	 */
 	public List<DesignShape> doFindByShape( final DesignShape selector, final boolean intersect ) {
-		// Ensure the selector does not have a draw width
-		selector.setDrawWidth( "0" );
-		selector.setDrawPaint( "#ff00ffff" );
-		selector.setFillPaint( "#ff00ffff" );
+//		// Ensure the selector does not have a draw width
+//		selector.setDrawWidth( "0" );
+//		selector.setDrawPaint( "#ff00ffff" );
+//		selector.setFillPaint( "#ff00ffff" );
 
 		// This method should be thread agnostic. It should be safe to call from any thread.
 		return getVisibleShapes().stream().filter( shape -> matches( selector, shape, intersect ) ).collect( Collectors.toList() );
@@ -548,6 +548,12 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		// This is the slow but accurate test if the shape is matched when the selector is not a box
 		Shape fxSelector = selector.getFxShape();
 		Shape fxShape = shape.getFxShape();
+
+		fxSelector.setFill( Color.CYAN );
+		fxSelector.setStroke( Color.CYAN );
+		fxSelector.setStrokeWidth( 0 );
+
+		System.out.println( "fxselector=" + fxSelector + " fxshape=" + fxShape );
 
 		// Check if the selector should match the shape
 		if( intersect ) {
