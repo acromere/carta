@@ -6,7 +6,6 @@ import javafx.geometry.Point3D;
 import lombok.CustomLog;
 import lombok.Getter;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -59,7 +58,6 @@ public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 	}
 
 	@Test
-	@Disabled
 	void screenPointSelectLineWithMouseTooFarAway() throws Exception {
 		// given
 		assertThat( getTool().getSelectedShapes() ).hasSize( 0 );

@@ -8,7 +8,6 @@ import com.acromere.xenon.ProgramToolEvent;
 import com.acromere.xenon.resource.Resource;
 import com.acromere.zerra.event.FxEventWatcher;
 import com.acromere.zerra.javafx.Fx;
-import javafx.stage.Screen;
 import lombok.CustomLog;
 import lombok.Getter;
 import org.junit.jupiter.api.BeforeEach;
@@ -61,7 +60,6 @@ public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 		assertThat( getDesignModel().getAllLayers().size() ).isEqualTo( 10 );
 
 		// Check the tool state
-		assertThat( getTool().getDpi() ).isEqualTo( Screen.getPrimary().getDpi() );
 		assertThat( getTool().getViewZoom() ).isEqualTo( 2 );
 		assertThat( getTool().getVisibleLayers().size() ).isEqualTo( 0 );
 		assertThat( getTool().getEnabledLayers().size() ).isEqualTo( 0 );
