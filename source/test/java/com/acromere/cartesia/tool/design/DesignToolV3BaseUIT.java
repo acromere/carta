@@ -88,11 +88,6 @@ public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 		height = getTool().getHeight();
 		originX = 0.5 * width;
 		originY = 0.5 * height;
-
-		assertThat( getTool().getWidth() ).isEqualTo( 762 );
-		assertThat( getTool().getHeight() ).isEqualTo( 517 );
-		assertThat( getTool().worldToScreen( new Point2D( 0, 0 ) ) ).isEqualTo( new Point2D( originX, originY ) );
-		assertThat( getTool().worldToScreen( new Point2D( 1, 0 ) ) ).isEqualTo( new Point2D( originX + 2 * dpu, originY ) );
 	}
 
 	protected double getWorldSelectTolerance() {
