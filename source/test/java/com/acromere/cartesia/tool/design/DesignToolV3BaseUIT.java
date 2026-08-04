@@ -2,12 +2,14 @@ package com.acromere.cartesia.tool.design;
 
 import com.acromere.cartesia.BaseCartesiaUiTest;
 import com.acromere.cartesia.DesignUnit;
+import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.data.DesignModel;
 import com.acromere.xenon.ProgramTool;
 import com.acromere.xenon.ProgramToolEvent;
 import com.acromere.xenon.resource.Resource;
 import com.acromere.zerra.event.FxEventWatcher;
 import com.acromere.zerra.javafx.Fx;
+import javafx.geometry.Point2D;
 import lombok.CustomLog;
 import lombok.Getter;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +19,7 @@ import java.util.Objects;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
 
+import static com.acromere.cartesia.tool.DesignTool.INCH_PER_CM;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -24,11 +27,22 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @CustomLog
 public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 
+	public static final String LINE_LAYER_ID = "a56cede9-ee12-40d0-a86c-b3701146c0e7";
 	private DesignToolV3 tool;
 
 	private Resource resource;
 
 	private DesignModel designModel;
+
+	protected double dpu;
+
+	protected double width;
+
+	protected double height;
+
+	protected double originX;
+
+	protected double originY;
 
 	@BeforeEach
 	protected void setup() throws Exception {
@@ -67,6 +81,18 @@ public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 
 		assertThat( getTool().getSelectTolerance().value() ).isEqualTo( 2 );
 		assertThat( getTool().getSelectTolerance().unit() ).isEqualTo( DesignUnit.MM );
+
+		dpu = DesignUnit.IN.from( getTool().getDpi(), getDesignModel().calcDesignUnit() );
+
+		width = getTool().getWidth();
+		height = getTool().getHeight();
+		originX = 0.5 * width;
+		originY = 0.5 * height;
+
+		assertThat( getTool().getWidth() ).isEqualTo( 762 );
+		assertThat( getTool().getHeight() ).isEqualTo( 517 );
+		assertThat( getTool().worldToScreen( new Point2D( 0, 0 ) ) ).isEqualTo( new Point2D( originX, originY ) );
+		assertThat( getTool().worldToScreen( new Point2D( 1, 0 ) ) ).isEqualTo( new Point2D( originX + 2 * dpu, originY ) );
 	}
 
 	protected double getWorldSelectTolerance() {
@@ -80,8 +106,12 @@ public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 	}
 
 	protected void useLineLayer() throws TimeoutException, InterruptedException {
-		getDesignModel().findLayerById( "a56cede9-ee12-40d0-a86c-b3701146c0e7" ).ifPresent( l -> Fx.run( () -> getTool().setLayerVisible( l, true ) ) );
+		getDesignModel().findLayerById( LINE_LAYER_ID ).ifPresent( l -> Fx.run( () -> getTool().setLayerVisible( l, true ) ) );
 		Fx.waitForWithExceptions( 1000 );
+	}
+
+	protected DesignLayer getLineLayer() {
+		return getDesignModel().findLayerById( LINE_LAYER_ID ).orElseThrow();
 	}
 
 	protected void useEllipseLayer() throws TimeoutException, InterruptedException {

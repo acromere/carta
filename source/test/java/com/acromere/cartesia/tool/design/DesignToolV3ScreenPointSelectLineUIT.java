@@ -3,6 +3,7 @@ package com.acromere.cartesia.tool.design;
 import com.acromere.cartesia.data.DesignLine;
 import com.acromere.cartesia.data.DesignShape;
 import javafx.geometry.Point3D;
+import javafx.scene.shape.Line;
 import lombok.CustomLog;
 import lombok.Getter;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +21,12 @@ public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 	protected void setup() throws Exception {
 		super.setup();
 		useLineLayer();
+
+		// NEXT The fx shape is not even in the right location for the test
+		DesignLine line1 = (DesignLine) getLineLayer().getShapes().getFirst();
+		Line fxLine1 = (Line) line1.getFxShape();
+		assertThat(fxLine1.getStartX()).isEqualTo(originX - dpu);
+		assertThat(fxLine1.getStartY()).isEqualTo(originY - dpu);
 	}
 
 	@Test
