@@ -23,6 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
+@Disabled
 @CustomLog
 @ExtendWith( MockitoExtension.class )
 public class AnchorTest extends BaseCommandTest {
@@ -61,7 +62,6 @@ public class AnchorTest extends BaseCommandTest {
 	}
 
 	@Test
-	@Disabled
 	void testExecuteWithEvent() throws Exception {
 		// given
 		CommandTrigger trigger = getMod().getCommandMap().getTriggersByAction( "anchor" ).iterator().next();

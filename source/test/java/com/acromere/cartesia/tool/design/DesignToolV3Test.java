@@ -53,7 +53,7 @@ public class DesignToolV3Test extends BaseToolTest {
 		renderer = Mockito.spy( new DesignToolV3Renderer() );
 		tool = Mockito.spy( new DesignToolV3( module, resource, renderer ) );
 
-		// Before calling tool.ready(), reset the module and tool settings
+		// Before calling tool.ready(), reset the module, tool and resource settings
 		getMod().getSettings().delete();
 		tool.getSettings().delete();
 		getProgram().getSettingsManager().getAssetSettings( resource ).delete();
