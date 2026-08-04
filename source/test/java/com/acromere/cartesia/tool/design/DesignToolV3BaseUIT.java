@@ -9,7 +9,6 @@ import com.acromere.xenon.ProgramToolEvent;
 import com.acromere.xenon.resource.Resource;
 import com.acromere.zerra.event.FxEventWatcher;
 import com.acromere.zerra.javafx.Fx;
-import javafx.geometry.Point2D;
 import lombok.CustomLog;
 import lombok.Getter;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +18,6 @@ import java.util.Objects;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
 
-import static com.acromere.cartesia.tool.DesignTool.INCH_PER_CM;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -59,7 +57,7 @@ public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 		eventWatcher.waitForEvent( ProgramToolEvent.READY );
 
 		Fx.run( () -> tool.setViewZoom( 2 ) );
-		Fx.waitForWithExceptions( 1000 );
+		Fx.waitFor( 1000 );
 
 		this.resource = tool.getResource();
 		this.designModel = tool.getDesignModel();
@@ -97,12 +95,12 @@ public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 
 	protected void useBoxLayer() throws TimeoutException, InterruptedException {
 		getDesignModel().findLayerById( "a56cede9-ee12-40d0-a86c-b3701146c0e6" ).ifPresent( l -> Fx.run( () -> getTool().setLayerVisible( l, true ) ) );
-		Fx.waitForWithExceptions( 1000 );
+		Fx.waitFor( 1000 );
 	}
 
 	protected void useLineLayer() throws TimeoutException, InterruptedException {
 		getDesignModel().findLayerById( LINE_LAYER_ID ).ifPresent( l -> Fx.run( () -> getTool().setLayerVisible( l, true ) ) );
-		Fx.waitForWithExceptions( 1000 );
+		Fx.waitFor( 1000 );
 	}
 
 	protected DesignLayer getLineLayer() {
@@ -111,37 +109,37 @@ public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 
 	protected void useEllipseLayer() throws TimeoutException, InterruptedException {
 		getDesignModel().findLayerById( "a56cede9-ee12-40d0-a86c-b3701146c0e9" ).ifPresent( l -> Fx.run( () -> getTool().setLayerVisible( l, true ) ) );
-		Fx.waitForWithExceptions( 1000 );
+		Fx.waitFor( 1000 );
 	}
 
 	protected void useArcLayer() throws TimeoutException, InterruptedException {
 		getDesignModel().findLayerById( "a56cede9-ee12-40d0-a86c-b3701146c0e8" ).ifPresent( l -> Fx.run( () -> getTool().setLayerVisible( l, true ) ) );
-		Fx.waitForWithExceptions( 1000 );
+		Fx.waitFor( 1000 );
 	}
 
 	protected void useQuadLayer() throws TimeoutException, InterruptedException {
 		getDesignModel().findLayerById( "a56cede9-ee12-40d0-a86c-b3701146c0ea" ).ifPresent( l -> Fx.run( () -> getTool().setLayerVisible( l, true ) ) );
-		Fx.waitForWithExceptions( 1000 );
+		Fx.waitFor( 1000 );
 	}
 
 	protected void useCubicLayer() throws TimeoutException, InterruptedException {
 		getDesignModel().findLayerById( "a56cede9-ee12-40d0-a86c-b3701146c0eb" ).ifPresent( l -> Fx.run( () -> getTool().setLayerVisible( l, true ) ) );
-		Fx.waitForWithExceptions( 1000 );
+		Fx.waitFor( 1000 );
 	}
 
 	protected void usePathLayer() throws TimeoutException, InterruptedException {
 		getDesignModel().findLayerById( "a56cede9-ee12-40d0-a86c-b3701146c0ec" ).ifPresent( l -> Fx.run( () -> getTool().setLayerVisible( l, true ) ) );
-		Fx.waitForWithExceptions( 1000 );
+		Fx.waitFor( 1000 );
 	}
 
 	protected void useMarkerLayer() throws TimeoutException, InterruptedException {
 		getDesignModel().findLayerById( "a56cede9-ee12-40d0-a86c-b3701146c0ed" ).ifPresent( l -> Fx.run( () -> getTool().setLayerVisible( l, true ) ) );
-		Fx.waitForWithExceptions( 1000 );
+		Fx.waitFor( 1000 );
 	}
 
 	protected void useTextLayer() throws TimeoutException, InterruptedException {
 		getDesignModel().findLayerById( "a56cede9-ee12-40d0-a86c-b3701146c0ee" ).ifPresent( l -> Fx.run( () -> getTool().setLayerVisible( l, true ) ) );
-		Fx.waitForWithExceptions( 1000 );
+		Fx.waitFor( 1000 );
 	}
 
 }

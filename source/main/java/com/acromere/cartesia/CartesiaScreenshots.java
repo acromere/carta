@@ -68,12 +68,12 @@ public class CartesiaScreenshots extends ProgramScreenshots {
 			robot.mouseMove( b.getCenterX(), b.getCenterY() );
 			robot.mouseClick( MouseButton.PRIMARY );
 		} );
-		Fx.waitFor( FX_WAIT );
+		Fx.waitForDangerously( FX_WAIT );
 	}
 
 	private void runCommand( DesignTool designTool, String command ) {
 		Fx.run( () -> designTool.getCommandContext().submit( designTool, command ) );
-		Fx.waitFor( FX_WAIT );
+		Fx.waitForDangerously( FX_WAIT );
 		getProgram().getTaskManager().waitFor( FX_WAIT );
 	}
 
