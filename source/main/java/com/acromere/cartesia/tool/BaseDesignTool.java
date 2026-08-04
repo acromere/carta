@@ -79,10 +79,6 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	 */
 	protected static final Snap gridSnap = new SnapGrid();
 
-	protected static final DesignEllipse POINT_SELECT_APERTURE = new DesignEllipse( 0, 0, 0 );
-
-	protected static final DesignBox WINDOW_SELECT_APERTURE = new DesignBox( 0, 0, 0, 0 );
-
 	// GUIDES
 
 	/**

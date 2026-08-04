@@ -147,9 +147,8 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 
 	@Test
 	void defaultSelectAperture() {
-		assertThat( renderer.getSelectAperture() ).isInstanceOf( DesignNil.class );
-		assertThat( renderer.getSelectAperture().getOrigin() ).isEqualTo( Point3D.ZERO );
 		assertThat( renderer.getSelectAperture() ).isEqualTo( BaseDesignRenderer.DEFAULT_SELECT_APERTURE );
+		assertThat( renderer.getSelectAperture().getOrigin() ).isEqualTo( Point3D.ZERO );
 	}
 
 	@Test
