@@ -546,6 +546,7 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		if( selectorBounds.contains( shapeBounds ) ) return true;
 
 		// This is the slow but accurate test if the shape is matched when the selector is not a box
+		// NEXT Here is the problem! DesignShape.getFxShape() does not use the renderer shape!
 		Shape fxSelector = selector.getFxShape();
 		Shape fxShape = shape.getFxShape();
 

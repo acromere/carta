@@ -2,6 +2,7 @@ package com.acromere.cartesia.tool.design;
 
 import com.acromere.cartesia.data.DesignLine;
 import com.acromere.cartesia.data.DesignShape;
+import com.acromere.zerra.javafx.Fx;
 import javafx.geometry.Point3D;
 import javafx.scene.shape.Line;
 import lombok.CustomLog;
