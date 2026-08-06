@@ -35,7 +35,7 @@ import static com.acromere.cartesia.TestConstants.TIGHT_TOLERANCE;
 import static com.acromere.cartesia.TestConstants.TOLERANCE;
 import static com.acromere.cartesia.test.Point2DAssert.assertThat;
 import static com.acromere.cartesia.tool.RenderConstants.*;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.ThrowableAssert.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
