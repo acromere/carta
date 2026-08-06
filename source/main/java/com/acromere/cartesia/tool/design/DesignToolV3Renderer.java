@@ -374,12 +374,11 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		if( visible ) {
 			// Add the FX layer to the renderer
 			Pane pane = mapDesignLayer( layer );
-			layers.getChildren().add( determineLayerIndex( layer ), pane );
+			Fx.run( () -> layers.getChildren().add( determineLayerIndex( layer ), pane ) );
 		} else {
 			// Remove the FX layer from the renderer
 			Pane pane = getFxGeometry( layer );
-			if( pane != null ) layers.getChildren().remove( pane );
-			layer.setValue( FX_GEOMETRY, null );
+			if( pane != null ) Fx.run( () -> layers.getChildren().remove( pane ) );
 		}
 
 		super.setLayerVisible( layer, visible );
