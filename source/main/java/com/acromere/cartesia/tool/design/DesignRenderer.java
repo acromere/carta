@@ -1,9 +1,6 @@
 package com.acromere.cartesia.tool.design;
 
-import com.acromere.cartesia.data.Design;
-import com.acromere.cartesia.data.DesignLayer;
-import com.acromere.cartesia.data.DesignModel;
-import com.acromere.cartesia.data.DesignShape;
+import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.tool.Workplane;
 import javafx.beans.property.DoubleProperty;
 import javafx.collections.ObservableList;
@@ -196,4 +193,6 @@ public interface DesignRenderer extends ToolRenderer {
 	 * @param visible The visible flag
 	 */
 	void setVisible( boolean visible );
+
+	<T> T getFxGeometry( DesignDrawable drawable );
 }

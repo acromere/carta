@@ -533,7 +533,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		return super.doFindByShape( selector, intersect );
 	}
 
-		final Pane layersPane() {
+	final Pane layersPane() {
 		return layers;
 	}
 
@@ -694,7 +694,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	}
 
 	@SuppressWarnings( "unchecked" )
-	private <T> T getFxGeometry( DesignDrawable drawable ) {
+	public <T> T getFxGeometry( DesignDrawable drawable ) {
 		return (T)drawableToGeometry.get( new GeometryKey( this, drawable ) );
 	}
 
