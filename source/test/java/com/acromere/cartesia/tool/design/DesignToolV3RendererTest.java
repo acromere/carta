@@ -1,7 +1,10 @@
 package com.acromere.cartesia.tool.design;
 
 import com.acromere.cartesia.DesignUnit;
-import com.acromere.cartesia.data.*;
+import com.acromere.cartesia.data.Design;
+import com.acromere.cartesia.data.DesignLayer;
+import com.acromere.cartesia.data.DesignModel;
+import com.acromere.cartesia.data.DesignModel2D;
 import com.acromere.cartesia.tool.Workplane;
 import com.acromere.curve.math.Constants;
 import com.acromere.zerra.javafx.Fx;
@@ -66,7 +69,7 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 	private ChangeListener<Number> valueListener;
 
 	public DesignToolV3RendererTest() {
-		super(new DesignToolV3Renderer());
+		super( new DesignToolV3Renderer() );
 		this.renderer = (DesignToolV3Renderer)super.getRenderer();
 
 		renderer.resizeRelocate( 0, 0, width, height );
@@ -191,11 +194,12 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 	 */
 	@Test
 	@Tag( WHITE_BOX )
-	void updateDpi() {
+	void updateDpi() throws Exception {
 		// given
 		Design<DesignModel> design = new Design<>( ExampleDesigns.redBlueX() );
 		DesignModel model = design.getDataModel();
 		renderer.setLayerVisible( model.getLayers().getLayers().getFirst(), true );
+		Fx.waitFor( 100 );
 
 		// Verify the FX geometry in the renderer
 		Pane construction = (Pane)renderer.layersPane().getChildren().getFirst();
@@ -220,11 +224,12 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 
 	@Test
 	@Tag( WHITE_BOX )
-	void updateOutputScale() {
+	void updateOutputScale() throws Exception {
 		// given
 		Design<DesignModel> design = new Design<>( ExampleDesigns.redBlueX() );
 		DesignModel model = design.getDataModel();
 		renderer.setLayerVisible( model.getLayers().getLayers().getFirst(), true );
+		Fx.waitFor( 100 );
 
 		// Verify the FX geometry in the renderer
 		Pane construction = (Pane)renderer.layersPane().getChildren().getFirst();
@@ -253,12 +258,13 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 	 */
 	@Test
 	@Tag( WHITE_BOX )
-	void updateDesignUnit() {
+	void updateDesignUnit() throws Exception {
 		// given
 		Design<DesignModel> design = new Design<>( ExampleDesigns.redBlueX() );
 		DesignModel model = design.getDataModel();
 		renderer.setDesign( design );
 		renderer.setLayerVisible( model.getLayers().getLayers().getFirst(), true );
+		Fx.waitFor( 100 );
 
 		// Verify the FX geometry in the renderer
 		Pane construction = (Pane)renderer.layersPane().getChildren().getFirst();
@@ -494,7 +500,7 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 	}
 
 	@Test
-	void setLayerVisible() {
+	void testSetLayerVisible() throws Exception {
 		// given
 		Design<DesignModel2D> design = new Design<>( new DesignModel2D() );
 		DesignModel2D model = design.getDataModel();
@@ -515,7 +521,7 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 		// when
 		renderer.setLayerVisible( layer1, true );
 		renderer.setLayerVisible( layer3, true );
-		// then
+		Fx.waitFor( 100 );
 		assertThat( renderer.getPaneIndex( layer0 ) ).isEqualTo( -1 );
 		assertThat( renderer.getPaneIndex( layer1 ) ).isEqualTo( 1 );
 		assertThat( renderer.getPaneIndex( layer2 ) ).isEqualTo( -1 );
@@ -525,6 +531,7 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 
 		// when
 		renderer.setLayerVisible( layer2, true );
+		Fx.waitFor( 100 );
 		assertThat( renderer.getPaneIndex( layer0 ) ).isEqualTo( -1 );
 		assertThat( renderer.getPaneIndex( layer1 ) ).isEqualTo( 2 );
 		assertThat( renderer.getPaneIndex( layer2 ) ).isEqualTo( 1 );
@@ -534,6 +541,7 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 
 		// when
 		renderer.setLayerVisible( layer4, true );
+		Fx.waitFor( 100 );
 		assertThat( renderer.getPaneIndex( layer0 ) ).isEqualTo( -1 );
 		assertThat( renderer.getPaneIndex( layer1 ) ).isEqualTo( 3 );
 		assertThat( renderer.getPaneIndex( layer2 ) ).isEqualTo( 2 );
@@ -543,7 +551,7 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 
 		// when
 		renderer.setLayerVisible( layer4, false );
-		// then
+		Fx.waitFor( 100 );
 		assertThat( renderer.getPaneIndex( layer0 ) ).isEqualTo( -1 );
 		assertThat( renderer.getPaneIndex( layer1 ) ).isEqualTo( 2 );
 		assertThat( renderer.getPaneIndex( layer2 ) ).isEqualTo( 1 );

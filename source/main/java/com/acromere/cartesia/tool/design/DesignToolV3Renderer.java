@@ -255,7 +255,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		// the point select aperture and the box select aperture. This method is
 		// implemented this way to not restrict future other apertures, but caution
 		// should be taken to ensure that the shapes are not constantly new objects.
-		if( aperture != null ) mapDesignShape( aperture );
+
+		if( aperture != null ) mapDesignAperture( aperture );
 
 		if( aperture == null || aperture == DEFAULT_SELECT_APERTURE ) {
 			// Remove geometry
@@ -528,7 +529,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 	@Override
 	public List<DesignShape> doFindByShape( final DesignShape selector, final boolean intersect ) {
-		mapDesignShape( selector );
+		mapDesignAperture( selector );
 		return super.doFindByShape( selector, intersect );
 	}
 
@@ -666,6 +667,26 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		}
 
 		return pane;
+	}
+
+	@SuppressWarnings( "unchecked" )
+	private Shape mapDesignAperture( DesignShape aperture ) {
+		Shape fxShape = getFxGeometry( aperture );
+
+		// If an FX shape is already bound, don't do it again
+		if( fxShape != null ) return fxShape;
+
+		fxShape = switch( aperture.getType() ) {
+			case BOX -> bindBoxReticle( (DesignBox)aperture );
+			case ELLIPSE -> bindEllipseReticle( (DesignEllipse)aperture );
+			default -> null;
+		};
+		if( fxShape == null ) return null;
+
+		fxShape.setManaged( false );
+		fxShape.setUserData( aperture );
+
+		return fxShape;
 	}
 
 	private Shape mapDesignShape( DesignShape designShape ) {
@@ -981,6 +1002,43 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		);
 		shape.getStrokeDashArray().setAll( dashBinding.get() );
 		dashBinding.addListener( ( _, _, n ) -> shape.getStrokeDashArray().setAll( n ) );
+	}
+
+	private Ellipse bindEllipseReticle( DesignEllipse designEllipse ) {
+		Ellipse ellipse = new Ellipse();
+
+		//bindCommonReticleGeometry( designEllipse, ellipse );
+
+		DesignDoubleBinding originXProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.ORIGIN, v -> v.getOrigin().getX() );
+		DesignDoubleBinding originYProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.ORIGIN, v -> v.getOrigin().getY() );
+		DesignDoubleBinding radiusXProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.RADII, v -> v.getRadii().getX() );
+		DesignDoubleBinding radiusYProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.RADII, v -> v.getRadii().getY() );
+
+		// FIXME This appears to not be working as expected
+		ellipse.centerXProperty().bind( originXProperty.divide( shapeScaleXProperty() ) );
+		ellipse.centerYProperty().bind( originYProperty.divide( shapeScaleYProperty() ) );
+		ellipse.radiusXProperty().bind( radiusXProperty.divide( shapeScaleXProperty() ) );
+		ellipse.radiusYProperty().bind( radiusYProperty.divide( shapeScaleYProperty() ) );
+
+		return ellipse;
+	}
+
+	private Rectangle bindBoxReticle( DesignBox designBox ) {
+		Rectangle box = new Rectangle();
+
+		//bindCommonReticleGeometry( designEllipse, ellipse );
+
+		DesignDoubleBinding originXProperty = new DesignDoubleBinding( designBox, DesignBox.ORIGIN, v -> v.getOrigin().getX() );
+		DesignDoubleBinding originYProperty = new DesignDoubleBinding( designBox, DesignBox.ORIGIN, v -> v.getOrigin().getY() );
+		DesignDoubleBinding widthProperty = new DesignDoubleBinding( designBox, DesignBox.SIZE, v -> v.getSize().getX() );
+		DesignDoubleBinding heightProperty = new DesignDoubleBinding( designBox, DesignBox.SIZE, v -> v.getSize().getY() );
+
+		box.xProperty().bind( shapeScaleXProperty().multiply( originXProperty ) );
+		box.yProperty().bind( shapeScaleYProperty().multiply( originYProperty ) );
+		box.widthProperty().bind( shapeScaleXProperty().multiply( widthProperty ) );
+		box.heightProperty().bind( shapeScaleYProperty().multiply( heightProperty ) );
+
+		return box;
 	}
 
 	private record GeometryKey(DesignRenderer renderer, DesignDrawable drawable) {}

@@ -6,7 +6,6 @@ import javafx.geometry.Point3D;
 import lombok.CustomLog;
 import lombok.Getter;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -15,7 +14,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Getter
 @CustomLog
-@Disabled
 public class DesignToolV3ScreenPointSelectBoxUIT extends DesignToolV3BaseUIT {
 
 	@BeforeEach
@@ -53,8 +51,10 @@ public class DesignToolV3ScreenPointSelectBoxUIT extends DesignToolV3BaseUIT {
 
 		// then
 		List<DesignShape> selected = getTool().getSelectedShapes();
+		// FIXME This correctly failed because the box does not have a fill
+		// Fill paint may not be correctly bound in V3
 		assertThat( selected.getFirst() ).isInstanceOf( DesignBox.class );
-		assertThat( selected.size() ).isEqualTo( 1 );
+		assertThat( selected ).hasSize( 1 );
 	}
 
 	@Test

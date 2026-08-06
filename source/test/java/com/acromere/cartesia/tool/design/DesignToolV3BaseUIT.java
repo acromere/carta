@@ -57,6 +57,9 @@ public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 		tool.addEventHandler( ProgramToolEvent.READY, eventWatcher );
 		eventWatcher.waitForEvent( ProgramToolEvent.READY );
 
+		// Arguably, it shouldn't matter what the DPI is
+		tool.setDpi( 160 );
+
 		Fx.run( () -> tool.setViewZoom( 2 ) );
 		Fx.waitFor( 1000 );
 
