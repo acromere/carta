@@ -693,9 +693,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		return fxShape;
 	}
 
-	@Override
 	@SuppressWarnings( "unchecked" )
-	public <T> T getFxGeometry( DesignDrawable drawable ) {
+	private <T> T getFxGeometry( DesignDrawable drawable ) {
 		return (T)drawableToGeometry.get( new GeometryKey( this, drawable ) );
 	}
 

@@ -521,12 +521,6 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		return getVisibleShapes().stream().filter( shape -> matches( selector, shape, intersect ) ).collect( Collectors.toList() );
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T> T getFxGeometry(DesignDrawable drawable) {
-		if( drawable instanceof DesignShape shape) return (T)shape.getFxShape();
-		return null;
-	}
-
 	/**
 	 * Test if the selector shape should select the specific shape. The intersect
 	 * parameter indicates if the selector needs to contain or just intersect the
@@ -543,6 +537,8 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		Bounds selectorBounds = selector.getSelectBounds();
 		Bounds shapeBounds = shape.getSelectBounds();
 
+		System.out.println( "selector=" + selector + " shape=" + shape );
+
 		// This first test is an optimization for fully excluded shapes
 		if( !selectorBounds.intersects( shapeBounds ) ) return false;
 
@@ -550,13 +546,15 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		if( selectorBounds.contains( shapeBounds ) ) return true;
 
 		// This is the slow but accurate test if the shape is matched when the selector is not a box
-		Shape fxSelector = getFxGeometry( selector );
-		Shape fxShape = getFxGeometry( shape );
+		// NEXT Here is the problem! DesignShape.getFxShape() does not use the renderer shape!
+		Shape fxSelector = selector.getFxShape();
+		Shape fxShape = shape.getFxShape();
 
-		// Bounds values cannot be set
-		//fxSelector.setFill( Color.CYAN );
-		//fxSelector.setStroke( Color.CYAN );
-		//fxSelector.setStrokeWidth( 0 );
+		fxSelector.setFill( Color.CYAN );
+		fxSelector.setStroke( Color.CYAN );
+		fxSelector.setStrokeWidth( 0 );
+
+		System.out.println( "fxselector=" + fxSelector + " fxshape=" + fxShape );
 
 		// Check if the selector should match the shape
 		if( intersect ) {
