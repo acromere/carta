@@ -1016,15 +1016,17 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	private Ellipse bindEllipseAperture( DesignEllipse designEllipse ) {
 		Ellipse ellipse = new Ellipse();
 
-		//bindCommonReticleGeometry( designEllipse, ellipse );
+		// FIXME A specific aperture scale property should probably be used here
+		//bindCommonApertureGeometry( designEllipse, ellipse );
 
 		DesignDoubleBinding originXProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
 		DesignDoubleBinding originYProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
 		DesignDoubleBinding radiusXProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.RADII, v -> v.getRadii() != null ? v.getRadii().getX() : 0.0 );
 		DesignDoubleBinding radiusYProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.RADII, v -> v.getRadii() != null ? v.getRadii().getY() : 0.0 );
 
-		ellipse.centerXProperty().bind(  originXProperty  );
-		ellipse.centerYProperty().bind(  originYProperty  );
+		ellipse.centerXProperty().bind( originXProperty );
+		ellipse.centerYProperty().bind( originYProperty );
+		// FIXME A specific aperture scale property should probably be used here
 		ellipse.radiusXProperty().bind( shapeScaleXProperty().multiply( radiusXProperty ) );
 		ellipse.radiusYProperty().bind( shapeScaleYProperty().multiply( radiusYProperty ) );
 
@@ -1034,7 +1036,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	private Rectangle bindBoxAperture( DesignBox designBox ) {
 		Rectangle box = new Rectangle();
 
-		//bindCommonReticleGeometry( designEllipse, ellipse );
+		// FIXME A specific aperture scale property should probably be used here
+		//bindCommonApertureGeometry( designEllipse, ellipse );
 
 		DesignDoubleBinding originXProperty = new DesignDoubleBinding( designBox, DesignBox.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
 		DesignDoubleBinding originYProperty = new DesignDoubleBinding( designBox, DesignBox.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
