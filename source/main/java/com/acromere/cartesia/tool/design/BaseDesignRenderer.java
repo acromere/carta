@@ -16,6 +16,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
+import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -523,7 +524,7 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 
 	@Override
 	@SuppressWarnings( "unchecked" )
-	public <T> T getFxGeometry( DesignDrawable drawable ) {
+	public <T extends Node> T getFxGeometry( DesignDrawable drawable ) {
 		if( drawable instanceof DesignShape shape ) return (T)shape.getFxShape();
 		return null;
 	}
@@ -544,7 +545,7 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		Bounds selectorBounds = selector.getSelectBounds();
 		Bounds shapeBounds = shape.getSelectBounds();
 
-		//System.out.println( "selectorB=" + selectorBounds + " shapeB=" + shapeBounds );
+		System.out.println( "selectorB=" + selectorBounds + " shapeB=" + shapeBounds );
 
 		// This first test is an optimization for fully excluded shapes
 		if( !selectorBounds.intersects( shapeBounds ) ) return false;
@@ -556,7 +557,7 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		Shape fxSelector = getFxGeometry( selector );
 		Shape fxShape = getFxGeometry( shape );
 
-		//System.out.println( "selectorS=" + fxSelector + " shapeS=" + fxShape );
+		System.out.println( "selectorS=" + fxSelector + " shapeS=" + fxShape );
 
 		// Check if the selector should match the shape
 		if( intersect ) {

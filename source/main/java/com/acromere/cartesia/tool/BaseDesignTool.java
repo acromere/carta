@@ -444,17 +444,18 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 		getDesignContext().selectedShapes().addListener( this::onSelectedShapesChanged );
 
-		// Select aperture
+		// Select aperture ---------------------------------------------------------
 
 		if( isShowHotspotEnabled() ) {
 			double radius = model.calcDesignUnit().from( selectApertureSize, selectApertureUnit );
 			POINT_SELECT_APERTURE.setRadius( radius );
-			getReferenceLayer().addShape( POINT_SELECT_APERTURE );
+			//getReferenceLayer().addShape( POINT_SELECT_APERTURE );
+			getRenderer().setSelectAperture( POINT_SELECT_APERTURE );
 		}
 		addEventFilter(
 			MouseEvent.MOUSE_MOVED, e -> {
 				// Just update the point select aperture if the hotspot is enabled
-				if( isShowHotspotEnabled() ) POINT_SELECT_APERTURE.setOrigin( screenToWorld( e.getX(), e.getY(), e.getZ() ) );
+				if( isShowHotspotEnabled() ) setSelectAperture( screenToWorld( e.getX(), e.getY(), e.getZ() ) );
 			}
 		);
 
@@ -1146,7 +1147,10 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		getDesignContext().setSelectedShapes( shapes, selected );
 	}
 
-	// NEXT Work on selecting shapes
+	@Override
+	public void setSelectAperture( Point3D mouse ) {
+		setSelectAperture( mouse, mouse );
+	}
 
 	/**
 	 * Set the select aperture window. Points are specified in screen coordinates.
@@ -1156,7 +1160,10 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	 */
 	@Override
 	public void setSelectAperture( Point3D anchor, Point3D mouse ) {
-		// FIXME DesignTool.setSelectAperture(Point3D,Point3D) may not be used in the V3 tool
+		DesignShape selectAperture = renderer.getSelectAperture();
+
+		// TODO Update the current aperture location
+		if( selectAperture != null ) selectAperture.setOrigin( mouse );
 	}
 
 	@Override
@@ -1222,8 +1229,8 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	}
 
 	protected List<DesignShape> worldPointFind( Point3D point ) {
-		renderer.getSelectAperture().setOrigin( point );
-		return renderer.doFindByShape( renderer.getSelectAperture(), true );
+		POINT_SELECT_APERTURE.setOrigin( point );
+		return renderer.doFindByShape( POINT_SELECT_APERTURE, true );
 	}
 
 	/**
