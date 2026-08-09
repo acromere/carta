@@ -198,6 +198,9 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		viewCenterTransform = new Translate( 0, 0 );
 		world.getTransforms().setAll( viewZoomTransform, viewRotateTransform, viewCenterTransform );
 
+		// Create and set the screen transforms
+		aperture.getTransforms().setAll( new Scale( 1, 1 ), viewRotateTransform, viewCenterTransform );
+
 		// Configure the renderer center definition. The renderer center maintains
 		// the center point in the parent coordinate system regardless of the parent
 		// size, view zoom or output scale. This is important when converting
