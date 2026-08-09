@@ -183,8 +183,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		world = new StackPane();
 
 		// The screen scale container
-		// Contains the orientation indicator
-		screen = new Pane();
+		// Contains the aperture and orientation indicator panes
+		screen = new StackPane();
 
 		// Configure the shape scale definition. The shape scale includes the unit
 		// scale, DPI and the output scale and is used to modify the shape geometry.
@@ -238,7 +238,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		// Important: Adding the children last ensures that they use all the values
 		// set above. This fixes a bug where the children were added earlier in the
 		// method causing them to use incorrect values of zero for width and height.
-		world.getChildren().addAll( grid, layers );
+		world.getChildren().addAll( grid, layers, preview, reference );
 		screen.getChildren().addAll( aperture );
 		getChildren().addAll( world, screen );
 	}

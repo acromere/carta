@@ -101,6 +101,7 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 		assertBounds( renderer.getPreview(), 0, 0, width, height );
 		assertBounds( renderer.getReference(), 0, 0, width, height );
 		assertBounds( renderer.getWorld(), 0, 0, width, height );
+		assertBounds( renderer.getAperture(), 0, 0, width, height );
 		assertBounds( renderer, 0, 0, width, height );
 	}
 
