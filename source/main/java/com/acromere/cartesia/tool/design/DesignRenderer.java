@@ -1,12 +1,12 @@
 package com.acromere.cartesia.tool.design;
 
+import com.acromere.cartesia.DesignUnit;
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.tool.Workplane;
 import javafx.beans.property.DoubleProperty;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.shape.Shape;
 
 import java.util.Collection;
 import java.util.List;
@@ -184,6 +184,8 @@ public interface DesignRenderer extends ToolRenderer {
 	void setViewZoomY( double zoom );
 
 	DoubleProperty viewZoomYProperty();
+
+	void setSelectApertureUnit( DesignUnit unit );
 
 	void setSelectAperture( DesignShape aperture );
 

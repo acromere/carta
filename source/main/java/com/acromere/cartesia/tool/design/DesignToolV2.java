@@ -252,7 +252,7 @@ public class DesignToolV2 extends BaseDesignTool {
 			MouseEvent.MOUSE_MOVED, e -> {
 				if( getCommandContext().isEmptyMode() ) {
 					Point3D p = new Point3D( e.getX(), e.getY(), e.getZ() );
-					setSelectAperture( p, p );
+					this.moveSelectAperture( p, p );
 				}
 			}
 		);
@@ -536,7 +536,7 @@ public class DesignToolV2 extends BaseDesignTool {
 	 * @param mouse The mouse point
 	 */
 	@Override
-	public void setSelectAperture( Point3D anchor, Point3D mouse ) {
+	public void moveSelectAperture( Point3D anchor, Point3D mouse ) {
 		if( anchor == null || mouse == null ) {
 			renderer.setSelectAperture( null );
 			return;

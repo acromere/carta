@@ -88,7 +88,7 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 
 		assertThat( renderer.getDpiX() ).isEqualTo( DEFAULT_DPI );
 		assertThat( renderer.getDpiY() ).isEqualTo( DEFAULT_DPI );
-		assertThat( renderer.getUnitScale() ).isEqualTo( DEFAULT_UNIT_SCALE );
+		assertThat( renderer.getDesignUnitScale() ).isEqualTo( DEFAULT_UNIT_SCALE );
 		assertThat( renderer.getViewRotate() ).isEqualTo( DEFAULT_ROTATE );
 		assertThat( renderer.getViewZoom() ).isEqualTo( DEFAULT_ZOOM );
 		assertThat( renderer.getViewCenter() ).isEqualTo( DEFAULT_CENTER );
@@ -625,7 +625,7 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 		double expectedShapeScaleY = dpi * unitScale * outputScale;
 
 		renderer.setDpi( dpi, dpi );
-		renderer.setUnitScale( unitScale );
+		renderer.setDesignUnitScale( unitScale );
 		renderer.setOutputScale( outputScale, outputScale );
 
 		// when
@@ -751,11 +751,11 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 		renderer.setDpi( DEFAULT_DPI, DEFAULT_DPI );
 
 		// Unit scale
-		renderer.setUnitScale( 1 );
+		renderer.setDesignUnitScale( 1 );
 		gz = DEFAULT_DPI * 1;
 		screenToWorldTransform = renderer.getScreenToWorldTransform();
 		assertThat( screenToWorldTransform.transform( 500 + 1 * gz, 500 - 1 * gz ) ).isCloseTo( new Point2D( 1, 1 ) );
-		renderer.setUnitScale( DEFAULT_UNIT_SCALE );
+		renderer.setDesignUnitScale( DEFAULT_UNIT_SCALE );
 
 		// Output scale
 		renderer.setOutputScale( 3, 3 );
@@ -968,11 +968,11 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 		renderer.setDpi( DEFAULT_DPI, DEFAULT_DPI );
 
 		// Unit scale
-		renderer.setUnitScale( 1 );
+		renderer.setDesignUnitScale( 1 );
 		gz = DEFAULT_DPI * 1;
 		worldToScreenTransform = renderer.getWorldToScreenTransform();
 		assertThat( worldToScreenTransform.transform( 1, 1 ) ).isCloseTo( new Point2D( 500 + 1 * gz, 500 - 1 * gz ) );
-		renderer.setUnitScale( DEFAULT_UNIT_SCALE );
+		renderer.setDesignUnitScale( DEFAULT_UNIT_SCALE );
 
 		// Output scale
 		renderer.setOutputScale( 3, 3 );

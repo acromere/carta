@@ -119,11 +119,13 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	@Getter
 	final Pane aperture;
 
+	private final DoubleProperty apertureUnitScale;
+
+	private final DoubleProperty designUnitScale;
+
 	private final DoubleProperty shapeScaleX;
 
 	private final DoubleProperty shapeScaleY;
-
-	private final DoubleProperty unitScale;
 
 	@Getter( AccessLevel.PACKAGE )
 	private final DoubleProperty rendererCenterX;
@@ -157,9 +159,11 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	DesignToolV3Renderer() {
 		super();
 
+		apertureUnitScale = new SimpleDoubleProperty( 1.0 );
+
+		designUnitScale = new SimpleDoubleProperty( 1.0 );
 		shapeScaleX = new SimpleDoubleProperty( 1.0 );
 		shapeScaleY = new SimpleDoubleProperty( 1.0 );
-		unitScale = new SimpleDoubleProperty( 1.0 );
 		rendererCenterX = new SimpleDoubleProperty( 0.0 );
 		rendererCenterY = new SimpleDoubleProperty( 0.0 );
 
@@ -189,8 +193,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		// Configure the shape scale definition. The shape scale includes the unit
 		// scale, DPI and the output scale and is used to modify the shape geometry.
 		// shapeScale = unitScale * dpi * outputScale
-		shapeScaleX.bind( unitScaleProperty().multiply( dpiXProperty() ).multiply( outputScaleXProperty() ) );
-		shapeScaleY.bind( unitScaleProperty().multiply( dpiYProperty() ).multiply( outputScaleYProperty() ) );
+		shapeScaleX.bind( designUnitScaleProperty().multiply( dpiXProperty() ).multiply( outputScaleXProperty() ) );
+		shapeScaleY.bind( designUnitScaleProperty().multiply( dpiYProperty() ).multiply( outputScaleYProperty() ) );
 
 		// Create and set the world transforms
 		viewZoomTransform = new Scale( 1, -1 );
@@ -198,8 +202,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		viewCenterTransform = new Translate( 0, 0 );
 		world.getTransforms().setAll( viewZoomTransform, viewRotateTransform, viewCenterTransform );
 
-		// Create and set the screen transforms
-		aperture.getTransforms().setAll( new Scale( 1, 1 ), viewRotateTransform, viewCenterTransform );
+		// Aperture coordinates should stay in screen coordinates
+		aperture.getTransforms().setAll( new Scale( 1, 1 ), new Rotate( 0, 0, 0 ), new Translate( 0, 0 ) );
 
 		// Configure the renderer center definition. The renderer center maintains
 		// the center point in the parent coordinate system regardless of the parent
@@ -244,6 +248,30 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		world.getChildren().addAll( grid, layers, preview, reference );
 		screen.getChildren().addAll( aperture );
 		getChildren().addAll( world, screen );
+	}
+
+	double getApertureUnitScale() {
+		return apertureUnitScale.get();
+	}
+
+	void setApertureUnitScale( double apertureUnitScale ) {
+		this.apertureUnitScale.set( apertureUnitScale );
+	}
+
+	private DoubleProperty apertureUnitScaleProperty() {
+		return apertureUnitScale;
+	}
+
+	/**
+	 * Set the select aperture unit. The select aperture unit is the human unit
+	 * for the select aperture, commonly in millimeters or inches. This method
+	 * uses the select aperture unit to set the aperture unit scale, in DPI units,
+	 * used to render the aperture geometry.
+	 *
+	 * @param unit The select aperture unit.
+	 */
+	public void setSelectApertureUnit( DesignUnit unit ) {
+		setApertureUnitScale( unit.to( 1, DesignUnit.IN ) );
 	}
 
 	/**
@@ -569,20 +597,20 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		return shapeScaleY;
 	}
 
-	double getUnitScale() {
-		return unitScale.get();
+	double getDesignUnitScale() {
+		return designUnitScale.get();
 	}
 
-	void setUnitScale( double unitScale ) {
-		this.unitScale.set( unitScale );
+	void setDesignUnitScale( double designUnitScale ) {
+		this.designUnitScale.set( designUnitScale );
 	}
 
-	private DoubleProperty unitScaleProperty() {
-		return unitScale;
+	private DoubleProperty designUnitScaleProperty() {
+		return designUnitScale;
 	}
 
 	void setDesignUnit( DesignUnit unit ) {
-		setUnitScale( unit.to( 1, DesignUnit.IN ) );
+		setDesignUnitScale( unit.to( 1, DesignUnit.IN ) );
 	}
 
 	@Note( Note.THREAD_SAFE )
@@ -1030,8 +1058,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		ellipse.centerXProperty().bind( originXProperty );
 		ellipse.centerYProperty().bind( originYProperty );
 		// FIXME A specific aperture scale property should probably be used here
-		ellipse.radiusXProperty().bind( shapeScaleXProperty().multiply( radiusXProperty ) );
-		ellipse.radiusYProperty().bind( shapeScaleYProperty().multiply( radiusYProperty ) );
+		ellipse.radiusXProperty().bind(  radiusXProperty  );
+		ellipse.radiusYProperty().bind(  radiusYProperty  );
 
 		return ellipse;
 	}

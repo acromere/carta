@@ -398,6 +398,8 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 
 	// Selecting -----------------------------------------------------------------
 
+	public void setSelectApertureUnit( DesignUnit unit ) {}
+
 	@Override
 	public void setSelectAperture( DesignShape aperture ) {
 		if( aperture == null || aperture == DEFAULT_SELECT_APERTURE ) {

@@ -387,7 +387,7 @@ public class CommandContext implements EventHandler<KeyEvent> {
 		Fx.run( () -> {
 			DesignTool tool = getLastUserTool();
 			if( tool != null ) {
-				tool.setSelectAperture( null, null );
+				tool.moveSelectAperture( null, null );
 				tool.clearSelectedShapes();
 			}
 			setInputMode( CommandContext.Input.NONE );

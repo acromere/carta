@@ -412,9 +412,9 @@ public interface DesignTool extends RenderConstants, ToolRenderer {
 
 	BooleanProperty gridSnapEnabled();
 
-	void setSelectAperture( Point3D mouse );
+	void moveSelectAperture( Point3D mouse );
 
-	void setSelectAperture( Point3D anchor, Point3D mouse );
+	void moveSelectAperture( Point3D anchor, Point3D mouse );
 
 	List<DesignShape> screenPointSyncFindOne( Point3D mouse );
 

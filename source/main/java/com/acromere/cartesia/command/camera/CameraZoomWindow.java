@@ -79,7 +79,7 @@ public class CameraZoomWindow extends CameraCommand {
 		Point3D mouse = new Point3D( event.getX(), event.getY(), event.getZ() );
 
 		if( getStep() == 2 && event.getEventType().equals( MouseEvent.MOUSE_MOVED ) ) {
-			tool.setSelectAperture( anchor, mouse );
+			tool.moveSelectAperture( anchor, mouse );
 		}
 	}
 

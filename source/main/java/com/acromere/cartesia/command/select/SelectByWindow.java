@@ -68,10 +68,10 @@ public abstract class SelectByWindow extends SelectCommand {
 		Point3D mouse = new Point3D( event.getX(), event.getY(), event.getZ() );
 
 		if( event.getEventType().equals( MouseEvent.MOUSE_DRAGGED ) ) {
-			tool.setSelectAperture( anchor, mouse );
+			tool.moveSelectAperture( anchor, mouse );
 			event.consume();
 		} else if( getStep() == 2 && event.getEventType().equals( MouseEvent.MOUSE_MOVED ) ) {
-			tool.setSelectAperture( anchor, mouse );
+			tool.moveSelectAperture( anchor, mouse );
 			event.consume();
 		} else if( event.getEventType().equals( MouseEvent.MOUSE_RELEASED ) ) {
 			// Submit a Value command to pass the point back to this command

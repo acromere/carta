@@ -447,15 +447,16 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		// Select aperture ---------------------------------------------------------
 
 		if( isShowHotspotEnabled() ) {
-			double radius = model.calcDesignUnit().from( selectApertureSize, selectApertureUnit );
-			POINT_SELECT_APERTURE.setRadius( radius );
-			//getReferenceLayer().addShape( POINT_SELECT_APERTURE );
 			getRenderer().setSelectAperture( POINT_SELECT_APERTURE );
+			// NEXT We can either direct convert the radius here or set the aperture unit in the renderer
+			// but don't do both
+			getRenderer().setSelectApertureUnit( selectApertureUnit );
+			POINT_SELECT_APERTURE.setRadius( 1.0 );
 		}
 		addEventFilter(
 			MouseEvent.MOUSE_MOVED, e -> {
 				// Just update the point select aperture if the hotspot is enabled
-				if( isShowHotspotEnabled() ) setSelectAperture( screenToWorld( e.getX(), e.getY(), e.getZ() ) );
+				if( isShowHotspotEnabled() ) moveSelectAperture( new Point3D( e.getX(), e.getY(), e.getZ() ) );
 			}
 		);
 
@@ -1148,8 +1149,8 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	}
 
 	@Override
-	public void setSelectAperture( Point3D mouse ) {
-		setSelectAperture( mouse, mouse );
+	public void moveSelectAperture( Point3D mouse ) {
+		moveSelectAperture( mouse, mouse );
 	}
 
 	/**
@@ -1159,7 +1160,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	 * @param mouse The mouse point
 	 */
 	@Override
-	public void setSelectAperture( Point3D anchor, Point3D mouse ) {
+	public void moveSelectAperture( Point3D anchor, Point3D mouse ) {
 		DesignShape selectAperture = renderer.getSelectAperture();
 
 		// TODO Update the current aperture location
