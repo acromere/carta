@@ -15,6 +15,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Transform;
@@ -1227,8 +1228,23 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 		// then
 		assertThat( fxEllipse.getCenterX() ).isEqualTo( 0 );
 		assertThat( fxEllipse.getCenterY() ).isEqualTo( 0 );
-		assertThat( fxEllipse.getRadiusX() ).isEqualTo( 288.0 );
-		assertThat( fxEllipse.getRadiusY() ).isEqualTo( 288.0 );
+		assertThat( fxEllipse.getRadiusX() ).isEqualTo( 288 );
+		assertThat( fxEllipse.getRadiusY() ).isEqualTo( 288 );
+	}
+
+	@Test
+	void bindBoxAperture() {
+		// given
+		DesignBox designBox = new DesignBox( 0, 0, 3, 5 );
+
+		// when
+		Rectangle fxBox = renderer.bindBoxAperture( designBox );
+
+		// then
+		assertThat( fxBox.getX() ).isEqualTo( 0 );
+		assertThat( fxBox.getY() ).isEqualTo( 0 );
+		assertThat( fxBox.getWidth() ).isEqualTo( 288 );
+		assertThat( fxBox.getHeight() ).isEqualTo( 480 );
 	}
 
 	private static Stream<Arguments> worldToScreenDoesNotChangeWithDifferentOutputScales() {

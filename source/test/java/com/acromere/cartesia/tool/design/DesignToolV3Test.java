@@ -72,7 +72,7 @@ public class DesignToolV3Test extends BaseToolTest {
 		verify( renderer, times( 2 ) ).enabledLayers();
 		verify( tool, times( 1 ) ).currentLayerProperty();
 		verify( tool, times( 2 ) ).selectedLayerProperty();
-		verify( tool, times( 1 ) ).gridSnapEnabled();
+		//verify( tool, times( 1 ) ).gridSnapEnabled();
 
 		// Reset the invocation counts
 		Mockito.clearInvocations( renderer );

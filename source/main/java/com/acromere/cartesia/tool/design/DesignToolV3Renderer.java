@@ -1077,7 +1077,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		return ellipse;
 	}
 
-	private Rectangle bindBoxAperture( DesignBox designBox ) {
+	Rectangle bindBoxAperture( DesignBox designBox ) {
 		Rectangle box = new Rectangle();
 
 		//bindCommonApertureGeometry( designEllipse, ellipse );
