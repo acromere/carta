@@ -240,6 +240,12 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		renderer.setOutputScaleY( Screen.getPrimary().getOutputScaleY() );
 
 		this.renderer = renderer;
+		renderer.setApertureDrawPaint( DEFAULT_APERTURE_DRAW );
+		renderer.setApertureFillPaint( DEFAULT_APERTURE_FILL );
+//		renderer.setPreviewDrawPaint( DEFAULT_PREVIEW_DRAW );
+//		renderer.setPreviewFillPaint( DEFAULT_PREVIEW_FILL );
+//		renderer.setSelectedDrawPaint( DEFAULT_SELECTED_DRAW );
+//		renderer.setSelectedFillPaint( DEFAULT_SELECTED_FILL );
 
 		// Initially the toast is shown and the renderer is hidden
 		this.toast.setVisible( true );
@@ -247,13 +253,14 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 		// Initialize the reticule
 		reticule = new SimpleObjectProperty<>( DEFAULT_RETICULE );
-		selectTolerance = new SimpleObjectProperty<>( DEFAULT_SELECT_TOLERANCE );
-
-		setSelectTolerance( selectTolerance.get() );
 
 		// Initialize the cursor to the default cursor
-		// There is debate whether this should be the reticule
+		// There is debate whether this should be the pointer (default) or the reticule
 		setCursor( Cursor.DEFAULT );
+
+		// Initialize the select tolerance
+		selectTolerance = new SimpleObjectProperty<>( DEFAULT_SELECT_TOLERANCE );
+		updateSelectApertureRadius( selectTolerance.getValue() );
 
 		selectedLayer = new SimpleObjectProperty<>();
 		currentLayer = new SimpleObjectProperty<>();
@@ -302,10 +309,14 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		DesignModel model = design.getDataModel();
 
 		// Set the current layer
-		setCurrentLayer( getDesign().getDataModel().getAllLayers().getFirst() );
+		setCurrentLayer( model.getAllLayers().getFirst() );
 
 		// Fire the design-ready event (should be done after renderer.setDesign)
 		fireEvent( new DesignToolEvent( this, DesignToolEvent.DESIGN_READY ) );
+
+		// Local property listeners ------------------------------------------------
+
+		selectTolerance.addListener( ( p, o, n ) -> updateSelectApertureRadius( n ) );
 
 		// Configure the undo manager
 		getResource().getUndoManager().undoAvailableProperty().addListener( ( _, _, _ ) -> getUndoAction().updateEnabled() );
@@ -360,11 +371,11 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		Set<String> visibleLayerIds = settings.get( VISIBLE_LAYERS, new TypeReference<>() {}, Set.of() );
 		getDesignModel().getAllLayers().forEach( l -> setLayerVisible( l, visibleLayerIds.contains( l.getId() ) ) );
 
-		// Restore the grid-visible flag
-		setGridVisible( Boolean.parseBoolean( settings.get( GRID_VISIBLE, DEFAULT_GRID_VISIBLE ) ) );
+		// Bind the grid-visible flag
+		settings.bind( GRID_VISIBLE, DEFAULT_GRID_VISIBLE, e -> Fx.run( () -> setGridVisible( Boolean.parseBoolean( e.getNewValue().toString() ) ) ) );
 
-		// Restore the grid-snap enabled flag
-		setGridSnapEnabled( Boolean.parseBoolean( settings.get( GRID_SNAP_ENABLED, DEFAULT_GRID_SNAP_ENABLED ) ) );
+		// Bind the grid-snap enabled flag
+		settings.bind( GRID_SNAP_ENABLED, DEFAULT_GRID_SNAP_ENABLED, e -> Fx.run( () -> setGridSnapEnabled( Boolean.parseBoolean( e.getNewValue().toString() ) ) ) );
 
 		//		// Restore the reference view visibility
 		//		setReferenceLayerVisible( Boolean.parseBoolean( settings.get( REFERENCE_LAYER_VISIBLE, Boolean.TRUE.toString() ) ) );
@@ -424,7 +435,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		// Add current layer property listener
 		currentLayerProperty().addListener( ( p, o, n ) -> settings.set( CURRENT_LAYER, n.getId() ) );
 
-		// Add the selected layer property listener to show its properties page
+		// Add the selected layer property listener to show its property page
 		selectedLayerProperty().addListener( ( p, o, n ) -> showPropertiesPage( n ) );
 
 		// Add the selected layer property listener to store the selected layer in the settings
@@ -433,12 +444,6 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		// Add current view property listener
 		currentViewProperty().addListener( ( p, o, n ) -> settings.set( CURRENT_VIEW, n.getId() ) );
 
-		// Add grid visible property listener
-		gridVisible().addListener( ( p, o, n ) -> settings.set( GRID_VISIBLE, String.valueOf( n ) ) );
-
-		// Add grid visible property listener
-		gridSnapEnabled().addListener( ( p, o, n ) -> settings.set( GRID_SNAP_ENABLED, String.valueOf( n ) ) );
-
 		//		// Add reference points visible property listener
 		//		designPane.referenceLayerVisible().addListener( ( p, o, n ) -> settings.set( REFERENCE_LAYER_VISIBLE, String.valueOf( n ) ) );
 
@@ -446,17 +451,10 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 		// Select aperture ---------------------------------------------------------
 
-		if( isShowHotspotEnabled() ) {
-			getRenderer().setSelectAperture( POINT_SELECT_APERTURE );
-			// NEXT We can either direct convert the radius here or set the aperture unit in the renderer
-			// but don't do both
-			getRenderer().setSelectApertureUnit( selectApertureUnit );
-			POINT_SELECT_APERTURE.setRadius( 1.0 );
-		}
 		addEventFilter(
 			MouseEvent.MOUSE_MOVED, e -> {
 				// Just update the point select aperture if the hotspot is enabled
-				if( isShowHotspotEnabled() ) moveSelectAperture( new Point3D( e.getX(), e.getY(), e.getZ() ) );
+				if( isShowHotspotEnabled() ) moveSelectAperture( renderer.screenToWorld( e.getX(), e.getY(), e.getZ() ) );
 			}
 		);
 
@@ -469,7 +467,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		// Update the design context when the mouse moves
 		addEventFilter( MouseEvent.MOUSE_MOVED, e -> getCommandContext().setMouse( e ) );
 
-		// TODO Should selected layer be stored in the tool settings or the asset settings?
+		// TODO Should selected layer be stored in the tool settings or the resource settings?
 		if( getSelectedLayer() == null ) setSelectedLayer( getCurrentLayer() );
 
 		// Swap the toast for the renderer
@@ -726,12 +724,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 	@Override
 	public void setSelectTolerance( DesignValue aperture ) {
-		selectTolerance().set( aperture );
-		if( getDesignModel() != null  ) {
-			DesignUnit modelUnit = getDesignModel().calcDesignUnit();
-			double radius = aperture.unit().to( aperture.value(), modelUnit );
-			POINT_SELECT_APERTURE.setRadius( radius );
-		}
+		selectTolerance.set( aperture );
 	}
 
 	@Override
@@ -1277,6 +1270,20 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 			selectedShapes.setAll( shapes );
 		}
 		log.atConfig().log( "Shapes selected={0}", shapes );
+	}
+
+	private void updateSelectApertureRadius( DesignValue selectTolerance ) {
+		renderer.setSelectTolerance( selectTolerance );
+
+		DesignModel model = getDesignModel();
+		if( model == null ) {
+			POINT_SELECT_APERTURE.setRadius( selectTolerance.value() );
+		} else {
+			// NOTE The renderer knows the model design unit so we could delegate
+			// this work down to the renderer if we don't want to do it here
+			double radius = selectTolerance.unit().to( selectTolerance.value(), model.calcDesignUnit() );
+			POINT_SELECT_APERTURE.setRadius( radius );
+		}
 	}
 
 	private CommandPrompt getCommandPrompt() {

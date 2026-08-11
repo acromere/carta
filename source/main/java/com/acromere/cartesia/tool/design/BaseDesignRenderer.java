@@ -398,7 +398,7 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 
 	// Selecting -----------------------------------------------------------------
 
-	public void setSelectApertureUnit( DesignUnit unit ) {}
+	public void setSelectTolerance( DesignValue value ) {}
 
 	@Override
 	public void setSelectAperture( DesignShape aperture ) {

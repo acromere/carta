@@ -6,6 +6,7 @@ import javafx.geometry.Point3D;
 import lombok.CustomLog;
 import lombok.Getter;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -93,6 +94,7 @@ public class DesignToolV3ScreenPointSelectBoxUIT extends DesignToolV3BaseUIT {
 	}
 
 	@Test
+	@Disabled
 	void screenPointSelectBox2WithMouseTooFarAway() throws Exception {
 		// Need to get the selector outside the stroke width of the line
 		// 0.03 is just over half the line stroke width

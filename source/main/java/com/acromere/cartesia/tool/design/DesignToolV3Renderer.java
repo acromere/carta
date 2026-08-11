@@ -2,6 +2,7 @@ package com.acromere.cartesia.tool.design;
 
 import com.acromere.annotation.Note;
 import com.acromere.cartesia.DesignUnit;
+import com.acromere.cartesia.DesignValue;
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.tool.Workplane;
 import com.acromere.cartesia.tool.design.binding.DesignBinding;
@@ -21,6 +22,7 @@ import javafx.geometry.Point3D;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -203,7 +205,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		world.getTransforms().setAll( viewZoomTransform, viewRotateTransform, viewCenterTransform );
 
 		// Aperture coordinates should stay in screen coordinates
-		aperture.getTransforms().setAll( new Scale( 1, 1 ), new Rotate( 0, 0, 0 ), new Translate( 0, 0 ) );
+		aperture.getTransforms().setAll( new Scale( 1, -1 ), new Rotate( 0, 0, 0 ), new Translate( 0, 0 ) );
+		aperture.getChildren().add( new Circle( 100, -100, 10, Color.GREEN ) );
 
 		// Configure the renderer center definition. The renderer center maintains
 		// the center point in the parent coordinate system regardless of the parent
@@ -248,6 +251,11 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		world.getChildren().addAll( grid, layers, preview, reference );
 		screen.getChildren().addAll( aperture );
 		getChildren().addAll( world, screen );
+
+		// NEXT Where is my select aperture?
+		mapSelectAperture( DEFAULT_SELECT_APERTURE );
+		Ellipse fxAperture = getFxGeometry( DEFAULT_SELECT_APERTURE );
+		fxAperture.boundsInParentProperty().addListener( ( p, o, n ) -> log.atWarn().log( "aperture pos={0},{1} r={2}", fxAperture, fxAperture.getCenterY(), fxAperture.getRadiusX() ) );
 	}
 
 	double getApertureUnitScale() {
@@ -263,15 +271,15 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	}
 
 	/**
-	 * Set the select aperture unit. The select aperture unit is the human unit
+	 * Set the select aperture value. The select aperture value is the human value
 	 * for the select aperture, commonly in millimeters or inches. This method
-	 * uses the select aperture unit to set the aperture unit scale, in DPI units,
+	 * uses the select aperture value to set the aperture unit scale, in DPI units,
 	 * used to render the aperture geometry.
 	 *
-	 * @param unit The select aperture unit.
+	 * @param value The select aperture value.
 	 */
-	public void setSelectApertureUnit( DesignUnit unit ) {
-		setApertureUnitScale( unit.to( 1, DesignUnit.IN ) );
+	public void setSelectTolerance( DesignValue value ) {
+		setApertureUnitScale( value.unit().to( 1, DesignUnit.IN ) );
 	}
 
 	/**
@@ -682,9 +690,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 				if( e.getEventType() == NodeEvent.VALUE_CHANGED ) return;
 
 				if( e.getEventType() == NodeEvent.CHILD_ADDED ) {
-					DesignShape shape = e.getNewValue();
-					Shape fxShape = mapDesignShape( shape );
-					putFxGeometry( shape, fxShape );
+					Shape fxShape = mapDesignShape( e.getNewValue() );
 					Fx.run( () -> pane.getChildren().add( fxShape ) );
 				} else if( e.getEventType() == NodeEvent.CHILD_REMOVED ) {
 					Shape shape = getFxGeometry( e.getOldValue() );
@@ -695,8 +701,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 		designLayer.getShapes().forEach( shape -> {
 			Shape fxShape = mapDesignShape( shape );
-			putFxGeometry( shape, fxShape );
-			pane.getChildren().add( fxShape );
+			Fx.run( () -> pane.getChildren().add( fxShape ) );
 
 			// TODO Handlers need to be attached with the pane as owner
 			// i.e. designLayer.register(layer, "order", e -> changeLayerOrder() );
@@ -725,6 +730,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 		fxShape.setManaged( false );
 		fxShape.setUserData( aperture );
+		putFxGeometry( aperture, fxShape );
 
 		return fxShape;
 	}
@@ -749,13 +755,18 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 		fxShape.setManaged( false );
 		fxShape.setUserData( designShape );
+		putFxGeometry( designShape, fxShape );
 
 		return fxShape;
 	}
 
 	@SuppressWarnings( "unchecked" )
 	public <T extends Node> T getFxGeometry( DesignDrawable drawable ) {
-		return (T)drawableToGeometry.get( new GeometryKey( this, drawable ) );
+		T geometry = (T)drawableToGeometry.get( new GeometryKey( this, drawable ) );
+
+		log.atWarn().log( "getFxGeometry geometry={0}", geometry );
+
+		return geometry;
 	}
 
 	/**
@@ -1055,11 +1066,11 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		DesignDoubleBinding radiusXProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.RADII, v -> v.getRadii() != null ? v.getRadii().getX() : 0.0 );
 		DesignDoubleBinding radiusYProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.RADII, v -> v.getRadii() != null ? v.getRadii().getY() : 0.0 );
 
-		ellipse.centerXProperty().bind( originXProperty );
-		ellipse.centerYProperty().bind( originYProperty );
+		ellipse.centerXProperty().bind( shapeScaleXProperty().multiply( originXProperty ) );
+		ellipse.centerYProperty().bind( shapeScaleYProperty().multiply( originYProperty ) );
 		// FIXME A specific aperture scale property should probably be used here
-		ellipse.radiusXProperty().bind(  radiusXProperty  );
-		ellipse.radiusYProperty().bind(  radiusYProperty  );
+		ellipse.radiusXProperty().bind( shapeScaleXProperty().multiply( radiusXProperty ) );
+		ellipse.radiusYProperty().bind( shapeScaleYProperty().multiply( radiusYProperty ) );
 
 		return ellipse;
 	}
