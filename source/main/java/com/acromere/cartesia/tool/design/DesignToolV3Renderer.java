@@ -139,15 +139,6 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	@Getter( AccessLevel.PACKAGE )
 	private final DoubleProperty rendererCenterY;
 
-	//	@Getter( AccessLevel.PACKAGE )
-	//	private final Scale apertureScaleTransform;
-	//
-	//	@Getter( AccessLevel.PACKAGE )
-	//	private final Rotate apertureRotateTransform;
-	//
-	//	@Getter( AccessLevel.PACKAGE )
-	//	private final Translate apertureCenterTransform;
-
 	@Getter( AccessLevel.PACKAGE )
 	private final Scale viewScaleTransform;
 
@@ -229,9 +220,6 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		world.getTransforms().setAll( viewScaleTransform, viewRotateTransform, viewCenterTransform );
 
 		// Create and set the aperture transforms
-		//		apertureScaleTransform = new Scale( 1, -1 );
-		//		apertureRotateTransform = new Rotate( 0, 0, 0 );
-		//		apertureCenterTransform = new Translate( 0, 0 );
 		aperture.getTransforms().setAll( viewScaleTransform, viewRotateTransform, viewCenterTransform );
 		aperture.getChildren().add( new Circle( 0, 0, 64, Color.GREEN ) );
 
@@ -241,16 +229,6 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		// between screen and world coordinates.
 		rendererCenterX.bind( widthProperty().multiply( 0.5 ).multiply( outputScaleXProperty() ).divide( viewZoomXProperty() ) );
 		rendererCenterY.bind( heightProperty().multiply( -0.5 ).multiply( outputScaleYProperty() ).divide( viewZoomYProperty() ) );
-
-		//apertureScaleTransform.xProperty().bind( viewZoomXProperty().divide( outputScaleXProperty() ) );
-		//apertureScaleTransform.yProperty().bind( viewZoomYProperty().divide( outputScaleYProperty() ).negate() );
-
-		//apertureRotateTransform.angleProperty().bind( viewRotateProperty() );
-		//apertureRotateTransform.pivotXProperty().bind( getRendererCenterX() );
-		//apertureRotateTransform.pivotYProperty().bind( getRendererCenterY() );
-
-		//apertureCenterTransform.xProperty().bind( getRendererCenterX().subtract( viewCenterXProperty() ).multiply( viewZoomXProperty() ) );
-		//apertureCenterTransform.yProperty().bind( getRendererCenterY().subtract( viewCenterYProperty() ).multiply( viewZoomXProperty() )  );
 
 		// The zoom transform does not include the DPI property because the geometry
 		// values already include the DPI. What is interesting here is that we divide
