@@ -127,10 +127,6 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 	private final DoubleProperty apertureShapeScaleY;
 
-//	private final DoubleProperty aperturePositionScaleX;
-//
-//	private final DoubleProperty aperturePositionScaleY;
-
 	private final DoubleProperty designUnitScale;
 
 	private final DoubleProperty designShapeScaleX;
@@ -143,14 +139,14 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	@Getter( AccessLevel.PACKAGE )
 	private final DoubleProperty rendererCenterY;
 
-	@Getter( AccessLevel.PACKAGE )
-	private final Scale apertureScaleTransform;
-
-	@Getter( AccessLevel.PACKAGE )
-	private final Rotate apertureRotateTransform;
-
-	@Getter( AccessLevel.PACKAGE )
-	private final Translate apertureCenterTransform;
+	//	@Getter( AccessLevel.PACKAGE )
+	//	private final Scale apertureScaleTransform;
+	//
+	//	@Getter( AccessLevel.PACKAGE )
+	//	private final Rotate apertureRotateTransform;
+	//
+	//	@Getter( AccessLevel.PACKAGE )
+	//	private final Translate apertureCenterTransform;
 
 	@Getter( AccessLevel.PACKAGE )
 	private final Scale viewScaleTransform;
@@ -181,12 +177,11 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		apertureUnitScale = new SimpleDoubleProperty( 1.0 );
 		apertureShapeScaleX = new SimpleDoubleProperty( 1.0 );
 		apertureShapeScaleY = new SimpleDoubleProperty( 1.0 );
-//		aperturePositionScaleX = new SimpleDoubleProperty( 1.0 );
-//		aperturePositionScaleY = new SimpleDoubleProperty( 1.0 );
 
 		designUnitScale = new SimpleDoubleProperty( 1.0 );
 		designShapeScaleX = new SimpleDoubleProperty( 1.0 );
 		designShapeScaleY = new SimpleDoubleProperty( 1.0 );
+
 		rendererCenterX = new SimpleDoubleProperty( 0.0 );
 		rendererCenterY = new SimpleDoubleProperty( 0.0 );
 
@@ -219,8 +214,6 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		// shapeScale = apertureUnitScale * dpi * outputScale
 		apertureShapeScaleX.bind( apertureUnitScaleProperty().multiply( dpiXProperty() ).multiply( outputScaleXProperty() ) );
 		apertureShapeScaleY.bind( apertureUnitScaleProperty().multiply( dpiYProperty() ).multiply( outputScaleYProperty() ) );
-//		aperturePositionScaleX.bind( apertureUnitScaleProperty().multiply( dpiXProperty() ).multiply( outputScaleXProperty() ) );
-//		aperturePositionScaleY.bind( apertureUnitScaleProperty().multiply( dpiYProperty() ).multiply( outputScaleYProperty() ) );
 
 		// Configure the shape scale definition. The shape scale includes the
 		// design unit scale, DPI and the output scale and is used to modify the
@@ -236,10 +229,10 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		world.getTransforms().setAll( viewScaleTransform, viewRotateTransform, viewCenterTransform );
 
 		// Create and set the aperture transforms
-		apertureScaleTransform = new Scale( 1, -1 );
-		apertureRotateTransform = new Rotate( 0, 0, 0 );
-		apertureCenterTransform = new Translate( 0, 0 );
-		aperture.getTransforms().setAll( apertureScaleTransform, viewRotateTransform, viewCenterTransform );
+		//		apertureScaleTransform = new Scale( 1, -1 );
+		//		apertureRotateTransform = new Rotate( 0, 0, 0 );
+		//		apertureCenterTransform = new Translate( 0, 0 );
+		aperture.getTransforms().setAll( viewScaleTransform, viewRotateTransform, viewCenterTransform );
 		aperture.getChildren().add( new Circle( 0, 0, 64, Color.GREEN ) );
 
 		// Configure the renderer center definition. The renderer center maintains
@@ -249,17 +242,15 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		rendererCenterX.bind( widthProperty().multiply( 0.5 ).multiply( outputScaleXProperty() ).divide( viewZoomXProperty() ) );
 		rendererCenterY.bind( heightProperty().multiply( -0.5 ).multiply( outputScaleYProperty() ).divide( viewZoomYProperty() ) );
 
-		//viewScaleTransform.xProperty().bind( viewZoomXProperty().divide( outputScaleXProperty() ) );
-		//viewScaleTransform.yProperty().bind( viewZoomYProperty().divide( outputScaleYProperty() ).negate() );
-		apertureScaleTransform.xProperty().bind( viewZoomXProperty().divide( outputScaleXProperty() ) );
-		apertureScaleTransform.yProperty().bind( viewZoomYProperty().divide( outputScaleYProperty() ).negate() );
+		//apertureScaleTransform.xProperty().bind( viewZoomXProperty().divide( outputScaleXProperty() ) );
+		//apertureScaleTransform.yProperty().bind( viewZoomYProperty().divide( outputScaleYProperty() ).negate() );
 
-		apertureRotateTransform.angleProperty().bind( viewRotateProperty() );
-		apertureRotateTransform.pivotXProperty().bind( getRendererCenterX() );
-		apertureRotateTransform.pivotYProperty().bind( getRendererCenterY() );
+		//apertureRotateTransform.angleProperty().bind( viewRotateProperty() );
+		//apertureRotateTransform.pivotXProperty().bind( getRendererCenterX() );
+		//apertureRotateTransform.pivotYProperty().bind( getRendererCenterY() );
 
-		apertureCenterTransform.xProperty().bind( getRendererCenterX().subtract( viewCenterXProperty() ).multiply( viewZoomXProperty() ) );
-		apertureCenterTransform.yProperty().bind( getRendererCenterY().subtract( viewCenterYProperty() ).multiply( viewZoomXProperty() )  );
+		//apertureCenterTransform.xProperty().bind( getRendererCenterX().subtract( viewCenterXProperty() ).multiply( viewZoomXProperty() ) );
+		//apertureCenterTransform.yProperty().bind( getRendererCenterY().subtract( viewCenterYProperty() ).multiply( viewZoomXProperty() )  );
 
 		// The zoom transform does not include the DPI property because the geometry
 		// values already include the DPI. What is interesting here is that we divide
@@ -1093,7 +1084,6 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	private Ellipse bindEllipseAperture( DesignEllipse designEllipse ) {
 		Ellipse ellipse = new Ellipse();
 
-		// FIXME A specific aperture scale property should probably be used here
 		//bindCommonApertureGeometry( designEllipse, ellipse );
 
 		DesignDoubleBinding originXProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
@@ -1103,8 +1093,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 		ellipse.centerXProperty().bind( shapeScaleXProperty().multiply( originXProperty ) );
 		ellipse.centerYProperty().bind( shapeScaleYProperty().multiply( originYProperty ) );
-		ellipse.radiusXProperty().bind( apertureShapeScaleX.multiply( radiusXProperty ).divide(viewZoomXProperty()) );
-		ellipse.radiusYProperty().bind( apertureShapeScaleY.multiply( radiusYProperty ).divide(viewZoomYProperty()) );
+		ellipse.radiusXProperty().bind( apertureShapeScaleX.multiply( radiusXProperty ).divide( viewZoomXProperty() ) );
+		ellipse.radiusYProperty().bind( apertureShapeScaleY.multiply( radiusYProperty ).divide( viewZoomYProperty() ) );
 
 		return ellipse;
 	}
@@ -1112,7 +1102,6 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	private Rectangle bindBoxAperture( DesignBox designBox ) {
 		Rectangle box = new Rectangle();
 
-		// FIXME A specific aperture scale property should probably be used here
 		//bindCommonApertureGeometry( designEllipse, ellipse );
 
 		DesignDoubleBinding originXProperty = new DesignDoubleBinding( designBox, DesignBox.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
@@ -1122,8 +1111,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 		box.xProperty().bind( shapeScaleXProperty().multiply( originXProperty ) );
 		box.yProperty().bind( shapeScaleYProperty().multiply( originYProperty ) );
-		box.widthProperty().bind( shapeScaleXProperty().multiply( widthProperty ) );
-		box.heightProperty().bind( shapeScaleYProperty().multiply( heightProperty ) );
+		box.widthProperty().bind( apertureShapeScaleX.multiply( widthProperty ) );
+		box.heightProperty().bind( apertureShapeScaleY.multiply( heightProperty ) );
 
 		return box;
 	}
