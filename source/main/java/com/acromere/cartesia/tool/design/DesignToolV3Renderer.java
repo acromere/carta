@@ -1059,7 +1059,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		dashBinding.addListener( ( _, _, n ) -> shape.getStrokeDashArray().setAll( n ) );
 	}
 
-	private Ellipse bindEllipseAperture( DesignEllipse designEllipse ) {
+	Ellipse bindEllipseAperture( DesignEllipse designEllipse ) {
 		Ellipse ellipse = new Ellipse();
 
 		//bindCommonApertureGeometry( designEllipse, ellipse );

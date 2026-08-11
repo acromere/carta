@@ -1,10 +1,8 @@
 package com.acromere.cartesia.tool.design;
 
+import com.acromere.annotation.Note;
 import com.acromere.cartesia.DesignUnit;
-import com.acromere.cartesia.data.Design;
-import com.acromere.cartesia.data.DesignLayer;
-import com.acromere.cartesia.data.DesignModel;
-import com.acromere.cartesia.data.DesignModel2D;
+import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.tool.Workplane;
 import com.acromere.curve.math.Constants;
 import com.acromere.zerra.javafx.Fx;
@@ -15,6 +13,7 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Line;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
@@ -1216,6 +1215,22 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 		assertThat( throwable ).isNull();
 	}
 
+	@Test
+	@Note( WHITE_BOX )
+	void bindEllipseAperture() {
+		// given
+		DesignEllipse designEllipse = new DesignEllipse( 0, 0, 3 );
+
+		// when
+		Ellipse fxEllipse = renderer.bindEllipseAperture( designEllipse );
+
+		// then
+		assertThat( fxEllipse.getCenterX() ).isEqualTo( 0 );
+		assertThat( fxEllipse.getCenterY() ).isEqualTo( 0 );
+		assertThat( fxEllipse.getRadiusX() ).isEqualTo( 288.0 );
+		assertThat( fxEllipse.getRadiusY() ).isEqualTo( 288.0 );
+	}
+
 	private static Stream<Arguments> worldToScreenDoesNotChangeWithDifferentOutputScales() {
 		return Stream.of(
 			Arguments.of( 1, new Point2D( -1, 0 ), new Point2D( 462.20472440944883, 500 ) ),
@@ -1231,8 +1246,8 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 	}
 
 	private void assertBounds( Region region, double x, double y, double width, double height ) {
-		assertThat( region.getLayoutX() ).isEqualTo( 0 );
-		assertThat( region.getLayoutY() ).isEqualTo( 0 );
+		assertThat( region.getLayoutX() ).isEqualTo( x );
+		assertThat( region.getLayoutY() ).isEqualTo( y );
 		assertThat( region.getWidth() ).isEqualTo( width );
 		assertThat( region.getHeight() ).isEqualTo( height );
 	}

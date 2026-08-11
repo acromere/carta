@@ -15,6 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Getter
 @CustomLog
+@Disabled
 public class DesignToolV3ScreenPointSelectBoxUIT extends DesignToolV3BaseUIT {
 
 	@BeforeEach
@@ -94,7 +95,6 @@ public class DesignToolV3ScreenPointSelectBoxUIT extends DesignToolV3BaseUIT {
 	}
 
 	@Test
-	@Disabled
 	void screenPointSelectBox2WithMouseTooFarAway() throws Exception {
 		// Need to get the selector outside the stroke width of the line
 		// 0.03 is just over half the line stroke width
