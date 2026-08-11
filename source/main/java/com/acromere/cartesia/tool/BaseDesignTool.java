@@ -240,12 +240,13 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		renderer.setOutputScaleY( Screen.getPrimary().getOutputScaleY() );
 
 		this.renderer = renderer;
+		renderer.setSelectAperture( POINT_SELECT_APERTURE );
 		renderer.setApertureDrawPaint( DEFAULT_APERTURE_DRAW );
 		renderer.setApertureFillPaint( DEFAULT_APERTURE_FILL );
-//		renderer.setPreviewDrawPaint( DEFAULT_PREVIEW_DRAW );
-//		renderer.setPreviewFillPaint( DEFAULT_PREVIEW_FILL );
-//		renderer.setSelectedDrawPaint( DEFAULT_SELECTED_DRAW );
-//		renderer.setSelectedFillPaint( DEFAULT_SELECTED_FILL );
+		//		renderer.setPreviewDrawPaint( DEFAULT_PREVIEW_DRAW );
+		//		renderer.setPreviewFillPaint( DEFAULT_PREVIEW_FILL );
+		//		renderer.setSelectedDrawPaint( DEFAULT_SELECTED_DRAW );
+		//		renderer.setSelectedFillPaint( DEFAULT_SELECTED_FILL );
 
 		// Initially the toast is shown and the renderer is hidden
 		this.toast.setVisible( true );

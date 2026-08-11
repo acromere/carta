@@ -544,9 +544,14 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 	 * @return True if the selector shape should select the shape
 	 */
 	private boolean matches( DesignShape selector, DesignShape shape, boolean intersect ) {
-		Bounds selectorBounds = selector.getSelectBounds();
-		Bounds shapeBounds = shape.getSelectBounds();
+		Shape fxSelector = getFxGeometry( selector );
+		Shape fxShape = getFxGeometry( shape );
 
+		Bounds selectorBounds = fxSelector.getBoundsInParent();
+		Bounds shapeBounds = fxShape.getBoundsInParent();
+
+		//System.out.println( "selectorD=" + selector + " shapeD=" + shape );
+		System.out.println( "selectorS=" + fxSelector + " shapeS=" + fxShape );
 		System.out.println( "selectorB=" + selectorBounds + " shapeB=" + shapeBounds );
 
 		// This first test is an optimization for fully excluded shapes
@@ -556,10 +561,10 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		if( selectorBounds.contains( shapeBounds ) ) return true;
 
 		// This is the slow but accurate test if the shape is matched when the selector is not a box
-		Shape fxSelector = getFxGeometry( selector );
-		Shape fxShape = getFxGeometry( shape );
+		//Shape fxSelector = getFxGeometry( selector );
+		//Shape fxShape = getFxGeometry( shape );
 
-		System.out.println( "selectorS=" + fxSelector + " shapeS=" + fxShape );
+		//System.out.println( "selectorS=" + fxSelector + " shapeS=" + fxShape );
 
 		// Check if the selector should match the shape
 		if( intersect ) {

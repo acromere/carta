@@ -629,8 +629,8 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 		renderer.setOutputScale( outputScale, outputScale );
 
 		// when
-		double shapeScaleX = renderer.getShapeScaleX();
-		double shapeScaleY = renderer.getShapeScaleY();
+		double shapeScaleX = renderer.getDesignShapeScaleX();
+		double shapeScaleY = renderer.getDesignShapeScaleY();
 
 		// then
 		assertThat( shapeScaleX ).isEqualTo( expectedShapeScaleX, TOLERANCE );
@@ -692,19 +692,19 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 
 		renderer.setViewZoom( 1, 1 );
 		renderer.setOutputScale( 1, 1 );
-		viewZoomTransform = renderer.getViewZoomTransform();
+		viewZoomTransform = renderer.getViewScaleTransform();
 		assertThat( viewZoomTransform.xProperty().get() ).isEqualTo( 1 );
 		assertThat( viewZoomTransform.yProperty().get() ).isEqualTo( -1 );
 
 		renderer.setViewZoom( 2, 2 );
 		renderer.setOutputScale( 2, 2 );
-		viewZoomTransform = renderer.getViewZoomTransform();
+		viewZoomTransform = renderer.getViewScaleTransform();
 		assertThat( viewZoomTransform.xProperty().get() ).isEqualTo( 1 );
 		assertThat( viewZoomTransform.yProperty().get() ).isEqualTo( -1 );
 
 		renderer.setViewZoom( 0.5, 0.5 );
 		renderer.setOutputScale( 3, 3 );
-		viewZoomTransform = renderer.getViewZoomTransform();
+		viewZoomTransform = renderer.getViewScaleTransform();
 		assertThat( viewZoomTransform.xProperty().get() ).isEqualTo( 0.5 / 3 );
 		assertThat( viewZoomTransform.yProperty().get() ).isEqualTo( -0.5 / 3 );
 	}
