@@ -92,8 +92,12 @@ public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 		originY = 0.5 * height;
 	}
 
+	/**
+	 * Get the select tolerance in design model units instead of select aperture units.
+	 *
+	 * @return the select tolerance in design model units
+	 */
 	protected double getWorldSelectTolerance() {
-		// Convert from select aperture units to design model units
 		return getTool().getSelectTolerance().to( getDesignModel().calcDesignUnit() ).value();
 	}
 

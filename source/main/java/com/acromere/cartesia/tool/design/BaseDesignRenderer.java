@@ -551,8 +551,8 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		Bounds shapeBounds = fxShape.getBoundsInParent();
 
 		//System.out.println( "selectorD=" + selector + " shapeD=" + shape );
-		System.out.println( "selectorS=" + fxSelector + " shapeS=" + fxShape );
 		System.out.println( "selectorB=" + selectorBounds + " shapeB=" + shapeBounds );
+		System.out.println( "selectorS=" + fxSelector + " shapeS=" + fxShape );
 
 		// This first test is an optimization for fully excluded shapes
 		if( !selectorBounds.intersects( shapeBounds ) ) return false;

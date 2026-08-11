@@ -56,6 +56,8 @@ public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 		Point3D point = new Point3D( 1, 1, 0 ).add( offset );
 		Point3D mouse = getTool().worldToScreen( point );
 
+		// NEXT The selector radius ends up being very small for the operation
+
 		// when
 		getTool().screenPointSelect( mouse, false );
 
