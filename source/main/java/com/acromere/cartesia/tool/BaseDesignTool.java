@@ -1224,7 +1224,8 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	}
 
 	protected List<DesignShape> worldPointFind( Point3D point ) {
-		POINT_SELECT_APERTURE.setOrigin( point );
+		System.out.println( "worldMouse=" + point );
+		POINT_SELECT_APERTURE.setOrigin( Point3D.ZERO );
 		return renderer.doFindByShape( POINT_SELECT_APERTURE, true );
 	}
 

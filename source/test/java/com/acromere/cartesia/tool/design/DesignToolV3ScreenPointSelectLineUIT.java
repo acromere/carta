@@ -55,8 +55,15 @@ public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 		Point3D offset = new Point3D( 0.02 + getWorldSelectTolerance(), 0, 0 );
 		Point3D point = new Point3D( 1, 1, 0 ).add( offset );
 		Point3D mouse = getTool().worldToScreen( point );
+		mouse = new Point3D( Math.round( mouse.getX() ), Math.round( mouse.getY() ), 0 );
+		System.out.println( "screenMouse=" + mouse );
 
 		// NEXT The selector radius ends up being very small for the operation
+		// This should be somewhere around 25.1968503937008, but isn't
+		// it is 0.63 screen units, which is smaller than a pixel
+
+		// The height and width match at 762x514 (flaky)
+		// CenterX and centerY for the select seems off as well
 
 		// when
 		getTool().screenPointSelect( mouse, false );

@@ -9,6 +9,7 @@ import com.acromere.xenon.ProgramToolEvent;
 import com.acromere.xenon.resource.Resource;
 import com.acromere.zerra.event.FxEventWatcher;
 import com.acromere.zerra.javafx.Fx;
+import javafx.geometry.Point2D;
 import lombok.CustomLog;
 import lombok.Getter;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,7 +58,8 @@ public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 		tool.addEventHandler( ProgramToolEvent.READY, eventWatcher );
 		eventWatcher.waitForEvent( ProgramToolEvent.READY );
 
-		// Arguably, it shouldn't matter what the DPI is
+		// Arguably, it shouldn't matter what the DPI is,
+		// but it does affect some assertions later in the test
 		tool.setDpi( 160 );
 
 		Fx.run( () -> tool.setViewZoom( 2 ) );
@@ -90,6 +92,12 @@ public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 		height = getTool().getHeight();
 		originX = 0.5 * width;
 		originY = 0.5 * height;
+
+		double size = designModel.calcDesignUnit().from( 2, DesignUnit.MM );
+		Point2D point = getTool().worldToScreen( size, size );
+		Point2D uncentered = new Point2D( point.getX() - (0.5 * width), -(point.getY() - (0.5 * height)) );
+		// This value depends on the DPI and the select tolerance
+		assertThat( uncentered ).isEqualTo( new Point2D( 25.1968503937008, 25.1968503937008 ) );
 	}
 
 	/**
