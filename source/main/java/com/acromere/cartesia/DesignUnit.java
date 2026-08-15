@@ -59,7 +59,7 @@ public enum DesignUnit {
 	 * Used to convert a value from the specified unit to this unit. For example,
 	 * to convert 1 centimeter to inches, use:
 	 *
-	 * <pre>DesignUnit.CENTIMETER.from( 1, DesignUnit.INCH )</code>
+	 * <pre>DesignUnit.INCH.from( 1, DesignUnit.CENTIMETER )</code>
 	 *
 	 * @param value The value to convert
 	 * @param unit The unit to convert from
