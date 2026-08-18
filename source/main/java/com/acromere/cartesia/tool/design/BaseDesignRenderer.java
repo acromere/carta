@@ -402,15 +402,13 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 
 	@Override
 	public void setSelectAperture( DesignShape aperture ) {
+		if( aperture == null ) aperture = DEFAULT_SELECT_APERTURE;
+
 		if( !ALLOWED_SELECT_APERTURES.contains( aperture ) ) throw new IllegalArgumentException( "Invalid select aperture: " + aperture );
 
-		if( aperture == null || aperture == DEFAULT_SELECT_APERTURE ) {
-			selectAperture.set( DEFAULT_SELECT_APERTURE );
-		} else {
-			aperture.setDrawPaint( getApertureDrawPaint() );
-			aperture.setFillPaint( getApertureFillPaint() );
-			selectAperture.set( aperture );
-		}
+		aperture.setDrawPaint( getApertureDrawPaint() );
+		aperture.setFillPaint( getApertureFillPaint() );
+		selectAperture.set( aperture );
 	}
 
 	public DesignShape getSelectAperture() {

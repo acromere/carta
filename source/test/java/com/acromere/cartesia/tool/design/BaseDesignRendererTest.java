@@ -3,6 +3,7 @@ package com.acromere.cartesia.tool.design;
 import com.acromere.cartesia.data.DesignBox;
 import com.acromere.cartesia.data.DesignEllipse;
 import com.acromere.cartesia.data.DesignLayer;
+import com.acromere.cartesia.tool.RenderConstants;
 import com.acromere.zerra.javafx.Fx;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point3D;
@@ -109,7 +110,7 @@ public abstract class BaseDesignRendererTest {
 	@Test
 	void selectApertureWithBox() {
 		// given
-		DesignBox aperture = new DesignBox( 0, 0, 0, 0 );
+		DesignBox aperture = RenderConstants.WINDOW_SELECT_APERTURE;
 
 		// when
 		getRenderer().setSelectAperture( aperture );
@@ -123,7 +124,7 @@ public abstract class BaseDesignRendererTest {
 	@Test
 	void selectApertureWithEllipse() {
 		// given
-		DesignEllipse aperture = new DesignEllipse( Point3D.ZERO, 0.0 );
+		DesignEllipse aperture = RenderConstants.POINT_SELECT_APERTURE;
 
 		// when
 		getRenderer().setSelectAperture( aperture );
@@ -145,7 +146,7 @@ public abstract class BaseDesignRendererTest {
 	@Test
 	void selectApertureWithNullUsesEmptyAperture() {
 		// given
-		getRenderer().setSelectAperture( new DesignBox( 0, 0, 0, 0 ) );
+		getRenderer().setSelectAperture( RenderConstants.WINDOW_SELECT_APERTURE );
 		assertThat( getRenderer().getSelectAperture() ).isNotEqualTo( BaseDesignRenderer.DEFAULT_SELECT_APERTURE );
 
 		// when
