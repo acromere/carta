@@ -544,6 +544,7 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 	 * @return True if the selector shape should select the shape
 	 */
 	private boolean matches( DesignShape selector, DesignShape shape, boolean intersect ) {
+		// FIXME is working in practice, just not in test
 		Shape fxSelector = getFxGeometry( selector );
 		Shape fxShape = getFxGeometry( shape );
 
@@ -566,12 +567,15 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 
 		//System.out.println( "selectorS=" + fxSelector + " shapeS=" + fxShape );
 
-		// Check if the selector should match the shape
+		// Check if the selector matches the shape
+		boolean match;
 		if( intersect ) {
-			return !((javafx.scene.shape.Path)Shape.intersect( fxShape, fxSelector )).getElements().isEmpty();
+			match = !((javafx.scene.shape.Path)Shape.intersect( fxShape, fxSelector )).getElements().isEmpty();
 		} else {
-			return ((javafx.scene.shape.Path)Shape.subtract( fxShape, fxSelector )).getElements().isEmpty();
+			match = ((javafx.scene.shape.Path)Shape.subtract( fxShape, fxSelector )).getElements().isEmpty();
 		}
+		if( match ) System.out.println( "Matched shape=" + fxShape );
+		return match;
 	}
 
 }

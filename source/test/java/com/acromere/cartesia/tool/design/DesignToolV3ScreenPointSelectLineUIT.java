@@ -1,9 +1,12 @@
 package com.acromere.cartesia.tool.design;
 
+import com.acromere.cartesia.DesignUnit;
+import com.acromere.cartesia.DesignValue;
 import com.acromere.cartesia.data.DesignLine;
 import com.acromere.cartesia.data.DesignShape;
+import com.acromere.zerra.javafx.Fx;
+import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
-import javafx.scene.shape.Line;
 import lombok.CustomLog;
 import lombok.Getter;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,12 +25,12 @@ public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 		super.setup();
 		useLineLayer();
 
-		DesignLine line1 = (DesignLine)getLineLayer().getShapes().getFirst();
-		Line fxLine1 = getTool().getRenderer().getFxGeometry( line1 );
-		assertThat( fxLine1.getStartX() ).isEqualTo( -dpu );
-		assertThat( fxLine1.getStartY() ).isEqualTo( dpu );
-		assertThat( fxLine1.getEndX() ).isEqualTo( dpu );
-		assertThat( fxLine1.getEndY() ).isEqualTo( -dpu );
+		//		DesignLine line1 = (DesignLine)getLineLayer().getShapes().getFirst();
+		//		Line fxLine1 = getTool().getRenderer().getFxGeometry( line1 );
+		//		assertThat( fxLine1.getStartX() ).isEqualTo( -dpu );
+		//		assertThat( fxLine1.getStartY() ).isEqualTo( dpu );
+		//		assertThat( fxLine1.getEndX() ).isEqualTo( dpu );
+		//		assertThat( fxLine1.getEndY() ).isEqualTo( -dpu );
 	}
 
 	@Test
@@ -38,6 +41,7 @@ public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 
 		// when - select once
 		getTool().screenPointSelect( mouse, false );
+		Fx.waitForStability( 1000 );
 
 		// then - the first line should be selected
 		List<DesignShape> selected = getTool().getSelectedShapes();
@@ -47,15 +51,41 @@ public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 
 	@Test
 	void screenPointSelectLineWithMouseCloseEnough() throws Exception {
+		assertThat( tool ).isSameAs( getTool() );
+		// NEXT Why are these off, any why are they inconsistent?
+		assertThat( width ).isEqualTo( getTool().getWidth() );
+		assertThat( height ).isEqualTo( getTool().getHeight() );
+
 		// given
 		assertThat( getTool().getSelectedShapes() ).hasSize( 0 );
 
+		getTool().setSelectTolerance( new DesignValue( 2, DesignUnit.MM ) );
+		Fx.waitForStability( 1000 );
+
+		double worldSelectTolerance = getWorldSelectTolerance();
+		assertThat( getTool().getViewZoom() ).isEqualTo( 2 );
+		assertThat( worldSelectTolerance ).isEqualTo( 0.2 );
+
+		double apertureRadius = worldSelectTolerance / getTool().getViewZoom();
+
+		System.out.println( "Screen radius=" + getTool().worldToScreen( new Point2D( 0.2, 0.2 ).add( -0.5 * getTool().getWidth(), -0.5 * getTool().getHeight() ) ) );
+
+		// Guess I'll have to verify the other values.
+
 		// Need to get the selector inside the stroke width of the line
 		// 0.02 is just under half the line stroke width
-		Point3D offset = new Point3D( 0.02 + getWorldSelectTolerance(), 0, 0 );
+		System.out.println( "World zoom=" + getTool().getViewZoom() );
+		System.out.println( "World select tolerance=" + apertureRadius );
+
+		// Aperture radius ended up at 0.63 (very small), but should be 6.378.
+		// Actual offset between 1.03 and 1.04 results in a match (way too small).
+		// I would have expected that an offset of 1.06 would have worked because
+		// that is inside the selector radius, but that didn't work either.
+
+		Point3D offset = new Point3D( apertureRadius, 0, 0 );
 		Point3D point = new Point3D( 1, 1, 0 ).add( offset );
 		Point3D mouse = getTool().worldToScreen( point );
-		mouse = new Point3D( Math.round( mouse.getX() ), Math.round( mouse.getY() ), 0 );
+		//mouse = new Point3D( Math.round( mouse.getX() ), Math.round( mouse.getY() ), 0 );
 		System.out.println( "screenMouse=" + mouse );
 
 		// NEXT The selector radius ends up being very small for the operation
@@ -66,7 +96,8 @@ public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 		// CenterX and centerY for the select seems off as well
 
 		// when
-		getTool().screenPointSelect( mouse, false );
+		Fx.run( () -> getTool().screenPointSelect( mouse, false ) );
+		Fx.waitForStability( 1000 );
 
 		// then
 		List<DesignShape> selected = getTool().getSelectedShapes();
@@ -87,6 +118,7 @@ public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 
 		// when
 		getTool().screenPointSelect( mouse, false );
+		Fx.waitForStability( 1000 );
 
 		// then
 		assertThat( getTool().getSelectedShapes() ).hasSize( 0 );

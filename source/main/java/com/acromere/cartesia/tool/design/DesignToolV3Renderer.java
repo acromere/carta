@@ -22,7 +22,6 @@ import javafx.geometry.Point3D;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -218,10 +217,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		viewRotateTransform = new Rotate( 0, 0, 0 );
 		viewCenterTransform = new Translate( 0, 0 );
 		world.getTransforms().setAll( viewScaleTransform, viewRotateTransform, viewCenterTransform );
-
-		// Create and set the aperture transforms
 		aperture.getTransforms().setAll( viewScaleTransform, viewRotateTransform, viewCenterTransform );
-		aperture.getChildren().add( new Circle( 0, 0, 64, Color.GREEN ) );
 
 		// Configure the renderer center definition. The renderer center maintains
 		// the center point in the parent coordinate system regardless of the parent
@@ -1089,8 +1085,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 		box.xProperty().bind( shapeScaleXProperty().multiply( originXProperty ) );
 		box.yProperty().bind( shapeScaleYProperty().multiply( originYProperty ) );
-		box.widthProperty().bind( apertureShapeScaleX.multiply( widthProperty ) );
-		box.heightProperty().bind( apertureShapeScaleY.multiply( heightProperty ) );
+		box.widthProperty().bind( apertureShapeScaleX.multiply( widthProperty ).divide( viewZoomXProperty() ) );
+		box.heightProperty().bind( apertureShapeScaleY.multiply( heightProperty ).divide( viewZoomYProperty() ) );
 
 		return box;
 	}
