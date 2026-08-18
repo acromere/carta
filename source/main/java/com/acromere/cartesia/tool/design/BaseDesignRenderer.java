@@ -515,9 +515,6 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 	 * @return The list of discovered shapes
 	 */
 	public List<DesignShape> doFindByShape( final DesignShape selector, final boolean intersect ) {
-		Shape fxSelector = getFxGeometry( selector );
-		System.out.println( "selector=" + fxSelector );
-
 		// Ensure the selector does not have a draw width
 		selector.setDrawWidth( "0" );
 		selector.setDrawPaint( "#ff00ffff" );
