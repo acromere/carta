@@ -6,6 +6,8 @@ import com.acromere.cartesia.data.DesignEllipse;
 import com.acromere.cartesia.data.DesignShape;
 import javafx.geometry.Point3D;
 
+import java.util.Set;
+
 public interface RenderConstants {
 
 	double DEFAULT_DPI = 96;
@@ -25,6 +27,8 @@ public interface RenderConstants {
 	DesignBox WINDOW_SELECT_APERTURE = new DesignBox( 0, 0, 0, 0 );
 
 	DesignShape DEFAULT_SELECT_APERTURE = POINT_SELECT_APERTURE;
+
+	Set<DesignShape> ALLOWED_SELECT_APERTURES = Set.of( POINT_SELECT_APERTURE, WINDOW_SELECT_APERTURE );
 
 	/**
 	 * The default JavaFx refresh rate of 60 Hz.
