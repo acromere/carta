@@ -9,8 +9,11 @@ import com.acromere.xenon.ProgramToolEvent;
 import com.acromere.xenon.resource.Resource;
 import com.acromere.zerra.event.FxEventWatcher;
 import com.acromere.zerra.javafx.Fx;
+import javafx.geometry.Point2D;
+import javafx.geometry.Point3D;
 import lombok.CustomLog;
 import lombok.Getter;
+import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.net.URI;
@@ -68,8 +71,7 @@ public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 		// but it does affect some assertions later in the test
 		Fx.run( () -> {
 			tool.setDpi( 160 );
-			tool.resize( 1920, 1080 );
-			tool.setViewZoom( 2 );
+			tool.setView( Point3D.ZERO, 2, 0 );
 		} );
 		Fx.waitForStability( 1000 );
 
@@ -93,16 +95,11 @@ public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 		originX = 0.5 * width;
 		originY = 0.5 * height;
 
-		// FIXME Fx.waitforStability( 1000 ) did not fix flakiness
-		Fx.waitForStability( 1000 );
 		double size = designModel.calcDesignUnit().from( 2, DesignUnit.MM ) / getTool().getViewZoom();
 		double selectTolerance = getTool().worldToScreen( size, size ).getX() - originX;
-		// FIXME This assert is flaky
-		// This value depends on the DPI and the select tolerance
-		//assertThat( selectTolerance ).isCloseTo( 12.5984251968504, Offset.offset( 1e-10 ) );
-		//assertThat( uncentered).isEqualTo( new Point2D( 0, 0));
+		assertThat( selectTolerance ).isCloseTo( 12.598425196850371, Offset.offset( 1e-15 ) );
 
-		Fx.waitForStability( 1000 );
+		//Fx.waitForStability2( 1000 );
 	}
 
 	/**

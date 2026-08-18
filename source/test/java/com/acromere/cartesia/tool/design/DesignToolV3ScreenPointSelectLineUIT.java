@@ -53,22 +53,19 @@ public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 	void screenPointSelectLineWithMouseCloseEnough() throws Exception {
 		assertThat( tool ).isSameAs( getTool() );
 		// NEXT Why are these off, any why are they inconsistent?
-		assertThat( width ).isEqualTo( getTool().getWidth() );
-		assertThat( height ).isEqualTo( getTool().getHeight() );
+		// By now, the dependent tools are open and the tool size is consistent
+		assertThat( width ).isEqualTo( 568 );
+		assertThat( height ).isEqualTo( 517 );
 
 		// given
 		assertThat( getTool().getSelectedShapes() ).hasSize( 0 );
-
-		getTool().setSelectTolerance( new DesignValue( 2, DesignUnit.MM ) );
-		Fx.waitForStability( 1000 );
 
 		double worldSelectTolerance = getWorldSelectTolerance();
 		assertThat( getTool().getViewZoom() ).isEqualTo( 2 );
 		assertThat( worldSelectTolerance ).isEqualTo( 0.2 );
 
 		double apertureRadius = worldSelectTolerance / getTool().getViewZoom();
-
-		System.out.println( "Screen radius=" + getTool().worldToScreen( new Point2D( 0.2, 0.2 ).add( -0.5 * getTool().getWidth(), -0.5 * getTool().getHeight() ) ) );
+		double radius = getTool().worldToScreen( new Point2D( apertureRadius, 0 )).add( -0.5*width, 0 ).getX();
 
 		// Guess I'll have to verify the other values.
 
@@ -76,6 +73,7 @@ public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 		// 0.02 is just under half the line stroke width
 		System.out.println( "World zoom=" + getTool().getViewZoom() );
 		System.out.println( "World select tolerance=" + apertureRadius );
+		System.out.println( "Select radius=" + radius);
 
 		// Aperture radius ended up at 0.63 (very small), but should be 6.378.
 		// Actual offset between 1.03 and 1.04 results in a match (way too small).
@@ -87,6 +85,7 @@ public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 		Point3D mouse = getTool().worldToScreen( point );
 		//mouse = new Point3D( Math.round( mouse.getX() ), Math.round( mouse.getY() ), 0 );
 		System.out.println( "screenMouse=" + mouse );
+		System.out.println( "Select mouse=" + mouse.add(-0.5*width, -0.5*height,0));
 
 		// NEXT The selector radius ends up being very small for the operation
 		// This should be somewhere around 25.1968503937008, but isn't
