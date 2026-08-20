@@ -544,7 +544,6 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 	 * @return True if the selector shape should select the shape
 	 */
 	private boolean matches( DesignShape selector, DesignShape shape, boolean intersect ) {
-		// FIXME is working in practice, just not in test
 		Shape fxSelector = getFxGeometry( selector );
 		Shape fxShape = getFxGeometry( shape );
 

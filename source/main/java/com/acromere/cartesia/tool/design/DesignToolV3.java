@@ -150,18 +150,6 @@ public class DesignToolV3 extends BaseDesignTool {
 //	public void screenWindowSelect( Point3D a, Point3D b, boolean intersect, boolean toggle ) {
 //
 //	}
-//
-//	@Override
-//	public void worldPointSelect( Point3D point ) {
-//
-//	}
-
-//	@Override
-//	public void worldPointSelect( Point3D point, boolean toggle ) {
-//		// NEXT Implement select shapes by point
-//		// Use the DEFAULT_POINT_APERTURE
-//		//getPointSelectAperture();
-//	}
 
 //	@Override
 //	public void worldWindowSelect( Point3D a, Point3D b, boolean intersect, boolean toggle ) {

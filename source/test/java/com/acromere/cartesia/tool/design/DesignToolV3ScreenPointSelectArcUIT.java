@@ -15,7 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Getter
 @CustomLog
-@Disabled
 public class DesignToolV3ScreenPointSelectArcUIT extends DesignToolV3BaseUIT {
 
 	@BeforeEach
