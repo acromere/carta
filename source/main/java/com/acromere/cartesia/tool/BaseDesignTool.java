@@ -1276,16 +1276,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 	private void updateSelectApertureRadius( DesignValue selectTolerance ) {
 		renderer.setSelectTolerance( selectTolerance );
-
-		DesignModel model = getDesignModel();
-		if( model == null ) {
-			POINT_SELECT_APERTURE.setRadius( selectTolerance.value() );
-		} else {
-			// NOTE The renderer knows the model design unit so we could delegate
-			// this work down to the renderer if we don't want to do it here
-			double radius = selectTolerance.unit().to( selectTolerance.value(), model.calcDesignUnit() );
-			POINT_SELECT_APERTURE.setRadius( radius );
-		}
+		POINT_SELECT_APERTURE.setRadius( selectTolerance.value() );
 	}
 
 	private CommandPrompt getCommandPrompt() {

@@ -9,7 +9,6 @@ import com.acromere.xenon.ProgramToolEvent;
 import com.acromere.xenon.resource.Resource;
 import com.acromere.zerra.event.FxEventWatcher;
 import com.acromere.zerra.javafx.Fx;
-import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import lombok.CustomLog;
 import lombok.Getter;
@@ -108,7 +107,7 @@ public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 	 * @return the select tolerance in design model units
 	 */
 	protected double getWorldSelectTolerance() {
-		return getTool().getSelectTolerance().to( getDesignModel().calcDesignUnit() ).value();
+		return getTool().getSelectTolerance().to( getDesignModel().calcDesignUnit() ).value() / getTool().getViewZoom();
 	}
 
 	protected void useBoxLayer() throws TimeoutException, InterruptedException {
