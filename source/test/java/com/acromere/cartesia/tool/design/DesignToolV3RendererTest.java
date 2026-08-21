@@ -21,6 +21,7 @@ import javafx.scene.transform.Scale;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -1243,8 +1244,8 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 		// then
 		assertThat( fxBox.getX() ).isEqualTo( 0 );
 		assertThat( fxBox.getY() ).isEqualTo( 0 );
-		assertThat( fxBox.getWidth() ).isEqualTo( 288 );
-		assertThat( fxBox.getHeight() ).isEqualTo( 480 );
+		assertThat( fxBox.getWidth() ).isCloseTo( 113.4, Offset.offset( 0.1 ) );
+		assertThat( fxBox.getHeight() ).isCloseTo( 189.0, Offset.offset( 0.1 ) );
 	}
 
 	private static Stream<Arguments> worldToScreenDoesNotChangeWithDifferentOutputScales() {

@@ -566,6 +566,10 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 
 		//System.out.println( "selectorS=" + fxSelector + " shapeS=" + fxShape );
 
+		// NEXT Shape.intersect Shape.intersect(Shape a, Shape b) has a limitation.
+		// It is a static geometric operation that completely ignores Node.getTransforms().
+		// It evaluates the untransformed local geometry of both shapes.
+
 		// Check if the selector matches the shape
 		boolean match;
 		if( intersect ) {

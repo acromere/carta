@@ -1085,8 +1085,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 		box.xProperty().bind( shapeScaleXProperty().multiply( originXProperty ) );
 		box.yProperty().bind( shapeScaleYProperty().multiply( originYProperty ) );
-		box.widthProperty().bind( apertureShapeScaleX.multiply( widthProperty ).divide( viewZoomXProperty() ) );
-		box.heightProperty().bind( apertureShapeScaleY.multiply( heightProperty ).divide( viewZoomYProperty() ) );
+		box.widthProperty().bind( shapeScaleXProperty().multiply( widthProperty ) );
+		box.heightProperty().bind( shapeScaleYProperty().multiply( heightProperty ) );
 
 		return box;
 	}

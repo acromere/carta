@@ -38,6 +38,7 @@ import com.acromere.xenon.workspace.Workspace;
 import com.acromere.zerra.color.Paints;
 import com.acromere.zerra.event.FxEventHub;
 import com.acromere.zerra.javafx.Fx;
+import com.acromere.zerra.javafx.FxUtil;
 import javafx.beans.property.*;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -1227,6 +1228,15 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		return renderer.doFindByShape( POINT_SELECT_APERTURE.setOrigin( point ), true );
 	}
 
+	protected List<DesignShape> worldWindowFind( Point3D origin, Point3D point ) {
+		return worldWindowFind( origin, point, false );
+	}
+
+	protected List<DesignShape> worldWindowFind( Point3D origin, Point3D point, boolean intersect ) {
+		updateSelectApertureWindow( origin, point );
+		return renderer.doFindByShape( WINDOW_SELECT_APERTURE, intersect );
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -1245,7 +1255,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	 * {@inheritDoc}
 	 */
 	public void worldWindowSelect( Point3D a, Point3D b, boolean intersect, boolean toggle ) {
-		selectShapes( renderer.worldWindowFind( a, b, intersect ), toggle );
+		selectShapes( worldWindowFind( a, b, intersect ), toggle );
 	}
 
 	/**
@@ -1275,6 +1285,12 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	private void updateSelectApertureRadius( DesignValue selectTolerance ) {
 		renderer.setSelectTolerance( selectTolerance );
 		POINT_SELECT_APERTURE.setRadius( selectTolerance.value() );
+	}
+
+	private void updateSelectApertureWindow( Point3D point1, Point3D point2 ) {
+		Bounds bounds = FxUtil.bounds( point1, point2 );
+		WINDOW_SELECT_APERTURE.setOrigin( new Point3D( bounds.getMinX(), bounds.getMinY(), bounds.getMinZ() ) );
+		WINDOW_SELECT_APERTURE.setSize( new Point3D( bounds.getWidth(), bounds.getHeight(), bounds.getDepth() ) );
 	}
 
 	private CommandPrompt getCommandPrompt() {
