@@ -465,6 +465,7 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 	 * @param intersect True to select shapes by intersection
 	 * @return The set of discovered nodes
 	 */
+	@Deprecated
 	public List<DesignShape> worldWindowFind( Point3D a, Point3D b, boolean intersect ) {
 		double x = Math.min( a.getX(), b.getX() );
 		double y = Math.min( a.getY(), b.getY() );
@@ -475,6 +476,7 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		return doFindByShape( selector, intersect );
 	}
 
+	@Deprecated
 	public List<DesignShape> worldPointFind( Point3D anchor, DesignValue tolerance ) {
 		double radius = realToWorld( tolerance );
 		Point3D radii = new Point3D( radius, radius, 0 );
@@ -562,18 +564,6 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		}
 
 		// This is the slow but accurate test if the shape is matched when the selector is not a box
-		//Shape fxSelector = getFxGeometry( selector );
-		//Shape fxShape = getFxGeometry( shape );
-
-		//System.out.println( "selectorS=" + fxSelector + " shapeS=" + fxShape );
-
-		// NEXT Shape.intersect Shape.intersect(Shape a, Shape b) has a limitation.
-		// For line segments and open curves (e.g., DesignLine), use explicit
-		// geometric boundary intersection/clipping algorithms (e.g., testing
-		// line-segment intersection against the 4 edges of the aperture window box
-		// or using CadIntersection) instead of JavaFX 2D area operations.
-
-		// Check if the selector matches the shape
 		boolean match;
 		if( intersect ) {
 			match = !((javafx.scene.shape.Path)Shape.intersect( fxShape, fxSelector )).getElements().isEmpty();
