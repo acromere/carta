@@ -4,19 +4,23 @@ import com.acromere.cartesia.BaseCartesiaUiTest;
 import com.acromere.cartesia.DesignUnit;
 import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.data.DesignModel;
+import com.acromere.cartesia.data.DesignShape;
 import com.acromere.xenon.ProgramTool;
 import com.acromere.xenon.ProgramToolEvent;
 import com.acromere.xenon.resource.Resource;
 import com.acromere.zerra.event.FxEventWatcher;
 import com.acromere.zerra.javafx.Fx;
 import javafx.geometry.Point3D;
+import javafx.scene.shape.Shape;
 import lombok.CustomLog;
 import lombok.Getter;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
 
@@ -116,8 +120,18 @@ public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 	}
 
 	protected void useLineLayer() throws TimeoutException, InterruptedException {
-		getDesignModel().findLayerById( LINE_LAYER_ID ).ifPresent( l -> Fx.run( () -> getTool().setLayerVisible( l, true ) ) );
+		Optional<DesignLayer> optional = getDesignModel().findLayerById( LINE_LAYER_ID );
+		if( optional.isEmpty() ) return;
+
+		DesignLayer layer = optional.get();
+		Fx.run( () -> getTool().setLayerVisible( layer, true ) );
 		Fx.waitForStability( 1000 );
+
+		List<DesignShape> shapes = layer.getShapes();
+		Shape fxShape0 = getTool().getRenderer().getFxGeometry( shapes.get( 0 ) );
+		assertThat( fxShape0.getStrokeWidth() ).isCloseTo( 63, Offset.offset( 0.1 ) );
+		Shape fxShape1 = getTool().getRenderer().getFxGeometry( shapes.get( 1 ) );
+		assertThat( fxShape1.getStrokeWidth() ).isCloseTo( 63, Offset.offset( 0.1 ) );
 	}
 
 	protected DesignLayer getLineLayer() {
