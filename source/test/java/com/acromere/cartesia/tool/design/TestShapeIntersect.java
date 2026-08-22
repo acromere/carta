@@ -38,8 +38,9 @@ public class TestShapeIntersect {
 
 	@Test
 	void intersectBoxAndLineWithStrokeWidth() {
-		Rectangle box = new Rectangle( 0, 50, 50,100 );
+		Rectangle box = new Rectangle( 0, 50, 50, 100 );
 		Line line = new Line( 50, 0, 50, 100 );
+		assertLineProperties( line );
 
 		line.setStrokeWidth( 10 );
 
@@ -49,15 +50,33 @@ public class TestShapeIntersect {
 	}
 
 	@Test
+	void intersectBoxAndLineWithStrokeWidthSpecificUseCase() {
+		Rectangle box = new Rectangle( -94.48818897637794, 31.49606299212598, 188.97637795275588, 125.98425196850393 );
+		Line line = new Line( -62.99212598425196, -62.99212598425196, 62.99212598425196, 62.99212598425196 );
+		assertLineProperties( line );
+
+		line.setStrokeWidth( 6.29921259842519 );
+
+		Shape shape = Shape.intersect( box, line );
+		Path path = (Path)shape;
+		assertThat( path.getElements() ).isNotEmpty();
+	}
+
+	@Test
 	void intersectBoxAndLineWithoutStrokeWidth() {
-		Rectangle box = new Rectangle( 0, 50, 50,100 );
+		Rectangle box = new Rectangle( 0, 50, 50, 100 );
 		Line line = new Line( 50, 0, 50, 100 );
+		assertLineProperties( line );
 
 		line.setStrokeWidth( 0 );
 
 		Shape shape = Shape.intersect( box, line );
 		Path path = (Path)shape;
 		assertThat( path.getElements() ).isEmpty();
+	}
+
+	private void assertLineProperties( Line line ) {
+		assertThat( line.getFill() ).isNull();
 	}
 
 }
