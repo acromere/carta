@@ -50,7 +50,7 @@
     "a56cede9-ee12-40d0-a86c-b3701146c0e7" : {
       "draw-cap" : "round",
       "draw-paint" : "#8080ffff",
-      "draw-width" : "0.05",
+      "draw-width" : "1.00",
       "font-posture" : "REGULAR",
       "font-strikethrough" : "false",
       "font-underline" : "false",

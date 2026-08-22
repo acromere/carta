@@ -19,7 +19,6 @@ import com.acromere.zerra.color.Colors;
 import com.acromere.zerra.javafx.Fx;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -28,6 +27,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
+import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.transform.Transform;
@@ -745,6 +745,13 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	}
 
 	// Rendering -----------------------------------------------------------------
+
+	@Override
+	@SuppressWarnings( "unchecked" )
+	public <T extends Node> T getFxGeometry( DesignDrawable drawable ) {
+		if( drawable instanceof DesignShape shape ) return (T)shape.getFxShape();
+		return null;
+	}
 
 	/**
 	 * Request that geometry be rendered. This method will collapse multiple

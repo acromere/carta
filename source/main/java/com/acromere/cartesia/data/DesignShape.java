@@ -141,7 +141,9 @@ public abstract class DesignShape extends DesignDrawable {
 	protected Bounds computeGeometricBounds() {
 		Shape shape = getFxShape();
 		shape.setStrokeWidth( 0 );
-		return shape.getBoundsInParent();
+		Bounds bounds = shape.getBoundsInParent();
+		shape.setStrokeWidth( calcDrawWidth() );
+		return bounds;
 	}
 
 	/**

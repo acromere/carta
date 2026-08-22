@@ -1289,8 +1289,8 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 	private void updateSelectApertureWindow( Point3D point1, Point3D point2 ) {
 		Bounds bounds = FxUtil.bounds( point1, point2 );
-		WINDOW_SELECT_APERTURE.setOrigin( new Point3D( bounds.getMinX(), bounds.getMinY(), bounds.getMinZ() ) );
-		WINDOW_SELECT_APERTURE.setSize( new Point3D( bounds.getWidth(), bounds.getHeight(), bounds.getDepth() ) );
+		WINDOW_SELECT_APERTURE.setOrigin( new Point3D( bounds.getMinX(), bounds.getMinY(), 0 ) );
+		WINDOW_SELECT_APERTURE.setSize( new Point3D( bounds.getWidth(), bounds.getHeight(), 0 ) );
 	}
 
 	private CommandPrompt getCommandPrompt() {

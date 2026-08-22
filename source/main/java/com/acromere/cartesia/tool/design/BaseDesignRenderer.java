@@ -4,7 +4,10 @@ import com.acromere.annotation.Note;
 import com.acromere.cartesia.CartesiaNote;
 import com.acromere.cartesia.DesignUnit;
 import com.acromere.cartesia.DesignValue;
-import com.acromere.cartesia.data.*;
+import com.acromere.cartesia.data.DesignBox;
+import com.acromere.cartesia.data.DesignEllipse;
+import com.acromere.cartesia.data.DesignLayer;
+import com.acromere.cartesia.data.DesignShape;
 import com.acromere.cartesia.tool.RenderConstants;
 import com.acromere.zerra.color.Colors;
 import javafx.beans.property.DoubleProperty;
@@ -16,7 +19,6 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
-import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -524,13 +526,6 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		return getVisibleShapes().stream().filter( shape -> matches( selector, shape, intersect ) ).collect( Collectors.toList() );
 	}
 
-	@Override
-	@SuppressWarnings( "unchecked" )
-	public <T extends Node> T getFxGeometry( DesignDrawable drawable ) {
-		if( drawable instanceof DesignShape shape ) return (T)shape.getFxShape();
-		return null;
-	}
-
 	/**
 	 * Test if the selector shape should select the specific shape. The intersect
 	 * parameter indicates if the selector needs to contain or just intersect the
@@ -555,10 +550,16 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		System.out.println( "selectorS=" + fxSelector + " shapeS=" + fxShape );
 
 		// This first test is an optimization for fully excluded shapes
-		if( !selectorBounds.intersects( shapeBounds ) ) return false;
+		if( !selectorBounds.intersects( shapeBounds ) ) {
+			//System.out.println( "Definitely not=" + fxShape );
+			return false;
+		}
 
 		// This second test is an optimization for fully contained shapes
-		if( selectorBounds.contains( shapeBounds ) ) return true;
+		if( selectorBounds.contains( shapeBounds ) ) {
+			System.out.println( "Matched shape=" + fxShape );
+			return true;
+		}
 
 		// This is the slow but accurate test if the shape is matched when the selector is not a box
 		//Shape fxSelector = getFxGeometry( selector );
@@ -567,8 +568,10 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		//System.out.println( "selectorS=" + fxSelector + " shapeS=" + fxShape );
 
 		// NEXT Shape.intersect Shape.intersect(Shape a, Shape b) has a limitation.
-		// It is a static geometric operation that completely ignores Node.getTransforms().
-		// It evaluates the untransformed local geometry of both shapes.
+		// For line segments and open curves (e.g., DesignLine), use explicit
+		// geometric boundary intersection/clipping algorithms (e.g., testing
+		// line-segment intersection against the 4 edges of the aperture window box
+		// or using CadIntersection) instead of JavaFX 2D area operations.
 
 		// Check if the selector matches the shape
 		boolean match;

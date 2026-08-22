@@ -764,6 +764,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		return fxShape;
 	}
 
+	@Override
 	@SuppressWarnings( "unchecked" )
 	public <T extends Node> T getFxGeometry( DesignDrawable drawable ) {
 		return (T)drawableToGeometry.get( new GeometryKey( this, drawable ) );
@@ -1076,7 +1077,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	Rectangle bindBoxAperture( DesignBox designBox ) {
 		Rectangle box = new Rectangle();
 
-		//bindCommonApertureGeometry( designEllipse, ellipse );
+		//bindCommonApertureGeometry( designBox, box );
 
 		DesignDoubleBinding originXProperty = new DesignDoubleBinding( designBox, DesignBox.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
 		DesignDoubleBinding originYProperty = new DesignDoubleBinding( designBox, DesignBox.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
