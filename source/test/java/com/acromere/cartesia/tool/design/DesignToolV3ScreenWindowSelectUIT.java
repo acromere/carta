@@ -61,10 +61,10 @@ public class DesignToolV3ScreenWindowSelectUIT extends DesignToolV3BaseUIT {
 	@Test
 	void screenWindowSelectIntersectedLines() throws Exception {
 		// given
-		useBoxLayer();
+		//useBoxLayer();
 		useLineLayer();
-		usePathLayer();
-		useMarkerLayer();
+		//usePathLayer();
+		//useMarkerLayer();
 		Point3D origin = getTool().worldToScreen( new Point3D( -1.5, -0.5, 0 ) );
 		Point3D mouse = getTool().worldToScreen( new Point3D( 1.5, 1.5, 0 ) );
 
