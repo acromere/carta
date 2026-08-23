@@ -184,7 +184,7 @@ public abstract class BaseDesignRendererTest {
 	}
 
 	@Test
-	void doFindByShapeByContains() {
+	void doFindByShapeByContains() throws Exception {
 		// given
 		DesignLayer layer = new DesignLayer();
 		getRenderer().setEnabledLayers( List.of( layer ) );
@@ -198,6 +198,7 @@ public abstract class BaseDesignRendererTest {
 		DesignBox aperture = WINDOW_SELECT_APERTURE;
 		aperture.setOrigin( new Point3D( -2, -2, 0 ) );
 		aperture.setSize( new Point3D( 4, 4, 0 ) );
+		Fx.waitForStability( 1000 );
 
 		// when
 		List<DesignShape> selectedShapes = getRenderer().doFindByShape( aperture, false );
