@@ -162,7 +162,7 @@ public abstract class BaseDesignRendererTest {
 	}
 
 	@Test
-	void doFindByShapeByIntersect() {
+	void doFindByShapeByIntersect() throws Exception {
 		// given
 		DesignLayer layer = new DesignLayer();
 		getRenderer().setEnabledLayers( List.of( layer ) );
@@ -176,6 +176,7 @@ public abstract class BaseDesignRendererTest {
 		DesignBox aperture = WINDOW_SELECT_APERTURE;
 		aperture.setOrigin( new Point3D( 0, 0, 0 ) );
 		aperture.setSize( new Point3D( 4, 4, 0 ) );
+		Fx.waitForStability( 1000 );
 
 		// when
 		List<DesignShape> selectedShapes = getRenderer().doFindByShape( aperture, true );
@@ -186,8 +187,6 @@ public abstract class BaseDesignRendererTest {
 
 	@Test
 	void doFindByShapeByContains() throws Exception {
-		// NEXT This test is flaky on the build box
-
 		// given
 		DesignLayer layer = new DesignLayer();
 		getRenderer().setEnabledLayers( List.of( layer ) );
