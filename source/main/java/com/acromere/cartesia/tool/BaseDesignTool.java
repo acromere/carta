@@ -1156,10 +1156,23 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	 */
 	@Override
 	public void moveSelectAperture( Point3D anchor, Point3D mouse ) {
+		// Prior to V3, null values for anchor and mouse were sent to "clear" the
+		// select aperture. Arguably this should be changed to specific methods for
+		// making the aperture visible and not visible.
+
+		// NEXT Update the current aperture location
+
+		if( mouse == null ) return;
+
 		DesignShape selectAperture = renderer.getSelectAperture();
 
-		// TODO Update the current aperture location
-		if( selectAperture != null ) selectAperture.setOrigin( mouse );
+		if( selectAperture == POINT_SELECT_APERTURE ) {
+			selectAperture.setOrigin( mouse );
+		} else {
+			double width = Math.abs( mouse.getX() - anchor.getX() );
+			double height = Math.abs( mouse.getY() - anchor.getY() );
+			((DesignBox)selectAperture).setSize( new Point3D( width, height, 0 ) );
+		}
 	}
 
 	@Override
