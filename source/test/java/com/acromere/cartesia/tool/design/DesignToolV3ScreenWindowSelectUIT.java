@@ -37,6 +37,52 @@ public class DesignToolV3ScreenWindowSelectUIT extends DesignToolV3BaseUIT {
 	}
 
 	@Test
+	void screenWindowNotSelect() throws Exception {
+		// given
+		useBoxLayer();
+		useLineLayer();
+		usePathLayer();
+		useMarkerLayer();
+
+		// when - select none
+		Point3D origin = getTool().worldToScreen( new Point3D( 6, 6, 0 ) );
+		Point3D mouse = getTool().worldToScreen( new Point3D( 7, 7, 0 ) );
+		getTool().screenWindowSelect( origin, mouse, false, false );
+
+		// then - nothing should be selected
+		List<DesignShape> selected = getTool().getSelectedShapes();
+		assertThat( selected ).isEmpty();
+	}
+
+	@Test
+	void screenWindowUnelect() throws Exception {
+		// given
+		useBoxLayer();
+		useLineLayer();
+		usePathLayer();
+		useMarkerLayer();
+
+		// when - select once
+		Point3D origin = getTool().worldToScreen( new Point3D( -4.5, 4.5, 0 ) );
+		Point3D mouse = getTool().worldToScreen( new Point3D( -1.5, 1.5, 0 ) );
+		getTool().screenWindowSelect( origin, mouse, false, false );
+
+		// then - the first line should be selected
+		List<DesignShape> selected = getTool().getSelectedShapes();
+		assertThat( selected.size() ).isEqualTo( 1 );
+		assertThat( selected.getFirst() ).isInstanceOf( DesignPath.class );
+
+		// when - select none
+		origin = getTool().worldToScreen( new Point3D( 6, 6, 0 ) );
+		mouse = getTool().worldToScreen( new Point3D( 7, 7, 0 ) );
+		getTool().screenWindowSelect( origin, mouse, false, false );
+
+		// then - nothing should be selected
+		selected = getTool().getSelectedShapes();
+		assertThat( selected ).isEmpty();
+	}
+
+	@Test
 	void screenWindowSelectContainedLines() throws Exception {
 		// given
 		useBoxLayer();
@@ -112,29 +158,6 @@ public class DesignToolV3ScreenWindowSelectUIT extends DesignToolV3BaseUIT {
 		assertThat( selected.size() ).isEqualTo( 2 );
 		assertThat( selected.getFirst() ).isInstanceOf( DesignBox.class );
 		assertThat( selected.get( 1 ) ).isInstanceOf( DesignPath.class );
-	}
-
-	@Test
-	void screenWindowSelectNone() throws Exception {
-		// NEXT How is this different than the first test?
-		// Should there be more to this test? Like selecting some geometry and then
-		// selecting an empty window and asserting the selection clears?
-
-		// given
-		useBoxLayer();
-		useLineLayer();
-		usePathLayer();
-		useMarkerLayer();
-		Point3D origin = getTool().worldToScreen( new Point3D( -4.5, 4.5, 0 ) );
-		Point3D mouse = getTool().worldToScreen( new Point3D( -1.5, 1.5, 0 ) );
-
-		// when - select once
-		getTool().screenWindowSelect( origin, mouse, false, false );
-
-		// then - the first line should be selected
-		List<DesignShape> selected = getTool().getSelectedShapes();
-		assertThat( selected.size() ).isEqualTo( 1 );
-		assertThat( selected.getFirst() ).isInstanceOf( DesignPath.class );
 	}
 
 }

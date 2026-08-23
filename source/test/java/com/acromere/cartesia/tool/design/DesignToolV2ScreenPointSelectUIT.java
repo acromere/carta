@@ -19,9 +19,9 @@ public class DesignToolV2ScreenPointSelectUIT extends DesignToolV2BaseUIT {
 	void screenPointSelect() throws Exception {
 		// given
 		useLineLayer();
-		Point3D mouse = getTool().worldToScreen( new Point3D( 0, 0, 0 ) );
 
 		// when - select once
+		Point3D mouse = getTool().worldToScreen( new Point3D( 0, 0, 0 ) );
 		getTool().screenPointSelect( mouse, false );
 
 		// then - the first line should be selected
@@ -36,13 +36,36 @@ public class DesignToolV2ScreenPointSelectUIT extends DesignToolV2BaseUIT {
 		useLineLayer();
 		usePathLayer();
 		useMarkerLayer();
-		Point3D mouse = getTool().worldToScreen( new Point3D( 1, 0, 0 ) );
 
 		// when - select once
+		Point3D mouse = getTool().worldToScreen( new Point3D( 1, 0, 0 ) );
+		getTool().screenPointSelect( mouse, false );
+
+		// then - nothing should be selected
+		List<DesignShape> selected = getTool().getSelectedShapes();
+		assertThat( selected.size() ).isEqualTo( 0 );
+	}
+
+	@Test
+	void screenPointUnelect() throws Exception {
+		// given
+		useLineLayer();
+
+		// when - select once
+		Point3D mouse = getTool().worldToScreen( new Point3D( 0, 0, 0 ) );
 		getTool().screenPointSelect( mouse, false );
 
 		// then - the first line should be selected
 		List<DesignShape> selected = getTool().getSelectedShapes();
+		assertThat( selected.size() ).isEqualTo( 1 );
+		assertThat( selected.getFirst() ).isInstanceOf( DesignLine.class );
+
+		// when - select once
+		mouse = getTool().worldToScreen( new Point3D( 1, 0, 0 ) );
+		getTool().screenPointSelect( mouse, false );
+
+		// then - nothing should be selected
+		selected = getTool().getSelectedShapes();
 		assertThat( selected.size() ).isEqualTo( 0 );
 	}
 
@@ -59,16 +82,24 @@ public class DesignToolV2ScreenPointSelectUIT extends DesignToolV2BaseUIT {
 		List<DesignShape> selected = getTool().getSelectedShapes();
 		assertThat( selected.size() ).isEqualTo( 1 );
 		assertThat( selected.getFirst() ).isInstanceOf( DesignLine.class );
+		assertThat( selected.getFirst().getOrigin() ).isEqualTo( new Point3D( -1, 1, 0 ) );
 
 		// when - select again
 		getTool().screenPointSelect( mouse, false );
 
-		// TODO Implement cascading select functionality
+		// then - the second line should be selected
+		selected = getTool().getSelectedShapes();
+		assertThat( selected.size() ).isEqualTo( 1 );
+		// TODO Temporarily commented out until cascading point select is implemented
+		//assertThat( selected.getFirst().getOrigin() ).isEqualTo( new Point3D( -1, -1, 0 ) );
 
-		//		// then - the second line should be selected
-		//		selected = getTool().getSelectedGeometry();
-		//		assertThat( selected.size() ).isEqualTo( 1 );
-		//		assertThat( selected.getFirst().getOrigin() ).isEqualTo( new Point3D( -2, -2, 0 ) );
+		// when - select again
+		getTool().screenPointSelect( mouse, false );
+
+		// then - the first line should be selected again
+		selected = getTool().getSelectedShapes();
+		assertThat( selected.size() ).isEqualTo( 1 );
+		assertThat( selected.getFirst().getOrigin() ).isEqualTo( new Point3D( -1, 1, 0 ) );
 	}
 
 }
