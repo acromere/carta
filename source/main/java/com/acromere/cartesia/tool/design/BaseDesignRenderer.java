@@ -22,6 +22,7 @@ import javafx.geometry.Point3D;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
 import lombok.CustomLog;
 
@@ -547,39 +548,23 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		Bounds selectorBounds = fxSelector.getBoundsInParent();
 		Bounds shapeBounds = fxShape.getBoundsInParent();
 
-		//System.out.println( "selectorD=" + selector + " shapeD=" + shape );
-		String bbMessage = "selectorB=" + selectorBounds + " shapeB=" + shapeBounds;
-		String xnMessage = "selectorS=" + fxSelector + " shapeS=" + fxShape;
+		// This first test is an optimization for fully excluded shapes
+		if( !selectorBounds.intersects( shapeBounds ) ) return false;
 
-		//		// This first test is an optimization for fully excluded shapes
-		//		if( !selectorBounds.intersects( shapeBounds ) ) {
-		//			System.out.println( "BB exclude=" + bbMessage );
-		//			return false;
-		//		}
-		//
-		//		// This second test is an optimization for fully contained shapes
-		//		if( selectorBounds.contains( shapeBounds ) ) {
-		//			System.out.println( "BB matched=" + bbMessage );
-		//			return true;
-		//		}
-
-		System.out.println( "apertXfn=" + fxSelector.getLocalToSceneTransform() );
-		System.out.println( "shapeXfn =" + fxShape.getLocalToSceneTransform() );
+		// This second test is an optimization for fully contained shapes
+		if( selectorBounds.contains( shapeBounds ) ) return true;
 
 		// This is the slow but accurate test if the shape is matched when the selector is not a box
-		boolean match;
-		if( intersect ) {
-			System.out.println( "selectorS=" + fxSelector + " shapeS=" + fxShape );
-			match = !((javafx.scene.shape.Path)Shape.intersect( fxSelector, fxShape )).getElements().isEmpty();
-		} else {
-			match = ((javafx.scene.shape.Path)Shape.subtract( fxSelector, fxShape )).getElements().isEmpty();
-		}
-		if( match ) {
-			System.out.println( "XN matched=" + xnMessage );
-		} else {
-			System.out.println( "XN exclude=" + xnMessage );
-		}
-		return match;
+		Shape intersection = Shape.intersect( fxSelector, fxShape );
+		Path path = (Path)intersection;
+
+		// Simplified version of
+		//		if( intersect ) {
+		//			return !path.getElements().isEmpty();
+		//		} else {
+		//			return path.getElements().isEmpty();
+		//		}
+		return intersect != path.getElements().isEmpty();
 	}
 
 }

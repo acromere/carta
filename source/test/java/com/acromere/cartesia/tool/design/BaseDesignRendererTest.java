@@ -6,7 +6,10 @@ import com.acromere.zerra.javafx.Fx;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point3D;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.*;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -158,30 +161,49 @@ public abstract class BaseDesignRendererTest {
 	}
 
 	@Test
-	void doFindByShape() {
+	void doFindByShapeByIntersect() {
 		// given
 		DesignLayer layer = new DesignLayer();
 		getRenderer().setEnabledLayers( List.of( layer ) );
 		DesignLine line0 = new DesignLine( -1, -1, 1, 1 );
 		DesignLine line1 = new DesignLine( -1, 1, 1, -1 );
-		line0.setDrawWidth( "0.5");
-		line1.setDrawWidth( "0.5");
-		line0.setDrawPaint("#8080ffff");
-		line1.setDrawPaint("#8080ffff");
+		line0.setDrawWidth( "0.5" );
+		line1.setDrawWidth( "0.5" );
+		layer.addShapes( List.of( line0, line1 ) );
+		getRenderer().setLayerVisible( layer, true );
+
+		DesignBox aperture = WINDOW_SELECT_APERTURE;
+		aperture.setOrigin( new Point3D( 0, 0, 0 ) );
+		aperture.setSize( new Point3D( 4, 4, 0 ) );
+
+		// when
+		List<DesignShape> selectedShapes = getRenderer().doFindByShape( aperture, true );
+
+		// then
+		assertThat( selectedShapes ).hasSize( 2 );
+	}
+
+	@Test
+	void doFindByShapeByContains() {
+		// given
+		DesignLayer layer = new DesignLayer();
+		getRenderer().setEnabledLayers( List.of( layer ) );
+		DesignLine line0 = new DesignLine( -1, -1, 1, 1 );
+		DesignLine line1 = new DesignLine( -1, 1, 1, -1 );
+		line0.setDrawWidth( "0.5" );
+		line1.setDrawWidth( "0.5" );
 		layer.addShapes( List.of( line0, line1 ) );
 		getRenderer().setLayerVisible( layer, true );
 
 		DesignBox aperture = WINDOW_SELECT_APERTURE;
 		aperture.setOrigin( new Point3D( -2, -2, 0 ) );
 		aperture.setSize( new Point3D( 4, 4, 0 ) );
-		//getRenderer().setSelectAperture( aperture );
-
 
 		// when
 		List<DesignShape> selectedShapes = getRenderer().doFindByShape( aperture, false );
 
 		// then
-		assertThat( selectedShapes ).isNotEmpty();
+		assertThat( selectedShapes ).hasSize( 2 );
 	}
 
 	@Test
@@ -190,7 +212,7 @@ public abstract class BaseDesignRendererTest {
 		Line line = new Line( -37.79527559055118, -37.79527559055118, 37.79527559055118, 37.79527559055118 );
 
 		box.setFill( Paint.valueOf( "0x000000ff" ) );
-		line.setStroke( Paint.valueOf( "0x8080ffff" ) );
+		line.setStroke( Paint.valueOf( "0x0000ffff" ) );
 		line.setStrokeWidth( 18.89763779527559 );
 
 		Shape shape = Shape.intersect( box, line );

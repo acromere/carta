@@ -7,7 +7,6 @@ import com.acromere.cartesia.data.DesignShape;
 import javafx.geometry.Point3D;
 import lombok.CustomLog;
 import lombok.Getter;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -16,7 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Getter
 @CustomLog
-@Disabled
 public class DesignToolV3ScreenWindowSelectUIT extends DesignToolV3BaseUIT {
 
 	@Test
@@ -61,10 +59,10 @@ public class DesignToolV3ScreenWindowSelectUIT extends DesignToolV3BaseUIT {
 	@Test
 	void screenWindowSelectIntersectedLines() throws Exception {
 		// given
-		//useBoxLayer();
+		useBoxLayer();
 		useLineLayer();
-		//usePathLayer();
-		//useMarkerLayer();
+		usePathLayer();
+		useMarkerLayer();
 		Point3D origin = getTool().worldToScreen( new Point3D( -1.5, -0.5, 0 ) );
 		Point3D mouse = getTool().worldToScreen( new Point3D( 1.5, 1.5, 0 ) );
 
@@ -100,9 +98,9 @@ public class DesignToolV3ScreenWindowSelectUIT extends DesignToolV3BaseUIT {
 	void screenWindowSelectByIntersect() throws Exception {
 		// given
 		useBoxLayer();
-		//useLineLayer();
+		useLineLayer();
 		usePathLayer();
-		//useMarkerLayer();
+		useMarkerLayer();
 		Point3D origin = getTool().worldToScreen( new Point3D( -4.5, 4.5, 0 ) );
 		Point3D mouse = getTool().worldToScreen( new Point3D( -1.5, 1.5, 0 ) );
 
@@ -111,7 +109,6 @@ public class DesignToolV3ScreenWindowSelectUIT extends DesignToolV3BaseUIT {
 
 		// then - the first line should be selected
 		List<DesignShape> selected = getTool().getSelectedShapes();
-		//System.out.println( "selected=" + selected );
 		assertThat( selected.size() ).isEqualTo( 2 );
 		assertThat( selected.getFirst() ).isInstanceOf( DesignBox.class );
 		assertThat( selected.get( 1 ) ).isInstanceOf( DesignPath.class );

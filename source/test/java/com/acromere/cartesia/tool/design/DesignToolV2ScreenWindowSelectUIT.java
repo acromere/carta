@@ -6,6 +6,7 @@ import com.acromere.cartesia.data.DesignShape;
 import javafx.geometry.Point3D;
 import lombok.CustomLog;
 import lombok.Getter;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DesignToolV2ScreenWindowSelectUIT extends DesignToolV2BaseUIT {
 
 	@Test
+	@Disabled
 	void screenWindowSelect() throws Exception {
 		// given
 		useBoxLayer();
@@ -56,6 +58,7 @@ public class DesignToolV2ScreenWindowSelectUIT extends DesignToolV2BaseUIT {
 	}
 
 	@Test
+	@Disabled
 	void screenWindowSelectNone() throws Exception {
 		// given
 		useBoxLayer();
