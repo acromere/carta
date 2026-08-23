@@ -51,8 +51,6 @@ public class DesignToolV3ScreenPointSelectBoxUIT extends DesignToolV3BaseUIT {
 
 		// then
 		List<DesignShape> selected = getTool().getSelectedShapes();
-		// FIXME This correctly failed because the box does not have a fill
-		// Fill paint may not be correctly bound in V3
 		assertThat( selected.getFirst() ).isInstanceOf( DesignBox.class );
 		assertThat( selected ).hasSize( 1 );
 	}

@@ -116,7 +116,7 @@ public class DesignToolV3ScreenWindowSelectUIT extends DesignToolV3BaseUIT {
 
 	@Test
 	void screenWindowSelectNone() throws Exception {
-		// FIXME How is this different than the first test?
+		// NEXT How is this different than the first test?
 		// Should there be more to this test? Like selecting some geometry and then
 		// selecting an empty window and asserting the selection clears?
 
