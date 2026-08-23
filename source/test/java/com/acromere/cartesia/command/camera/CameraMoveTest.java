@@ -46,7 +46,7 @@ public class CameraMoveTest extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
+		verify( tool, timeout( FX_COMMAND_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
@@ -93,7 +93,7 @@ public class CameraMoveTest extends BaseCommandTest {
 		// then
 		verify( commandContext, times( 1 ) ).setTool( eq( tool ) );
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
+		verify( tool, timeout( FX_COMMAND_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 

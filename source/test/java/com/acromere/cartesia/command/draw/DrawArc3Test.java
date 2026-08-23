@@ -42,7 +42,7 @@ public class DrawArc3Test extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
+		verify( tool, timeout( FX_COMMAND_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
 		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
 		assertThat( result ).isEqualTo( INCOMPLETE );
@@ -78,7 +78,7 @@ public class DrawArc3Test extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 2 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, timeout( FX_TIMEOUT ).times( 2 ) ).setCursor( RETICLE );
+		verify( tool, timeout( FX_COMMAND_TIMEOUT ).times( 2 ) ).setCursor( RETICLE );
 
 		// There is not enough information to provide a preview arc, so a reference line is used
 		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
@@ -101,7 +101,7 @@ public class DrawArc3Test extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 3 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, timeout( FX_TIMEOUT ).times( 3 ) ).setCursor( RETICLE );
+		verify( tool, timeout( FX_COMMAND_TIMEOUT ).times( 3 ) ).setCursor( RETICLE );
 
 		// The reference line is replaced with a preview arc
 		assertThat( command.getReference() ).hasSize( 0 );

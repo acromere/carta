@@ -7,7 +7,6 @@ import com.acromere.cartesia.command.base.Prompt;
 import com.acromere.cartesia.data.DesignArc;
 import com.acromere.cartesia.data.DesignEllipse;
 import com.acromere.cartesia.data.DesignLine;
-import javafx.scene.Cursor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -117,7 +116,7 @@ public class DrawEllipseArc5Test extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
+		verify( tool, timeout( FX_COMMAND_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
 		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
 		assertThat( command.getPreview() ).hasSize( 0 );
@@ -140,7 +139,7 @@ public class DrawEllipseArc5Test extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
+		verify( tool, timeout( FX_COMMAND_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
 		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
 		assertThat( command.getPreview() ).hasSize( 0 );
@@ -163,7 +162,7 @@ public class DrawEllipseArc5Test extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
+		verify( tool, timeout( FX_COMMAND_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
 		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
 		assertThat( Objects.requireNonNull( command.getPreview().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignArc.class );
@@ -187,7 +186,7 @@ public class DrawEllipseArc5Test extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
+		verify( tool, timeout( FX_COMMAND_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
 		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
 		assertThat( Objects.requireNonNull( command.getPreview().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignArc.class );
@@ -211,7 +210,7 @@ public class DrawEllipseArc5Test extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
+		verify( tool, timeout( FX_COMMAND_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
 		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
 		assertThat( Objects.requireNonNull( command.getPreview().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignArc.class );
@@ -235,7 +234,7 @@ public class DrawEllipseArc5Test extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
+		verify( tool, timeout( FX_COMMAND_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
 		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
 		assertThat( Objects.requireNonNull( command.getPreview().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignArc.class );

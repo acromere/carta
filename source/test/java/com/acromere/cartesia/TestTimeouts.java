@@ -6,4 +6,5 @@ public interface TestTimeouts {
 
 	long FX_WAIT_TIMEOUT = 1000;
 
+	long FX_STABILITY_TIMEOUT = 1000;
 }

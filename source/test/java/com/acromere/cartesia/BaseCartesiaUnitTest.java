@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static com.acromere.cartesia.TestTimeouts.FX_STARTUP_TIMEOUT;
+
 @ExtendWith( MockitoExtension.class )
 public class BaseCartesiaUnitTest extends BaseModTestCase<CartesiaMod> {
 
@@ -17,6 +19,7 @@ public class BaseCartesiaUnitTest extends BaseModTestCase<CartesiaMod> {
 	protected void setup() throws Exception {
 		super.setup();
 		Fx.startup();
+		Fx.waitFor( FX_STARTUP_TIMEOUT );
 	}
 
 	@Override

@@ -6,7 +6,6 @@ import com.acromere.cartesia.command.InvalidInputException;
 import com.acromere.cartesia.command.base.Prompt;
 import com.acromere.cartesia.data.DesignEllipse;
 import com.acromere.cartesia.data.DesignLine;
-import javafx.scene.Cursor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -63,7 +62,7 @@ public class DrawCircle2Test extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
-		verify( tool, timeout( FX_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
+		verify( tool, timeout( FX_COMMAND_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
 		assertThat( Objects.requireNonNull( command.getReference().stream().findFirst().orElse( null ) ) ).isInstanceOf( DesignLine.class );
 		assertThat( command.getReference() ).hasSize( 1 );
 		assertThat( result ).isEqualTo( INCOMPLETE );

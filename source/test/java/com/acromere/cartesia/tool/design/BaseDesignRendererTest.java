@@ -15,10 +15,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static com.acromere.cartesia.TestTimeouts.FX_STABILITY_TIMEOUT;
 import static com.acromere.cartesia.tool.RenderConstants.WINDOW_SELECT_APERTURE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public abstract class BaseDesignRendererTest {
+public abstract class BaseDesignRendererTest extends BaseToolTest {
 
 	private final BaseDesignRenderer renderer;
 
@@ -32,8 +33,8 @@ public abstract class BaseDesignRendererTest {
 
 	@BeforeAll
 	static void init() throws Exception {
-		Fx.startup();
-		Fx.waitFor( 1000 );
+//		Fx.startup();
+//		Fx.waitFor( 1000 );
 	}
 
 	@Test
@@ -176,7 +177,7 @@ public abstract class BaseDesignRendererTest {
 		DesignBox aperture = WINDOW_SELECT_APERTURE;
 		aperture.setOrigin( new Point3D( 0, 0, 0 ) );
 		aperture.setSize( new Point3D( 4, 4, 0 ) );
-		Fx.waitForStability( 1000 );
+		Fx.waitForStability( FX_STABILITY_TIMEOUT );
 
 		// when
 		List<DesignShape> selectedShapes = getRenderer().doFindByShape( aperture, true );
@@ -200,7 +201,7 @@ public abstract class BaseDesignRendererTest {
 		DesignBox aperture = WINDOW_SELECT_APERTURE;
 		aperture.setOrigin( new Point3D( -2, -2, 0 ) );
 		aperture.setSize( new Point3D( 4, 4, 0 ) );
-		Fx.waitForStability( 1000 );
+		Fx.waitForStability( FX_STABILITY_TIMEOUT );
 
 		// when
 		List<DesignShape> selectedShapes = getRenderer().doFindByShape( aperture, false );

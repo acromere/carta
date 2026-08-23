@@ -22,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
+import static com.acromere.cartesia.TestTimeouts.FX_WAIT_TIMEOUT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.lenient;
 
@@ -38,7 +39,7 @@ public class BaseCommandTest extends BaseToolTest {
 
 	protected static final Object BAD_PARAMETER = null;
 
-	protected static final int FX_TIMEOUT = 1000;
+	protected static final long FX_COMMAND_TIMEOUT = FX_WAIT_TIMEOUT;
 
 	@Mock
 	protected DesignModel design;

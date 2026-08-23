@@ -24,6 +24,7 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
 
+import static com.acromere.cartesia.TestTimeouts.FX_STABILITY_TIMEOUT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -76,7 +77,7 @@ public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 			tool.setDpi( 160 );
 			tool.setView( Point3D.ZERO, 2, 0 );
 		} );
-		Fx.waitForStability( 1000 );
+		Fx.waitForStability( FX_STABILITY_TIMEOUT );
 
 		// Check the design state
 		assertThat( getDesignModel().calcDesignUnit() ).isEqualTo( DesignUnit.CM );
@@ -116,7 +117,7 @@ public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 
 	protected void useBoxLayer() throws TimeoutException, InterruptedException {
 		getDesignModel().findLayerById( "a56cede9-ee12-40d0-a86c-b3701146c0e6" ).ifPresent( l -> Fx.run( () -> getTool().setLayerVisible( l, true ) ) );
-		Fx.waitForStability( 1000 );
+		Fx.waitForStability( FX_STABILITY_TIMEOUT );
 	}
 
 	protected void useLineLayer() throws TimeoutException, InterruptedException {
@@ -125,7 +126,7 @@ public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 
 		DesignLayer layer = optional.get();
 		Fx.run( () -> getTool().setLayerVisible( layer, true ) );
-		Fx.waitForStability( 1000 );
+		Fx.waitForStability( FX_STABILITY_TIMEOUT );
 
 		List<DesignShape> shapes = layer.getShapes();
 		Shape fxShape0 = getTool().getRenderer().getFxGeometry( shapes.get( 0 ) );
@@ -140,37 +141,37 @@ public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 
 	protected void useEllipseLayer() throws TimeoutException, InterruptedException {
 		getDesignModel().findLayerById( "a56cede9-ee12-40d0-a86c-b3701146c0e9" ).ifPresent( l -> Fx.run( () -> getTool().setLayerVisible( l, true ) ) );
-		Fx.waitForStability( 1000 );
+		Fx.waitForStability( FX_STABILITY_TIMEOUT );
 	}
 
 	protected void useArcLayer() throws TimeoutException, InterruptedException {
 		getDesignModel().findLayerById( "a56cede9-ee12-40d0-a86c-b3701146c0e8" ).ifPresent( l -> Fx.run( () -> getTool().setLayerVisible( l, true ) ) );
-		Fx.waitForStability( 1000 );
+		Fx.waitForStability( FX_STABILITY_TIMEOUT );
 	}
 
 	protected void useQuadLayer() throws TimeoutException, InterruptedException {
 		getDesignModel().findLayerById( "a56cede9-ee12-40d0-a86c-b3701146c0ea" ).ifPresent( l -> Fx.run( () -> getTool().setLayerVisible( l, true ) ) );
-		Fx.waitForStability( 1000 );
+		Fx.waitForStability( FX_STABILITY_TIMEOUT );
 	}
 
 	protected void useCubicLayer() throws TimeoutException, InterruptedException {
 		getDesignModel().findLayerById( "a56cede9-ee12-40d0-a86c-b3701146c0eb" ).ifPresent( l -> Fx.run( () -> getTool().setLayerVisible( l, true ) ) );
-		Fx.waitForStability( 1000 );
+		Fx.waitForStability( FX_STABILITY_TIMEOUT );
 	}
 
 	protected void usePathLayer() throws TimeoutException, InterruptedException {
 		getDesignModel().findLayerById( "a56cede9-ee12-40d0-a86c-b3701146c0ec" ).ifPresent( l -> Fx.run( () -> getTool().setLayerVisible( l, true ) ) );
-		Fx.waitForStability( 1000 );
+		Fx.waitForStability( FX_STABILITY_TIMEOUT );
 	}
 
 	protected void useMarkerLayer() throws TimeoutException, InterruptedException {
 		getDesignModel().findLayerById( "a56cede9-ee12-40d0-a86c-b3701146c0ed" ).ifPresent( l -> Fx.run( () -> getTool().setLayerVisible( l, true ) ) );
-		Fx.waitForStability( 1000 );
+		Fx.waitForStability( FX_STABILITY_TIMEOUT );
 	}
 
 	protected void useTextLayer() throws TimeoutException, InterruptedException {
 		getDesignModel().findLayerById( "a56cede9-ee12-40d0-a86c-b3701146c0ee" ).ifPresent( l -> Fx.run( () -> getTool().setLayerVisible( l, true ) ) );
-		Fx.waitForStability( 1000 );
+		Fx.waitForStability( FX_STABILITY_TIMEOUT );
 	}
 
 }

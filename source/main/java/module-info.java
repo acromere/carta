@@ -55,6 +55,9 @@ module com.acromere.carta {
 	opens com.acromere.cartesia.design.props;
 	opens com.acromere.cartesia.settings;
 
+	// Testing resources
+	opens com.acromere.cartesia;
+
 	provides Module with CartesiaMod;
 
 }

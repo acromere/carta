@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static com.acromere.cartesia.TestTimeouts.FX_STABILITY_TIMEOUT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Getter
@@ -38,7 +39,7 @@ public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 
 		// when - select once
 		getTool().screenPointSelect( mouse, false );
-		Fx.waitForStability( 1000 );
+		Fx.waitForStability( FX_STABILITY_TIMEOUT );
 
 		// then - the first line should be selected
 		List<DesignShape> selected = getTool().getSelectedShapes();
@@ -62,7 +63,7 @@ public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 
 		// when
 		Fx.run( () -> getTool().screenPointSelect( mouse, false ) );
-		Fx.waitForStability( 1000 );
+		Fx.waitForStability( FX_STABILITY_TIMEOUT );
 
 		// then
 		List<DesignShape> selected = getTool().getSelectedShapes();
@@ -83,7 +84,7 @@ public class DesignToolV3ScreenPointSelectLineUIT extends DesignToolV3BaseUIT {
 
 		// when
 		getTool().screenPointSelect( mouse, false );
-		Fx.waitForStability( 1000 );
+		Fx.waitForStability( FX_STABILITY_TIMEOUT );
 
 		// then
 		assertThat( getTool().getSelectedShapes() ).hasSize( 0 );
