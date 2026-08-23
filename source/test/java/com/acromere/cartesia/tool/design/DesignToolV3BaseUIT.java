@@ -129,9 +129,9 @@ public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 
 		List<DesignShape> shapes = layer.getShapes();
 		Shape fxShape0 = getTool().getRenderer().getFxGeometry( shapes.get( 0 ) );
-		assertThat( fxShape0.getStrokeWidth() ).isCloseTo( 63, Offset.offset( 0.1 ) );
+		assertThat( fxShape0.getStrokeWidth() ).isCloseTo( 3.15, Offset.offset( 0.01 ) );
 		Shape fxShape1 = getTool().getRenderer().getFxGeometry( shapes.get( 1 ) );
-		assertThat( fxShape1.getStrokeWidth() ).isCloseTo( 63, Offset.offset( 0.1 ) );
+		assertThat( fxShape1.getStrokeWidth() ).isCloseTo( 3.15, Offset.offset( 0.01 ) );
 	}
 
 	protected DesignLayer getLineLayer() {

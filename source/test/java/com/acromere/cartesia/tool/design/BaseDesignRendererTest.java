@@ -1,17 +1,18 @@
 package com.acromere.cartesia.tool.design;
 
-import com.acromere.cartesia.data.DesignBox;
-import com.acromere.cartesia.data.DesignEllipse;
-import com.acromere.cartesia.data.DesignLayer;
+import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.tool.RenderConstants;
 import com.acromere.zerra.javafx.Fx;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point3D;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static com.acromere.cartesia.tool.RenderConstants.WINDOW_SELECT_APERTURE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class BaseDesignRendererTest {
@@ -110,7 +111,7 @@ public abstract class BaseDesignRendererTest {
 	@Test
 	void selectApertureWithBox() {
 		// given
-		DesignBox aperture = RenderConstants.WINDOW_SELECT_APERTURE;
+		DesignBox aperture = WINDOW_SELECT_APERTURE;
 
 		// when
 		getRenderer().setSelectAperture( aperture );
@@ -146,7 +147,7 @@ public abstract class BaseDesignRendererTest {
 	@Test
 	void selectApertureWithNullUsesEmptyAperture() {
 		// given
-		getRenderer().setSelectAperture( RenderConstants.WINDOW_SELECT_APERTURE );
+		getRenderer().setSelectAperture( WINDOW_SELECT_APERTURE );
 		assertThat( getRenderer().getSelectAperture() ).isNotEqualTo( BaseDesignRenderer.DEFAULT_SELECT_APERTURE );
 
 		// when
@@ -154,6 +155,46 @@ public abstract class BaseDesignRendererTest {
 
 		// then
 		assertThat( getRenderer().getSelectAperture() ).isEqualTo( BaseDesignRenderer.DEFAULT_SELECT_APERTURE );
+	}
+
+	@Test
+	void doFindByShape() {
+		// given
+		DesignLayer layer = new DesignLayer();
+		getRenderer().setEnabledLayers( List.of( layer ) );
+		DesignLine line0 = new DesignLine( -1, -1, 1, 1 );
+		DesignLine line1 = new DesignLine( -1, 1, 1, -1 );
+		line0.setDrawWidth( "0.5");
+		line1.setDrawWidth( "0.5");
+		line0.setDrawPaint("#8080ffff");
+		line1.setDrawPaint("#8080ffff");
+		layer.addShapes( List.of( line0, line1 ) );
+		getRenderer().setLayerVisible( layer, true );
+
+		DesignBox aperture = WINDOW_SELECT_APERTURE;
+		aperture.setOrigin( new Point3D( -2, -2, 0 ) );
+		aperture.setSize( new Point3D( 4, 4, 0 ) );
+		//getRenderer().setSelectAperture( aperture );
+
+
+		// when
+		List<DesignShape> selectedShapes = getRenderer().doFindByShape( aperture, false );
+
+		// then
+		assertThat( selectedShapes ).isNotEmpty();
+	}
+
+	@Test
+	void doFindByShapeReducedTestCase() {
+		Rectangle box = new Rectangle( -75.59055118110236, -75.59055118110236, 151.1811023622047, 151.1811023622047 );
+		Line line = new Line( -37.79527559055118, -37.79527559055118, 37.79527559055118, 37.79527559055118 );
+
+		box.setFill( Paint.valueOf( "0x000000ff" ) );
+		line.setStroke( Paint.valueOf( "0x8080ffff" ) );
+		line.setStrokeWidth( 18.89763779527559 );
+
+		Shape shape = Shape.intersect( box, line );
+		assertThat( ((Path)shape).getElements() ).isNotEmpty();
 	}
 
 }

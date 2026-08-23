@@ -548,29 +548,37 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		Bounds shapeBounds = fxShape.getBoundsInParent();
 
 		//System.out.println( "selectorD=" + selector + " shapeD=" + shape );
-		System.out.println( "selectorB=" + selectorBounds + " shapeB=" + shapeBounds );
-		System.out.println( "selectorS=" + fxSelector + " shapeS=" + fxShape );
+		String bbMessage = "selectorB=" + selectorBounds + " shapeB=" + shapeBounds;
+		String xnMessage = "selectorS=" + fxSelector + " shapeS=" + fxShape;
 
-		// This first test is an optimization for fully excluded shapes
-		if( !selectorBounds.intersects( shapeBounds ) ) {
-			//System.out.println( "Definitely not=" + fxShape );
-			return false;
-		}
+		//		// This first test is an optimization for fully excluded shapes
+		//		if( !selectorBounds.intersects( shapeBounds ) ) {
+		//			System.out.println( "BB exclude=" + bbMessage );
+		//			return false;
+		//		}
+		//
+		//		// This second test is an optimization for fully contained shapes
+		//		if( selectorBounds.contains( shapeBounds ) ) {
+		//			System.out.println( "BB matched=" + bbMessage );
+		//			return true;
+		//		}
 
-		// This second test is an optimization for fully contained shapes
-		if( selectorBounds.contains( shapeBounds ) ) {
-			System.out.println( "Matched shape=" + fxShape );
-			return true;
-		}
+		System.out.println( "apertXfn=" + fxSelector.getLocalToSceneTransform() );
+		System.out.println( "shapeXfn =" + fxShape.getLocalToSceneTransform() );
 
 		// This is the slow but accurate test if the shape is matched when the selector is not a box
 		boolean match;
 		if( intersect ) {
-			match = !((javafx.scene.shape.Path)Shape.intersect( fxShape, fxSelector )).getElements().isEmpty();
+			System.out.println( "selectorS=" + fxSelector + " shapeS=" + fxShape );
+			match = !((javafx.scene.shape.Path)Shape.intersect( fxSelector, fxShape )).getElements().isEmpty();
 		} else {
-			match = ((javafx.scene.shape.Path)Shape.subtract( fxShape, fxSelector )).getElements().isEmpty();
+			match = ((javafx.scene.shape.Path)Shape.subtract( fxSelector, fxShape )).getElements().isEmpty();
 		}
-		if( match ) System.out.println( "Matched shape=" + fxShape );
+		if( match ) {
+			System.out.println( "XN matched=" + xnMessage );
+		} else {
+			System.out.println( "XN exclude=" + xnMessage );
+		}
 		return match;
 	}
 

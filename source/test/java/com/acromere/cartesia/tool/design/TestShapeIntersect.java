@@ -1,9 +1,7 @@
 package com.acromere.cartesia.tool.design;
 
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Path;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.*;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -51,15 +49,17 @@ public class TestShapeIntersect {
 
 	@Test
 	void intersectBoxAndLineWithStrokeWidthSpecificUseCase() {
-		Rectangle box = new Rectangle( -94.48818897637794, 31.49606299212598, 188.97637795275588, 125.98425196850393 );
+		Rectangle box = new Rectangle( -94.48818897637794, -31.49606299212598, 188.97637795275588, 125.98425196850393 );
 		Line line = new Line( -62.99212598425196, -62.99212598425196, 62.99212598425196, 62.99212598425196 );
 		assertLineProperties( line );
 
-		line.setStrokeWidth( 6.29921259842519 );
+		box.setFill( Paint.valueOf( "0x000000ff" ) );
+		line.setStroke( Paint.valueOf( "0x8080ffff" ) );
+		line.setStrokeWidth( 62.99212598425196 );
+		line.setStrokeLineCap( StrokeLineCap.ROUND );
 
 		Shape shape = Shape.intersect( box, line );
-		Path path = (Path)shape;
-		assertThat( path.getElements() ).isNotEmpty();
+		assertThat( ((Path)shape).getElements() ).isNotEmpty();
 	}
 
 	@Test
