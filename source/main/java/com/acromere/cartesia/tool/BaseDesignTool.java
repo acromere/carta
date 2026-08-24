@@ -1247,7 +1247,9 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	}
 
 	protected List<DesignShape> worldPointFind( Point3D point ) {
-		return renderer.doFindByShape( POINT_SELECT_APERTURE.setOrigin( point ), true );
+		POINT_SELECT_APERTURE.setOrigin( point );
+		setSelectAperture( RenderConstants.POINT_SELECT_APERTURE );
+		return renderer.doFindByShape( POINT_SELECT_APERTURE, true );
 	}
 
 	protected List<DesignShape> worldWindowFind( Point3D origin, Point3D point ) {
@@ -1256,6 +1258,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 	protected List<DesignShape> worldWindowFind( Point3D origin, Point3D point, boolean intersect ) {
 		updateSelectApertureWindow( origin, point );
+		setSelectAperture( RenderConstants.WINDOW_SELECT_APERTURE );
 		return renderer.doFindByShape( WINDOW_SELECT_APERTURE, intersect );
 	}
 
