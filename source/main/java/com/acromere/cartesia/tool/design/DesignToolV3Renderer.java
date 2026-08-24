@@ -263,7 +263,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		screen.getChildren().addAll( aperture );
 		getChildren().addAll( world, screen );
 
-		this.aperture.getChildren().add( mapSelectAperture( POINT_SELECT_APERTURE ));
+		this.aperture.getChildren().add( mapSelectAperture( POINT_SELECT_APERTURE ) );
 		this.aperture.getChildren().add( mapSelectAperture( WINDOW_SELECT_APERTURE ) );
 	}
 
@@ -291,35 +291,35 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		setApertureUnitScale( value.unit().to( 1, DesignUnit.IN ) );
 	}
 
-//	/**
-//	 * Set the select aperture. Design tools should set the select aperture to
-//	 * one of a set of predefined apertures. Constantly using new objects for the
-//	 * aperture will reduce performance. Tools should reuse the same aperture
-//	 * instances as much as possible. Once the aperture shape is set, tools are
-//	 * free to update the shape outside the renderer and the renderer will update
-//	 * it according. Only change the select aperture when changing selection
-//	 * modes, such as from point selection to box selection.
-//	 *
-//	 * @param aperture The select aperture.
-//	 */
-//	@Override
-//	public void setSelectAperture( DesignShape aperture ) {
-//		super.setSelectAperture( aperture );
-//
-//		// This implementation choice requires some special attention to the shapes
-//		// being passed to this method. In particular, it is poor practice to
-//		// constantly send new design shape objects to this method. Under normal
-//		// circumstances, only three apertures should be used, the default aperture,
-//		// the point select aperture and the box select aperture. This method is
-//		// implemented this way to not restrict future other apertures, but caution
-//		// should be taken to ensure that the shapes are not constantly new objects.
-//
-//		if( aperture == null ) {
-//			this.aperture.getChildren().remove( getFxGeometry( getSelectAperture() ) );
-//		} else {
-//			this.aperture.getChildren().add( getFxGeometry( aperture ) );
-//		}
-//	}
+	//	/**
+	//	 * Set the select aperture. Design tools should set the select aperture to
+	//	 * one of a set of predefined apertures. Constantly using new objects for the
+	//	 * aperture will reduce performance. Tools should reuse the same aperture
+	//	 * instances as much as possible. Once the aperture shape is set, tools are
+	//	 * free to update the shape outside the renderer and the renderer will update
+	//	 * it according. Only change the select aperture when changing selection
+	//	 * modes, such as from point selection to box selection.
+	//	 *
+	//	 * @param aperture The select aperture.
+	//	 */
+	//	@Override
+	//	public void setSelectAperture( DesignShape aperture ) {
+	//		super.setSelectAperture( aperture );
+	//
+	//		// This implementation choice requires some special attention to the shapes
+	//		// being passed to this method. In particular, it is poor practice to
+	//		// constantly send new design shape objects to this method. Under normal
+	//		// circumstances, only three apertures should be used, the default aperture,
+	//		// the point select aperture and the box select aperture. This method is
+	//		// implemented this way to not restrict future other apertures, but caution
+	//		// should be taken to ensure that the shapes are not constantly new objects.
+	//
+	//		if( aperture == null ) {
+	//			this.aperture.getChildren().remove( getFxGeometry( getSelectAperture() ) );
+	//		} else {
+	//			this.aperture.getChildren().add( getFxGeometry( aperture ) );
+	//		}
+	//	}
 
 	@Override
 	public Design<? extends DesignModel> getDesign() {
@@ -582,11 +582,11 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		return getWorldToScreenTransform().transform( bounds );
 	}
 
-//	@Override
-//	public List<DesignShape> doFindByShape( final DesignShape selector, final boolean intersect ) {
-//		mapSelectAperture( selector );
-//		return super.doFindByShape( selector, intersect );
-//	}
+	//	@Override
+	//	public List<DesignShape> doFindByShape( final DesignShape selector, final boolean intersect ) {
+	//		mapSelectAperture( selector );
+	//		return super.doFindByShape( selector, intersect );
+	//	}
 
 	final Pane layersPane() {
 		return layers;
@@ -1104,10 +1104,12 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 * @param shape The target FX shape
 	 */
 	private void bindCommonApertureGeometry( DesignShape designShape, Shape shape ) {
+		DesignDoubleBinding strokeWidthProperty = new DesignDoubleBinding( designShape, DesignShape.DRAW_WIDTH, DesignShape::calcDrawWidth );
+
 		shape.fillProperty().bind( new DesignBinding<>( designShape, DesignShape.FILL_PAINT, DesignShape::calcFillPaint ) );
 		shape.setStrokeType( StrokeType.INSIDE );
 		shape.strokeProperty().bind( new DesignBinding<>( designShape, DesignShape.DRAW_PAINT, DesignShape::calcDrawPaint ) );
-		shape.strokeWidthProperty().bind( shapeScaleXProperty().multiply( new DesignDoubleBinding( designShape, DesignShape.DRAW_WIDTH, DesignShape::calcDrawWidth ) ) );
+		shape.strokeWidthProperty().bind( shapeScaleXProperty().multiply( strokeWidthProperty ).divide( viewZoomXProperty() ) );
 	}
 
 	private record GeometryKey(DesignRenderer renderer, DesignDrawable drawable) {}
