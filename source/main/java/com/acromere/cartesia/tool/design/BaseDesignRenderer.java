@@ -409,6 +409,9 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 
 		if( !ALLOWED_SELECT_APERTURES.contains( aperture ) ) throw new IllegalArgumentException( "Invalid select aperture: " + aperture );
 
+		// NEXT Turn select apertures on and off
+		// I didn't really provide a way for the aperture shapes to be turned on and off
+
 		aperture.setDrawPaint( getApertureDrawPaint() );
 		aperture.setFillPaint( getApertureFillPaint() );
 		selectAperture.set( aperture );

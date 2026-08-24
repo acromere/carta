@@ -532,19 +532,19 @@ public class DesignToolV2 extends BaseDesignTool {
 	/**
 	 * Set the select aperture window. Points are specified in screen coordinates.
 	 *
-	 * @param anchor The anchor point
+	 * @param origin The anchor point
 	 * @param mouse The mouse point
 	 */
 	@Override
-	public void moveSelectAperture( Point3D anchor, Point3D mouse ) {
-		if( anchor == null || mouse == null ) {
+	public void moveSelectAperture( Point3D origin, Point3D mouse ) {
+		if( origin == null || mouse == null ) {
 			renderer.setSelectAperture( null );
 			return;
 		}
 
 		// Set the select aperture
 		DesignShape selectAperture;
-		if( anchor.equals( mouse ) ) {
+		if( origin.equals( mouse ) ) {
 			if( isShowHotspotEnabled() ) {
 				double size = renderer.realToScreen( getSelectTolerance() );
 				selectAperture = new DesignEllipse( mouse, size );
@@ -552,7 +552,7 @@ public class DesignToolV2 extends BaseDesignTool {
 				selectAperture = null;
 			}
 		} else {
-			Bounds box = FxUtil.bounds( anchor, mouse );
+			Bounds box = FxUtil.bounds( origin, mouse );
 			selectAperture = new DesignBox( box );
 		}
 

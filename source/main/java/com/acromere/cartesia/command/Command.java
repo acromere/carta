@@ -8,7 +8,6 @@ import com.acromere.cartesia.math.*;
 import com.acromere.cartesia.tool.CommandContext;
 import com.acromere.product.Rb;
 import com.acromere.zerra.javafx.Fx;
-import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.Cursor;
 import javafx.scene.input.GestureEvent;
@@ -165,7 +164,7 @@ public abstract class Command {
 	}
 
 	protected void setContextAnchor( CommandTask task, MouseEvent event ) {
-		task.getContext().setScreenAnchor( new Point2D( event.getX(), event.getY() ) );
+		//task.getContext().setScreenAnchor( new Point2D( event.getX(), event.getY() ) );
 		task.getContext().setWorldAnchor( task.getTool().screenToWorkplane( event.getX(), event.getY(), event.getZ() ) );
 	}
 

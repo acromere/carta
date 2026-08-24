@@ -1147,38 +1147,38 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		renderer.setSelectAperture( aperture );
 	}
 
+	/**
+	 * Set the select aperture location. Mouse point is specified in world coordinates.
+	 *
+	 * @param mouse The mouse point in world coordinates
+	 */
 	@Override
 	public void moveSelectAperture( Point3D mouse ) {
 		moveSelectAperture( mouse, mouse );
 	}
 
 	/**
-	 * Set the select aperture window. Points are specified in screen coordinates.
+	 * Set the select aperture window. Points are specified in world coordinates.
 	 *
-	 * @param anchor The anchor point
-	 * @param mouse The mouse point
+	 * @param origin The origin point in world coordinates
+	 * @param mouse The mouse point in world coordinates
 	 */
 	@Override
-	public void moveSelectAperture( Point3D anchor, Point3D mouse ) {
+	public void moveSelectAperture( Point3D origin, Point3D mouse ) {
 		// Prior to V3, null values for anchor and mouse were sent to "clear" the
 		// select aperture. Arguably this should be changed to specific methods for
 		// making the aperture visible and not visible.
 
-		// NEXT Update the current aperture location
-
 		if( mouse == null ) return;
 
 		DesignShape aperture = renderer.getSelectAperture();
-		log.atInfo().log( "anchor={0} mouse={1} aperture={2}", anchor, mouse, aperture );
 
 		if( aperture == POINT_SELECT_APERTURE ) {
-			//System.out.println( "apt=point");
 			aperture.setOrigin( mouse );
 		} else if( aperture == WINDOW_SELECT_APERTURE ) {
-			System.out.println( "apt=box");
-			double width = Math.abs( mouse.getX() - anchor.getX() );
-			double height = Math.abs( mouse.getY() - anchor.getY() );
-			((DesignBox)aperture).setSize( new Point3D( width, height, 0 ) );
+			Bounds box = FxUtil.bounds( origin, mouse );
+			aperture.setOrigin( new Point3D( box.getMinX(), box.getMinY(), 0 ) );
+			((DesignBox)aperture).setSize( new Point3D( box.getWidth(), box.getHeight(), 0 ) );
 		} else {
 			log.atWarn().log( "unknown aperture={0}", aperture );
 		}

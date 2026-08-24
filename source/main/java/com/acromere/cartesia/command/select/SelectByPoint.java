@@ -29,6 +29,10 @@ public class SelectByPoint extends SelectCommand {
 			Point3D screenPoint = new Point3D( mouseEvent.getX(), mouseEvent.getY(), mouseEvent.getZ() );
 			event.consume();
 
+			task.getTool().setSelectAperture( POINT_SELECT_APERTURE );
+			task.getContext().setWorldMouse( screenPoint );
+			task.getContext().setWorldAnchor( task.getTool().screenToWorld( screenPoint ) );
+
 			if( task.getContext().isSelectMode() ) {
 				task.getTool().screenPointSelect( screenPoint, toggle );
 				return SUCCESS;
@@ -50,6 +54,9 @@ public class SelectByPoint extends SelectCommand {
 		// With the anchor, select geometry or return a point
 		if( paramCount == 1 && noEvent ) {
 			Point3D worldPoint = asPoint( task, "select-touch", 0 );
+
+			//task.getContext().setScreenMouse( task.getTool().worldToScreen( worldPoint ) );
+			task.getContext().setWorldAnchor( worldPoint );
 
 			if( task.getContext().isSelectMode() ) {
 				task.getTool().worldPointSelect( worldPoint, toggle );

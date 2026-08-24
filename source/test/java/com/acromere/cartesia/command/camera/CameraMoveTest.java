@@ -6,7 +6,6 @@ import com.acromere.cartesia.command.CommandTrigger;
 import com.acromere.cartesia.command.InvalidInputException;
 import com.acromere.cartesia.command.base.Prompt;
 import com.acromere.cartesia.command.base.Value;
-import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseButton;
@@ -70,7 +69,7 @@ public class CameraMoveTest extends BaseCommandTest {
 
 		// then
 		verify( commandContext, times( 1 ) ).setTool( eq( tool ) );
-		verify( commandContext, times( 1 ) ).setScreenAnchor( eq( new Point2D( 48, 17 ) ) );
+		//verify( commandContext, times( 1 ) ).setScreenAnchor( eq( new Point2D( 48, 17 ) ) );
 		verify( commandContext, times( 1 ) ).setWorldAnchor( eq( new Point3D( -2, 1, 0 ) ) );
 		verify( commandContext, times( 0 ) ).submit( eq( tool ), any( Value.class ), any( Point3D.class ) );
 		assertThat( result ).isEqualTo( INCOMPLETE );

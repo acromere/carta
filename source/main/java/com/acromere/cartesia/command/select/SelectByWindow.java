@@ -9,6 +9,7 @@ import javafx.scene.input.MouseEvent;
 import lombok.CustomLog;
 
 import static com.acromere.cartesia.command.Command.Result.*;
+import static com.acromere.cartesia.tool.RenderConstants.POINT_SELECT_APERTURE;
 import static com.acromere.cartesia.tool.RenderConstants.WINDOW_SELECT_APERTURE;
 
 @CustomLog
@@ -32,9 +33,8 @@ public abstract class SelectByWindow extends SelectCommand {
 		if( paramCount == 0 & hasEvent && event instanceof MouseEvent mouseEvent && task.getTrigger().matches( mouseEvent ) ) {
 			// Submit a Value command to pass the anchor back to this command
 			task.getTool().setSelectAperture( WINDOW_SELECT_APERTURE );
-			Point3D mouse = new Point3D( mouseEvent.getX(), mouseEvent.getY(), mouseEvent.getZ() );
-			Point3D anchor = task.getTool().screenToWorld( mouse );
-			task.getContext().setLocalAnchor( mouse );
+			Point3D anchor = task.getContext().getWorldAnchor();
+			task.getContext().setLocalAnchor( anchor );
 			task.getContext().submit( task.getTool(), new Value(), anchor );
 			return INCOMPLETE;
 		}
@@ -70,19 +70,18 @@ public abstract class SelectByWindow extends SelectCommand {
 	@Override
 	public void handle( CommandTask task, MouseEvent event ) {
 		BaseDesignTool tool = (BaseDesignTool)event.getSource();
-		Point3D anchor = task.getContext().getLocalAnchor();
-		Point3D mouse = new Point3D( event.getX(), event.getY(), event.getZ() );
+		Point3D localAnchor = task.getContext().getLocalAnchor();
+		Point3D worldAnchor = tool.screenToWorld( new Point3D( event.getX(), event.getY(), event.getZ() ) );
 
+		event.consume();
 		if( event.getEventType().equals( MouseEvent.MOUSE_DRAGGED ) ) {
-			tool.moveSelectAperture( anchor, mouse );
-			event.consume();
+			tool.moveSelectAperture( localAnchor, worldAnchor );
 		} else if( getStep() == 2 && event.getEventType().equals( MouseEvent.MOUSE_MOVED ) ) {
-			tool.moveSelectAperture( anchor, mouse );
-			event.consume();
+			tool.moveSelectAperture( localAnchor, worldAnchor );
 		} else if( event.getEventType().equals( MouseEvent.MOUSE_RELEASED ) ) {
 			// Submit a Value command to pass the point back to this command
-			task.getContext().submit( tool, new Value(), tool.screenToWorld( mouse ) );
-			event.consume();
+			task.getContext().submit( tool, new Value(), worldAnchor );
+			task.getTool().setSelectAperture( POINT_SELECT_APERTURE );
 		}
 	}
 

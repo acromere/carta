@@ -107,7 +107,7 @@ public class SelectByPointTest extends BaseCommandTest {
 		// then
 		verify( tool, times( 1 ) ).screenToWorkplane( eq( new Point3D( 48, 17, 0 ) ) );
 		verify( tool, times( 0 ) ).screenPointSelect( any(), anyBoolean() );
-		verify( tool, times( 0 ) ).screenToWorld( any( Point3D.class ) );
+		verify( tool, times( 1 ) ).screenToWorld( any( Point3D.class ) );
 		assertThat( event.isConsumed() ).isTrue();
 		assertThat( result ).isEqualTo( new Point3D( 1, 1, 0 ) );
 	}

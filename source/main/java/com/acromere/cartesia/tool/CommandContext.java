@@ -13,7 +13,6 @@ import com.acromere.xenon.notice.Notice;
 import com.acromere.zerra.javafx.Fx;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
-import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.input.*;
 import lombok.CustomLog;
@@ -66,13 +65,13 @@ public class CommandContext implements EventHandler<KeyEvent> {
 	@Getter
 	private Input inputMode;
 
-	@Getter
-	@Setter
-	private Point2D screenAnchor;
+//	@Getter
+//	@Setter
+//	private Point2D screenAnchor;
 
-	@Getter
-	@Setter
-	private Point2D screenMouse;
+//	@Getter
+//	@Setter
+//	private Point2D screenMouse;
 
 	@Getter
 	@Setter
@@ -168,7 +167,7 @@ public class CommandContext implements EventHandler<KeyEvent> {
 			if( keyEventType == KeyEvent.KEY_TYPED ) mouseEventType = MouseEvent.MOUSE_CLICKED;
 			if( mouseEventType == null ) return;
 			Point3D localMouse = this.localMouse;
-			Point2D screenMouse = this.screenMouse;
+			Point3D screenMouse = tool.worldToScreen( localMouse );
 			submitEventCommand( MouseEventUtil.of( tool, null, mouseEventType, localMouse, screenMouse, MouseButton.PRIMARY ) );
 		} else {
 			// Process text calls doCommand
@@ -268,8 +267,8 @@ public class CommandContext implements EventHandler<KeyEvent> {
 		BaseDesignTool tool = (BaseDesignTool)event.getSource();
 
 		// Set the mouse position in screen coordinates
-		Point2D screenMouse = new Point2D( event.getScreenX(), event.getScreenY() );
-		setScreenMouse( screenMouse );
+		//Point2D screenMouse = new Point2D( event.getScreenX(), event.getScreenY() );
+		//setScreenMouse( screenMouse );
 
 		// Set the mouse position in local coordinates
 		Point3D mouse = new Point3D( event.getX(), event.getY(), event.getZ() );
