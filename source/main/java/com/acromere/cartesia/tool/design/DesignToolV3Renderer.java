@@ -1062,7 +1062,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	Ellipse bindEllipseAperture( DesignEllipse designEllipse ) {
 		Ellipse ellipse = new Ellipse();
 
-		//bindCommonApertureGeometry( designEllipse, ellipse );
+		bindCommonApertureGeometry( designEllipse, ellipse );
 
 		DesignDoubleBinding originXProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
 		DesignDoubleBinding originYProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
@@ -1080,7 +1080,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	Rectangle bindBoxAperture( DesignBox designBox ) {
 		Rectangle box = new Rectangle();
 
-		//bindCommonApertureGeometry( designBox, box );
+		bindCommonApertureGeometry( designBox, box );
 
 		DesignDoubleBinding originXProperty = new DesignDoubleBinding( designBox, DesignBox.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
 		DesignDoubleBinding originYProperty = new DesignDoubleBinding( designBox, DesignBox.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
@@ -1093,6 +1093,20 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		box.heightProperty().bind( shapeScaleYProperty().multiply( heightProperty ) );
 
 		return box;
+	}
+
+	/**
+	 * Bind the common geometry properties of the shape. This method is used to
+	 * bind the common shape properties to their dependent properties, whether
+	 * they be FX properties or design properties.
+	 *
+	 * @param designShape The source design shape
+	 * @param shape The target FX shape
+	 */
+	private void bindCommonApertureGeometry( DesignShape designShape, Shape shape ) {
+		shape.fillProperty().bind( new DesignBinding<>( designShape, DesignShape.FILL_PAINT, DesignShape::calcFillPaint ) );
+//		shape.strokeProperty().bind( new DesignBinding<>( designShape, DesignShape.DRAW_PAINT, DesignShape::calcDrawPaint ) );
+//		shape.strokeWidthProperty().bind( shapeScaleXProperty().multiply( new DesignDoubleBinding( designShape, DesignShape.DRAW_WIDTH, DesignShape::calcDrawWidth ) ) );
 	}
 
 	private record GeometryKey(DesignRenderer renderer, DesignDrawable drawable) {}

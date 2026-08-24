@@ -754,6 +754,27 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	}
 
 	/**
+	 * Select nodes using a shape. The selecting shape can be any shape but it
+	 * usually a {@link DesignEllipse} or a {@link DesignBox}. Returns the list
+	 * of discovered shapes in order from top to bottom.
+	 * <p>
+	 * The selector shape is defined in world coordinates.
+	 *
+	 * @param selector The selecting shape
+	 * @param intersect True to select shapes by intersection
+	 * @return The list of discovered shapes
+	 */
+	@Override
+	public List<DesignShape> doFindByShape( final DesignShape selector, final boolean intersect ) {
+		// Ensure the selector does not have a draw width
+		selector.setDrawWidth( "0" );
+		selector.setDrawPaint( "#ff00ffff" );
+		selector.setFillPaint( "#ff00ffff" );
+
+		return super.doFindByShape( selector, intersect );
+	}
+
+	/**
 	 * Request that geometry be rendered. This method will collapse multiple
 	 * sequential render requests to improve performance. This method is safe to
 	 * call from any thread.

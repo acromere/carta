@@ -522,12 +522,8 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 	 * @param intersect True to select shapes by intersection
 	 * @return The list of discovered shapes
 	 */
+	@Note( Note.THREAD_SAFE )
 	public List<DesignShape> doFindByShape( final DesignShape selector, final boolean intersect ) {
-		// Ensure the selector does not have a draw width
-		selector.setDrawWidth( "0" );
-		selector.setDrawPaint( "#ff00ffff" );
-		selector.setFillPaint( "#ff00ffff" );
-
 		// This method should be thread agnostic. It should be safe to call from any thread.
 		return getVisibleShapes().stream().filter( shape -> matches( selector, shape, intersect ) ).collect( Collectors.toList() );
 	}
