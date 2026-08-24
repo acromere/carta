@@ -1106,8 +1106,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	private void bindCommonApertureGeometry( DesignShape designShape, Shape shape ) {
 		shape.fillProperty().bind( new DesignBinding<>( designShape, DesignShape.FILL_PAINT, DesignShape::calcFillPaint ) );
 		shape.setStrokeType( StrokeType.INSIDE );
-//		shape.strokeProperty().bind( new DesignBinding<>( designShape, DesignShape.DRAW_PAINT, DesignShape::calcDrawPaint ) );
-//		shape.strokeWidthProperty().bind( shapeScaleXProperty().multiply( new DesignDoubleBinding( designShape, DesignShape.DRAW_WIDTH, DesignShape::calcDrawWidth ) ) );
+		shape.strokeProperty().bind( new DesignBinding<>( designShape, DesignShape.DRAW_PAINT, DesignShape::calcDrawPaint ) );
+		shape.strokeWidthProperty().bind( shapeScaleXProperty().multiply( new DesignDoubleBinding( designShape, DesignShape.DRAW_WIDTH, DesignShape::calcDrawWidth ) ) );
 	}
 
 	private record GeometryKey(DesignRenderer renderer, DesignDrawable drawable) {}
