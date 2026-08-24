@@ -16,12 +16,17 @@ import java.util.List;
 import static com.acromere.cartesia.math.CadMath.SQRT2_OVER_2;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DesignTextTest {
+public class DesignTextTest extends DesignShapeTest {
+
+	DesignTextTest() {
+		super( new DesignText() );
+	}
 
 	private DesignText text;
 
 	@BeforeEach
-	void setup() {
+	protected void setup() throws Exception {
+		super.setup();
 		text = new DesignText();
 	}
 

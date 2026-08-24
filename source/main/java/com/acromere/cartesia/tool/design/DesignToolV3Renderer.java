@@ -16,12 +16,14 @@ import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -1038,6 +1040,13 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 * @param shape The target FX shape
 	 */
 	private void bindCommonShapeGeometry( DesignShape designShape, Shape shape ) {
+		// NEXT Fill and stroke bindings taking into account select flag
+		boolean isSelect = designShape.isSelected();
+
+		//DesignBinding<Boolean> selectBinding = new DesignBinding<>( designShape, DesignShape.SELECTED, DesignShape::isSelected );
+		DesignBinding<Paint> fillBinding = new DesignBinding<>( designShape, DesignShape.FILL_PAINT, DesignShape::calcFillPaint );
+		DesignBinding<Paint> strokeBinding = new DesignBinding<>( designShape, DesignShape.DRAW_PAINT, DesignShape::calcDrawPaint );
+
 		shape.fillProperty().bind( new DesignBinding<>( designShape, DesignShape.FILL_PAINT, DesignShape::calcFillPaint ) );
 		shape.strokeProperty().bind( new DesignBinding<>( designShape, DesignShape.DRAW_PAINT, DesignShape::calcDrawPaint ) );
 		shape.strokeWidthProperty().bind( shapeScaleXProperty().multiply( new DesignDoubleBinding( designShape, DesignShape.DRAW_WIDTH, DesignShape::calcDrawWidth ) ) );

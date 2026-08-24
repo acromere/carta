@@ -10,7 +10,11 @@ import java.util.List;
 import static com.acromere.cartesia.TestConstants.TOLERANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DesignMarkerTest {
+public class DesignMarkerTest extends DesignShapeTest {
+
+	DesignMarkerTest() {
+		super( new DesignMarker( new Point3D( 0, 0, 0 ), "1", DesignMarker.Type.DIAMOND ) );
+	}
 
 	@Test
 	void testGetSteps() {

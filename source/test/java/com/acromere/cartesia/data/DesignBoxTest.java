@@ -13,7 +13,11 @@ import java.util.List;
 import static com.acromere.cartesia.TestConstants.EXTRA_LOOSE_TOLERANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DesignBoxTest {
+public class DesignBoxTest extends DesignShapeTest {
+
+	DesignBoxTest() {
+		super( new DesignBox( new Point3D( 0, 0, 0 ), new Point3D( 1, 1, 0 ) ) );
+	}
 
 	@Test
 	void getBounds() {

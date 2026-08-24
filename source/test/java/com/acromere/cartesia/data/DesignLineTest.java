@@ -19,7 +19,11 @@ import static com.acromere.cartesia.math.CadMath.SQRT2;
 import static com.acromere.cartesia.math.CadMath.SQRT2_OVER_2;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DesignLineTest {
+public class DesignLineTest extends DesignShapeTest {
+
+	DesignLineTest() {
+		super( new DesignLine( new Point3D( 0, 0, 0 ), new Point3D( 1, 0, 0 ) ) );
+	}
 
 	@Test
 	void testModify() {

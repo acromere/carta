@@ -18,7 +18,11 @@ import java.util.Map;
 import static com.acromere.cartesia.TestConstants.TOLERANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DesignArcTest {
+public class DesignArcTest extends DesignShapeTest {
+
+	DesignArcTest() {
+		super( new DesignArc( new Point3D( 0, 0, 0 ), 1.0, 0.0, 180.0, DesignArc.Type.OPEN ) );
+	}
 
 	@Test
 	void testModify() {

@@ -16,7 +16,11 @@ import java.util.Map;
 import static com.acromere.cartesia.TestConstants.TOLERANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DesignEllipseTest {
+public class DesignEllipseTest extends DesignShapeTest {
+
+	DesignEllipseTest() {
+		super( new DesignEllipse( new Point3D( 0, 0, 0 ), 1.0, 2.0 ) );
+	}
 
 	@Test
 	void testModify() {

@@ -47,7 +47,7 @@ public abstract class DesignShape extends DesignDrawable {
 
 	public static final String ROTATE = "rotate";
 
-	//public static final String SELECTED = "selected";
+	public static final String SELECTED = "selected";
 
 	//public static final String REFERENCE = "reference";
 
@@ -120,6 +120,26 @@ public abstract class DesignShape extends DesignDrawable {
 	@SuppressWarnings( "unchecked" )
 	public <T extends DesignShape> T setRotate( double value ) {
 		setRotate( String.valueOf( value ) );
+		return (T)this;
+	}
+
+	public boolean isSelected() {
+		return Boolean.parseBoolean( getSelected() );
+	}
+
+	public String getSelected() {
+		return getValue( SELECTED );
+	}
+
+	@SuppressWarnings( "unchecked" )
+	public <T extends DesignShape> T setSelected( String value ) {
+		setValue( SELECTED, value );
+		return (T)this;
+	}
+
+	@SuppressWarnings( "unchecked" )
+	public <T extends DesignShape> T setSelected( boolean value ) {
+		setSelected( String.valueOf( value ) );
 		return (T)this;
 	}
 

@@ -12,7 +12,11 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DesignQuadTest {
+public class DesignQuadTest extends DesignShapeTest {
+
+	DesignQuadTest() {
+		super( new DesignQuad( new Point3D( 0, 0, 0 ), new Point3D( 0, 1, 0 ), new Point3D( 1, 0, 0 ) ) );
+	}
 
 	@Test
 	void testModify() {

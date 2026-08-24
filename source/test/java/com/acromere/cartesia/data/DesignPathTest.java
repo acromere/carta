@@ -13,7 +13,11 @@ import java.util.List;
 import static com.acromere.cartesia.TestConstants.TOLERANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DesignPathTest extends BaseCartesiaUnitTest {
+public class DesignPathTest extends DesignShapeTest {
+
+	DesignPathTest() {
+		super( new DesignPath( Point3D.ZERO ) );
+	}
 
 	@Test
 	void constructor() {
