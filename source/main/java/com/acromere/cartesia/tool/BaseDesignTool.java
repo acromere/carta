@@ -1143,6 +1143,10 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		getDesignContext().setSelectedShapes( shapes, selected );
 	}
 
+	public void setSelectAperture( DesignShape aperture ) {
+		renderer.setSelectAperture( aperture );
+	}
+
 	@Override
 	public void moveSelectAperture( Point3D mouse ) {
 		moveSelectAperture( mouse, mouse );
@@ -1168,7 +1172,8 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 		if( selectAperture == POINT_SELECT_APERTURE ) {
 			selectAperture.setOrigin( mouse );
-		} else {
+		} else if( selectAperture == WINDOW_SELECT_APERTURE ) {
+			System.out.println( "apt=box");
 			double width = Math.abs( mouse.getX() - anchor.getX() );
 			double height = Math.abs( mouse.getY() - anchor.getY() );
 			((DesignBox)selectAperture).setSize( new Point3D( width, height, 0 ) );

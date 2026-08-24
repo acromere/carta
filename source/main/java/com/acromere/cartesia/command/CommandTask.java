@@ -17,6 +17,7 @@ import java.util.Set;
 
 import static com.acromere.cartesia.command.Command.Result.FAILURE;
 import static com.acromere.cartesia.command.Command.Result.INCOMPLETE;
+import static com.acromere.cartesia.tool.RenderConstants.POINT_SELECT_APERTURE;
 
 @Getter
 @CustomLog
@@ -109,7 +110,7 @@ public class CommandTask {
 	private void doComplete() {
 		if( command.clearReferenceAndPreviewWhenComplete() ) command.clearReferenceAndPreview( this );
 		if( command.clearSelectionWhenComplete() ) tool.clearSelectedShapes();
-		tool.moveSelectAperture( null, null );
+		tool.setSelectAperture( POINT_SELECT_APERTURE );
 	}
 
 	public void cancel() {
