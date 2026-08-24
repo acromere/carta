@@ -8,6 +8,7 @@ import javafx.scene.input.MouseEvent;
 import lombok.CustomLog;
 
 import static com.acromere.cartesia.command.Command.Result.*;
+import static com.acromere.cartesia.tool.RenderConstants.POINT_SELECT_APERTURE;
 
 @CustomLog
 public class SelectByPoint extends SelectCommand {

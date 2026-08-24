@@ -9,6 +9,7 @@ import javafx.scene.input.MouseEvent;
 import lombok.CustomLog;
 
 import static com.acromere.cartesia.command.Command.Result.*;
+import static com.acromere.cartesia.tool.RenderConstants.WINDOW_SELECT_APERTURE;
 
 @CustomLog
 public abstract class SelectByWindow extends SelectCommand {
@@ -22,6 +23,7 @@ public abstract class SelectByWindow extends SelectCommand {
 		// Nothing to do but prompt for the anchor point
 		if( paramCount == 0 & noEvent ) {
 			// Select window anchor
+			task.getTool().setSelectAperture( WINDOW_SELECT_APERTURE );
 			promptForWindow( task, "select-window-anchor" );
 			return INCOMPLETE;
 		}
@@ -29,6 +31,7 @@ public abstract class SelectByWindow extends SelectCommand {
 		// If there is an event, but no parameters, use the world anchor as the first parameter
 		if( paramCount == 0 & hasEvent && event instanceof MouseEvent mouseEvent && task.getTrigger().matches( mouseEvent ) ) {
 			// Submit a Value command to pass the anchor back to this command
+			task.getTool().setSelectAperture( WINDOW_SELECT_APERTURE );
 			task.getContext().submit( task.getTool(), new Value(), task.getContext().getWorldAnchor() );
 			return INCOMPLETE;
 		}

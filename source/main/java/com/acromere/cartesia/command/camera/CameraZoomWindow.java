@@ -8,6 +8,7 @@ import javafx.scene.input.MouseEvent;
 import lombok.CustomLog;
 
 import static com.acromere.cartesia.command.Command.Result.*;
+import static com.acromere.cartesia.tool.RenderConstants.WINDOW_SELECT_APERTURE;
 
 /**
  * Zoom the view to the window defined by two points. The order of the points is
@@ -46,6 +47,7 @@ public class CameraZoomWindow extends CameraCommand {
 
 		if( paramCount == 0 ) {
 			// Zoom window anchor
+			task.getTool().setSelectAperture( WINDOW_SELECT_APERTURE );
 			promptForWindow( task, "zoom-window-anchor" );
 			return INCOMPLETE;
 		}
