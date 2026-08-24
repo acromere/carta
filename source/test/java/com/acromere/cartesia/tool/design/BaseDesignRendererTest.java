@@ -201,6 +201,7 @@ public abstract class BaseDesignRendererTest extends BaseToolTest {
 		DesignBox aperture = WINDOW_SELECT_APERTURE;
 		aperture.setOrigin( new Point3D( -2, -2, 0 ) );
 		aperture.setSize( new Point3D( 4, 4, 0 ) );
+		getRenderer().setSelectAperture( aperture );
 		Fx.waitForStability( FX_STABILITY_TIMEOUT );
 
 		// when
