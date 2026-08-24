@@ -32,7 +32,10 @@ public abstract class SelectByWindow extends SelectCommand {
 		if( paramCount == 0 & hasEvent && event instanceof MouseEvent mouseEvent && task.getTrigger().matches( mouseEvent ) ) {
 			// Submit a Value command to pass the anchor back to this command
 			task.getTool().setSelectAperture( WINDOW_SELECT_APERTURE );
-			task.getContext().submit( task.getTool(), new Value(), task.getContext().getWorldAnchor() );
+			Point3D mouse = new Point3D( mouseEvent.getX(), mouseEvent.getY(), mouseEvent.getZ() );
+			Point3D anchor = task.getTool().screenToWorld( mouse );
+			task.getContext().setLocalAnchor( mouse );
+			task.getContext().submit( task.getTool(), new Value(), anchor );
 			return INCOMPLETE;
 		}
 

@@ -456,6 +456,7 @@ public interface DesignTool extends RenderConstants, ToolRenderer {
 
 	default void clearSelectedShapes() {
 		setSelectedShapes( getSelectedShapes(), false );
+		setSelectAperture( POINT_SELECT_APERTURE );
 	}
 
 	DesignPortal getPriorPortal();

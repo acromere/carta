@@ -1168,15 +1168,19 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 		if( mouse == null ) return;
 
-		DesignShape selectAperture = renderer.getSelectAperture();
+		DesignShape aperture = renderer.getSelectAperture();
+		log.atInfo().log( "anchor={0} mouse={1} aperture={2}", anchor, mouse, aperture );
 
-		if( selectAperture == POINT_SELECT_APERTURE ) {
-			selectAperture.setOrigin( mouse );
-		} else if( selectAperture == WINDOW_SELECT_APERTURE ) {
+		if( aperture == POINT_SELECT_APERTURE ) {
+			//System.out.println( "apt=point");
+			aperture.setOrigin( mouse );
+		} else if( aperture == WINDOW_SELECT_APERTURE ) {
 			System.out.println( "apt=box");
 			double width = Math.abs( mouse.getX() - anchor.getX() );
 			double height = Math.abs( mouse.getY() - anchor.getY() );
-			((DesignBox)selectAperture).setSize( new Point3D( width, height, 0 ) );
+			((DesignBox)aperture).setSize( new Point3D( width, height, 0 ) );
+		} else {
+			log.atWarn().log( "unknown aperture={0}", aperture );
 		}
 	}
 
