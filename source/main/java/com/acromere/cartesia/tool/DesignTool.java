@@ -7,7 +7,6 @@ import com.acromere.cartesia.DesignValue;
 import com.acromere.cartesia.cursor.Reticule;
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.tool.design.BaseDesignRenderer;
-import com.acromere.cartesia.tool.design.ToolRenderer;
 import com.acromere.xenon.XenonProgram;
 import com.acromere.xenon.XenonProgramProduct;
 import com.acromere.xenon.resource.Resource;
@@ -23,7 +22,7 @@ import org.jspecify.annotations.NonNull;
 import java.util.Collection;
 import java.util.List;
 
-public interface DesignTool extends RenderConstants, ToolRenderer {
+public interface DesignTool extends RenderConstants, ToolAndRenderer {
 
 	String RETICULE = "reticule";
 
@@ -90,9 +89,9 @@ public interface DesignTool extends RenderConstants, ToolRenderer {
 
 	String DEFAULT_PREVIEW_FILL = "#ff00c040";
 
-	String DEFAULT_SELECTED_DRAW = "#ff00c0ff";
-
-	String DEFAULT_SELECTED_FILL = "#ff00c040";
+//	String DEFAULT_SELECTED_DRAW = "#ff00c0ff";
+//
+//	String DEFAULT_SELECTED_FILL = "#ff00c040";
 
 	boolean DEFAULT_GRID_SNAP_ENABLED = true;
 

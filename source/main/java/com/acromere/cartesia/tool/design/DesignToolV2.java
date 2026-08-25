@@ -9,6 +9,7 @@ import com.acromere.cartesia.data.map.DesignUnitMapper;
 import com.acromere.cartesia.math.CadPoints;
 import com.acromere.cartesia.tool.BaseDesignTool;
 import com.acromere.cartesia.tool.GridStyle;
+import com.acromere.cartesia.tool.RenderConstants;
 import com.acromere.settings.Settings;
 import com.acromere.util.TypeReference;
 import com.acromere.xenon.XenonProgramProduct;
@@ -19,6 +20,7 @@ import com.acromere.zerra.color.Paints;
 import com.acromere.zerra.javafx.Fx;
 import com.acromere.zerra.javafx.FxUtil;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point3D;
 import javafx.scene.input.GestureEvent;
@@ -59,8 +61,8 @@ public class DesignToolV2 extends BaseDesignTool {
 		renderer.setApertureFillPaint( DEFAULT_APERTURE_FILL );
 		renderer.setPreviewDrawPaint( DEFAULT_PREVIEW_DRAW );
 		renderer.setPreviewFillPaint( DEFAULT_PREVIEW_FILL );
-		renderer.setSelectedDrawPaint( DEFAULT_SELECTED_DRAW );
-		renderer.setSelectedFillPaint( DEFAULT_SELECTED_FILL );
+		renderer.setSelectedDrawPaint( RenderConstants.DEFAULT_SELECTED_DRAW_PAINT );
+		renderer.setSelectedFillPaint( RenderConstants.DEFAULT_SELECTED_FILL_PAINT );
 
 		// TODO Move this to tool settings like reticule and aperture
 		renderer.getWorkplane().setGridStyle( GridStyle.DOT );
@@ -350,10 +352,6 @@ public class DesignToolV2 extends BaseDesignTool {
 	//		renderer.setViewZoom( zoom, zoom );
 	//		renderer.setViewRotate( rotate );
 	//	}
-
-	public ObjectProperty<DesignShape> selectAperture() {
-		return renderer.selectAperture();
-	}
 
 	@Override
 	public Point3D nearestReferencePoint( Collection<DesignShape> shapes, Point3D point ) {

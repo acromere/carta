@@ -1,7 +1,9 @@
-package com.acromere.cartesia.tool.design;
+package com.acromere.cartesia.tool;
 
-import com.acromere.cartesia.tool.RenderConstants;
+import com.acromere.cartesia.DesignValue;
+import com.acromere.cartesia.data.DesignShape;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
@@ -12,7 +14,7 @@ import javafx.scene.transform.Transform;
  * common that design tools delegate to their respective design renderer
  * implementations for many of these methods.
  */
-public interface ToolRenderer extends RenderConstants {
+public interface ToolAndRenderer extends RenderConstants {
 
 	/**
 	 * Determines whether the grid is currently visible in the renderer.
@@ -196,5 +198,12 @@ public interface ToolRenderer extends RenderConstants {
 	 * @param factor The zoom factor
 	 */
 	void zoom( Point3D anchor, double factor );
+
+	/**
+	 * Set the point select tolerance.
+	 *
+	 * @param value The new point select tolerance in user units.
+	 */
+	void setSelectTolerance( DesignValue value );
 
 }

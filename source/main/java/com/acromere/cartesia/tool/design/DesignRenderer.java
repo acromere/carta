@@ -2,8 +2,11 @@ package com.acromere.cartesia.tool.design;
 
 import com.acromere.cartesia.DesignValue;
 import com.acromere.cartesia.data.*;
+import com.acromere.cartesia.tool.RenderConstants;
+import com.acromere.cartesia.tool.ToolAndRenderer;
 import com.acromere.cartesia.tool.Workplane;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -11,7 +14,7 @@ import javafx.scene.Node;
 import java.util.Collection;
 import java.util.List;
 
-public interface DesignRenderer extends ToolRenderer {
+public interface DesignRenderer extends ToolAndRenderer {
 
 	// TODO Are there more methods that could be moved to ToolRenderer?
 
@@ -187,7 +190,28 @@ public interface DesignRenderer extends ToolRenderer {
 
 	void setSelectTolerance( DesignValue value );
 
+	/**
+	 * Get the current select aperture. Valid values are specified in
+	 * {@link RenderConstants#ALLOWED_SELECT_APERTURES}.
+	 *
+	 * @return The current select aperture.
+	 */
+	DesignShape getSelectAperture();
+
+	/**
+	 * Set the select aperture. Valid values are specified in
+	 * {@link RenderConstants#ALLOWED_SELECT_APERTURES}.
+	 *
+	 * @param aperture The new select aperture.
+	 */
 	void setSelectAperture( DesignShape aperture );
+
+	/**
+	 * Get the select aperture FX property.
+	 *
+	 * @return The select aperture FX property.
+	 */
+	ReadOnlyObjectProperty<DesignShape> selectAperture();
 
 	List<DesignShape> doFindByShape( DesignShape aperture, boolean intersect );
 

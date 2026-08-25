@@ -4,7 +4,10 @@ import com.acromere.cartesia.DesignUnit;
 import com.acromere.cartesia.data.DesignBox;
 import com.acromere.cartesia.data.DesignEllipse;
 import com.acromere.cartesia.data.DesignShape;
+import com.acromere.zerra.color.Colors;
 import javafx.geometry.Point3D;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 import java.util.Set;
 
@@ -22,11 +25,19 @@ public interface RenderConstants {
 
 	double DEFAULT_ZOOM = 1;
 
+	Paint DEFAULT_SELECTED_DRAW_PAINT = Colors.translucent( Color.MAGENTA, 0.8 );
+
+	Paint DEFAULT_SELECTED_FILL_PAINT = Colors.translucent( Color.MAGENTA, 0.2 );
+
 	DesignEllipse POINT_SELECT_APERTURE = new DesignEllipse( 0, 0, 0 );
 
 	DesignBox WINDOW_SELECT_APERTURE = new DesignBox( 0, 0, 0, 0 );
 
 	DesignShape DEFAULT_SELECT_APERTURE = POINT_SELECT_APERTURE;
+
+	Paint DEFAULT_APERTURE_DRAW_PAINT = Colors.translucent( Color.YELLOW, 0.8 );
+
+	Paint DEFAULT_APERTURE_FILL_PAINT = Colors.translucent( Color.YELLOW, 0.2 );
 
 	Set<DesignShape> ALLOWED_SELECT_APERTURES = Set.of( POINT_SELECT_APERTURE, WINDOW_SELECT_APERTURE );
 

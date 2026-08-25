@@ -7,13 +7,17 @@ import com.acromere.cartesia.data.Design;
 import com.acromere.cartesia.data.DesignModel2D;
 import com.acromere.cartesia.test.Point3DAssert;
 import com.acromere.cartesia.tool.DesignTool;
+import com.acromere.cartesia.tool.RenderConstants;
 import com.acromere.zerra.color.Colors;
+import com.acromere.zerra.color.Paints;
 import com.acromere.zerra.javafx.Fx;
 import javafx.geometry.Point3D;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static com.acromere.cartesia.TestConstants.TOLERANCE;
+import static com.acromere.cartesia.tool.RenderConstants.DEFAULT_SELECTED_DRAW_PAINT;
+import static com.acromere.cartesia.tool.RenderConstants.DEFAULT_SELECTED_FILL_PAINT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DesignToolV2RendererTest extends BaseCartesiaUnitTest {
@@ -84,27 +88,27 @@ public class DesignToolV2RendererTest extends BaseCartesiaUnitTest {
 	@Test
 	void getSelectDrawPaint() {
 		// given
-		assertThat( renderer.getSelectedDrawPaint() ).isEqualTo( "#ff00ffcc" );
+		assertThat( renderer.getSelectedDrawPaint() ).isEqualTo( Paints.parse( "0xff00ffcc" ) );
 
 		// when
-		renderer.setSelectedDrawPaint( DesignTool.DEFAULT_SELECTED_DRAW );
+		renderer.setSelectedDrawPaint( DEFAULT_SELECTED_DRAW_PAINT );
 
 		// then
-		assertThat( renderer.getSelectedDrawPaint() ).isEqualTo( DesignTool.DEFAULT_SELECTED_DRAW );
-		assertThat( renderer.calcSelectedDrawPaint() ).isEqualTo( Colors.parse( DesignTool.DEFAULT_SELECTED_DRAW ) );
+		assertThat( renderer.getSelectedDrawPaint() ).isEqualTo( DEFAULT_SELECTED_DRAW_PAINT );
+		assertThat( renderer.calcSelectedDrawPaint() ).isEqualTo( DEFAULT_SELECTED_DRAW_PAINT );
 	}
 
 	@Test
 	void getSelectFillPaint() {
 		// given
-		assertThat( renderer.getSelectedFillPaint() ).isEqualTo( "#ff00ff33" );
+		assertThat( renderer.getSelectedFillPaint() ).isEqualTo( Paints.parse( "0xff00ff33" ) );
 
 		// when
-		renderer.setSelectedFillPaint( DesignTool.DEFAULT_SELECTED_FILL );
+		renderer.setSelectedFillPaint( DEFAULT_SELECTED_FILL_PAINT );
 
 		// then
-		assertThat( renderer.getSelectedFillPaint() ).isEqualTo( DesignTool.DEFAULT_SELECTED_FILL );
-		assertThat( renderer.calcSelectedFillPaint() ).isEqualTo( Colors.parse( DesignTool.DEFAULT_SELECTED_FILL ) );
+		assertThat( renderer.getSelectedFillPaint() ).isEqualTo( DEFAULT_SELECTED_FILL_PAINT );
+		assertThat( renderer.calcSelectedFillPaint() ).isEqualTo( DEFAULT_SELECTED_FILL_PAINT );
 	}
 
 	@Test

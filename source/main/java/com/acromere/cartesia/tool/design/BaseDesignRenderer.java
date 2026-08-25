@@ -10,17 +10,14 @@ import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.data.DesignShape;
 import com.acromere.cartesia.tool.RenderConstants;
 import com.acromere.zerra.color.Colors;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
+import com.acromere.zerra.color.Paints;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
@@ -57,6 +54,10 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 
 	private final ObservableList<DesignLayer> visibleLayers;
 
+	private final SimpleObjectProperty<Paint> selectedDrawPaint;
+
+	private final SimpleObjectProperty<Paint> selectedFillPaint;
+
 	private final SimpleObjectProperty<DesignShape> selectAperture;
 
 	private final SimpleStringProperty apertureDrawPaint;
@@ -78,7 +79,7 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		dpiY = new SimpleDoubleProperty( DEFAULT_DPI );
 
 		/*
-		The output scale is used when working with high resolution (HiDPI) monitors.
+		The output scale is used when working with high-resolution (HiDPI) monitors.
 		This allows for fractional scaling as well and needs to be taken into account
 		for detailed rendering of the model when the application may not require it.
 		 */
@@ -99,9 +100,12 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		enabledLayers = FXCollections.observableArrayList();
 		visibleLayers = FXCollections.observableArrayList();
 
+		selectedDrawPaint = new SimpleObjectProperty<>( DEFAULT_SELECTED_DRAW_PAINT );
+		selectedFillPaint = new SimpleObjectProperty<>( DEFAULT_SELECTED_FILL_PAINT );
+
 		selectAperture = new SimpleObjectProperty<>( DEFAULT_SELECT_APERTURE );
-		apertureDrawPaint = new SimpleStringProperty( Colors.toString( Colors.translucent( Color.YELLOW, 0.8 ) ) );
-		apertureFillPaint = new SimpleStringProperty( Colors.toString( Colors.translucent( Color.YELLOW, 0.2 ) ) );
+		apertureDrawPaint = new SimpleStringProperty( Paints.toString( DEFAULT_APERTURE_DRAW_PAINT ) );
+		apertureFillPaint = new SimpleStringProperty( Paints.toString( DEFAULT_APERTURE_FILL_PAINT ) );
 	}
 
 	/**
@@ -401,6 +405,31 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 
 	// Selecting -----------------------------------------------------------------
 
+	public Paint getSelectedDrawPaint() {
+		return selectedDrawPaint.get();
+	}
+
+	public void setSelectedDrawPaint( Paint paint ) {
+		selectedDrawPaint.set( paint );
+	}
+
+	public ReadOnlyProperty<Paint> selectedDrawPaint() {
+		return selectedDrawPaint;
+	}
+
+	public Paint getSelectedFillPaint() {
+		return selectedFillPaint.get();
+	}
+
+	public void setSelectedFillPaint( Paint paint ) {
+		selectedFillPaint.set( paint );
+	}
+
+	public Property<Paint> selectedFillPaint() {
+		return selectedFillPaint;
+	}
+
+	@Override
 	public void setSelectTolerance( DesignValue value ) {}
 
 	@Override
@@ -417,11 +446,13 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		selectAperture.set( aperture );
 	}
 
+	@Override
 	public DesignShape getSelectAperture() {
 		return selectAperture.get();
 	}
 
-	public SimpleObjectProperty<DesignShape> selectAperture() {
+	@Override
+	public ReadOnlyObjectProperty<DesignShape> selectAperture() {
 		return selectAperture;
 	}
 

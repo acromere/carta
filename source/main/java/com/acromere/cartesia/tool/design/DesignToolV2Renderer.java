@@ -18,6 +18,7 @@ import com.acromere.util.ThreadUtil;
 import com.acromere.zerra.color.Colors;
 import com.acromere.zerra.javafx.Fx;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -386,41 +387,43 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 
 	// Selected Paints -----------------------------------------------------------
 
+	@Deprecated
 	public Paint calcSelectedDrawPaint() {
-		if( cachedSelectedDrawPaint == null ) cachedSelectedDrawPaint = Colors.parse( getSelectedDrawPaint() );
+		if( cachedSelectedDrawPaint == null ) cachedSelectedDrawPaint = getSelectedDrawPaint();
 		return cachedSelectedDrawPaint;
 	}
 
-	public String getSelectedDrawPaint() {
-		return selectedDrawPaint.get();
-	}
+//	public String getSelectedDrawPaint() {
+//		return selectedDrawPaint.get();
+//	}
+//
+//	public void setSelectedDrawPaint( String paint ) {
+//		selectedDrawPaint.set( paint );
+//		cachedSelectedDrawPaint = null;
+//	}
+//
+//	public SimpleStringProperty selectedDrawPaint() {
+//		return selectedDrawPaint;
+//	}
 
-	public void setSelectedDrawPaint( String paint ) {
-		selectedDrawPaint.set( paint );
-		cachedSelectedDrawPaint = null;
-	}
-
-	public SimpleStringProperty selectedDrawPaint() {
-		return selectedDrawPaint;
-	}
-
+	@Deprecated
 	public Paint calcSelectedFillPaint() {
-		if( cachedSelectedFillPaint == null ) cachedSelectedFillPaint = Colors.parse( getSelectedFillPaint() );
+		if( cachedSelectedFillPaint == null ) cachedSelectedFillPaint =  getSelectedFillPaint();
 		return cachedSelectedFillPaint;
 	}
 
-	public String getSelectedFillPaint() {
-		return selectedFillPaint.get();
-	}
-
-	public void setSelectedFillPaint( String paint ) {
-		selectedFillPaint.set( paint );
-		cachedSelectedFillPaint = null;
-	}
-
-	public SimpleStringProperty selectedFillPaint() {
-		return selectedFillPaint;
-	}
+//	public String getSelectedFillPaint() {
+//		return selectedFillPaint.get();
+//	}
+//
+//	public void setSelectedFillPaint( String paint ) {
+//		selectedFillPaint.set( paint );
+//		cachedSelectedFillPaint = null;
+//	}
+//
+//	public ReadOnlyProperty<Paint> selectedFillPaint() {
+//		return selectedFillPaint;
+//	}
 
 	// Preview Paints -----------------------------------------------------------
 

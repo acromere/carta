@@ -1041,9 +1041,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 */
 	private void bindCommonShapeGeometry( DesignShape designShape, Shape shape ) {
 		// NEXT Fill and stroke bindings taking into account select flag
-		boolean isSelect = designShape.isSelected();
 
-		//DesignBinding<Boolean> selectBinding = new DesignBinding<>( designShape, DesignShape.SELECTED, DesignShape::isSelected );
+		DesignBinding<Boolean> selectedBinding = new DesignBinding<>( designShape, DesignShape.SELECTED, DesignShape::isSelected );
 		DesignBinding<Paint> fillBinding = new DesignBinding<>( designShape, DesignShape.FILL_PAINT, DesignShape::calcFillPaint );
 		DesignBinding<Paint> strokeBinding = new DesignBinding<>( designShape, DesignShape.DRAW_PAINT, DesignShape::calcDrawPaint );
 
