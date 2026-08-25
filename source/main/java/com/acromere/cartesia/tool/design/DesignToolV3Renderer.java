@@ -13,16 +13,14 @@ import com.acromere.event.EventHandler;
 import com.acromere.zerra.javafx.Fx;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ObservableValue;
+import javafx.beans.property.*;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
@@ -1040,14 +1038,21 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 * @param shape The target FX shape
 	 */
 	private void bindCommonShapeGeometry( DesignShape designShape, Shape shape ) {
-		// NEXT Fill and stroke bindings taking into account select flag
+		BooleanProperty hasDraw = new SimpleBooleanProperty();
+		BooleanProperty hasFill = new SimpleBooleanProperty();
+		BooleanProperty isSelected = new SimpleBooleanProperty();
 
-		DesignBinding<Boolean> selectedBinding = new DesignBinding<>( designShape, DesignShape.SELECTED, DesignShape::isSelected );
-		DesignBinding<Paint> fillBinding = new DesignBinding<>( designShape, DesignShape.FILL_PAINT, DesignShape::calcFillPaint );
-		DesignBinding<Paint> strokeBinding = new DesignBinding<>( designShape, DesignShape.DRAW_PAINT, DesignShape::calcDrawPaint );
+		DesignBinding<Paint> shapeDraw = new DesignBinding<>( designShape, DesignShape.DRAW_PAINT, DesignShape::calcDrawPaint );
+		DesignBinding<Paint> shapeFill = new DesignBinding<>( designShape, DesignShape.FILL_PAINT, DesignShape::calcFillPaint );
+		ObjectProperty<Paint> selectDraw = (ObjectProperty<Paint>)selectedDrawPaint();
+		ObjectProperty<Paint> selectFill = (ObjectProperty<Paint>)selectedFillPaint();
 
-		shape.fillProperty().bind( new DesignBinding<>( designShape, DesignShape.FILL_PAINT, DesignShape::calcFillPaint ) );
-		shape.strokeProperty().bind( new DesignBinding<>( designShape, DesignShape.DRAW_PAINT, DesignShape::calcDrawPaint ) );
+		hasDraw.bind( shapeDraw.isNotNull().and( shapeDraw.isNotEqualTo( Color.TRANSPARENT ) ) );
+		hasFill.bind( shapeFill.isNotNull().and( shapeFill.isNotEqualTo( Color.TRANSPARENT ) ) );
+		isSelected.bind( new DesignBinding<>( designShape, DesignShape.SELECTED, DesignShape::isSelected ) );
+
+		shape.fillProperty().bind( Bindings.when( hasFill ).then( Bindings.when( isSelected ).then( selectFill ).otherwise( shapeFill ) ).otherwise( (Paint)null ) );
+		shape.strokeProperty().bind( Bindings.when( hasDraw ).then( Bindings.when( isSelected ).then( selectDraw ).otherwise( shapeDraw ) ).otherwise( (Paint)null ) );
 		shape.strokeWidthProperty().bind( shapeScaleXProperty().multiply( new DesignDoubleBinding( designShape, DesignShape.DRAW_WIDTH, DesignShape::calcDrawWidth ) ) );
 		shape.strokeLineCapProperty().bind( new DesignBinding<>( designShape, DesignShape.DRAW_CAP, DesignShape::calcDrawCap ) );
 		shape.strokeLineJoinProperty().bind( new DesignBinding<>( designShape, DesignShape.DRAW_JOIN, DesignShape::calcDrawJoin ) );

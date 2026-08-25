@@ -413,7 +413,7 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		selectedDrawPaint.set( paint );
 	}
 
-	public ReadOnlyProperty<Paint> selectedDrawPaint() {
+	public ReadOnlyObjectProperty<Paint> selectedDrawPaint() {
 		return selectedDrawPaint;
 	}
 
@@ -425,7 +425,7 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		selectedFillPaint.set( paint );
 	}
 
-	public Property<Paint> selectedFillPaint() {
+	public ReadOnlyObjectProperty<Paint> selectedFillPaint() {
 		return selectedFillPaint;
 	}
 
