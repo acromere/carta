@@ -9,8 +9,44 @@ public abstract class DesignShapeTest extends BaseCartesiaUnitTest {
 
 	private final DesignShape shape;
 
-	protected DesignShapeTest(DesignShape shape) {
+	protected DesignShapeTest( DesignShape shape ) {
 		this.shape = shape;
+	}
+
+	@Test
+	public void isVisible() {
+		// given
+		assertThat( shape.isVisible() ).isFalse();
+
+		// when
+		shape.setVisible( true );
+
+		// then
+		assertThat( shape.isVisible() ).isTrue();
+	}
+
+	@Test
+	public void getVisible() {
+		// given
+		assertThat( shape.isVisible() ).isFalse();
+
+		// when
+		shape.setVisible( "TRUE" );
+
+		// then
+		assertThat( shape.getVisible() ).isEqualTo( "TRUE" );
+	}
+
+	@Test
+	public void isVisibleWithString() {
+		// given
+		assertThat( shape.isVisible() ).isFalse();
+
+		// when
+		shape.setVisible( "TRUE" );
+
+		// then
+		assertThat( shape.isVisible() ).isTrue();
 	}
 
 	@Test
@@ -34,7 +70,7 @@ public abstract class DesignShapeTest extends BaseCartesiaUnitTest {
 		shape.setSelected( "TRUE" );
 
 		// then
-		assertThat( shape.getSelected() ).isEqualTo( "TRUE");
+		assertThat( shape.getSelected() ).isEqualTo( "TRUE" );
 	}
 
 	@Test

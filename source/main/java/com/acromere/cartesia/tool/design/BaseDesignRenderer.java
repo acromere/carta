@@ -64,6 +64,13 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 
 	private final SimpleStringProperty apertureFillPaint;
 
+	static {
+		POINT_SELECT_APERTURE.setDrawPaint( Paints.toString( DEFAULT_APERTURE_DRAW_PAINT ) );
+		POINT_SELECT_APERTURE.setFillPaint( Paints.toString( DEFAULT_APERTURE_FILL_PAINT ) );
+		WINDOW_SELECT_APERTURE.setDrawPaint( Paints.toString( DEFAULT_APERTURE_DRAW_PAINT ) );
+		WINDOW_SELECT_APERTURE.setFillPaint( Paints.toString( DEFAULT_APERTURE_FILL_PAINT ) );
+	}
+
 	public BaseDesignRenderer() {
 		getStyleClass().add( "tool-renderer" );
 
@@ -438,16 +445,17 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 
 	@Override
 	public void setSelectAperture( DesignShape aperture ) {
+		if( selectAperture.get() != null ) {
+			selectAperture.get().setVisible( false );
+		}
+
 		if( aperture == null ) aperture = DEFAULT_SELECT_APERTURE;
-
 		if( !ALLOWED_SELECT_APERTURES.contains( aperture ) ) throw new IllegalArgumentException( "Invalid select aperture: " + aperture );
-
-		// NEXT Turn select apertures on and off
-		// I didn't really provide a way for the aperture shapes to be turned on and off
-
-		aperture.setDrawPaint( getApertureDrawPaint() );
-		aperture.setFillPaint( getApertureFillPaint() );
 		selectAperture.set( aperture );
+
+		if( selectAperture.get() != null ) {
+			selectAperture.get().setVisible( true );
+		}
 	}
 
 	@Override
