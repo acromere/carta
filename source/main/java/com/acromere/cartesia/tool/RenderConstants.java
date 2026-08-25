@@ -51,4 +51,8 @@ public interface RenderConstants {
 	 */
 	long DEFAULT_REFRESH_TIME_NANOS = 1_000_000_000L / DEFAULT_REFRESH_RATE;
 
+	double CM_PER_INCH = 2.54;
+
+	double INCH_PER_CM = 1 / CM_PER_INCH;
+
 }
