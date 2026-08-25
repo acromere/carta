@@ -1038,18 +1038,18 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 * @param shape The target FX shape
 	 */
 	private void bindCommonShapeGeometry( DesignShape designShape, Shape shape ) {
-		BooleanProperty hasDraw = new SimpleBooleanProperty();
 		BooleanProperty hasFill = new SimpleBooleanProperty();
+		BooleanProperty hasDraw = new SimpleBooleanProperty();
 		BooleanProperty isSelected = new SimpleBooleanProperty();
 
-		DesignBinding<Paint> shapeDraw = new DesignBinding<>( designShape, DesignShape.DRAW_PAINT, DesignShape::calcDrawPaint );
 		DesignBinding<Paint> shapeFill = new DesignBinding<>( designShape, DesignShape.FILL_PAINT, DesignShape::calcFillPaint );
+		DesignBinding<Paint> shapeDraw = new DesignBinding<>( designShape, DesignShape.DRAW_PAINT, DesignShape::calcDrawPaint );
 
-		hasDraw.bind( shapeDraw.isNotNull().and( shapeDraw.isNotEqualTo( Color.TRANSPARENT ) ) );
 		hasFill.bind( shapeFill.isNotNull().and( shapeFill.isNotEqualTo( Color.TRANSPARENT ) ) );
+		hasDraw.bind( shapeDraw.isNotNull().and( shapeDraw.isNotEqualTo( Color.TRANSPARENT ) ) );
 		isSelected.bind( new DesignBinding<>( designShape, DesignShape.SELECTED, DesignShape::isSelected ) );
 
-		shape.fillProperty().bind( Bindings.when( hasFill ).then( Bindings.when( isSelected ).then( selectedDrawPaint() ).otherwise( shapeFill ) ).otherwise( (Paint)null ) );
+		shape.fillProperty().bind( Bindings.when( hasFill ).then( Bindings.when( isSelected ).then( selectedFillPaint() ).otherwise( shapeFill ) ).otherwise( (Paint)null ) );
 		shape.strokeProperty().bind( Bindings.when( hasDraw ).then( Bindings.when( isSelected ).then( selectedDrawPaint() ).otherwise( shapeDraw ) ).otherwise( (Paint)null ) );
 		shape.strokeWidthProperty().bind( shapeScaleXProperty().multiply( new DesignDoubleBinding( designShape, DesignShape.DRAW_WIDTH, DesignShape::calcDrawWidth ) ) );
 		shape.strokeLineCapProperty().bind( new DesignBinding<>( designShape, DesignShape.DRAW_CAP, DesignShape::calcDrawCap ) );
