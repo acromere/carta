@@ -81,12 +81,28 @@ public interface DesignTool extends RenderConstants, ToolAndRenderer {
 
 	Reticule DEFAULT_RETICULE = Reticule.DUPLEX;
 
+	/**
+	 * @deprecated Move to RenderConstants
+	 */
+	@Deprecated
 	String DEFAULT_APERTURE_DRAW = "#c0c000ff";
 
+	/**
+	 * @deprecated Move to RenderConstants
+	 */
+	@Deprecated
 	String DEFAULT_APERTURE_FILL = "#c0c00040";
 
+	/**
+	 * @deprecated Move to RenderConstants
+	 */
+	@Deprecated
 	String DEFAULT_PREVIEW_DRAW = "#ff00c0ff";
 
+	/**
+	 * @deprecated Move to RenderConstants
+	 */
+	@Deprecated
 	String DEFAULT_PREVIEW_FILL = "#ff00c040";
 
 //	String DEFAULT_SELECTED_DRAW = "#ff00c0ff";
