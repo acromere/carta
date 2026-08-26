@@ -5,6 +5,7 @@ import com.acromere.cartesia.data.map.DesignUnitMapper;
 import com.acromere.cartesia.tool.DesignContext;
 import com.acromere.data.IdNode;
 import lombok.CustomLog;
+import org.jspecify.annotations.NonNull;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -104,6 +105,7 @@ public abstract class DesignModel extends IdNode {
 		return super.isModifiedByChild();
 	}
 
+	@NonNull
 	public DesignLayer getLayers() {
 		return getValue( LAYERS );
 	}
@@ -119,10 +121,12 @@ public abstract class DesignModel extends IdNode {
 		return Optional.ofNullable( getLayerById( id ) );
 	}
 
-	public Set<DesignLayer> findLayers( String key, Object value ) {
+	@NonNull
+	public List<DesignLayer> findLayers( String key, Object value ) {
 		return getLayers().findLayers( key, value );
 	}
 
+	@NonNull
 	public List<DesignLayer> getAllLayersAndRoot() {
 		List<DesignLayer> layers = new ArrayList<>();
 		layers.add( getLayers() );
@@ -130,10 +134,12 @@ public abstract class DesignModel extends IdNode {
 		return layers;
 	}
 
+	@NonNull
 	public List<DesignLayer> getAllLayers() {
 		return getLayers().getAllLayers();
 	}
 
+	@NonNull
 	public Set<DesignView> getViews() {
 		return getValues( VIEWS );
 	}
@@ -156,10 +162,12 @@ public abstract class DesignModel extends IdNode {
 		return Optional.ofNullable( getViewById( id ) );
 	}
 
+	@NonNull
 	public Set<DesignView> findViews( String key, Object value ) {
 		return getViews().stream().filter( l -> Objects.equals( l.getValue( key ), value ) ).collect( Collectors.toSet() );
 	}
 
+	@NonNull
 	public Set<DesignPrint> getPrints() {
 		return getValues( PRINTS );
 	}

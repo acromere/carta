@@ -176,8 +176,8 @@ public class DesignLayer extends DesignDrawable implements DesignTextSupport {
 		return layers;
 	}
 
-	public Set<DesignLayer> findLayers( String key, Object value ) {
-		return getAllLayers().stream().filter( l -> Objects.equals( l.getValue( key ), value ) ).collect( Collectors.toSet() );
+	public List<DesignLayer> findLayers( String key, Object value ) {
+		return getAllLayers().stream().filter( l -> Objects.equals( l.getValue( key ), value ) ).collect( Collectors.toList() );
 	}
 
 	/**
