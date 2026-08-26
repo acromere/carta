@@ -8,6 +8,9 @@ import com.acromere.cartesia.data.DesignModel;
 import com.acromere.cartesia.tool.CommandContext;
 import com.acromere.cartesia.tool.CommandPrompt;
 import com.acromere.cartesia.tool.DesignContext;
+import com.acromere.cartesia.tool.DesignTool;
+import com.acromere.xenon.resource.Resource;
+import com.acromere.zerra.javafx.Fx;
 import javafx.event.EventTarget;
 import javafx.event.EventType;
 import javafx.scene.Cursor;
@@ -24,10 +27,11 @@ import java.util.List;
 
 import static com.acromere.cartesia.TestTimeouts.FX_WAIT_TIMEOUT;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 
 @ExtendWith( MockitoExtension.class )
-public class BaseCommandTest extends BaseToolTest {
+public class BaseCommandTest extends BaseCartesiaUnitTest {
 
 	protected static final Cursor RETICLE = Cursor.CROSSHAIR;
 
@@ -40,6 +44,12 @@ public class BaseCommandTest extends BaseToolTest {
 	protected static final Object BAD_PARAMETER = null;
 
 	protected static final long FX_COMMAND_TIMEOUT = FX_WAIT_TIMEOUT;
+
+	@Mock
+	protected DesignTool tool;
+
+	@Mock
+	protected Resource resource;
 
 	@Mock
 	protected DesignModel design;
@@ -73,6 +83,10 @@ public class BaseCommandTest extends BaseToolTest {
 		lenient().doReturn( design ).when( resource ).getModel();
 
 		// Tool mock
+		lenient().doReturn( resource ).when( tool ).getResource();
+		lenient().when( tool.snapToGrid( any() ) ).then( i -> i.getArgument( 0 ) );
+		lenient().doReturn( Fx.IDENTITY_TRANSFORM ).when( tool ).getScreenToWorldTransform();
+
 		lenient().doReturn( program ).when( tool ).getProgram();
 		lenient().doReturn( module ).when( tool ).getProduct();
 		lenient().doReturn( module ).when( tool ).getMod();

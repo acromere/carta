@@ -1,31 +1,39 @@
 package com.acromere.cartesia.tool.design;
 
 import com.acromere.annotation.Note;
-import com.acromere.cartesia.BaseToolTest;
 import com.acromere.cartesia.test.Point3DAssert;
 import com.acromere.cartesia.tool.Grid;
 import com.acromere.marea.fx.FxRenderer2d;
+import com.acromere.xenon.resource.Resource;
 import com.acromere.zerra.javafx.Fx;
 import javafx.geometry.Point3D;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Note( "All V2 tests have been implemented in V3 as of 2026-07-11" )
-public class DesignToolV2Test extends BaseToolTest {
+@ExtendWith( MockitoExtension.class )
+public class DesignToolV2Test extends BaseDesignToolTest {
 
 	private static final double DPC = FxRenderer2d.DEFAULT_DPI / 2.54;
 
 	private DesignToolV2 tool;
+
+	@Mock
+	protected Resource resource;
 
 	@BeforeEach
 	protected void setup() throws Exception {
 		super.setup();
 		Fx.run( () -> tool = new DesignToolV2( module, resource ) );
 		Fx.waitForDangerously( 2, TimeUnit.SECONDS );
+		setTool( tool );
 	}
 
 	@Test

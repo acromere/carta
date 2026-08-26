@@ -1,6 +1,5 @@
 package com.acromere.cartesia.tool.design;
 
-import com.acromere.cartesia.BaseToolTest;
 import com.acromere.cartesia.CartesiaTestTag;
 import com.acromere.cartesia.Design2dResourceType;
 import com.acromere.cartesia.data.Design;
@@ -32,7 +31,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class DesignToolV3Test extends BaseToolTest {
+public class DesignToolV3Test extends BaseDesignToolTest {
 
 	private static final double DPC = FxRenderer2d.DEFAULT_DPI / 2.54;
 
@@ -50,8 +49,10 @@ public class DesignToolV3Test extends BaseToolTest {
 		Resource resource = new Resource( new Design2dResourceType( getProgram() ), URI.create( "new://test" ) ).setModel( design );
 		resource.setModel( design );
 
+		// Only creating spy objects to watch method counts
 		renderer = Mockito.spy( new DesignToolV3Renderer() );
 		tool = Mockito.spy( new DesignToolV3( module, resource, renderer ) );
+		setTool( tool );
 
 		// Before calling tool.ready(), reset the module, tool and resource settings
 		getProgram().getSettingsManager().getAssetSettings( resource ).delete();

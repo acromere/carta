@@ -1,5 +1,6 @@
 package com.acromere.cartesia.tool.design;
 
+import com.acromere.cartesia.BaseCartesiaUnitTest;
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.tool.RenderConstants;
 import com.acromere.zerra.javafx.Fx;
@@ -19,7 +20,7 @@ import static com.acromere.cartesia.TestTimeouts.FX_STABILITY_TIMEOUT;
 import static com.acromere.cartesia.tool.RenderConstants.WINDOW_SELECT_APERTURE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public abstract class BaseDesignRendererTest extends BaseToolTest {
+public abstract class BaseDesignRendererTest extends BaseCartesiaUnitTest {
 
 	private final BaseDesignRenderer renderer;
 
