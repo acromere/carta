@@ -16,6 +16,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point3D;
 import javafx.scene.Cursor;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
 import org.jspecify.annotations.NonNull;
 
@@ -426,6 +427,8 @@ public interface DesignTool extends RenderConstants, ToolAndRenderer {
 	BooleanProperty gridSnapEnabled();
 
 	void setSelectAperture( DesignShape aperture );
+
+	void moveSelectAperture( MouseEvent event );
 
 	void moveSelectAperture( Point3D mouse );
 

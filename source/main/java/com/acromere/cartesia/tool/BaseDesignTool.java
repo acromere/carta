@@ -449,13 +449,8 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		getDesignContext().selectedShapes().addListener( this::onSelectedShapesChanged );
 
 		// Select aperture ---------------------------------------------------------
-
-		addEventFilter(
-			MouseEvent.MOUSE_MOVED, e -> {
-				// Just update the point select aperture if the hotspot is enabled
-				if( isShowHotspotEnabled() ) moveSelectAperture( renderer.screenToWorld( e.getX(), e.getY(), e.getZ() ) );
-			}
-		);
+		addEventFilter( MouseEvent.MOUSE_MOVED, this::moveSelectAperture );
+		addEventFilter( MouseEvent.MOUSE_DRAGGED, this::moveSelectAperture );
 
 		// Link the command context to the user interfaces
 		//addEventFilter( KeyEvent.ANY, e -> getCommandContext().handle( e ) );
@@ -1178,39 +1173,46 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	}
 
 	/**
+	 * Convenience method to move the select aperture location with a mouse event.
+	 *
+	 * @param event
+	 */
+	public void moveSelectAperture( MouseEvent event ) {
+		moveSelectAperture( renderer.screenToWorld( event.getX(), event.getY(), event.getZ() ) );
+	}
+
+	/**
 	 * Set the select aperture location. Mouse point is specified in world coordinates.
 	 *
-	 * @param mouse The mouse point in world coordinates
+	 * @param location The mouse point in world coordinates
 	 */
 	@Override
-	public void moveSelectAperture( Point3D mouse ) {
-		moveSelectAperture( mouse, mouse );
+	public void moveSelectAperture( Point3D location ) {
+		moveSelectAperture( location, location );
 	}
 
 	/**
 	 * Set the select aperture window. Points are specified in world coordinates.
 	 *
 	 * @param origin The origin point in world coordinates
-	 * @param mouse The mouse point in world coordinates
+	 * @param corner The corner point in world coordinates
 	 */
 	@Override
-	public void moveSelectAperture( Point3D origin, Point3D mouse ) {
-		// Prior to V3, null values for anchor and mouse were sent to "clear" the
+	public void moveSelectAperture( Point3D origin, Point3D corner ) {
+		// Prior to V3, null values for anchor and corner were sent to "clear" the
 		// select aperture. Arguably this should be changed to specific methods for
 		// making the aperture visible and not visible.
 
-		if( mouse == null ) return;
+		if( corner == null ) return;
+
+		// Always update the point select aperture
+		POINT_SELECT_APERTURE.setOrigin( corner );
 
 		DesignShape aperture = renderer.getSelectAperture();
-
-		if( aperture == POINT_SELECT_APERTURE ) {
-			aperture.setOrigin( mouse );
-		} else if( aperture == WINDOW_SELECT_APERTURE ) {
-			Bounds box = FxUtil.bounds( origin, mouse );
+		if( aperture == WINDOW_SELECT_APERTURE ) {
+			Bounds box = FxUtil.bounds( origin, corner );
 			aperture.setOrigin( new Point3D( box.getMinX(), box.getMinY(), 0 ) );
 			((DesignBox)aperture).setSize( new Point3D( box.getWidth(), box.getHeight(), 0 ) );
-		} else {
-			log.atWarn().log( "unknown aperture={0}", aperture );
 		}
 	}
 

@@ -57,6 +57,7 @@ public abstract class SelectByWindow extends SelectCommand {
 			if( worldAnchor != null && worldCorner != null ) {
 				if( task.getContext().isSelectMode() ) {
 					task.getTool().worldWindowSelect( worldAnchor, worldCorner, intersect, false );
+					task.getTool().setSelectAperture( POINT_SELECT_APERTURE );
 					return SUCCESS;
 				} else {
 					return new Point3D[]{ worldAnchor, worldCorner };
@@ -81,7 +82,6 @@ public abstract class SelectByWindow extends SelectCommand {
 		} else if( event.getEventType().equals( MouseEvent.MOUSE_RELEASED ) ) {
 			// Submit a Value command to pass the point back to this command
 			task.getContext().submit( tool, new Value(), worldAnchor );
-			task.getTool().setSelectAperture( POINT_SELECT_APERTURE );
 		}
 	}
 
