@@ -721,6 +721,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 	@Override
 	public DesignValue getSelectTolerance() {
+		// TODO Move to BaseDesignRenderer where selecting is actually done
 		return selectTolerance.get();
 	}
 
@@ -1143,6 +1144,38 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		getDesignContext().setSelectedShapes( shapes, selected );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ObservableList<DesignShape> selectedShapes() {
+		return getDesignContext().selectedShapes();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isHotspotVisible() {
+		return getRenderer().isHotspotVisible();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setHotspotVisible( boolean visible ) {
+		getRenderer().setHotspotVisible( visible );
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ReadOnlyBooleanProperty hotspotVisible() {
+		return getRenderer().hotspotVisible();
+	}
+
 	public void setSelectAperture( DesignShape aperture ) {
 		renderer.setSelectAperture( aperture );
 	}
@@ -1281,14 +1314,6 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	 */
 	public void worldWindowSelect( Point3D a, Point3D b, boolean intersect, boolean toggle ) {
 		selectShapes( worldWindowFind( a, b, intersect ), toggle );
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public ObservableList<DesignShape> selectedShapes() {
-		return getDesignContext().selectedShapes();
 	}
 
 	protected void selectShapes( List<DesignShape> shapes, boolean toggle ) {

@@ -4,6 +4,7 @@ import com.acromere.cartesia.DesignValue;
 import com.acromere.cartesia.data.DesignShape;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
@@ -205,5 +206,32 @@ public interface ToolAndRenderer extends RenderConstants {
 	 * @param value The new point select tolerance in user units.
 	 */
 	void setSelectTolerance( DesignValue value );
+
+	/**
+	 * Is the hotspot currently visible?
+	 *
+	 * @return True if the hotspot is visible, false otherwise
+	 */
+	default boolean isHotspotVisible() {
+		throw new UnsupportedOperationException( "hotspotVisible not supported" );
+	}
+
+	/**
+	 * Set the hotspot visibility flag.
+	 *
+	 * @param visible True to show the hotspot, false to hide it
+	 */
+	default void setHotspotVisible( boolean visible ) {
+		throw new UnsupportedOperationException( "hotspotVisible not supported" );
+	}
+
+	/**
+	 * Get the hotspot visible FX property.
+	 *
+	 * @return The hotspot visible FX property
+	 */
+	default ReadOnlyBooleanProperty hotspotVisible() {
+		throw new UnsupportedOperationException( "hotspotVisible not supported" );
+	}
 
 }

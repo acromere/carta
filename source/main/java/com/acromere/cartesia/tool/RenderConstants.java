@@ -41,6 +41,8 @@ public interface RenderConstants {
 
 	Set<DesignShape> ALLOWED_SELECT_APERTURES = Set.of( POINT_SELECT_APERTURE, WINDOW_SELECT_APERTURE );
 
+	boolean DEFAULT_HOTSPOT_VISIBLE = false;
+
 	/**
 	 * The default JavaFx refresh rate of 60 Hz.
 	 */

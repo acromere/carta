@@ -58,11 +58,13 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 
 	private final SimpleObjectProperty<Paint> selectedFillPaint;
 
-	private final SimpleObjectProperty<DesignShape> selectAperture;
+	private final SimpleBooleanProperty hotspotVisible;
 
 	private final SimpleStringProperty apertureDrawPaint;
 
 	private final SimpleStringProperty apertureFillPaint;
+
+	private final SimpleObjectProperty<DesignShape> selectAperture;
 
 	static {
 		POINT_SELECT_APERTURE.setDrawPaint( Paints.toString( DEFAULT_APERTURE_DRAW_PAINT ) );
@@ -110,9 +112,10 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		selectedDrawPaint = new SimpleObjectProperty<>( DEFAULT_SELECTED_DRAW_PAINT );
 		selectedFillPaint = new SimpleObjectProperty<>( DEFAULT_SELECTED_FILL_PAINT );
 
-		selectAperture = new SimpleObjectProperty<>( DEFAULT_SELECT_APERTURE );
+		hotspotVisible = new SimpleBooleanProperty( DEFAULT_HOTSPOT_VISIBLE );
 		apertureDrawPaint = new SimpleStringProperty( Paints.toString( DEFAULT_APERTURE_DRAW_PAINT ) );
 		apertureFillPaint = new SimpleStringProperty( Paints.toString( DEFAULT_APERTURE_FILL_PAINT ) );
+		selectAperture = new SimpleObjectProperty<>( DEFAULT_SELECT_APERTURE );
 	}
 
 	/**
@@ -441,8 +444,38 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 	}
 
 	@Override
-	public void setSelectTolerance( DesignValue value ) {}
+	public void setSelectTolerance( DesignValue value ) {
+		// TODO Store the property
+		//selectTolerance().set(value);
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isHotspotVisible() {
+		return hotspotVisible.get();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setHotspotVisible( boolean visible ) {
+		hotspotVisible.set(visible);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ReadOnlyBooleanProperty hotspotVisible() {
+		return hotspotVisible;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setSelectAperture( DesignShape aperture ) {
 		if( selectAperture.get() != null ) {
@@ -458,11 +491,17 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public DesignShape getSelectAperture() {
 		return selectAperture.get();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public ReadOnlyObjectProperty<DesignShape> selectAperture() {
 		return selectAperture;
