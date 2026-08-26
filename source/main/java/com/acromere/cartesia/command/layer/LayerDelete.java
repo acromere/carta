@@ -19,15 +19,16 @@ public class LayerDelete extends LayerCommand {
 		DesignLayer layer = task.getTool().getSelectedLayer();
 		if( layer == null ) return SUCCESS;
 		Optional<DesignModel> optionalModel = layer.getDesign();
-		if( optionalModel.isEmpty() ) return SUCCESS;
-		DesignModel model = optionalModel.get();
 
 		task.getTool().setCurrentLayer( getNextValidLayer( layer ) );
 
 		try( Txn _ = Txn.create() ) {
 			layer.getLayer().removeLayer( layer );
-			model.getViews().forEach( view -> view.removeLayer( layer ) );
-			model.getPrints().forEach( print -> print.removeLayer( layer ) );
+			if( optionalModel.isPresent() ) {
+				DesignModel model = optionalModel.get();
+				model.getViews().forEach( view -> view.removeLayer( layer ) );
+				model.getPrints().forEach( print -> print.removeLayer( layer ) );
+			}
 		}
 
 		return layer;
