@@ -1115,9 +1115,13 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 * @param shape The target FX shape
 	 */
 	private void bindCommonApertureGeometry( DesignShape designShape, Shape shape ) {
+		BooleanProperty apertureVisible = new SimpleBooleanProperty();
+		apertureVisible.bind( new DesignBinding<>( designShape, DesignShape.VISIBLE, DesignShape::isVisible ) );
 		DesignDoubleBinding strokeWidthProperty = new DesignDoubleBinding( designShape, DesignShape.DRAW_WIDTH, DesignShape::calcDrawWidth );
 
-		shape.visibleProperty().bind( new DesignBinding<>( designShape, DesignShape.VISIBLE, DesignShape::isVisible ) );
+		// FIXME Hotspot only applies to POINT_SELECT_APERTURE
+
+		shape.visibleProperty().bind( Bindings.and( hotspotVisible(), apertureVisible ) );
 		shape.fillProperty().bind( new DesignBinding<>( designShape, DesignShape.FILL_PAINT, DesignShape::calcFillPaint ) );
 		shape.setStrokeType( StrokeType.INSIDE );
 		shape.strokeProperty().bind( new DesignBinding<>( designShape, DesignShape.DRAW_PAINT, DesignShape::calcDrawPaint ) );

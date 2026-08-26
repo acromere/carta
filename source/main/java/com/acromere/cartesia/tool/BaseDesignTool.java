@@ -384,6 +384,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 		// Settings listeners
 		productSettings.bind( RETICULE, DEFAULT_RETICULE, e -> this.setReticule( Reticule.valueOf( String.valueOf( e.getNewValue() ).toUpperCase() ) ) );
+		// FIXME Bind hotspot visible property
 		productSettings.bind( SELECT_APERTURE_SIZE, DEFAULT_SELECT_TOLERANCE, e -> setSelectTolerance( new DesignValue( Double.parseDouble( (String)e.getNewValue() ), getSelectTolerance().unit() ) ) );
 		productSettings.bind(
 			SELECT_APERTURE_UNIT,
