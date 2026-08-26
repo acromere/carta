@@ -26,6 +26,8 @@ public interface DesignTool extends RenderConstants, ToolAndRenderer {
 
 	String RETICULE = "reticule";
 
+	String HOTSPOT_VISIBLE = "select-hotspot-visible";
+
 	String SELECT_APERTURE_SIZE = "select-aperture-size";
 
 	String SELECT_APERTURE_UNIT = "select-aperture-unit";
