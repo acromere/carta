@@ -6,12 +6,14 @@ import com.acromere.cartesia.DesignValue;
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.tool.Workplane;
 import com.acromere.cartesia.tool.design.binding.DesignBinding;
+import com.acromere.cartesia.tool.design.binding.DesignBooleanBinding;
 import com.acromere.cartesia.tool.design.binding.DesignDoubleBinding;
 import com.acromere.cartesia.tool.design.binding.PathElementMapper;
 import com.acromere.data.NodeEvent;
 import com.acromere.event.EventHandler;
 import com.acromere.zerra.javafx.Fx;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.*;
 import javafx.geometry.Bounds;
@@ -1038,16 +1040,12 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 * @param shape The target FX shape
 	 */
 	private void bindCommonShapeGeometry( DesignShape designShape, Shape shape ) {
-		BooleanProperty hasFill = new SimpleBooleanProperty();
-		BooleanProperty hasDraw = new SimpleBooleanProperty();
-		BooleanProperty isSelected = new SimpleBooleanProperty();
-
+		DesignBooleanBinding isSelected = new DesignBooleanBinding( designShape, DesignShape.SELECTED, DesignShape::isSelected );
 		DesignBinding<Paint> shapeFill = new DesignBinding<>( designShape, DesignShape.FILL_PAINT, DesignShape::calcFillPaint );
 		DesignBinding<Paint> shapeDraw = new DesignBinding<>( designShape, DesignShape.DRAW_PAINT, DesignShape::calcDrawPaint );
 
-		hasFill.bind( shapeFill.isNotNull().and( shapeFill.isNotEqualTo( Color.TRANSPARENT ) ) );
-		hasDraw.bind( shapeDraw.isNotNull().and( shapeDraw.isNotEqualTo( Color.TRANSPARENT ) ) );
-		isSelected.bind( new DesignBinding<>( designShape, DesignShape.SELECTED, DesignShape::isSelected ) );
+		BooleanBinding hasFill = Bindings.and( shapeFill.isNotNull(), shapeFill.isNotEqualTo( Color.TRANSPARENT ) );
+		BooleanBinding hasDraw = Bindings.and( shapeDraw.isNotNull(), shapeDraw.isNotEqualTo( Color.TRANSPARENT ) );
 
 		shape.fillProperty().bind( Bindings.when( hasFill ).then( Bindings.when( isSelected ).then( selectedFillPaint() ).otherwise( shapeFill ) ).otherwise( (Paint)null ) );
 		shape.strokeProperty().bind( Bindings.when( hasDraw ).then( Bindings.when( isSelected ).then( selectedDrawPaint() ).otherwise( shapeDraw ) ).otherwise( (Paint)null ) );
@@ -1075,11 +1073,13 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 		bindCommonApertureGeometry( designEllipse, ellipse );
 
+		DesignBooleanBinding apertureVisible = new DesignBooleanBinding( designEllipse, DesignShape.VISIBLE, DesignShape::isVisible );
 		DesignDoubleBinding originXProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
 		DesignDoubleBinding originYProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
 		DesignDoubleBinding radiusXProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.RADII, v -> v.getRadii() != null ? v.getRadii().getX() : 0.0 );
 		DesignDoubleBinding radiusYProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.RADII, v -> v.getRadii() != null ? v.getRadii().getY() : 0.0 );
 
+		ellipse.visibleProperty().bind( Bindings.and( hotspotVisible(), apertureVisible ) );
 		ellipse.centerXProperty().bind( shapeScaleXProperty().multiply( originXProperty ) );
 		ellipse.centerYProperty().bind( shapeScaleYProperty().multiply( originYProperty ) );
 		ellipse.radiusXProperty().bind( apertureShapeScaleX.multiply( radiusXProperty ).divide( viewZoomXProperty() ) );
@@ -1098,6 +1098,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		DesignDoubleBinding widthProperty = new DesignDoubleBinding( designBox, DesignBox.SIZE, v -> v.getSize() != null ? v.getSize().getX() : 0.0 );
 		DesignDoubleBinding heightProperty = new DesignDoubleBinding( designBox, DesignBox.SIZE, v -> v.getSize() != null ? v.getSize().getY() : 0.0 );
 
+		box.visibleProperty().bind( new DesignBinding<>( designBox, DesignShape.VISIBLE, DesignShape::isVisible ) );
 		box.xProperty().bind( shapeScaleXProperty().multiply( originXProperty ) );
 		box.yProperty().bind( shapeScaleYProperty().multiply( originYProperty ) );
 		box.widthProperty().bind( shapeScaleXProperty().multiply( widthProperty ) );
@@ -1115,13 +1116,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 * @param shape The target FX shape
 	 */
 	private void bindCommonApertureGeometry( DesignShape designShape, Shape shape ) {
-		BooleanProperty apertureVisible = new SimpleBooleanProperty();
-		apertureVisible.bind( new DesignBinding<>( designShape, DesignShape.VISIBLE, DesignShape::isVisible ) );
 		DesignDoubleBinding strokeWidthProperty = new DesignDoubleBinding( designShape, DesignShape.DRAW_WIDTH, DesignShape::calcDrawWidth );
 
-		// FIXME Hotspot only applies to POINT_SELECT_APERTURE
-
-		shape.visibleProperty().bind( Bindings.and( hotspotVisible(), apertureVisible ) );
 		shape.fillProperty().bind( new DesignBinding<>( designShape, DesignShape.FILL_PAINT, DesignShape::calcFillPaint ) );
 		shape.setStrokeType( StrokeType.INSIDE );
 		shape.strokeProperty().bind( new DesignBinding<>( designShape, DesignShape.DRAW_PAINT, DesignShape::calcDrawPaint ) );
