@@ -2,23 +2,33 @@ package com.acromere.cartesia.command.layer;
 
 import com.acromere.cartesia.command.CommandTask;
 import com.acromere.cartesia.data.DesignLayer;
+import com.acromere.cartesia.data.DesignModel;
+import com.acromere.transaction.Txn;
+import lombok.CustomLog;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.acromere.cartesia.command.Command.Result.SUCCESS;
 
+@CustomLog
 public class LayerDelete extends LayerCommand {
 
 	@Override
 	public Object execute( CommandTask task ) throws Exception {
 		DesignLayer layer = task.getTool().getSelectedLayer();
 		if( layer == null ) return SUCCESS;
+		Optional<DesignModel> optionalModel = layer.getDesign();
+		if( optionalModel.isEmpty() ) return SUCCESS;
+		DesignModel model = optionalModel.get();
 
 		task.getTool().setCurrentLayer( getNextValidLayer( layer ) );
 
-		layer.getLayer().removeLayer( layer );
-		// FIXME Remove the layer from any views
-		// FIXME Remove the layer from any prints
+		try( Txn _ = Txn.create() ) {
+			layer.getLayer().removeLayer( layer );
+			model.getViews().forEach( view -> view.removeLayer( layer ) );
+			model.getPrints().forEach( print -> print.removeLayer( layer ) );
+		}
 
 		return layer;
 	}
@@ -27,7 +37,7 @@ public class LayerDelete extends LayerCommand {
 		DesignLayer parent = layer.getLayer();
 		List<DesignLayer> layers = parent.getLayers();
 		int count = layers.size();
-		int order = layer.getOrder();
+		int order = layers.indexOf( layer );
 
 		DesignLayer next;
 		if( count == 1 ) {
