@@ -12,6 +12,10 @@
 				<option key="duplex_circle"/>
 				<option key="crosshair"/>
 			</setting>
+			<setting key="select-hotspot-visible" editor="combobox">
+				<option key="false"/>
+				<option key="true"/>
+			</setting>
 			<setting key="select-aperture-size"/>
 			<setting key="select-aperture-unit" editor="combobox" provider="design-units"/>
 		</group>
