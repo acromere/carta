@@ -1,0 +1,69 @@
+package com.acromere.cartesia.tool.design;
+
+import com.acromere.cartesia.data.DesignLayer;
+import lombok.CustomLog;
+import lombok.Getter;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@Getter
+@CustomLog
+public class DesignToolV3LayerUIT extends DesignToolV3BaseUIT {
+
+	@Test
+	void initialCurrentLayerNotNull() {
+		// when
+		DesignLayer firstLayer = getDesignModel().getAllLayers().getFirst();
+
+		// then
+		assertThat( getTool().getCurrentLayer() ).isEqualTo( firstLayer );
+	}
+
+	@Test
+	void setCurrentLayer() {
+		// given
+		DesignLayer firstLayer = getDesignModel().getAllLayers().getFirst();
+		DesignLayer secondLayer = getDesignModel().getAllLayers().get( 1 );
+		assertThat( getTool().getCurrentLayer() ).isEqualTo( firstLayer );
+
+		// when
+		getTool().setCurrentLayer( secondLayer );
+
+		// then
+		assertThat( getTool().getCurrentLayer() ).isEqualTo( secondLayer );
+	}
+
+	@Test
+	void getVisibleLayers() throws Exception {
+		// given
+		useLineLayer();
+		useEllipseLayer();
+
+		// then
+		assertThat( getTool().getVisibleLayers().size() ).isEqualTo( 2 );
+	}
+
+	@Test
+	void setLayerVisible() {
+		// given
+		DesignLayer layer = getDesignModel().getAllLayers().getFirst();
+		assertThat( getTool().isLayerVisible( layer ) ).isFalse();
+		assertThat( getTool().getVisibleLayers().size() ).isEqualTo( 0 );
+
+		// when
+		getTool().setLayerVisible( layer, true );
+
+		// then
+		assertThat( getTool().isLayerVisible( layer ) ).isTrue();
+		assertThat( getTool().getVisibleLayers().size() ).isEqualTo( 1 );
+
+		// when
+		getTool().setLayerVisible( layer, false );
+
+		// then
+		assertThat( getTool().isLayerVisible( layer ) ).isFalse();
+		assertThat( getTool().getVisibleLayers().size() ).isEqualTo( 0 );
+	}
+
+}
