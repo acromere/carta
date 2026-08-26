@@ -23,14 +23,12 @@ public class Design2dResourceType extends ResourceType {
 	@Override
 	public boolean assetNew( Xenon program, Resource resource ) {
 		Design<DesignModel2D> design = initModel( resource );
-
-		// There might already be a model from assetNew()
-		DesignModel2D dataModel = design.getDataModel();
+		DesignModel2D model = design.getDataModel();
 
 		// Create the default layer
 		String constructionLayerName = Rb.textOr( RbKey.LABEL, "layer-construction", "construction" ).toLowerCase();
 		DesignLayer layer = new DesignLayer().setName( constructionLayerName );
-		dataModel.getLayers().addLayer( layer );
+		model.getLayers().addLayer( layer );
 
 		// Initialize the design settings
 		Settings settings = program.getSettingsManager().getAssetSettings( resource );
