@@ -242,12 +242,13 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 		this.renderer = renderer;
 		renderer.setSelectAperture( POINT_SELECT_APERTURE );
-		renderer.setApertureDrawPaint( DEFAULT_APERTURE_DRAW );
-		renderer.setApertureFillPaint( DEFAULT_APERTURE_FILL );
 		//		renderer.setPreviewDrawPaint( DEFAULT_PREVIEW_DRAW );
 		//		renderer.setPreviewFillPaint( DEFAULT_PREVIEW_FILL );
-		//		renderer.setSelectedDrawPaint( DEFAULT_SELECTED_DRAW );
-		//		renderer.setSelectedFillPaint( DEFAULT_SELECTED_FILL );
+		// Renderer already does this
+		//renderer.setApertureDrawPaint( DEFAULT_APERTURE_DRAW );
+		//renderer.setApertureFillPaint( DEFAULT_APERTURE_FILL );
+		//renderer.setSelectedDrawPaint( DEFAULT_SELECTED_DRAW_PAINT );
+		//renderer.setSelectedFillPaint( DEFAULT_SELECTED_FILL_PAINT );
 
 		// Initially the toast is shown and the renderer is hidden
 		this.toast.setVisible( true );
@@ -332,12 +333,9 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		getGuideContext().setCurrentGuide( layerGuide );
 
 		// Default values
-		String defaultSelectSize = String.valueOf( DEFAULT_SELECT_TOLERANCE.value() );
-		String defaultSelectUnit = DEFAULT_SELECT_TOLERANCE.unit().toString().toLowerCase();
 		String defaultReferencePointType = DesignMarker.Type.CIRCLE.name().toLowerCase();
 		String defaultReferencePointSize = "10";
 		String defaultReferencePointPaint = "#808080";
-		String defaultReticule = DEFAULT_RETICULE.name().toLowerCase();
 
 		// Get the settings collections
 		Settings productSettings = getProduct().getSettings();
@@ -348,8 +346,6 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		configureWorkplane( getWorkplane(), assetSettings );
 
 		// Tool settings
-		double selectApertureSize = Double.parseDouble( productSettings.get( SELECT_APERTURE_SIZE, defaultSelectSize ) );
-		DesignUnit selectApertureUnit = DesignUnitMapper.map( productSettings.get( SELECT_APERTURE_UNIT, defaultSelectUnit ) );
 		DesignMarker.Type referencePointType = DesignMarker.Type.valueOf( productSettings.get( REFERENCE_POINT_TYPE, defaultReferencePointType ).toUpperCase() );
 		double referencePointSize = Double.parseDouble( productSettings.get( REFERENCE_POINT_SIZE, defaultReferencePointSize ) );
 		Paint referencePointPaint = Paints.parse( productSettings.get( REFERENCE_POINT_PAINT, defaultReferencePointPaint ) );
