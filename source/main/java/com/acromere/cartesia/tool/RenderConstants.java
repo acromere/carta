@@ -3,6 +3,7 @@ package com.acromere.cartesia.tool;
 import com.acromere.cartesia.DesignUnit;
 import com.acromere.cartesia.data.DesignBox;
 import com.acromere.cartesia.data.DesignEllipse;
+import com.acromere.cartesia.data.DesignMarker;
 import com.acromere.cartesia.data.DesignShape;
 import com.acromere.zerra.color.Colors;
 import javafx.geometry.Point3D;
@@ -29,6 +30,8 @@ public interface RenderConstants {
 
 	Paint DEFAULT_SELECTED_FILL_PAINT = Colors.translucent( Color.MAGENTA, 0.2 );
 
+	boolean DEFAULT_HOTSPOT_VISIBLE = false;
+
 	DesignEllipse POINT_SELECT_APERTURE = new DesignEllipse( 0, 0, 0 );
 
 	DesignBox WINDOW_SELECT_APERTURE = new DesignBox( 0, 0, 0, 0 );
@@ -41,7 +44,11 @@ public interface RenderConstants {
 
 	Set<DesignShape> ALLOWED_SELECT_APERTURES = Set.of( POINT_SELECT_APERTURE, WINDOW_SELECT_APERTURE );
 
-	boolean DEFAULT_HOTSPOT_VISIBLE = false;
+	DesignMarker.Type DEFAULT_REFERENCE_POINT_TYPE = DesignMarker.Type.CIRCLE;
+
+	double DEFAULT_REFERENCE_POINT_SIZE = 10.0;
+
+	Paint DEFAULT_REFERENCE_POINT_PAINT = Color.GRAY;
 
 	/**
 	 * The default JavaFx refresh rate of 60 Hz.

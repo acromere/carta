@@ -332,11 +332,6 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		getGuideContext().getGuides().addAll( layerGuide );
 		getGuideContext().setCurrentGuide( layerGuide );
 
-		// Default values
-		String defaultReferencePointType = DesignMarker.Type.CIRCLE.name().toLowerCase();
-		String defaultReferencePointSize = "10";
-		String defaultReferencePointPaint = "#808080";
-
 		// Get the settings collections
 		Settings productSettings = getProduct().getSettings();
 		Settings settings = getSettings();
@@ -346,9 +341,9 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		configureWorkplane( getWorkplane(), assetSettings );
 
 		// Tool settings
-		DesignMarker.Type referencePointType = DesignMarker.Type.valueOf( productSettings.get( REFERENCE_POINT_TYPE, defaultReferencePointType ).toUpperCase() );
-		double referencePointSize = Double.parseDouble( productSettings.get( REFERENCE_POINT_SIZE, defaultReferencePointSize ) );
-		Paint referencePointPaint = Paints.parse( productSettings.get( REFERENCE_POINT_PAINT, defaultReferencePointPaint ) );
+		DesignMarker.Type referencePointType = DesignMarker.Type.valueOf( productSettings.get( REFERENCE_POINT_TYPE, DEFAULT_REFERENCE_POINT_TYPE.name() ).toUpperCase() );
+		double referencePointSize = Double.parseDouble( productSettings.get( REFERENCE_POINT_SIZE, String.valueOf( DEFAULT_REFERENCE_POINT_SIZE ) ) );
+		Paint referencePointPaint = Paints.parse( productSettings.get( REFERENCE_POINT_PAINT, Paints.toString( DEFAULT_REFERENCE_POINT_PAINT ) ) );
 
 		Point3D viewPoint = ParseUtil.parsePoint3D( settings.get( SETTINGS_VIEW_POINT, "0,0,0" ) );
 		double viewZoom = Double.parseDouble( settings.get( SETTINGS_VIEW_ZOOM, "1.0" ) );
