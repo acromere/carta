@@ -42,11 +42,11 @@ public class CartesiaMod extends Module {
 
 	public static final String INDEX_ID = "cartesia";
 
-	private Design2dResourceType design2dAssetType;
+	private Design2dResourceType design2dResourceType;
 
-	private Design3dResourceType design3dAssetType;
+	private Design3dResourceType design3dResourceType;
 
-	private ShapePropertiesResourceType shapePropertiesAssetType;
+	private ShapePropertiesResourceType shapePropertiesResourceType;
 
 	@Getter
 	private CommandMap commandMap;
@@ -61,11 +61,11 @@ public class CartesiaMod extends Module {
 
 		getProgram().getResourceManager().addScheme( new CartesiaScheme( getProgram() ) );
 
-		// Register Design2D asset type and tools
-		registerResourceType( design2dAssetType = new Design2dResourceType( this ) );
+		// Register Design2D resource type and tools
+		registerResourceType( design2dResourceType = new Design2dResourceType( this ) );
 		// Settings pages
 		String path = "/" + getClass().getPackageName().replace( ".", "/" );
-		design2dAssetType.setSettingsPages( SettingsPageParser.parse( this, path + "/design/props/design.xml", RbKey.PROPS ) );
+		design2dResourceType.setSettingsPages( SettingsPageParser.parse( this, path + "/design/props/design.xml", RbKey.PROPS ) );
 
 		registerTools();
 
@@ -107,20 +107,20 @@ public class CartesiaMod extends Module {
 		unregisterSettingsPages();
 
 		// Unregister ShapeProperties
-		unregisterTool( shapePropertiesAssetType, ShapePropertiesTool.class );
-		unregisterResourceType( shapePropertiesAssetType );
+		unregisterTool( shapePropertiesResourceType, ShapePropertiesTool.class );
+		unregisterResourceType( shapePropertiesResourceType );
 
 		// Unregister Design3D
-		//unregisterTool( design3dAssetType, Design3dEditor.class );
-		//unregisterAssetType( design3dAssetType );
+		//unregisterTool( design3dResourceType, Design3dEditor.class );
+		//unregisterResourceType( design3dResourceType );
 
 		// Unregister Design2D
-		unregisterTool( design2dAssetType, DesignToolV2.class );
-		unregisterResourceType( design2dAssetType );
+		unregisterTool( design2dResourceType, DesignToolV2.class );
+		unregisterResourceType( design2dResourceType );
 
 		// Unregister Design2D
-		unregisterTool( design2dAssetType, Design2dEditor.class );
-		unregisterResourceType( design2dAssetType );
+		unregisterTool( design2dResourceType, Design2dEditor.class );
+		unregisterResourceType( design2dResourceType );
 
 		unregisterActions();
 		unregisterIcons();
@@ -196,31 +196,31 @@ public class CartesiaMod extends Module {
 		// Default tool registration
 		ToolRegistration designToolV2Registration = new ToolRegistration( this, DesignToolV2.class );
 		designToolV2Registration.setName( Rb.text( RbKey.LABEL, "design-2d-editor" ) );
-		registerTool( design2dAssetType, designToolV2Registration );
+		registerTool( design2dResourceType, designToolV2Registration );
 
 		// Design V3 Editor registration
 		ToolRegistration designToolV3Registration = new ToolRegistration( this, DesignToolV3.class );
 		designToolV3Registration.setName( Rb.text( RbKey.LABEL, "design-2d-editor" ) + " (New)" );
-		registerTool( design2dAssetType, designToolV3Registration );
+		registerTool( design2dResourceType, designToolV3Registration );
 
 		// Other tool registrations
 		ToolRegistration design2dEditorRegistration = new ToolRegistration( this, Design2dEditor.class );
 		design2dEditorRegistration.setName( Rb.text( RbKey.LABEL, "design-2d-editor" ) + " (Deprecated)" );
-		registerTool( design2dAssetType, design2dEditorRegistration );
+		registerTool( design2dResourceType, design2dEditorRegistration );
 
-		// Register Design3D asset type and tools
-		//registerAssetType( design3dAssetType = new Design3dAssetType( this ) );
+		// Register Design3D resource type and tools
+		//registerResourceType( design3dResourceType = new Design3dResourceType( this ) );
 		// Tool registration
 		//ToolRegistration design3dEditorRegistration = new ToolRegistration( this, Design3dEditor.class );
 		//design3dEditorRegistration.setName( Rb.text(RbKey.LABEL, "design-3d-editor") );
-		//registerTool( design3dAssetType, design3dEditorRegistration );
+		//registerTool( design3dResourceType, design3dEditorRegistration );
 
-		// Register ShapeProperties asset type and tools
-		registerResourceType( shapePropertiesAssetType = new ShapePropertiesResourceType( this ) );
+		// Register ShapeProperties resource type and tools
+		registerResourceType( shapePropertiesResourceType = new ShapePropertiesResourceType( this ) );
 		ToolRegistration shapePropertiesRegistration = new ToolRegistration( this, ShapePropertiesTool.class );
 		shapePropertiesRegistration.setName( Rb.text( RbKey.LABEL, "shape-properties-tool" ) );
 		shapePropertiesRegistration.setInstanceMode( ToolInstanceMode.SINGLETON );
-		registerTool( shapePropertiesAssetType, shapePropertiesRegistration );
+		registerTool( shapePropertiesResourceType, shapePropertiesRegistration );
 	}
 
 	private void unregisterActions() {

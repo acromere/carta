@@ -23,7 +23,7 @@ public class Design3dResourceType extends ResourceType {
 	public boolean resourceNew( Xenon program, Resource resource ) {
 		Design<DesignModel3D> design = initModel( resource );
 
-		// There might already be a model from assetNew()
+		// There might already be a model from resourceNew()
 		DesignModel3D dataModel = design.getDataModel();
 
 		// If there is not a default layer, create one

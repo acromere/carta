@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DesignToolV3AssertTypeUIT extends DesignToolV3BaseUIT {
 
 	@Test
-	void assetTypeResolvesCorrectly() {
+	void resourceTypeResolvesCorrectly() {
 		assertThat( getResource().getType() ).isInstanceOf( Design2dResourceType.class );
 	}
 

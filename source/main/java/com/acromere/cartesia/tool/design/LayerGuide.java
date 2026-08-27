@@ -101,7 +101,7 @@ public class LayerGuide extends Guide {
 	/**
 	 * This method is called when the design is ready to be used.
 	 *
-	 * @param request The open asset request
+	 * @param request The open resource request
 	 */
 	public void ready( OpenResourceRequest request ) {
 		// NOTE Layer structure changes come from the design

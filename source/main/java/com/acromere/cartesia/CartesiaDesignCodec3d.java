@@ -20,7 +20,7 @@ public class CartesiaDesignCodec3d extends CartesiaDesignCodec {
 
 	@Override
 	public String getName() {
-		return Rb.text( "asset", "codec-cartesia3d-name" );
+		return Rb.text( "resource", "codec-cartesia3d-name" );
 	}
 
 }
