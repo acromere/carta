@@ -31,7 +31,7 @@ public class Design2dResourceType extends ResourceType {
 		model.getLayers().addLayer( layer );
 
 		// Initialize the design settings
-		Settings settings = program.getSettingsManager().getAssetSettings( resource );
+		Settings settings = program.getSettingsManager().getResourceSettings( resource );
 		settings.set( "grid-major-x", "1.0" );
 		settings.set( "grid-major-y", "1.0" );
 		settings.set( "grid-minor-x", "0.5" );

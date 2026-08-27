@@ -55,7 +55,7 @@ public class DesignToolV3Test extends BaseDesignToolTest {
 		setTool( tool );
 
 		// Before calling tool.ready(), reset the module, tool and resource settings
-		getProgram().getSettingsManager().getAssetSettings( resource ).delete();
+		getProgram().getSettingsManager().getResourceSettings( resource ).delete();
 		tool.getSettings().delete();
 		getMod().getSettings().delete();
 
