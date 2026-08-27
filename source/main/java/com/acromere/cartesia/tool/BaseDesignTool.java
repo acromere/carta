@@ -474,7 +474,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		// Add resource switch listener to remove command prompt
 		getProgram().register(
 			ResourceSwitchedEvent.SWITCHED, resourceSwitchListener = e -> {
-				if( isDisplayed() && e.getOldAsset() == getResource() && e.getNewAsset() != getResource() ) {
+				if( isDisplayed() && e.getOldResource() == getResource() && e.getNewResource() != getResource() ) {
 					unregisterStatusBarItems();
 				}
 			}
@@ -536,7 +536,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 	@Override
 	public final Design<? extends DesignModel> getDesign() {
-		return getAssetModel();
+		return getResourceModel();
 	}
 
 	@Override
@@ -549,7 +549,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	@Override
 	@NonNull
 	public final DesignContext getDesignContext() {
-		Design<? extends DesignModel> design = getAssetModel();
+		Design<? extends DesignModel> design = getResourceModel();
 		return design == null ? DesignContext.EMPTY : design.getDesignContext();
 	}
 
@@ -1682,7 +1682,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		@Override
 		public void handle( ActionEvent event ) {
 			getProgram().getTaskManager().submit( new DesignPrintTask( getProgram(), BaseDesignTool.this, getResource(), (DesignPrint)null ) );
-			//getProgram().getTaskManager().submit( new DesignAwtPrintTask( getProgram(), FxRenderDesignTool.this, getAsset(), (DesignPrint)null ) );
+			//getProgram().getTaskManager().submit( new DesignAwtPrintTask( getProgram(), FxRenderDesignTool.this, getResource(), (DesignPrint)null ) );
 		}
 
 	}

@@ -62,7 +62,7 @@ public class CartesiaMod extends Module {
 		getProgram().getResourceManager().addScheme( new CartesiaScheme( getProgram() ) );
 
 		// Register Design2D asset type and tools
-		registerAssetType( design2dAssetType = new Design2dResourceType( this ) );
+		registerResourceType( design2dAssetType = new Design2dResourceType( this ) );
 		// Settings pages
 		String path = "/" + getClass().getPackageName().replace( ".", "/" );
 		design2dAssetType.setSettingsPages( SettingsPageParser.parse( this, path + "/design/props/design.xml", RbKey.PROPS ) );
@@ -108,7 +108,7 @@ public class CartesiaMod extends Module {
 
 		// Unregister ShapeProperties
 		unregisterTool( shapePropertiesAssetType, ShapePropertiesTool.class );
-		unregisterAssetType( shapePropertiesAssetType );
+		unregisterResourceType( shapePropertiesAssetType );
 
 		// Unregister Design3D
 		//unregisterTool( design3dAssetType, Design3dEditor.class );
@@ -116,11 +116,11 @@ public class CartesiaMod extends Module {
 
 		// Unregister Design2D
 		unregisterTool( design2dAssetType, DesignToolV2.class );
-		unregisterAssetType( design2dAssetType );
+		unregisterResourceType( design2dAssetType );
 
 		// Unregister Design2D
 		unregisterTool( design2dAssetType, Design2dEditor.class );
-		unregisterAssetType( design2dAssetType );
+		unregisterResourceType( design2dAssetType );
 
 		unregisterActions();
 		unregisterIcons();
@@ -216,7 +216,7 @@ public class CartesiaMod extends Module {
 		//registerTool( design3dAssetType, design3dEditorRegistration );
 
 		// Register ShapeProperties asset type and tools
-		registerAssetType( shapePropertiesAssetType = new ShapePropertiesResourceType( this ) );
+		registerResourceType( shapePropertiesAssetType = new ShapePropertiesResourceType( this ) );
 		ToolRegistration shapePropertiesRegistration = new ToolRegistration( this, ShapePropertiesTool.class );
 		shapePropertiesRegistration.setName( Rb.text( RbKey.LABEL, "shape-properties-tool" ) );
 		shapePropertiesRegistration.setInstanceMode( ToolInstanceMode.SINGLETON );

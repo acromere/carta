@@ -53,7 +53,7 @@ public class ShapePropertiesTool extends ProgramTool {
 	}
 
 	@Override
-	public boolean changeCurrentAsset() {
+	public boolean changeCurrentResource() {
 		return false;
 	}
 
