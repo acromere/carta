@@ -471,7 +471,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 		getCommandContext().setLastUserTool( this );
 
-		// Add asset switch listener to remove command prompt
+		// Add resource switch listener to remove command prompt
 		getProgram().register(
 			ResourceSwitchedEvent.SWITCHED, resourceSwitchListener = e -> {
 				if( isDisplayed() && e.getOldAsset() == getResource() && e.getNewAsset() != getResource() ) {
@@ -507,7 +507,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 	@Override
 	protected void deallocate() throws ToolException {
-		// Remove asset switch listener to unregister status bar items
+		// Remove resource switch listener to unregister status bar items
 		getProgram().unregister( ResourceSwitchedEvent.SWITCHED, resourceSwitchListener );
 
 		if( renderer != null ) renderer.setDesign( null );
@@ -1701,16 +1701,16 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 		@Override
 		public void handle( ActionEvent event ) {
-			// Get the settings pages for the asset type
+			// Get the settings pages for the resource type
 			Resource resource = getResource();
-			SettingsPage assetSettingsPage = resource.getType().getSettingsPages().get( "grid" );
-			SettingsPage designSettingsPage = resource.getType().getSettingsPages().get( "asset" );
+			SettingsPage resourceSettingsPage = resource.getType().getSettingsPages().get( "grid" );
+			SettingsPage designSettingsPage = resource.getType().getSettingsPages().get( "resource" );
 
-			Settings assetSettings = getResourceSettings();
+			Settings resourceSettings = getResourceSettings();
 			Settings designSettings = new NodeSettings( getResource().getModel() );
 
 			// Set the settings for the pages
-			assetSettingsPage.setSettings( assetSettings );
+			resourceSettingsPage.setSettings( resourceSettings );
 			designSettingsPage.setSettings( designSettings );
 
 			// Switch to a task thread to get the tool
@@ -1720,7 +1720,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 					getProgram().getResourceManager().openResource( ProgramPropertiesType.URI, getWorkpane() ).get();
 
 					// Fire the show request on the workspace event bus
-					PropertiesToolEvent toolEvent = new PropertiesToolEvent( PropertiesAction.this, PropertiesToolEvent.SHOW, designSettingsPage, assetSettingsPage );
+					PropertiesToolEvent toolEvent = new PropertiesToolEvent( PropertiesAction.this, PropertiesToolEvent.SHOW, designSettingsPage, resourceSettingsPage );
 					Workspace workspace = getProgram().getWorkspaceManager().getActiveWorkspace();
 					FxEventHub workspaceEventBus = workspace.getEventBus();
 					Fx.run( () -> workspaceEventBus.dispatch( toolEvent ) );
