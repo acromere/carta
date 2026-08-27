@@ -121,7 +121,7 @@ public class DesignToolV2 extends BaseDesignTool {
 		// The workplane values are stored in the asset settings
 		// However, a set of default workplane values may need to be put in the
 		// asset settings because when a tool is closed, the tool settings are deleted.
-		configureWorkplane( getWorkplane(), getAssetSettings() );
+		configureWorkplane( getWorkplane(), getResourceSettings() );
 
 		Settings productSettings = getProduct().getSettings();
 		Settings settings = getSettings();

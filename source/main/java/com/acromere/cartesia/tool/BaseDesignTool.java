@@ -216,7 +216,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		storePreviousViewAction.setMaxTriggerLimit( 5000 );
 
 		// Create the tool toast
-		this.toast = new Label( Rb.text( RbKey.LABEL, "loading-asset", resource.getName() ) + " ..." );
+		this.toast = new Label( Rb.text( RbKey.LABEL, "loading-resource", resource.getName() ) + " ..." );
 		this.toast.getStyleClass().add( "tool-toast" );
 		StackPane.setAlignment( this.toast, Pos.CENTER );
 
@@ -335,10 +335,10 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		// Get the settings collections
 		Settings productSettings = getProduct().getSettings();
 		Settings settings = getSettings();
-		Settings assetSettings = getAssetSettings();
+		Settings resourceSettings = getResourceSettings();
 
 		// Workplane settings and listeners
-		configureWorkplane( getWorkplane(), assetSettings );
+		configureWorkplane( getWorkplane(), resourceSettings );
 
 		// Tool settings
 		DesignMarker.Type referencePointType = DesignMarker.Type.valueOf( productSettings.get( REFERENCE_POINT_TYPE, DEFAULT_REFERENCE_POINT_TYPE.name() ).toUpperCase() );
@@ -1706,7 +1706,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 			SettingsPage assetSettingsPage = resource.getType().getSettingsPages().get( "grid" );
 			SettingsPage designSettingsPage = resource.getType().getSettingsPages().get( "asset" );
 
-			Settings assetSettings = getAssetSettings();
+			Settings assetSettings = getResourceSettings();
 			Settings designSettings = new NodeSettings( getResource().getModel() );
 
 			// Set the settings for the pages
