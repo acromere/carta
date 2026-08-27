@@ -27,9 +27,9 @@ public class DesignToolV3 extends BaseDesignTool {
 	}
 
 	/**
-	 * Called when both the tool and the asset are ready to be used.
+	 * Called when both the tool and the resource are ready to be used.
 	 *
-	 * @param request The request to open the asset
+	 * @param request The request to open the resource
 	 * @throws ToolException If there is a problem preparing the tool for use
 	 */
 	@Override

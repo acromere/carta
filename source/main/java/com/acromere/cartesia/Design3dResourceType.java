@@ -20,7 +20,7 @@ public class Design3dResourceType extends ResourceType {
 	}
 
 	@Override
-	public boolean assetNew( Xenon program, Resource resource ) {
+	public boolean resourceNew( Xenon program, Resource resource ) {
 		Design<DesignModel3D> design = initModel( resource );
 
 		// There might already be a model from assetNew()
@@ -35,7 +35,7 @@ public class Design3dResourceType extends ResourceType {
 	}
 
 	@Override
-	public boolean assetOpen( Xenon program, Resource resource ) {
+	public boolean resourceOpen( Xenon program, Resource resource ) {
 		initModel( resource );
 		resource.setCaptureUndoChanges( true );
 		return true;

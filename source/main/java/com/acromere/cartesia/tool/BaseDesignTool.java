@@ -191,7 +191,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	@Getter
 	private final DelayedAction storePreviousViewAction;
 
-	private com.acromere.event.EventHandler<ResourceSwitchedEvent> assetSwitchListener;
+	private com.acromere.event.EventHandler<ResourceSwitchedEvent> resourceSwitchListener;
 
 	protected BaseDesignTool( XenonProgramProduct product, Resource resource, BaseDesignRenderer renderer ) {
 		super( product, resource );
@@ -473,7 +473,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 		// Add asset switch listener to remove command prompt
 		getProgram().register(
-			ResourceSwitchedEvent.SWITCHED, assetSwitchListener = e -> {
+			ResourceSwitchedEvent.SWITCHED, resourceSwitchListener = e -> {
 				if( isDisplayed() && e.getOldAsset() == getResource() && e.getNewAsset() != getResource() ) {
 					unregisterStatusBarItems();
 				}
@@ -508,7 +508,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	@Override
 	protected void deallocate() throws ToolException {
 		// Remove asset switch listener to unregister status bar items
-		getProgram().unregister( ResourceSwitchedEvent.SWITCHED, assetSwitchListener );
+		getProgram().unregister( ResourceSwitchedEvent.SWITCHED, resourceSwitchListener );
 
 		if( renderer != null ) renderer.setDesign( null );
 

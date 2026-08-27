@@ -20,12 +20,12 @@ class Design3dResourceTypeTest extends BaseCartesiaUnitTest {
 	}
 
 	@Test
-	void assetNew() {
+	void resourceNew() {
 		// given
 		Resource resource = new Resource( "" );
 
 		// when
-		type.assetOpen( getProgram(), resource );
+		type.resourceOpen( getProgram(), resource );
 
 		// then
 		Design<DesignModel3D> design = resource.getModel();
@@ -35,12 +35,12 @@ class Design3dResourceTypeTest extends BaseCartesiaUnitTest {
 	}
 
 	@Test
-	void assetOpen() {
+	void resourceOpen() {
 		// given
 		Resource resource = new Resource( "" );
 
 		// when
-		type.assetOpen( getProgram(), resource );
+		type.resourceOpen( getProgram(), resource );
 
 		// then
 		Design<DesignModel3D> design = resource.getModel();
@@ -53,7 +53,7 @@ class Design3dResourceTypeTest extends BaseCartesiaUnitTest {
 	void newResourceCanBeModified() {
 		// given
 		Resource resource = new Resource( "" );
-		type.assetOpen( getProgram(), resource );
+		type.resourceOpen( getProgram(), resource );
 		Design<DesignModel3D> design = resource.getModel();
 		DesignModel3D model = design.getDataModel();
 		assertThat( resource.isModified() ).isFalse();

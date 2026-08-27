@@ -21,7 +21,7 @@ public class Design2dResourceType extends ResourceType {
 	}
 
 	@Override
-	public boolean assetNew( Xenon program, Resource resource ) {
+	public boolean resourceNew( Xenon program, Resource resource ) {
 		Design<DesignModel2D> design = initModel( resource );
 		DesignModel2D model = design.getDataModel();
 
@@ -43,7 +43,7 @@ public class Design2dResourceType extends ResourceType {
 	}
 
 	@Override
-	public boolean assetOpen( Xenon program, Resource resource ) {
+	public boolean resourceOpen( Xenon program, Resource resource ) {
 		initModel( resource );
 		return true;
 	}
