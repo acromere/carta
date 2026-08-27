@@ -13,14 +13,12 @@ import com.acromere.cartesia.tool.RenderConstants;
 import com.acromere.settings.Settings;
 import com.acromere.util.TypeReference;
 import com.acromere.xenon.XenonProgramProduct;
-import com.acromere.xenon.resource.OpenAssetRequest;
+import com.acromere.xenon.resource.OpenResourceRequest;
 import com.acromere.xenon.resource.Resource;
 import com.acromere.xenon.workpane.ToolException;
 import com.acromere.zerra.color.Paints;
 import com.acromere.zerra.javafx.Fx;
 import com.acromere.zerra.javafx.FxUtil;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point3D;
 import javafx.scene.input.GestureEvent;
@@ -71,7 +69,7 @@ public class DesignToolV2 extends BaseDesignTool {
 	}
 
 	@Override
-	protected void ready( OpenAssetRequest request ) throws ToolException {
+	protected void ready( OpenResourceRequest request ) throws ToolException {
 		// Don't use the superclass logic
 		//super.ready( request );
 

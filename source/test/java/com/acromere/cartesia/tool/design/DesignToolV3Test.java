@@ -9,7 +9,7 @@ import com.acromere.cartesia.test.Point3DAssert;
 import com.acromere.cartesia.tool.DesignPortal;
 import com.acromere.cartesia.tool.Grid;
 import com.acromere.marea.fx.FxRenderer2d;
-import com.acromere.xenon.resource.OpenAssetRequest;
+import com.acromere.xenon.resource.OpenResourceRequest;
 import com.acromere.xenon.resource.Resource;
 import com.acromere.zerra.javafx.Fx;
 import javafx.geometry.BoundingBox;
@@ -59,7 +59,7 @@ public class DesignToolV3Test extends BaseDesignToolTest {
 		tool.getSettings().delete();
 		getMod().getSettings().delete();
 
-		OpenAssetRequest request = new OpenAssetRequest();
+		OpenResourceRequest request = new OpenResourceRequest();
 		request.setResource( resource );
 		tool.ready( request );
 

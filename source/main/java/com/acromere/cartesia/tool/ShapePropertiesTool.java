@@ -5,7 +5,7 @@ import com.acromere.product.Rb;
 import com.acromere.xenon.ProgramTool;
 import com.acromere.xenon.RbKey;
 import com.acromere.xenon.XenonProgramProduct;
-import com.acromere.xenon.resource.OpenAssetRequest;
+import com.acromere.xenon.resource.OpenResourceRequest;
 import com.acromere.xenon.resource.Resource;
 import com.acromere.xenon.tool.settings.SettingsPage;
 import com.acromere.xenon.tool.settings.SettingsPagePanel;
@@ -58,7 +58,7 @@ public class ShapePropertiesTool extends ProgramTool {
 	}
 
 	@Override
-	protected void ready( OpenAssetRequest request ) {
+	protected void ready( OpenResourceRequest request ) {
 		setTitle( Rb.text( RbKey.LABEL, "shape-properties-tool" ) );
 		setGraphic( getProgram().getIconLibrary().getIcon( "shape-properties" ) );
 	}

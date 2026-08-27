@@ -4,7 +4,7 @@ import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.data.DesignShape;
 import com.acromere.cartesia.tool.BaseDesignTool;
 import com.acromere.xenon.XenonProgramProduct;
-import com.acromere.xenon.resource.OpenAssetRequest;
+import com.acromere.xenon.resource.OpenResourceRequest;
 import com.acromere.xenon.resource.Resource;
 import com.acromere.xenon.workpane.ToolException;
 import javafx.geometry.Point3D;
@@ -33,7 +33,7 @@ public class DesignToolV3 extends BaseDesignTool {
 	 * @throws ToolException If there is a problem preparing the tool for use
 	 */
 	@Override
-	protected void ready( OpenAssetRequest request ) throws ToolException {
+	protected void ready( OpenResourceRequest request ) throws ToolException {
 		// Most logic has been moved to the super.ready() method
 		super.ready( request );
 

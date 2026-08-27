@@ -11,7 +11,7 @@ import com.acromere.event.EventHandler;
 import com.acromere.product.Rb;
 import com.acromere.xenon.Xenon;
 import com.acromere.xenon.XenonProgramProduct;
-import com.acromere.xenon.resource.OpenAssetRequest;
+import com.acromere.xenon.resource.OpenResourceRequest;
 import com.acromere.xenon.tool.guide.Guide;
 import com.acromere.xenon.tool.guide.GuideNode;
 import javafx.collections.ListChangeListener;
@@ -103,7 +103,7 @@ public class LayerGuide extends Guide {
 	 *
 	 * @param request The open asset request
 	 */
-	public void ready( OpenAssetRequest request ) {
+	public void ready( OpenResourceRequest request ) {
 		// NOTE Layer structure changes come from the design
 		// NOTE Layer name changes come from the design
 		// NOTE Layer order changes come from the design

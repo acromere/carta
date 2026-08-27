@@ -23,7 +23,7 @@ import com.acromere.util.DelayedAction;
 import com.acromere.util.IdGenerator;
 import com.acromere.util.TypeReference;
 import com.acromere.xenon.*;
-import com.acromere.xenon.resource.OpenAssetRequest;
+import com.acromere.xenon.resource.OpenResourceRequest;
 import com.acromere.xenon.resource.Resource;
 import com.acromere.xenon.resource.ResourceSwitchedEvent;
 import com.acromere.xenon.resource.type.ProgramPropertiesType;
@@ -294,7 +294,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		getChildren().addAll( this.renderer, this.toast );
 	}
 
-	protected void ready( OpenAssetRequest request ) throws ToolException {
+	protected void ready( OpenResourceRequest request ) throws ToolException {
 		super.ready( request );
 
 		setTitle( getResource().getName() );
