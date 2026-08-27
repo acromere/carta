@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 import static com.acromere.cartesia.CartesiaDesignCodec.remapValue;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CartesiaDesignCodec2dTestUIT extends BaseCartesiaUiTest {
+class DesignCodec2dTestUIT extends BaseCartesiaUiTest {
 
 	private static final ObjectMapper MAPPER = CartesiaDesignCodec.JSON_MAPPER;
 

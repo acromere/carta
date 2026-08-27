@@ -2,6 +2,7 @@ package com.acromere.cartesia.data;
 
 import com.acromere.cartesia.tool.CommandContext;
 import com.acromere.cartesia.tool.DesignContext;
+import com.acromere.data.Node;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,9 +11,9 @@ import lombok.Setter;
  * bridge between the data model and the UI.
  */
 @Getter
-public class Design<T extends DesignModel> {
+public class Design<T extends DesignModel> extends Node {
 
-	private final T dataModel;
+	public static final String MODEL = "model";
 
 	private final DesignContext designContext;
 
@@ -20,8 +21,19 @@ public class Design<T extends DesignModel> {
 	private CommandContext commandContext;
 
 	public Design( T model ) {
-		this.dataModel = model;
 		this.designContext = new DesignContext();
+		addModifyingKeys( MODEL );
+		setDataModel(model);
+	}
+
+	@SuppressWarnings( "unchecked" )
+	public T getDataModel() {
+		return (T)getValue( MODEL );
+	}
+
+	public Design<T> setDataModel( T model ) {
+		setValue( MODEL, model );
+		return this;
 	}
 
 }
