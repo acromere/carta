@@ -49,8 +49,6 @@ public class Design2dResourceType extends ResourceType {
 	}
 
 	private Design<DesignModel2D> initModel( Resource resource ) {
-		// FIXME I broke the Design2dResourceType when I switched the resource model from DesignModel to Design
-
 		// There might already be a model
 		Design<DesignModel2D> design = resource.getModel();
 
