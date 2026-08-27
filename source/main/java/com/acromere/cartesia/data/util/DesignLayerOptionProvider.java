@@ -55,7 +55,7 @@ public class DesignLayerOptionProvider implements SettingOptionProvider {
 	}
 
 	private Optional<DesignModel> getDesign() {
-		Resource currentResource = product.getProgram().getResourceManager().getCurrentAsset();
+		Resource currentResource = product.getProgram().getResourceManager().getCurrentResource();
 		if( currentResource == null ) return Optional.empty();
 		Object model = currentResource.getModel();
 		if( model instanceof DesignModel ) return Optional.of( (DesignModel)model );
