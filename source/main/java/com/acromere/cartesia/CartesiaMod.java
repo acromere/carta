@@ -106,21 +106,7 @@ public class CartesiaMod extends Module {
 		// Unregister the settings pages
 		unregisterSettingsPages();
 
-		// Unregister ShapeProperties
-		unregisterTool( shapePropertiesResourceType, ShapePropertiesTool.class );
-		unregisterResourceType( shapePropertiesResourceType );
-
-		// Unregister Design3D
-		//unregisterTool( design3dResourceType, Design3dEditor.class );
-		//unregisterResourceType( design3dResourceType );
-
-		// Unregister Design2D
-		unregisterTool( design2dResourceType, DesignToolV2.class );
-		unregisterResourceType( design2dResourceType );
-
-		// Unregister Design2D
-		unregisterTool( design2dResourceType, Design2dEditor.class );
-		unregisterResourceType( design2dResourceType );
+		unregisterTools();
 
 		unregisterActions();
 		unregisterIcons();
@@ -193,15 +179,15 @@ public class CartesiaMod extends Module {
 		getProgram().getToolManager().addToolAlias( "com.acromere.cartesia.tool.design.FxRenderDesignTool", DesignToolV2.class );
 		getProgram().getToolManager().addToolAlias( "com.acromere.cartesia.tool.design.FxShapeDesignTool", DesignToolV2.class );
 
-		// Default tool registration
-		ToolRegistration designToolV2Registration = new ToolRegistration( this, DesignToolV2.class );
-		designToolV2Registration.setName( Rb.text( RbKey.LABEL, "design-2d-editor" ) );
-		registerTool( design2dResourceType, designToolV2Registration );
+		// Default tool registration (because it is first)
+		ToolRegistration designToolV3Registration = new ToolRegistration( this, DesignToolV3.class );
+		designToolV3Registration.setName( Rb.text( RbKey.LABEL, "design-2d-editor" ) );
+		registerTool( design2dResourceType, designToolV3Registration );
 
 		// Design V3 Editor registration
-		ToolRegistration designToolV3Registration = new ToolRegistration( this, DesignToolV3.class );
-		designToolV3Registration.setName( Rb.text( RbKey.LABEL, "design-2d-editor" ) + " (New)" );
-		registerTool( design2dResourceType, designToolV3Registration );
+		ToolRegistration designToolV2Registration = new ToolRegistration( this, DesignToolV2.class );
+		designToolV2Registration.setName( Rb.text( RbKey.LABEL, "design-2d-editor" ) + " (Old)" );
+		registerTool( design2dResourceType, designToolV2Registration );
 
 		// Other tool registrations
 		ToolRegistration design2dEditorRegistration = new ToolRegistration( this, Design2dEditor.class );
@@ -221,6 +207,28 @@ public class CartesiaMod extends Module {
 		shapePropertiesRegistration.setName( Rb.text( RbKey.LABEL, "shape-properties-tool" ) );
 		shapePropertiesRegistration.setInstanceMode( ToolInstanceMode.SINGLETON );
 		registerTool( shapePropertiesResourceType, shapePropertiesRegistration );
+	}
+
+	private void unregisterTools() {
+		// Unregister ShapeProperties
+		unregisterTool( shapePropertiesResourceType, ShapePropertiesTool.class );
+		unregisterResourceType( shapePropertiesResourceType );
+
+		// Unregister Design3D
+		//unregisterTool( design3dResourceType, Design3dEditor.class );
+		//unregisterResourceType( design3dResourceType );
+
+		// Unregister Design2D
+		unregisterTool( design2dResourceType, Design2dEditor.class );
+		unregisterResourceType( design2dResourceType );
+
+		// Unregister Design2D
+		unregisterTool( design2dResourceType, DesignToolV2.class );
+		unregisterResourceType( design2dResourceType );
+
+		// Unregister Design2D
+		unregisterTool( design2dResourceType, DesignToolV3.class );
+		unregisterResourceType( design2dResourceType );
 	}
 
 	private void unregisterActions() {
