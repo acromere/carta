@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.acromere.cartesia.tool.RenderConstants.DEFAULT_HOTSPOT_VISIBLE;
 import static org.assertj.core.api.Assertions.assertThat;
+import javafx.beans.property.ReadOnlyBooleanProperty;
 
 public abstract class BaseDesignToolTest extends BaseCartesiaUnitTest {
 
@@ -45,6 +46,51 @@ public abstract class BaseDesignToolTest extends BaseCartesiaUnitTest {
 		tool.setHotspotVisible( false );
 		// then
 		assertThat( tool.isHotspotVisible() ).isFalse();
+	}
+
+	@Test
+	void hotspotVisible_propertyReflectsGetterAndUpdates() {
+		BaseDesignTool tool = getTool();
+		assertThat( tool ).isNotNull();
+
+		ReadOnlyBooleanProperty prop = tool.hotspotVisible();
+		// property instance should be stable across calls
+		assertThat( tool.hotspotVisible() ).isSameAs( prop );
+
+		// default value matches getter
+		assertThat( prop.get() ).isEqualTo( tool.isHotspotVisible() )
+			.isEqualTo( DEFAULT_HOTSPOT_VISIBLE );
+
+		// when toggled to true, both getter and property reflect the change
+		tool.setHotspotVisible( true );
+		assertThat( tool.isHotspotVisible() ).isTrue();
+		assertThat( prop.get() ).isTrue();
+
+		// when toggled back to false, both reflect the change
+		tool.setHotspotVisible( false );
+		assertThat( tool.isHotspotVisible() ).isFalse();
+		assertThat( prop.get() ).isFalse();
+	}
+
+	@Test
+	void hotspotVisible_redundantSetStillStableAndMayFire() {
+		BaseDesignTool tool = getTool();
+		assertThat( tool ).isNotNull();
+
+		AtomicInteger fired = new AtomicInteger( 0 );
+		tool.hotspotVisible().addListener( ( _, _, _ ) -> fired.incrementAndGet() );
+
+		// set to true twice; implementation may coalesce or still notify
+		tool.setHotspotVisible( true );
+		tool.setHotspotVisible( true );
+		assertThat( tool.isHotspotVisible() ).isTrue();
+		assertThat( fired.get() ).isGreaterThanOrEqualTo( 1 );
+
+		// set back to false twice
+		tool.setHotspotVisible( false );
+		tool.setHotspotVisible( false );
+		assertThat( tool.isHotspotVisible() ).isFalse();
+		assertThat( fired.get() ).isGreaterThanOrEqualTo( 2 );
 	}
 
 	@Test
