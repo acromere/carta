@@ -85,6 +85,7 @@ public class DesignToolV2ScreenPointSelectUIT extends DesignToolV2BaseUIT {
 		assertThat( selected.getFirst().getOrigin() ).isEqualTo( new Point3D( -1, 1, 0 ) );
 
 		// when - select again
+		// FIXME Flaky. Occasionally, this comes back with no selection
 		getTool().screenPointSelect( mouse, false );
 
 		// then - the second line should be selected
