@@ -19,7 +19,6 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
 import lombok.CustomLog;
 
@@ -462,7 +461,7 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 	 */
 	@Override
 	public void setHotspotVisible( boolean visible ) {
-		hotspotVisible.set(visible);
+		hotspotVisible.set( visible );
 	}
 
 	/**
@@ -635,17 +634,11 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		// This second test is an optimization for fully contained shapes
 		if( selectorBounds.contains( shapeBounds ) ) return true;
 
-		// This is the slow but accurate test if the shape is matched when the selector is not a box
+		// This is the slow but accurate test if the shape is matched,
+		// even when the selector is not a box
 		Shape intersection = Shape.intersect( fxSelector, fxShape );
-		Path path = (Path)intersection;
 
-		// Simplified version of
-		//		if( intersect ) {
-		//			return !path.getElements().isEmpty();
-		//		} else {
-		//			return path.getElements().isEmpty();
-		//		}
-		return intersect != path.getElements().isEmpty();
+		return intersect != intersection.getBoundsInLocal().isEmpty();
 	}
 
 }
