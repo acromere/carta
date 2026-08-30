@@ -428,7 +428,7 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		selectedFillPaint.set( paint );
 	}
 
-	public ReadOnlyObjectProperty<Paint> selectedFillPaint() {
+	public ObjectProperty<Paint> selectedFillPaint() {
 		return selectedFillPaint;
 	}
 
@@ -442,7 +442,7 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		selectedDrawPaint.set( paint );
 	}
 
-	public ReadOnlyObjectProperty<Paint> selectedDrawPaint() {
+	public ObjectProperty<Paint> selectedDrawPaint() {
 		return selectedDrawPaint;
 	}
 
@@ -472,7 +472,7 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ReadOnlyBooleanProperty hotspotVisible() {
+	public BooleanProperty hotspotVisible() {
 		return hotspotVisible;
 	}
 
@@ -506,7 +506,7 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ReadOnlyObjectProperty<DesignShape> selectAperture() {
+	public ObjectProperty<DesignShape> selectAperture() {
 		return selectAperture;
 	}
 
