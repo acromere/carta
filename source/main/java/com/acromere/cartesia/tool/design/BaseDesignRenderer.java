@@ -59,8 +59,12 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 
 	private final SimpleBooleanProperty hotspotVisible;
 
+	// TODO Convert to SimpleObjectProperty
+	// The string version may need to the V2 implementation
 	private final SimpleStringProperty apertureDrawPaint;
 
+	// TODO Convert to SimpleObjectProperty
+	// The string version may need to the V2 implementation
 	private final SimpleStringProperty apertureFillPaint;
 
 	private final SimpleObjectProperty<DesignShape> selectAperture;
