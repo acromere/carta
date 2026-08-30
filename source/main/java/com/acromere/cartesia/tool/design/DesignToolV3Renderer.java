@@ -42,8 +42,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @CustomLog
 public class DesignToolV3Renderer extends BaseDesignRenderer {
 
-	private static final String FX_GEOMETRY = "fx-geometry";
-
 	private static final PathElementMapper pathElementMapper;
 
 	/**
