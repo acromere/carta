@@ -50,7 +50,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 * renderers when drawables are removed from the design, tools are closed,
 	 * etc. Watch for memory leaks.
 	 */
-	private static final Map<GeometryKey, Node> drawableToGeometry;
+	private final Map<GeometryKey, Node> drawableToGeometry;
 
 	/**
 	 * Reference to the Design.
@@ -153,7 +153,6 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 	static {
 		pathElementMapper = Mappers.getMapper( PathElementMapper.class );
-		drawableToGeometry = new ConcurrentHashMap<>();
 	}
 
 	/**
@@ -163,6 +162,8 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 */
 	DesignToolV3Renderer() {
 		super();
+
+		drawableToGeometry = new ConcurrentHashMap<>();
 
 		apertureUnitScale = new SimpleDoubleProperty( 1.0 );
 		apertureShapeScaleX = new SimpleDoubleProperty( 1.0 );
@@ -330,10 +331,15 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	public void setDesign( Design<? extends DesignModel> design ) {
 		if( this.design == design ) return;
 
-		this.design = design;
-		if( this.design == null ) {
+		if( this.design != null ) {
+			reference.getChildren().clear();
+			preview.getChildren().clear();
 			setDesignModel( null );
-		} else {
+		}
+
+		this.design = design;
+
+		if( this.design != null ) {
 			setDesignModel( design.getDataModel() );
 
 			// Map the resource and preview layers
@@ -935,7 +941,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 					elements.add( pathElementMapper.map( step, shapeScaleX, shapeScaleY ) );
 				}
 				return elements;
-			}, stepsBinding
+			}, stepsBinding, shapeScaleXProperty(), shapeScaleYProperty()
 		);
 		path.getElements().setAll( elementsBinding.get() );
 		elementsBinding.addListener( ( _, _, n ) -> path.getElements().setAll( n ) );
@@ -959,7 +965,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 					elements.add( pathElementMapper.map( step, shapeScaleX, shapeScaleY ) );
 				}
 				return elements;
-			}, stepsBinding
+			}, stepsBinding, shapeScaleXProperty(), shapeScaleYProperty()
 		);
 		path.getElements().setAll( elementsBinding.get() );
 		elementsBinding.addListener( ( _, _, n ) -> path.getElements().setAll( n ) );
