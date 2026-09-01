@@ -11,6 +11,7 @@ import com.acromere.xenon.task.Task;
 import com.acromere.zerra.color.Colors;
 import com.acromere.zerra.color.Paints;
 import javafx.print.*;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -41,7 +42,7 @@ public class DesignPrintTask extends Task<Void> {
 	public Void call() throws Exception {
 		log.atDebug().log( "Starting design print task..." );
 
-		// User specific properties ------------------------------------------------
+		// User-specific properties ------------------------------------------------
 		Printer printer = getPrinterByName( "PDF", Printer.getDefaultPrinter() );
 
 		PrintResolution resolution = printer.getPrinterAttributes().getDefaultPrintResolution();
@@ -107,9 +108,26 @@ public class DesignPrintTask extends Task<Void> {
 	}
 
 	private boolean renderWithMultipleRenderPanes( PrinterJob job ) {
+		PageLayout layout = job.getJobSettings().getPageLayout();
+
 		// NEXT Tactic is to try a bunch of small canvases contained in a GridPane
-		Canvas renderer = new Canvas();
-		return job.printPage( renderer ) && job.endJob();
+
+		// Each canvas will be focused on a small portion of the design to provide
+		// a better print quality.
+
+		// But wait! If FX limits the rendering canvas to 4K-ish, how will this even work?
+		// We think this will get around this problem: https://bugs.openjdk.org/browse/JDK-8090822
+		// The overall canvas can be larger than 4K, but each individual canvas will be smaller.
+
+		// We're limited to a 4k-byte patch, so how big is that in pixels?
+		double maxBytes = 4096; // 64x64 tiny
+		// But we know we have printed larger than that from experimentation (see below).
+		// Per experiment, we could print 7.5 x 10 at 72dpi and 144 dpi without trouble.
+		// Not sure if that was because there wasn't much detail, or if that was because
+		// we truly had the room.
+
+		Node page = new Canvas();
+		return job.printPage( layout, page ) && job.endJob();
 	}
 
 	private boolean printWithSingleRenderPane( PrinterJob job ) throws Exception {
