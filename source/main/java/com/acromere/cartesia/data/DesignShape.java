@@ -3,7 +3,7 @@ package com.acromere.cartesia.data;
 import com.acromere.cartesia.ParseUtil;
 import com.acromere.cartesia.data.util.DesignShapeOrderComparator;
 import com.acromere.cartesia.math.*;
-import com.acromere.data.Node;
+import com.acromere.data.DataNode;
 import com.acromere.transaction.Txn;
 import com.acromere.transaction.TxnException;
 import javafx.geometry.Bounds;
@@ -281,7 +281,7 @@ public abstract class DesignShape extends DesignDrawable {
 	}
 
 	@Override
-	public <T extends Node> Comparator<T> getNaturalComparator() {
+	public <T extends DataNode> Comparator<T> getNaturalComparator() {
 		return ( a, b ) -> {
 			if( a instanceof DesignShape && b instanceof DesignShape ) {
 				return ((DesignShape)b).getOrder() - ((DesignShape)a).getOrder();

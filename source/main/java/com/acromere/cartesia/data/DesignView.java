@@ -1,7 +1,7 @@
 package com.acromere.cartesia.data;
 
-import com.acromere.data.IdNode;
-import com.acromere.data.NodeLink;
+import com.acromere.data.IdDataNode;
+import com.acromere.data.DataNodeLink;
 import javafx.geometry.Point3D;
 import lombok.CustomLog;
 
@@ -94,21 +94,21 @@ public class DesignView extends DesignNode {
 
 	public Set<DesignLayer> getLayers() {
 		// Use node links for the layers
-		Collection<NodeLink<DesignLayer>> links = getValues( LAYERS );
-		return links.stream().map( NodeLink::getNode ).collect( Collectors.toSet() );
+		Collection<DataNodeLink<DesignLayer>> links = getValues( LAYERS );
+		return links.stream().map( DataNodeLink::getNode ).collect( Collectors.toSet() );
 	}
 
 	public DesignView setLayers( Collection<DesignLayer> layers ) {
 		clearSet( LAYERS );
 
 		// Use node links for the layers
-		layers.stream().map( NodeLink::new ).forEach( l -> addToSet( LAYERS, l ) );
+		layers.stream().map( DataNodeLink::new ).forEach( l -> addToSet( LAYERS, l ) );
 		return this;
 	}
 
 	public DesignView removeLayer( DesignLayer layer ) {
-		Collection<NodeLink<DesignLayer>> links = getValues( LAYERS );
-		for( NodeLink<DesignLayer> link : links ) {
+		Collection<DataNodeLink<DesignLayer>> links = getValues( LAYERS );
+		for( DataNodeLink<DesignLayer> link : links ) {
 			if( layer.equals( link.getNode() ) ) removeFromSet( LAYERS, link );
 		}
 		return this;
@@ -123,7 +123,7 @@ public class DesignView extends DesignNode {
 
 	public Map<String, Object> asDeepMap() {
 		Map<String, Object> map = new HashMap<>( asMap() );
-		if( getLayers().size() > 0 ) map.put( LAYERS, getLayers().stream().map( IdNode::getId ).collect( Collectors.toSet() ) );
+		if( getLayers().size() > 0 ) map.put( LAYERS, getLayers().stream().map( IdDataNode::getId ).collect( Collectors.toSet() ) );
 		return map;
 	}
 

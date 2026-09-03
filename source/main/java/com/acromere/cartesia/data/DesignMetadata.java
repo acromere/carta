@@ -1,8 +1,8 @@
 package com.acromere.cartesia.data;
 
-import com.acromere.data.Node;
+import com.acromere.data.DataNode;
 
-public class DesignMetadata extends Node {
+public class DesignMetadata extends DataNode {
 
 	public static final String NAME = "name";
 

@@ -1,12 +1,13 @@
 package com.acromere.cartesia.tool.design.binding;
 
+import com.acromere.data.DataNode;
 import javafx.beans.property.DoublePropertyBase;
 
 import java.util.function.Function;
 
 public class DesignDoubleBinding extends DoublePropertyBase {
 
-	public <T extends com.acromere.data.Node, R extends Double> DesignDoubleBinding( T node, String designPropertyName, Function<T, R> consumer ) {
+	public <T extends DataNode, R extends Double> DesignDoubleBinding( T node, String designPropertyName, Function<T, R> consumer ) {
 		set( consumer.apply( node ) );
 		node.register( this, designPropertyName, _ -> set( consumer.apply( node ) ) );
 	}

@@ -1,7 +1,7 @@
 package com.acromere.cartesia.data;
 
-import com.acromere.data.IdNode;
-import com.acromere.data.Node;
+import com.acromere.data.IdDataNode;
+import com.acromere.data.DataNode;
 
 import java.util.Map;
 import java.util.Optional;
@@ -9,7 +9,7 @@ import java.util.Optional;
 /**
  * The base node for all design data objects.
  */
-public abstract class DesignNode extends IdNode {
+public abstract class DesignNode extends IdDataNode {
 
 	public DesignNode() {}
 
@@ -23,7 +23,7 @@ public abstract class DesignNode extends IdNode {
 	}
 
 	public Optional<DesignModel> getDesign() {
-		Node node = this;
+		DataNode node = this;
 		while( node != null && !(node instanceof DesignModel) ) {
 			node = node.getParent();
 		}

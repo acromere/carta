@@ -1,12 +1,13 @@
 package com.acromere.cartesia.tool.design.binding;
 
+import com.acromere.data.DataNode;
 import javafx.beans.property.ObjectPropertyBase;
 
 import java.util.function.Function;
 
 public class DesignBinding<T> extends ObjectPropertyBase<T> {
 
-	public <S extends com.acromere.data.Node, R extends T> DesignBinding( S node, String designPropertyName, Function<S, R> consumer ) {
+	public <S extends DataNode, R extends T> DesignBinding( S node, String designPropertyName, Function<S, R> consumer ) {
 		set( consumer.apply( node ) );
 		node.register( this, designPropertyName, _ -> set( consumer.apply( node ) ) );
 	}

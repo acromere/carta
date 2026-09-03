@@ -3,7 +3,7 @@ package com.acromere.cartesia.data;
 import com.acromere.cartesia.DesignUnit;
 import com.acromere.cartesia.data.map.DesignUnitMapper;
 import com.acromere.cartesia.tool.DesignContext;
-import com.acromere.data.IdNode;
+import com.acromere.data.IdDataNode;
 import lombok.CustomLog;
 import org.jspecify.annotations.NonNull;
 
@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @CustomLog
-public abstract class DesignModel extends IdNode {
+public abstract class DesignModel extends IdDataNode {
 
 	public static final DesignUnit DEFAULT_DESIGN_UNIT = DesignUnit.CM;
 

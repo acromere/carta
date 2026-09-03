@@ -2,7 +2,7 @@ package com.acromere.cartesia.data.util;
 
 import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.data.DesignModel;
-import com.acromere.data.IdNode;
+import com.acromere.data.IdDataNode;
 import com.acromere.util.TextUtil;
 import com.acromere.xenon.XenonProgramProduct;
 import com.acromere.xenon.resource.Resource;
@@ -37,7 +37,7 @@ public class DesignLayerOptionProvider implements SettingOptionProvider {
 		List<String> rootKey = List.of();
 		if( showRoot ) rootKey = List.of( design.getLayers().getId() );
 
-		return Stream.concat( rootKey.stream(), design.getAllLayers().stream().map( IdNode::getId ) ).collect( Collectors.toList() );
+		return Stream.concat( rootKey.stream(), design.getAllLayers().stream().map( IdDataNode::getId ) ).collect( Collectors.toList() );
 	}
 
 	@Override

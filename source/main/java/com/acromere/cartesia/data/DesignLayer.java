@@ -3,8 +3,8 @@ package com.acromere.cartesia.data;
 import com.acromere.cartesia.DesignUnit;
 import com.acromere.cartesia.math.CadMath;
 import com.acromere.cartesia.math.CadShapes;
-import com.acromere.data.IdNode;
-import com.acromere.data.Node;
+import com.acromere.data.IdDataNode;
+import com.acromere.data.DataNode;
 import com.acromere.xenon.NodeOrderNameComparator;
 import com.acromere.zerra.color.Paints;
 import javafx.scene.paint.Paint;
@@ -545,8 +545,8 @@ public class DesignLayer extends DesignDrawable implements DesignTextSupport {
 
 	public Map<String, Object> asDeepMap() {
 		Map<String, Object> map = new HashMap<>( asMap() );
-		map.put( LAYERS, getLayers().stream().collect( Collectors.toMap( IdNode::getId, DesignLayer::asDeepMap ) ) );
-		map.put( SHAPES, getShapeSet().stream().filter( s -> !s.isPreview() ).collect( Collectors.toMap( IdNode::getId, DesignShape::asMap ) ) );
+		map.put( LAYERS, getLayers().stream().collect( Collectors.toMap( IdDataNode::getId, DesignLayer::asDeepMap ) ) );
+		map.put( SHAPES, getShapeSet().stream().filter( s -> !s.isPreview() ).collect( Collectors.toMap( IdDataNode::getId, DesignShape::asMap ) ) );
 		return map;
 	}
 
@@ -578,7 +578,7 @@ public class DesignLayer extends DesignDrawable implements DesignTextSupport {
 	}
 
 	@Override
-	public <T extends Node> Comparator<T> getNaturalComparator() {
+	public <T extends DataNode> Comparator<T> getNaturalComparator() {
 		return new NodeOrderNameComparator<>();
 	}
 

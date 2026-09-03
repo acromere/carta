@@ -2,8 +2,8 @@ package com.acromere.cartesia;
 
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.data.map.DesignUnitMapper;
-import com.acromere.data.IdNode;
-import com.acromere.data.Node;
+import com.acromere.data.IdDataNode;
+import com.acromere.data.DataNode;
 import com.acromere.log.LazyEval;
 import com.acromere.product.Product;
 import com.acromere.util.TextUtil;
@@ -385,8 +385,8 @@ public abstract class CartesiaDesignCodec extends Codec {
 
 	private Map<String, Object> mapDesign( DesignModel design ) {
 		Map<String, Object> map = new HashMap<>( asMap( design, DesignModel.ID, DesignModel.NAME, DesignModel.AUTHOR, DesignModel.DESCRIPTION, DesignModel.UNIT ) );
-		map.put( DesignModel.LAYERS, design.getLayers().getLayers().stream().collect( Collectors.toMap( IdNode::getId, this::mapLayer ) ) );
-		if( !design.getViews().isEmpty() ) map.put( DesignModel.VIEWS, design.getViews().stream().collect( Collectors.toMap( IdNode::getId, this::mapView ) ) );
+		map.put( DesignModel.LAYERS, design.getLayers().getLayers().stream().collect( Collectors.toMap( IdDataNode::getId, this::mapLayer ) ) );
+		if( !design.getViews().isEmpty() ) map.put( DesignModel.VIEWS, design.getViews().stream().collect( Collectors.toMap( IdDataNode::getId, this::mapView ) ) );
 		return map;
 	}
 
@@ -417,8 +417,8 @@ public abstract class CartesiaDesignCodec extends Codec {
 		//		remapValue( map, DesignLayer.TEXT_DRAW_CAP, saveLayerPropertyMapping );
 		//		remapValue( map, DesignLayer.TEXT_DRAW_PATTERN, saveLayerPropertyMapping );
 
-		map.put( DesignLayer.LAYERS, layer.getLayers().stream().collect( Collectors.toMap( IdNode::getId, this::mapLayer ) ) );
-		map.put( DesignLayer.SHAPES, layer.getShapeSet().stream().filter( s -> !s.isPreview() ).collect( Collectors.toMap( IdNode::getId, this::mapGeometry ) ) );
+		map.put( DesignLayer.LAYERS, layer.getLayers().stream().collect( Collectors.toMap( IdDataNode::getId, this::mapLayer ) ) );
+		map.put( DesignLayer.SHAPES, layer.getShapeSet().stream().filter( s -> !s.isPreview() ).collect( Collectors.toMap( IdDataNode::getId, this::mapGeometry ) ) );
 		return map;
 	}
 
@@ -428,7 +428,7 @@ public abstract class CartesiaDesignCodec extends Codec {
 
 	private Map<String, Object> mapView( DesignView view ) {
 		Map<String, Object> map = new HashMap<>( asMap( view, mapDesignNode( view ), DesignView.ORDER, DesignView.NAME, DesignView.ORIGIN, DesignView.ROTATE, DesignView.ZOOM ) );
-		map.put( DesignView.LAYERS, view.getLayers().stream().map( IdNode::getId ).collect( Collectors.toSet() ) );
+		map.put( DesignView.LAYERS, view.getLayers().stream().map( IdDataNode::getId ).collect( Collectors.toSet() ) );
 		return map;
 	}
 
@@ -532,11 +532,11 @@ public abstract class CartesiaDesignCodec extends Codec {
 		}
 	}
 
-	private static Map<String, Object> asMap( Node node, String... keys ) {
+	private static Map<String, Object> asMap( DataNode node, String... keys ) {
 		return asMap( node, Map.of(), keys );
 	}
 
-	private static Map<String, Object> asMap( Node node, Map<String, Object> map, String... keys ) {
+	private static Map<String, Object> asMap( DataNode node, Map<String, Object> map, String... keys ) {
 		Map<String, Object> result = new HashMap<>( map );
 		result.putAll( Arrays.stream( keys ).filter( k -> node.getValue( k ) != null ).collect( Collectors.toMap( k -> k, node::getValue ) ) );
 		return result;

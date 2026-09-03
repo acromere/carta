@@ -2,7 +2,7 @@ package com.acromere.cartesia.tool;
 
 import com.acromere.cartesia.math.CadMath;
 import com.acromere.cartesia.math.CadShapes;
-import com.acromere.data.Node;
+import com.acromere.data.DataNode;
 import com.acromere.transaction.Txn;
 import com.acromere.zerra.color.Paints;
 import javafx.geometry.BoundingBox;
@@ -25,7 +25,7 @@ import lombok.CustomLog;
 
 @CustomLog
 @SuppressWarnings( "UnusedReturnValue" )
-public class Workplane extends Node {
+public class Workplane extends DataNode {
 
 	public static final GridStyle DEFAULT_GRID_STYLE = GridStyle.SOLID;
 

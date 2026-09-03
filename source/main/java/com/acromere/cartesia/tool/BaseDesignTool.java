@@ -13,7 +13,7 @@ import com.acromere.cartesia.snap.SnapGrid;
 import com.acromere.cartesia.tool.design.BaseDesignRenderer;
 import com.acromere.cartesia.tool.design.DesignToolEvent;
 import com.acromere.cartesia.tool.design.LayerGuide;
-import com.acromere.data.IdNode;
+import com.acromere.data.IdDataNode;
 import com.acromere.data.MultiNodeSettings;
 import com.acromere.data.NodeSettings;
 import com.acromere.product.Rb;
@@ -1627,12 +1627,12 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 	protected void doStoreEnabledLayers( ListChangeListener.Change<? extends DesignLayer> c ) {
 		c.next();
-		getSettings().set( ENABLED_LAYERS, c.getList().stream().map( IdNode::getId ).collect( Collectors.toSet() ) );
+		getSettings().set( ENABLED_LAYERS, c.getList().stream().map( IdDataNode::getId ).collect( Collectors.toSet() ) );
 	}
 
 	protected void doStoreVisibleLayers( ListChangeListener.Change<? extends DesignLayer> c ) {
 		c.next();
-		getSettings().set( VISIBLE_LAYERS, c.getList().stream().map( IdNode::getId ).collect( Collectors.toSet() ) );
+		getSettings().set( VISIBLE_LAYERS, c.getList().stream().map( IdDataNode::getId ).collect( Collectors.toSet() ) );
 	}
 
 	protected void onSelectedShapesChanged( ListChangeListener.Change<? extends DesignShape> c ) {

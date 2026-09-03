@@ -7,7 +7,7 @@ import com.acromere.cartesia.math.CadGeometry;
 import com.acromere.cartesia.math.CadPoints;
 import com.acromere.cartesia.math.CadTransform;
 import com.acromere.cartesia.tool.DesignTool;
-import com.acromere.data.NodeLink;
+import com.acromere.data.DataNodeLink;
 import com.acromere.transaction.Txn;
 import javafx.geometry.Point3D;
 import lombok.CustomLog;
@@ -102,14 +102,14 @@ public abstract class EditCommand extends Command {
 	private List<DesignShape> clone( List<DesignShape> shapes ) {
 		return shapes.stream().map( shape -> {
 			DesignShape clone = shape.clone();
-			clone.setValue( CLONE_LAYER_KEY, NodeLink.of( shape.getLayer() ) );
+			clone.setValue( CLONE_LAYER_KEY, DataNodeLink.of( shape.getLayer() ) );
 			return clone;
 		} ).toList();
 	}
 
 	private void store( List<DesignShape> shapes ) {
 		Txn.run( () -> shapes.forEach( shape -> {
-			NodeLink<DesignLayer> link = shape.getValue( CLONE_LAYER_KEY );
+			DataNodeLink<DesignLayer> link = shape.getValue( CLONE_LAYER_KEY );
 			link.getNode().addShape( shape );
 			shape.setValue( CLONE_LAYER_KEY, null );
 		} ) );

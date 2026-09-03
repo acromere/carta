@@ -2,7 +2,7 @@ package com.acromere.cartesia.data;
 
 import com.acromere.cartesia.tool.CommandContext;
 import com.acromere.cartesia.tool.DesignContext;
-import com.acromere.data.Node;
+import com.acromere.data.DataNode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +11,7 @@ import lombok.Setter;
  * bridge between the data model and the UI.
  */
 @Getter
-public class Design<T extends DesignModel> extends Node {
+public class Design<T extends DesignModel> extends DataNode {
 
 	public static final String MODEL = "model";
 

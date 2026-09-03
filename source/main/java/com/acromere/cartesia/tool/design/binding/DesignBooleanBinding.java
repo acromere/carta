@@ -1,12 +1,13 @@
 package com.acromere.cartesia.tool.design.binding;
 
+import com.acromere.data.DataNode;
 import javafx.beans.property.BooleanPropertyBase;
 
 import java.util.function.Function;
 
 public class DesignBooleanBinding extends BooleanPropertyBase {
 
-	public <T extends com.acromere.data.Node, R extends Boolean> DesignBooleanBinding( T node, String designPropertyName, Function<T, R> consumer ) {
+	public <T extends DataNode, R extends Boolean> DesignBooleanBinding( T node, String designPropertyName, Function<T, R> consumer ) {
 		set( consumer.apply( node ) );
 		node.register( this, designPropertyName, _ -> set( consumer.apply( node ) ) );
 	}
