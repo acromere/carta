@@ -6,7 +6,7 @@ import com.acromere.cartesia.DesignUnit;
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.math.CadTransform;
 import com.acromere.cartesia.tool.Workplane;
-import com.acromere.data.NodeEvent;
+import com.acromere.data.DataNodeEvent;
 import com.acromere.event.EventHandler;
 import com.acromere.marea.Font;
 import com.acromere.marea.LineCap;
@@ -18,7 +18,6 @@ import com.acromere.util.ThreadUtil;
 import com.acromere.zerra.color.Colors;
 import com.acromere.zerra.javafx.Fx;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -90,11 +89,11 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 
 	// Listeners -----------------------------------------------------------------
 
-	private final EventHandler<NodeEvent> designWatcher = e -> {
+	private final EventHandler<DataNodeEvent> designWatcher = e -> {
 		render();
 	};
 
-	private final EventHandler<NodeEvent> unitValueWatcher = e -> setLengthUnit( e.getNewValue() );
+	private final EventHandler<DataNodeEvent> unitValueWatcher = e -> setLengthUnit( e.getNewValue() );
 
 	public DesignToolV2Renderer() {
 		// Ensure the minimum layout size can go to zero
@@ -152,14 +151,14 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 
 		// TODO This may overwhelm the FX thread
 		previewLayer.register(
-			NodeEvent.NODE_CHANGED, e -> {
+			DataNodeEvent.NODE_CHANGED, e -> {
 				//if( e.getSource() != previewLayer ) return;
 				//log.atConfig().log("preview layer event={%s}", e.getEventType());
 				render();
 			}
 		);
 		referenceLayer.register(
-			NodeEvent.NODE_CHANGED, e -> {
+			DataNodeEvent.NODE_CHANGED, e -> {
 				// TODO This may overwhelm the FX thread
 				render();
 			}
@@ -186,7 +185,7 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	 */
 	private void setDesignModel( DesignModel design ) {
 		if( this.model != null ) {
-			this.model.unregister( NodeEvent.ANY, designWatcher );
+			this.model.unregister( DataNodeEvent.ANY, designWatcher );
 			this.model.unregister( DesignModel.UNIT, unitValueWatcher );
 		}
 
@@ -198,7 +197,7 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 
 			// Add listeners
 			this.model.register( DesignModel.UNIT, unitValueWatcher );
-			this.model.register( NodeEvent.ANY, designWatcher );
+			this.model.register( DataNodeEvent.ANY, designWatcher );
 
 			visibleLayers.addAll( design.getAllLayers() );
 		}
@@ -217,7 +216,7 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 
 		// Temporary listener for testing
 		workplane.register(
-			NodeEvent.VALUE_CHANGED, e -> {
+			DataNodeEvent.VALUE_CHANGED, e -> {
 				//log.atConfig().log( "Something changed in the workplane: " + e.getKey() );
 				render();
 			}

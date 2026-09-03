@@ -9,7 +9,7 @@ import com.acromere.cartesia.tool.design.binding.DesignBinding;
 import com.acromere.cartesia.tool.design.binding.DesignBooleanBinding;
 import com.acromere.cartesia.tool.design.binding.DesignDoubleBinding;
 import com.acromere.cartesia.tool.design.binding.PathElementMapper;
-import com.acromere.data.NodeEvent;
+import com.acromere.data.DataNodeEvent;
 import com.acromere.event.EventHandler;
 import com.acromere.zerra.javafx.Fx;
 import javafx.beans.binding.Bindings;
@@ -147,9 +147,9 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	@Getter( AccessLevel.PACKAGE )
 	private final Translate viewCenterTransform;
 
-	private final EventHandler<NodeEvent> workplaneChangeHandler = _ -> updateGridFxGeometry();
+	private final EventHandler<DataNodeEvent> workplaneChangeHandler = _ -> updateGridFxGeometry();
 
-	private final EventHandler<NodeEvent> designUnitChangeHandler = _ -> setDesignUnit( model.calcDesignUnit() );
+	private final EventHandler<DataNodeEvent> designUnitChangeHandler = _ -> setDesignUnit( model.calcDesignUnit() );
 
 	static {
 		pathElementMapper = Mappers.getMapper( PathElementMapper.class );
@@ -378,13 +378,13 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	@Override
 	public void setWorkplane( Workplane workplane ) {
 		if( this.workplane != null ) {
-			this.workplane.unregister( this, NodeEvent.ANY, workplaneChangeHandler );
+			this.workplane.unregister( this, DataNodeEvent.ANY, workplaneChangeHandler );
 		}
 
 		this.workplane = workplane;
 
 		if( this.workplane != null ) {
-			this.workplane.register( this, NodeEvent.ANY, workplaneChangeHandler );
+			this.workplane.register( this, DataNodeEvent.ANY, workplaneChangeHandler );
 		}
 
 		updateGridFxGeometry();
@@ -698,14 +698,14 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 		// Register event handlers for the DesignLayer
 		designLayer.register(
-			pane, NodeEvent.ANY, e -> {
-				if( e.getEventType() == NodeEvent.NODE_CHANGED ) return;
-				if( e.getEventType() == NodeEvent.VALUE_CHANGED ) return;
+			pane, DataNodeEvent.ANY, e -> {
+				if( e.getEventType() == DataNodeEvent.NODE_CHANGED ) return;
+				if( e.getEventType() == DataNodeEvent.VALUE_CHANGED ) return;
 
-				if( e.getEventType() == NodeEvent.CHILD_ADDED ) {
+				if( e.getEventType() == DataNodeEvent.CHILD_ADDED ) {
 					Shape fxShape = mapDesignShape( e.getNewValue() );
 					Fx.run( () -> pane.getChildren().add( fxShape ) );
-				} else if( e.getEventType() == NodeEvent.CHILD_REMOVED ) {
+				} else if( e.getEventType() == DataNodeEvent.CHILD_REMOVED ) {
 					Shape shape = getFxGeometry( e.getOldValue() );
 					Fx.run( () -> pane.getChildren().remove( shape ) );
 				}

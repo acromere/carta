@@ -15,7 +15,7 @@ import com.acromere.cartesia.tool.design.DesignToolEvent;
 import com.acromere.cartesia.tool.design.LayerGuide;
 import com.acromere.data.IdDataNode;
 import com.acromere.data.MultiNodeSettings;
-import com.acromere.data.NodeSettings;
+import com.acromere.data.DataNodeSettings;
 import com.acromere.product.Rb;
 import com.acromere.settings.Settings;
 import com.acromere.skill.WritableIdentity;
@@ -1594,7 +1594,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	protected void showPropertiesPage( DesignDrawable drawable ) {
 		if( drawable != null ) {
 			// Wrap the drawable in a data node settings object
-			NodeSettings wrapper = new NodeSettings( drawable );
+			DataNodeSettings wrapper = new DataNodeSettings( drawable );
 
 			// Show the properties page for the drawable
 			showPropertiesPage( wrapper, drawable.getClass() );
@@ -1707,7 +1707,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 			SettingsPage designSettingsPage = resource.getType().getSettingsPages().get( "resource" );
 
 			Settings resourceSettings = getResourceSettings();
-			Settings designSettings = new NodeSettings( getResource().getModel() );
+			Settings designSettings = new DataNodeSettings( getResource().getModel() );
 
 			// Set the settings for the pages
 			resourceSettingsPage.setSettings( resourceSettings );

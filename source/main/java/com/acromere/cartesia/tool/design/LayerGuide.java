@@ -6,7 +6,7 @@ import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.data.DesignModel;
 import com.acromere.cartesia.tool.BaseDesignTool;
 import com.acromere.cartesia.tool.DesignToolLayersGuide;
-import com.acromere.data.NodeEvent;
+import com.acromere.data.DataNodeEvent;
 import com.acromere.event.EventHandler;
 import com.acromere.product.Rb;
 import com.acromere.xenon.Xenon;
@@ -116,12 +116,12 @@ public class LayerGuide extends Guide {
 		model.getAllLayers().forEach( this::addLayer );
 
 		model.register(
-			NodeEvent.CHILD_ADDED, e -> {
+			DataNodeEvent.CHILD_ADDED, e -> {
 				if( e.getNewValue() != null && e.getNewValue() instanceof DesignLayer layer ) addLayer( layer );
 			}
 		);
 		model.register(
-			NodeEvent.CHILD_REMOVED, e -> {
+			DataNodeEvent.CHILD_REMOVED, e -> {
 				if( e.getOldValue() instanceof DesignLayer layer ) removeLayer( layer );
 			}
 		);
@@ -173,8 +173,8 @@ public class LayerGuide extends Guide {
 		addNode( layerGuideNodes.get( layer.getLayer() ), node );
 
 		// Create the change handlers
-		EventHandler<NodeEvent> nameHandler = node.setValue( NAME_HANDLER, e -> node.setName( layer.getName() ) );
-		EventHandler<NodeEvent> orderHandler = node.setValue( ORDER_HANDLER, e -> node.setOrder( layer.getOrder() ) );
+		EventHandler<DataNodeEvent> nameHandler = node.setValue( NAME_HANDLER, e -> node.setName( layer.getName() ) );
+		EventHandler<DataNodeEvent> orderHandler = node.setValue( ORDER_HANDLER, e -> node.setOrder( layer.getOrder() ) );
 
 		// Register the change handlers
 		layer.register( DesignLayer.NAME, nameHandler );

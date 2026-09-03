@@ -2,7 +2,7 @@ package com.acromere.cartesia.data;
 
 import com.acromere.cartesia.math.CadMath;
 import com.acromere.cartesia.math.CadShapes;
-import com.acromere.data.NodeEvent;
+import com.acromere.data.DataNodeEvent;
 import com.acromere.transaction.Txn;
 import com.acromere.transaction.TxnException;
 import com.acromere.util.TextUtil;
@@ -390,7 +390,7 @@ public abstract class DesignDrawable extends DesignNode {
 		String oldValue = getValue( VIRTUAL_DRAW_PAINT_MODE );
 		try( Txn ignored = Txn.create() ) {
 			setDrawPaint( isCustom ? getDrawPaintWithInheritance() : String.valueOf( newValue ).toLowerCase() );
-			Txn.submit( this, t -> getEventHub().dispatch( new NodeEvent( this, NodeEvent.VALUE_CHANGED, VIRTUAL_DRAW_PAINT_MODE, oldValue, newValue ) ) );
+			Txn.submit( this, t -> getEventHub().dispatch( new DataNodeEvent( this, DataNodeEvent.VALUE_CHANGED, VIRTUAL_DRAW_PAINT_MODE, oldValue, newValue ) ) );
 		} catch( TxnException exception ) {
 			log.atError().withCause( exception ).log( "Error changing draw paint" );
 		}
@@ -403,7 +403,7 @@ public abstract class DesignDrawable extends DesignNode {
 		String oldValue = getValue( VIRTUAL_DRAW_WIDTH_MODE );
 		try( Txn ignored = Txn.create() ) {
 			setDrawWidth( isCustom ? getDrawWidthWithInheritance() : String.valueOf( newValue ).toLowerCase() );
-			Txn.submit( this, t -> getEventHub().dispatch( new NodeEvent( this, NodeEvent.VALUE_CHANGED, VIRTUAL_DRAW_WIDTH_MODE, oldValue, newValue ) ) );
+			Txn.submit( this, t -> getEventHub().dispatch( new DataNodeEvent( this, DataNodeEvent.VALUE_CHANGED, VIRTUAL_DRAW_WIDTH_MODE, oldValue, newValue ) ) );
 		} catch( TxnException exception ) {
 			log.atError().withCause( exception ).log( "Error setting draw width" );
 		}
@@ -416,7 +416,7 @@ public abstract class DesignDrawable extends DesignNode {
 		String oldValue = getValue( VIRTUAL_DRAW_CAP_MODE );
 		try( Txn ignored = Txn.create() ) {
 			setDrawCap( isCustom ? getDrawCapWithInheritance() : String.valueOf( newValue ).toLowerCase() );
-			Txn.submit( this, t -> getEventHub().dispatch( new NodeEvent( this, NodeEvent.VALUE_CHANGED, VIRTUAL_DRAW_CAP_MODE, oldValue, newValue ) ) );
+			Txn.submit( this, t -> getEventHub().dispatch( new DataNodeEvent( this, DataNodeEvent.VALUE_CHANGED, VIRTUAL_DRAW_CAP_MODE, oldValue, newValue ) ) );
 		} catch( TxnException exception ) {
 			log.atError().withCause( exception ).log( "Error setting draw cap" );
 		}
@@ -429,7 +429,7 @@ public abstract class DesignDrawable extends DesignNode {
 		String oldValue = getValue( VIRTUAL_DRAW_PATTERN_MODE );
 		try( Txn ignored = Txn.create() ) {
 			setDashPattern( isCustom ? TextUtil.nullToEmpty( getDashPatternWithInheritance() ) : null );
-			Txn.submit( this, t -> getEventHub().dispatch( new NodeEvent( this, NodeEvent.VALUE_CHANGED, VIRTUAL_DRAW_PATTERN_MODE, oldValue, newValue ) ) );
+			Txn.submit( this, t -> getEventHub().dispatch( new DataNodeEvent( this, DataNodeEvent.VALUE_CHANGED, VIRTUAL_DRAW_PATTERN_MODE, oldValue, newValue ) ) );
 		} catch( TxnException exception ) {
 			log.atError().withCause( exception ).log( "Error setting draw pattern" );
 		}
@@ -442,7 +442,7 @@ public abstract class DesignDrawable extends DesignNode {
 		String oldValue = getValue( VIRTUAL_FILL_PAINT_MODE );
 		try( Txn ignored = Txn.create() ) {
 			setFillPaint( isCustom ? getFillPaintWithInheritance() : null );
-			Txn.submit( this, t -> getEventHub().dispatch( new NodeEvent( this, NodeEvent.VALUE_CHANGED, VIRTUAL_FILL_PAINT_MODE, oldValue, newValue ) ) );
+			Txn.submit( this, t -> getEventHub().dispatch( new DataNodeEvent( this, DataNodeEvent.VALUE_CHANGED, VIRTUAL_FILL_PAINT_MODE, oldValue, newValue ) ) );
 		} catch( TxnException exception ) {
 			log.atError().withCause( exception ).log( "Error setting fill paint" );
 		}

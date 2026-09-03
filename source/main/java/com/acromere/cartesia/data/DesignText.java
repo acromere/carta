@@ -1,7 +1,7 @@
 package com.acromere.cartesia.data;
 
 import com.acromere.cartesia.math.*;
-import com.acromere.data.NodeEvent;
+import com.acromere.data.DataNodeEvent;
 import com.acromere.transaction.Txn;
 import com.acromere.transaction.TxnException;
 import com.acromere.zerra.font.FontMetrics;
@@ -481,7 +481,7 @@ public class DesignText extends DesignShape implements DesignTextSupport {
 		String oldValue = getValue( VIRTUAL_TEXT_SIZE_MODE );
 		try( Txn ignored = Txn.create() ) {
 			setTextSize( isCustom ? getTextSizeWithInheritance() : null );
-			Txn.submit( this, t -> getEventHub().dispatch( new NodeEvent( this, NodeEvent.VALUE_CHANGED, VIRTUAL_TEXT_SIZE_MODE, oldValue, newValue ) ) );
+			Txn.submit( this, t -> getEventHub().dispatch( new DataNodeEvent( this, DataNodeEvent.VALUE_CHANGED, VIRTUAL_TEXT_SIZE_MODE, oldValue, newValue ) ) );
 		} catch( TxnException exception ) {
 			log.atError().withCause( exception ).log( "Error setting text size" );
 		}
@@ -494,7 +494,7 @@ public class DesignText extends DesignShape implements DesignTextSupport {
 		String oldValue = getValue( VIRTUAL_FONT_NAME_MODE );
 		try( Txn ignored = Txn.create() ) {
 			setFontName( isCustom ? getFontNameWithInheritance() : String.valueOf( newValue ).toLowerCase() );
-			Txn.submit( this, t -> getEventHub().dispatch( new NodeEvent( this, NodeEvent.VALUE_CHANGED, VIRTUAL_FONT_NAME_MODE, oldValue, newValue ) ) );
+			Txn.submit( this, t -> getEventHub().dispatch( new DataNodeEvent( this, DataNodeEvent.VALUE_CHANGED, VIRTUAL_FONT_NAME_MODE, oldValue, newValue ) ) );
 		} catch( TxnException exception ) {
 			log.atError().withCause( exception ).log( "Error setting font name" );
 		}
@@ -507,7 +507,7 @@ public class DesignText extends DesignShape implements DesignTextSupport {
 		String oldValue = getValue( VIRTUAL_FONT_WEIGHT_MODE );
 		try( Txn ignored = Txn.create() ) {
 			setFontWeight( isCustom ? getFontWeightWithInheritance() : null );
-			Txn.submit( this, t -> getEventHub().dispatch( new NodeEvent( this, NodeEvent.VALUE_CHANGED, VIRTUAL_FONT_WEIGHT_MODE, oldValue, newValue ) ) );
+			Txn.submit( this, t -> getEventHub().dispatch( new DataNodeEvent( this, DataNodeEvent.VALUE_CHANGED, VIRTUAL_FONT_WEIGHT_MODE, oldValue, newValue ) ) );
 		} catch( TxnException exception ) {
 			log.atError().withCause( exception ).log( "Error setting font weight" );
 		}
@@ -520,7 +520,7 @@ public class DesignText extends DesignShape implements DesignTextSupport {
 		String oldValue = getValue( VIRTUAL_FONT_POSTURE_MODE );
 		try( Txn ignored = Txn.create() ) {
 			setFontPosture( isCustom ? getFontPostureWithInheritance() : null );
-			Txn.submit( this, t -> getEventHub().dispatch( new NodeEvent( this, NodeEvent.VALUE_CHANGED, VIRTUAL_FONT_POSTURE_MODE, oldValue, newValue ) ) );
+			Txn.submit( this, t -> getEventHub().dispatch( new DataNodeEvent( this, DataNodeEvent.VALUE_CHANGED, VIRTUAL_FONT_POSTURE_MODE, oldValue, newValue ) ) );
 		} catch( TxnException exception ) {
 			log.atError().withCause( exception ).log( "Error setting font posture" );
 		}
@@ -533,7 +533,7 @@ public class DesignText extends DesignShape implements DesignTextSupport {
 		String oldValue = getValue( VIRTUAL_FONT_UNDERLINE_MODE );
 		try( Txn ignored = Txn.create() ) {
 			setFontUnderline( isCustom ? getFontUnderlineWithInheritance() : null );
-			Txn.submit( this, t -> getEventHub().dispatch( new NodeEvent( this, NodeEvent.VALUE_CHANGED, VIRTUAL_FONT_UNDERLINE_MODE, oldValue, newValue ) ) );
+			Txn.submit( this, t -> getEventHub().dispatch( new DataNodeEvent( this, DataNodeEvent.VALUE_CHANGED, VIRTUAL_FONT_UNDERLINE_MODE, oldValue, newValue ) ) );
 		} catch( TxnException exception ) {
 			log.atError().withCause( exception ).log( "Error setting font underline" );
 		}
@@ -546,7 +546,7 @@ public class DesignText extends DesignShape implements DesignTextSupport {
 		String oldValue = getValue( VIRTUAL_FONT_STRIKETHROUGH_MODE );
 		try( Txn ignored = Txn.create() ) {
 			setFontStrikethrough( isCustom ? getFontStrikethroughWithInheritance() : null );
-			Txn.submit( this, t -> getEventHub().dispatch( new NodeEvent( this, NodeEvent.VALUE_CHANGED, VIRTUAL_FONT_STRIKETHROUGH_MODE, oldValue, newValue ) ) );
+			Txn.submit( this, t -> getEventHub().dispatch( new DataNodeEvent( this, DataNodeEvent.VALUE_CHANGED, VIRTUAL_FONT_STRIKETHROUGH_MODE, oldValue, newValue ) ) );
 		} catch( TxnException exception ) {
 			log.atError().withCause( exception ).log( "Error setting font strikethrough" );
 		}

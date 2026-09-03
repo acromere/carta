@@ -1,7 +1,7 @@
 package com.acromere.cartesia.data;
 
 import com.acromere.cartesia.math.CadShapes;
-import com.acromere.data.NodeEvent;
+import com.acromere.data.DataNodeEvent;
 import com.acromere.zerra.color.Paints;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.FontPosture;
@@ -68,7 +68,7 @@ public class DesignLayerTest {
 		// given
 		DesignLayer child = new DesignLayer();
 		AtomicInteger count = new AtomicInteger( 0 );
-		layer.register( NodeEvent.CHILD_ADDED, _ -> count.incrementAndGet() );
+		layer.register( DataNodeEvent.CHILD_ADDED, _ -> count.incrementAndGet() );
 
 		// when
 		layer.addLayer( child );
@@ -88,7 +88,7 @@ public class DesignLayerTest {
 		AtomicInteger count = new AtomicInteger( 0 );
 		layer.addLayer( child );
 		child.addLayer( grandchild );
-		layer.register( NodeEvent.CHILD_REMOVED, _ -> count.incrementAndGet() );
+		layer.register( DataNodeEvent.CHILD_REMOVED, _ -> count.incrementAndGet() );
 
 		// when
 		child.removeLayer( grandchild );

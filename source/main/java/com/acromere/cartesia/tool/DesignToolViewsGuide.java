@@ -4,7 +4,7 @@ import com.acromere.cartesia.RbKey;
 import com.acromere.cartesia.data.DesignModel;
 import com.acromere.cartesia.data.DesignNode;
 import com.acromere.cartesia.data.DesignView;
-import com.acromere.data.NodeEvent;
+import com.acromere.data.DataNodeEvent;
 import com.acromere.product.Rb;
 import com.acromere.xenon.Xenon;
 import com.acromere.xenon.XenonProgramProduct;
@@ -53,12 +53,12 @@ public class DesignToolViewsGuide extends Guide {
 
 		// Add listeners for changes
 		design.register(
-			NodeEvent.CHILD_ADDED, e -> {
+			DataNodeEvent.CHILD_ADDED, e -> {
 				if( DesignModel.VIEWS.equals( e.getSetKey() ) ) Fx.run( () -> addView( e.getNewValue() ) );
 			}
 		);
 		design.register(
-			NodeEvent.CHILD_REMOVED, e -> {
+			DataNodeEvent.CHILD_REMOVED, e -> {
 				if( DesignModel.VIEWS.equals( e.getSetKey() ) ) Fx.run( () -> removeView( e.getOldValue() ) );
 			}
 		);
