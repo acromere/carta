@@ -1,8 +1,6 @@
 package com.acromere.cartesia;
 
-import com.acromere.test.TestTag;
-
-public interface CartesiaTestTag extends TestTag {
+public interface CartesiaTestTag {
 
 	String RECURSION = "recursion";
 
