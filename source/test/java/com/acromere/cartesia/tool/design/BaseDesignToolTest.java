@@ -2,12 +2,18 @@ package com.acromere.cartesia.tool.design;
 
 import com.acromere.cartesia.BaseCartesiaUnitTest;
 import com.acromere.cartesia.tool.BaseDesignTool;
+import com.acromere.data.DataNodeEvent;
+import com.acromere.event.EventWatcher;
+import com.acromere.zerra.javafx.Fx;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.acromere.cartesia.tool.RenderConstants.DEFAULT_HOTSPOT_VISIBLE;
+import static com.acromere.xenon.test.ProgramTestConfig.TIMEOUT;
 import static org.assertj.core.api.Assertions.assertThat;
+
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.BooleanProperty;
 
@@ -18,13 +24,17 @@ import com.acromere.cartesia.cursor.Reticule;
 import com.acromere.cartesia.test.Point3DAssert;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point3D;
+
 import static com.acromere.cartesia.tool.RenderConstants.WINDOW_SELECT_APERTURE;
+
 import com.acromere.cartesia.tool.design.BaseDesignRenderer;
 import com.acromere.cartesia.tool.Grid;
 import com.acromere.cartesia.tool.Workplane;
 import com.acromere.cartesia.tool.GridStyle;
 import javafx.scene.paint.Paint;
 import javafx.geometry.BoundingBox;
+
+import javax.swing.event.DocumentEvent;
 
 public abstract class BaseDesignToolTest extends BaseCartesiaUnitTest {
 
@@ -74,8 +84,7 @@ public abstract class BaseDesignToolTest extends BaseCartesiaUnitTest {
 		assertThat( tool.hotspotVisible() ).isSameAs( prop );
 
 		// default value matches getter
-		assertThat( prop.get() ).isEqualTo( tool.isHotspotVisible() )
-			.isEqualTo( DEFAULT_HOTSPOT_VISIBLE );
+		assertThat( prop.get() ).isEqualTo( tool.isHotspotVisible() ).isEqualTo( DEFAULT_HOTSPOT_VISIBLE );
 
 		// when toggled to true, both getter and property reflect the change
 		tool.setHotspotVisible( true );
@@ -386,15 +395,26 @@ public abstract class BaseDesignToolTest extends BaseCartesiaUnitTest {
 	}
 
 	@Test
-	void workplane_bounds_setGetRoundTrip() {
+	void workplane_bounds_setGetRoundTrip() throws InterruptedException, TimeoutException {
 		BaseDesignTool tool = getTool();
 		assertThat( tool ).isNotNull();
 
 		Workplane wp = tool.getWorkplane();
 		assertThat( wp ).isNotNull();
 
+		EventWatcher<DataNodeEvent> watcher = new EventWatcher<>();
+		wp.register( Workplane.BOUNDARY_X1, watcher );
+		wp.register( Workplane.BOUNDARY_Y1, watcher );
+		wp.register( Workplane.BOUNDARY_X2, watcher );
+		wp.register( Workplane.BOUNDARY_Y2, watcher );
+
 		BoundingBox box = new BoundingBox( -5, -3, 10, 6 );
 		wp.setBounds( box );
+		watcher.waitForEvent( DataNodeEvent.VALUE_CHANGED );
+		watcher.waitForEvent( DataNodeEvent.VALUE_CHANGED );
+		watcher.waitForEvent( DataNodeEvent.VALUE_CHANGED );
+		watcher.waitForEvent( DataNodeEvent.VALUE_CHANGED );
+
 		Bounds got = wp.getBounds();
 		assertThat( got.getMinX() ).isEqualTo( -5.0 );
 		assertThat( got.getMaxX() ).isEqualTo( 5.0 );
