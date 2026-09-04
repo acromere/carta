@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 
-import static com.acromere.test.TestTag.RECURSION;
+import static com.acromere.cartesia.CartesiaTestTag.RECURSION;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class GridOrthographicTest {

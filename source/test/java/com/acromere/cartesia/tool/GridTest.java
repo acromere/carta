@@ -1,13 +1,11 @@
 package com.acromere.cartesia.tool;
 
 import javafx.scene.shape.Line;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.acromere.cartesia.CartesiaTestTag.AI_GENERATED;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class GridTest {
@@ -20,7 +18,6 @@ public class GridTest {
 	}
 
 	@Test
-	@Tag( AI_GENERATED )
 	void getBoundaryX1() {
 		// Normal case: x1 < x2
 		assertThat( Grid.getBoundaryX1( 5.0, 10.0, 2.0, 3.0 ) ).isEqualTo( 5.0 * 2.0 - 3.0 );
@@ -42,7 +39,6 @@ public class GridTest {
 	}
 
 	@Test
-	@Tag( AI_GENERATED )
 	void getBoundaryX2() {
 		// Normal case: x1 < x2
 		assertThat( Grid.getBoundaryX2( 5.0, 10.0, 2.0, 3.0 ) ).isEqualTo( 10.0 * 2.0 + 3.0 );
@@ -64,7 +60,6 @@ public class GridTest {
 	}
 
 	@Test
-	@Tag( AI_GENERATED )
 	void getBoundaryY1() {
 		// Normal case: y1 < y2
 		assertThat( Grid.getBoundaryY1( 5.0, 10.0, 2.0, 3.0 ) ).isEqualTo( 5.0 * 2.0 - 3.0 );
@@ -90,7 +85,6 @@ public class GridTest {
 	}
 
 	@Test
-	@Tag( AI_GENERATED )
 	void getBoundaryY2() {
 		// Normal case: y1 < y2
 		assertThat( Grid.getBoundaryY2( 5.0, 10.0, 2.0, 3.0 ) ).isEqualTo( 10.0 * 2.0 + 3.0 );
@@ -112,7 +106,6 @@ public class GridTest {
 	}
 
 	@Test
-	@Tag( AI_GENERATED )
 	void reuseOrNewLine() {
 		// Test with empty prior set - should create a new Line
 		Set<Line> emptyPrior = new HashSet<>();
