@@ -131,29 +131,31 @@ public class LayerGuide extends Guide {
 			while( change.next() ) {
 				if( change.wasAdded() ) {
 					for( DesignLayer layer : change.getAddedSubList() ) {
-						boolean isCurrent = tool.isCurrentLayer( layer );
 						GuideNode node = layerGuideNodes.get( layer );
-						if( node != null ) node.setIcon( isCurrent ? GUIDE_LAYER_CURRENT_ICON : GUIDE_LAYER_ICON );
+						if( node == null ) continue;
+						boolean isCurrent = tool.isCurrentLayer( layer );
+						updateGuideNodeIcon( node, isCurrent, true );
 					}
 				} else if( change.wasRemoved() ) {
 					for( DesignLayer layer : change.getRemoved() ) {
-						boolean isCurrent = tool.isCurrentLayer( layer );
 						GuideNode node = layerGuideNodes.get( layer );
-						if( node != null ) node.setIcon( isCurrent ? GUIDE_LAYER_CURRENT_HIDDEN_ICON : GUIDE_LAYER_HIDDEN_ICON );
+						if( node == null ) continue;
+						boolean isCurrent = tool.isCurrentLayer( layer );
+						updateGuideNodeIcon( node, isCurrent, false );
 					}
 				}
 			}
 		} );
 
 		// Add listener for current layer changes
-		tool.currentLayerProperty().addListener( ( observable, oldValue, newValue ) -> {
-			if( oldValue != null ) {
-				GuideNode node = layerGuideNodes.get( oldValue );
-				node.setIcon( GUIDE_LAYER_ICON );
+		tool.currentLayerProperty().addListener( ( _, o, n ) -> {
+			if( o != null ) {
+				GuideNode node = layerGuideNodes.get( o );
+				updateGuideNodeIcon( node, false, isLayerVisible( node ) );
 			}
-			if( newValue != null ) {
-				GuideNode node = layerGuideNodes.get( newValue );
-				node.setIcon( GUIDE_LAYER_CURRENT_ICON );
+			if( n != null ) {
+				GuideNode node = layerGuideNodes.get( n );
+				updateGuideNodeIcon( node, true, isLayerVisible( node ) );
 			}
 		} );
 	}
@@ -190,6 +192,23 @@ public class LayerGuide extends Guide {
 		// Unregister the change handlers
 		layer.unregister( DesignLayer.ORDER, node.getValue( ORDER_HANDLER ) );
 		layer.unregister( DesignLayer.NAME, node.getValue( NAME_HANDLER ) );
+	}
+
+	private boolean isLayerVisible( GuideNode node ) {
+		DesignLayer layer = guideNodeLayers.get( node );
+		return layer != null && tool.isLayerVisible( layer );
+	}
+
+	private void updateGuideNodeIcon( GuideNode node, boolean current, boolean visible ) {
+		String icon = GUIDE_LAYER_ICON;
+
+		if( visible ) {
+			if( current ) icon = GUIDE_LAYER_CURRENT_ICON;
+		} else {
+			icon = current ? GUIDE_LAYER_CURRENT_HIDDEN_ICON : GUIDE_LAYER_HIDDEN_ICON;
+		}
+
+		node.setIcon( icon );
 	}
 
 }
