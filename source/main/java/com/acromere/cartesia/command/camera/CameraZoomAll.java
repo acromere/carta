@@ -1,7 +1,9 @@
 package com.acromere.cartesia.command.camera;
 
 import com.acromere.cartesia.command.CommandTask;
+import lombok.CustomLog;
 
+@CustomLog
 public class CameraZoomAll extends CameraCommand {
 
 	@Override

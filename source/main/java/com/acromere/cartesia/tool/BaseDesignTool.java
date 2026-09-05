@@ -1074,6 +1074,11 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		return selectedLayer;
 	}
 
+	@Override
+	public List<DesignShape> getVisibleShapes() {
+		return getRenderer().getVisibleShapes();
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
