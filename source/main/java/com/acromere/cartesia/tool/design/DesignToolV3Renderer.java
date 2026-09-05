@@ -1128,7 +1128,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		shape.fillProperty().bind( new DesignBinding<>( designShape, DesignShape.FILL_PAINT, DesignShape::calcFillPaint ) );
 		shape.setStrokeType( StrokeType.INSIDE );
 		shape.strokeProperty().bind( new DesignBinding<>( designShape, DesignShape.DRAW_PAINT, DesignShape::calcDrawPaint ) );
-		shape.strokeWidthProperty().bind( shapeScaleXProperty().multiply( strokeWidthProperty ).divide( viewZoomXProperty() ) );
+		shape.strokeWidthProperty().bind( apertureShapeScaleX.multiply( strokeWidthProperty ).divide( viewZoomXProperty() ).multiply( outputScaleXProperty() ) );
 	}
 
 	private record GeometryKey(DesignRenderer renderer, DesignDrawable drawable) {}
