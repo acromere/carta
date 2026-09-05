@@ -706,11 +706,17 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 				if( e.getEventType() == DataNodeEvent.VALUE_CHANGED ) return;
 
 				if( e.getEventType() == DataNodeEvent.CHILD_ADDED ) {
-					Shape fxShape = mapDesignShape( e.getNewValue() );
-					Fx.run( () -> pane.getChildren().add( fxShape ) );
+					if( e.getNewValue() instanceof DesignLayer layer ) {
+						//mapDesignLayer( layer );
+					} else {
+						Fx.run( () -> pane.getChildren().add( mapDesignShape( e.getNewValue() ) ) );
+					}
 				} else if( e.getEventType() == DataNodeEvent.CHILD_REMOVED ) {
-					Shape shape = getFxGeometry( e.getOldValue() );
-					Fx.run( () -> pane.getChildren().remove( shape ) );
+					if( e.getOldValue() instanceof DesignLayer layer ) {
+						//mapDesignLayer( layer );
+					} else {
+						Fx.run( () -> pane.getChildren().remove( getFxGeometry( e.getOldValue() ) ) );
+					}
 				}
 			}
 		);
