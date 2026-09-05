@@ -15,7 +15,9 @@ import com.acromere.zerra.javafx.Fx;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.ObjectBinding;
-import javafx.beans.property.*;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
@@ -332,14 +334,18 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		if( this.design == design ) return;
 
 		if( this.design != null ) {
-			reference.getChildren().clear();
-			preview.getChildren().clear();
+			// Clear the design model
 			setDesignModel( null );
+
+			// Clear the resource and preview layers
+			preview.getChildren().clear();
+			reference.getChildren().clear();
 		}
 
 		this.design = design;
 
 		if( this.design != null ) {
+			// Set the design model
 			setDesignModel( design.getDataModel() );
 
 			// Map the resource and preview layers
@@ -351,16 +357,17 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	/**
 	 * {@inheritDoc}
 	 */
-	private void setDesignModel( DesignModel design ) {
+	private void setDesignModel( DesignModel model ) {
 		if( this.model != null ) {
 			this.model.unregister( this, DesignModel.UNIT, designUnitChangeHandler );
+			setDesignUnit( DesignModel.DEFAULT_DESIGN_UNIT );
 		}
 
-		this.model = design;
+		this.model = model;
 
 		if( this.model != null ) {
-			design.register( this, DesignModel.UNIT, designUnitChangeHandler );
-			setDesignUnit( design.calcDesignUnit() );
+			model.register( this, DesignModel.UNIT, designUnitChangeHandler );
+			setDesignUnit( model.calcDesignUnit() );
 		}
 	}
 
@@ -684,11 +691,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	}
 
 	private Pane mapDesignLayer( DesignLayer designLayer ) {
-		return mapDesignLayer( designLayer, true );
-	}
-
-	private Pane mapDesignLayer( DesignLayer designLayer, boolean includeSubLayers ) {
-		return mapDesignLayer( designLayer, new Pane(), includeSubLayers );
+		return mapDesignLayer( designLayer, new Pane(), false );
 	}
 
 	private Pane mapDesignLayer( DesignLayer designLayer, Pane pane, boolean includeSubLayers ) {
