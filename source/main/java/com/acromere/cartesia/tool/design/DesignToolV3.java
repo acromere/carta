@@ -8,11 +8,9 @@ import com.acromere.xenon.resource.OpenResourceRequest;
 import com.acromere.xenon.resource.Resource;
 import com.acromere.xenon.workpane.ToolException;
 import javafx.geometry.Point3D;
-import javafx.scene.paint.Paint;
 import lombok.CustomLog;
 
 import java.util.Collection;
-import java.util.List;
 
 @CustomLog
 public class DesignToolV3 extends BaseDesignTool {
@@ -57,31 +55,6 @@ public class DesignToolV3 extends BaseDesignTool {
 	}
 
 	@Override
-	public DesignLayer getPreviewLayer() {
-		return getDesignContext().getPreviewLayer();
-	}
-
-	@Override
-	public DesignLayer getReferenceLayer() {
-		return getDesignContext().getReferenceLayer();
-	}
-
-	@Override
-	public List<DesignShape> getVisibleShapes() {
-		return List.of();
-	}
-
-	@Override
-	public Paint getSelectedDrawPaint() {
-		return null;
-	}
-
-	@Override
-	public Paint getSelectedFillPaint() {
-		return null;
-	}
-
-	@Override
 	public boolean isReferenceLayerVisible() {
 		return false;
 	}
@@ -101,60 +74,60 @@ public class DesignToolV3 extends BaseDesignTool {
 		return null;
 	}
 
-//	@Override
-//	public void setSelectAperture( Point3D anchor, Point3D mouse ) {
-//
-//	}
-//
-//	@Override
-//	public List<DesignShape> screenPointSyncFindOne( Point3D mouse ) {
-//		return List.of();
-//	}
-//
-//	@Override
-//	public List<DesignShape> worldPointSyncFindOne( Point3D mouse ) {
-//		return List.of();
-//	}
-//
-//	@Override
-//	public List<DesignShape> screenPointSyncFindAll( Point3D mouse ) {
-//		return List.of();
-//	}
-//
-//	@Override
-//	public List<DesignShape> worldPointSyncFindAll( Point3D mouse ) {
-//		return List.of();
-//	}
-//
-//	@Override
-//	public List<DesignShape> screenPointSyncSelect( Point3D mouse ) {
-//		return List.of();
-//	}
-//
-//	@Override
-//	public List<DesignShape> worldPointSyncSelect( Point3D mouse ) {
-//		return List.of();
-//	}
+	//	@Override
+	//	public void setSelectAperture( Point3D anchor, Point3D mouse ) {
+	//
+	//	}
+	//
+	//	@Override
+	//	public List<DesignShape> screenPointSyncFindOne( Point3D mouse ) {
+	//		return List.of();
+	//	}
+	//
+	//	@Override
+	//	public List<DesignShape> worldPointSyncFindOne( Point3D mouse ) {
+	//		return List.of();
+	//	}
+	//
+	//	@Override
+	//	public List<DesignShape> screenPointSyncFindAll( Point3D mouse ) {
+	//		return List.of();
+	//	}
+	//
+	//	@Override
+	//	public List<DesignShape> worldPointSyncFindAll( Point3D mouse ) {
+	//		return List.of();
+	//	}
+	//
+	//	@Override
+	//	public List<DesignShape> screenPointSyncSelect( Point3D mouse ) {
+	//		return List.of();
+	//	}
+	//
+	//	@Override
+	//	public List<DesignShape> worldPointSyncSelect( Point3D mouse ) {
+	//		return List.of();
+	//	}
 
-//	@Override
-//	public void screenPointSelect( Point3D mouse ) {
-//
-//	}
+	//	@Override
+	//	public void screenPointSelect( Point3D mouse ) {
+	//
+	//	}
 
-//	@Override
-//	public void screenPointSelect( Point3D mouse, boolean toggle ) {
-//
-//	}
+	//	@Override
+	//	public void screenPointSelect( Point3D mouse, boolean toggle ) {
+	//
+	//	}
 
-//	@Override
-//	public void screenWindowSelect( Point3D a, Point3D b, boolean intersect, boolean toggle ) {
-//
-//	}
+	//	@Override
+	//	public void screenWindowSelect( Point3D a, Point3D b, boolean intersect, boolean toggle ) {
+	//
+	//	}
 
-//	@Override
-//	public void worldWindowSelect( Point3D a, Point3D b, boolean intersect, boolean toggle ) {
-//
-//	}
+	//	@Override
+	//	public void worldWindowSelect( Point3D a, Point3D b, boolean intersect, boolean toggle ) {
+	//
+	//	}
 
 	@Override
 	public Class<? extends BaseDesignRenderer> getPrintDesignRendererClass() {

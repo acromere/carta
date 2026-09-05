@@ -1079,6 +1079,16 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		return getRenderer().getVisibleShapes();
 	}
 
+	@Override
+	public DesignLayer getPreviewLayer() {
+		return getDesignContext().getPreviewLayer();
+	}
+
+	@Override
+	public DesignLayer getReferenceLayer() {
+		return getDesignContext().getReferenceLayer();
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -1117,6 +1127,16 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 		// Return the prior portal
 		return portalStack.isEmpty() ? DesignPortal.DEFAULT : portalStack.pop();
+	}
+
+	@Override
+	public Paint getSelectedDrawPaint() {
+		return getRenderer().getSelectedDrawPaint();
+	}
+
+	@Override
+	public Paint getSelectedFillPaint() {
+		return getRenderer().getSelectedFillPaint();
 	}
 
 	/**
