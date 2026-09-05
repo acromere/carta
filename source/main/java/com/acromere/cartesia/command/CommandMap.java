@@ -206,7 +206,7 @@ public final class CommandMap {
 
 		MouseAndGestureMap.CARTESIA.load( this );
 
-		//printCommandMapByCommand();
+		printCommandMapByCommandInMarkdown();
 		//printCommandMapByName();
 
 		return this;
@@ -222,6 +222,23 @@ public final class CommandMap {
 			if( k.getShortcut() != null ) builder.append( " <" ).append( k.getShortcut() ).append( ">" );
 			System.out.println( builder );
 		} );
+
+		// Event actions???
+	}
+
+	@SuppressWarnings( "unused" )
+	private void printCommandMapByCommandInMarkdown() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("|    | Name | Key | Shortcut |\n");
+		builder.append("|----|------|-----|-----|\n");
+		actionCommands.values().stream().sorted().forEach( k -> {
+			if( TextUtil.isEmpty( k.getCommand() ) ) return;
+			builder.append( "| " ).append( k.getCommand() ).append( " | " ).append( k.getName() ).append( " | " );
+			builder.append( k.getAction() ).append( " |" );
+			if( k.getShortcut() != null ) builder.append( " &lt;" ).append( k.getShortcut() ).append( "&gt; |" );
+			builder.append("\n");
+		} );
+		System.out.println( builder );
 
 		// Event actions???
 	}
