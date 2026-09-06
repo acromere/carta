@@ -175,8 +175,10 @@ public class DesignBox extends DesignShape {
 	@Override
 	public void apply( CadTransform transform ) {
 		Txn.run( () -> {
-			setOrigin( transform.apply( getOrigin() ) );
-			setSize( transform.apply( getSize() ) );
+			Point3D origin = transform.apply( getOrigin() );
+			Point3D point = transform.apply( getOrigin().add( getSize() ) );
+			setOrigin( origin );
+			setSize( point.subtract( origin ) );
 		} );
 	}
 

@@ -1,6 +1,7 @@
 package com.acromere.cartesia.data;
 
 import com.acromere.cartesia.math.CadMath;
+import com.acromere.cartesia.math.CadTransform;
 import com.acromere.cartesia.test.Point3DAssert;
 import com.acromere.zerra.color.Paints;
 import javafx.geometry.Bounds;
@@ -150,6 +151,30 @@ public class DesignBoxTest extends DesignShapeTest {
 		Point3DAssert.assertThat( points.get( 2 ) ).isCloseTo( new Point3D( 1 + a - b, 1 + a + b, 0 ) );
 		Point3DAssert.assertThat( points.get( 3 ) ).isCloseTo( new Point3D( 1 - b, 1 + b, 0 ) );
 		assertThat( points ).hasSize( 4 );
+	}
+
+	@Test
+	void apply() {
+		// given
+		DesignBox box = new DesignBox( new Point3D( 1, 2, 0 ), new Point3D( 3, 4, 0 ) );
+		CadTransform transform = CadTransform.translation( 2, 3, 0 );
+
+		// when
+		box.apply( transform );
+
+		// then
+		Point3DAssert.assertThat( box.getOrigin() ).isCloseTo( new Point3D( 3, 5, 0 ) );
+		Point3DAssert.assertThat( box.getSize() ).isCloseTo( new Point3D( 3, 4, 0 ) );
+
+		// given
+		CadTransform scale = CadTransform.scale( 2, 3, 1 );
+
+		// when
+		box.apply( scale );
+
+		// then
+		Point3DAssert.assertThat( box.getOrigin() ).isCloseTo( new Point3D( 6, 15, 0 ) );
+		Point3DAssert.assertThat( box.getSize() ).isCloseTo( new Point3D( 6, 12, 0 ) );
 	}
 
 }
