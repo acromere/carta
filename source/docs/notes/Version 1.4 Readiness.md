@@ -12,7 +12,7 @@ Put all the commands in a table and check that all are operational
 | c2  | 2026-09-05 |   ✓    | Circle by Diameter      | draw-circle-diameter-2   |
 | c3  | 2026-09-05 |   ✓    | Circle 3-Point          | draw-circle-3            |
 | cc  | 2026-09-05 |   ✓    | Circle                  | draw-circle-2            |
-| cp  | 2026-09-05 | Failed | Copy                    | copy                     |
+| cp  | 2026-09-05 |   ✓    | Copy                    | copy                     |
 | cs  | Deprecated |  ---   | Select Window Intersect | select-window-intersect  |
 | ea  | 2026-09-05 |   ✓    | Ellipse Arc             | draw-ellipse-arc-5       |
 | ee  | 2026-09-05 |   ✓    | Ellipse                 | draw-ellipse-3           |
@@ -26,7 +26,7 @@ Put all the commands in a table and check that all are operational
 | ma  | 2026-09-05 |   ✓    | Measure Angle           | measure-angle            |
 | md  | 2026-09-05 |   ✓    | Measure Distance        | measure-distance         |
 | me  |            |        | Move Points             | move-points              |
-| mi  | 2026-09-05 | Failed | Mirror                  | mirror                   |
+| mi  | 2026-09-05 |   ✓    | Mirror                  | mirror                   |
 | ml  | 2026-09-05 |   ✓    | Measure Path            | measure-length           |
 | mm  | 2026-09-05 |   ✓    | Marker                  | draw-marker              |
 | mp  | 2026-09-05 |   ✓    | Measure Point           | measure-point            |
@@ -34,7 +34,7 @@ Put all the commands in a table and check that all are operational
 | rr  |            |        | Toggle Reference Points | reference-toggle         |
 | vt  | 2026-09-05 |   ✓    | Set View Top            | camera-view-top          |
 | oo  | 2026-09-05 |   ✓    | Undo                    | undo                     |
-| pa  |            |        | Camera Pan              | camera-move              |
+| pa  | 2026-09-05 | Failed | Camera Pan              | camera-move              |
 | rc  | 2026-09-05 | Failed | Radial Copy             | radial-copy              |
 | rm  | 2026-09-05 |   ✓    | Trim                    | trim                     |
 | ro  | 2026-09-05 |   ✓    | Rotate                  | rotate                   |
@@ -44,7 +44,7 @@ Put all the commands in a table and check that all are operational
 | sn  | 2026-09-05 |   ✓    | Snap Center             | snap-center              |
 | sp  | 2026-09-05 |   ✓    | Snap Nearest            | snap-nearest             |
 | st  | 2026-09-05 | Failed | Stretch                 | stretch                  |
-| sz  | 2026-09-05 | Failed | Scale                   | scale                    |
+| sz  | 2026-09-05 |   ✓    | Scale                   | scale                    |
 | tt  | 2026-09-05 |   ✓    | Text                    | draw-text                |
 | uu  | 2026-09-05 |   ✓    | Redo                    | redo                     |
 | vl  | 2026-09-05 |   ✓    | Set View Left           | camera-view-left         |
