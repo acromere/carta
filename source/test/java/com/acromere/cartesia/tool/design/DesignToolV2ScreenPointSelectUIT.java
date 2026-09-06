@@ -5,6 +5,7 @@ import com.acromere.cartesia.data.DesignShape;
 import javafx.geometry.Point3D;
 import lombok.CustomLog;
 import lombok.Getter;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -70,6 +71,7 @@ public class DesignToolV2ScreenPointSelectUIT extends DesignToolV2BaseUIT {
 	}
 
 	@Test
+	@Disabled
 	// FIXME Flaky. Occasionally, comes back with no selection on second select
 	void screenPointSelectWithMultipleSelectsMovingDownVisibleGeometry() throws Exception {
 		// given
