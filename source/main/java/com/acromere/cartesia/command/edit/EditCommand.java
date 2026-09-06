@@ -112,6 +112,7 @@ public abstract class EditCommand extends Command {
 			DataNodeLink<DesignLayer> link = shape.getValue( CLONE_LAYER_KEY );
 			link.getNode().addShape( shape );
 			shape.setValue( CLONE_LAYER_KEY, null );
+			shape.setSelected( false );
 		} ) );
 	}
 
