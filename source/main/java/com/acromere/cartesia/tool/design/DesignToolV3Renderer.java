@@ -708,15 +708,19 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 				if( e.getEventType() == DataNodeEvent.CHILD_ADDED ) {
 					if( e.getNewValue() instanceof DesignLayer layer ) {
-						//mapDesignLayer( layer );
+						Fx.run( () -> pane.getChildren().add( mapDesignLayer( layer ) ) );
+					} else if( e.getNewValue() instanceof DesignShape shape ) {
+						Fx.run( () -> pane.getChildren().add( mapDesignShape( shape ) ) );
 					} else {
-						Fx.run( () -> pane.getChildren().add( mapDesignShape( e.getNewValue() ) ) );
+						log.atTrace().log( "Unable to add unhandled child={0}", e.getNewValue() );
 					}
 				} else if( e.getEventType() == DataNodeEvent.CHILD_REMOVED ) {
 					if( e.getOldValue() instanceof DesignLayer layer ) {
-						//mapDesignLayer( layer );
+						Fx.run( () -> pane.getChildren().remove( getFxGeometry( layer ) ) );
+					} else if( e.getOldValue() instanceof DesignShape shape ) {
+						Fx.run( () -> pane.getChildren().remove( getFxGeometry( shape ) ) );
 					} else {
-						Fx.run( () -> pane.getChildren().remove( getFxGeometry( e.getOldValue() ) ) );
+						log.atTrace().log( "Unable to remove unhandled child={0}", e.getOldValue() );
 					}
 				}
 			}
@@ -1034,8 +1038,11 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		text.yProperty().bind( shapeScaleYProperty().multiply( originYValue ).negate() );
 
 		text.fontProperty().bind( Bindings.createObjectBinding(
-			() -> Font.font( fontNameValue.get(), designText.calcFontWeight(), designText.calcFontPosture(), textSizeValue.get() * shapeScaleYProperty().get() ), fontNameValue, fontWeightValue,
-			fontPostureValue, textSizeValue,
+			() -> Font.font( fontNameValue.get(), designText.calcFontWeight(), designText.calcFontPosture(), textSizeValue.get() * shapeScaleYProperty().get() ),
+			fontNameValue,
+			fontWeightValue,
+			fontPostureValue,
+			textSizeValue,
 			shapeScaleYProperty()
 		) );
 
