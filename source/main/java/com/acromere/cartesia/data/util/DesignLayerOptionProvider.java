@@ -1,5 +1,6 @@
 package com.acromere.cartesia.data.util;
 
+import com.acromere.cartesia.data.Design;
 import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.data.DesignModel;
 import com.acromere.data.IdDataNode;
@@ -7,12 +8,14 @@ import com.acromere.util.TextUtil;
 import com.acromere.xenon.XenonProgramProduct;
 import com.acromere.xenon.resource.Resource;
 import com.acromere.xenon.tool.settings.SettingOptionProvider;
+import lombok.CustomLog;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@CustomLog
 public class DesignLayerOptionProvider implements SettingOptionProvider {
 
 	private final XenonProgramProduct product;
@@ -56,10 +59,18 @@ public class DesignLayerOptionProvider implements SettingOptionProvider {
 
 	private Optional<DesignModel> getDesign() {
 		Resource currentResource = product.getProgram().getResourceManager().getCurrentResource();
-		if( currentResource == null ) return Optional.empty();
-		Object model = currentResource.getModel();
-		if( model instanceof DesignModel ) return Optional.of( (DesignModel)model );
-		return Optional.empty();
+		if( currentResource == null ) {
+			log.atWarn().log( "No current design for layer lookup" );
+			return Optional.empty();
+		}
+
+		Object object = currentResource.getModel();
+		if( !(object instanceof Design<?> design) ) {
+			log.atWarn().log( "Resource model not a design model" );
+			return Optional.empty();
+		}
+
+		return Optional.of( design.getDataModel() );
 	}
 
 }

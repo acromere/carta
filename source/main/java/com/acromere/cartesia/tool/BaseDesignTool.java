@@ -429,8 +429,8 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		// Add current layer property listener
 		currentLayerProperty().addListener( ( p, o, n ) -> settings.set( CURRENT_LAYER, n.getId() ) );
 
-		// Add the selected layer property listener to show its property page
-		selectedLayerProperty().addListener( ( p, o, n ) -> showPropertiesPage( n ) );
+		// Add the selected layer property listener to show its shape properties page
+		selectedLayerProperty().addListener( ( p, o, n ) -> showShapeProperties( n ) );
 
 		// Add the selected layer property listener to store the selected layer in the settings
 		selectedLayerProperty().addListener( ( p, o, n ) -> settings.set( SELECTED_LAYER, n.getId() ) );
@@ -1600,7 +1600,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	private void doSetCurrentLayerById( String id ) {
 		getDesignModel().findLayerById( id ).ifPresent( y -> {
 			currentLayerProperty().set( y );
-			showPropertiesPage( y );
+			showShapeProperties( y );
 		} );
 	}
 
@@ -1616,17 +1616,17 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		// TODO Implement DesignTool.doSetCurrentPrintById()
 	}
 
-	protected void showPropertiesPage( DesignDrawable drawable ) {
+	protected void showShapeProperties( DesignDrawable drawable ) {
 		if( drawable != null ) {
 			// Wrap the drawable in a data node settings object
 			DataNodeSettings wrapper = new DataNodeSettings( drawable );
 
-			// Show the properties page for the drawable
-			showPropertiesPage( wrapper, drawable.getClass() );
+			// Show the shape property page for the drawable
+			showShapeProperties( wrapper, drawable.getClass() );
 		}
 	}
 
-	private void showPropertiesPage( Settings settings, Class<? extends DesignDrawable> type ) {
+	private void showShapeProperties( Settings settings, Class<? extends DesignDrawable> type ) {
 		SettingsPage page = designPropertiesMap.getSettingsPage( type );
 		if( page != null ) {
 			// Switch to a task thread to get the tool
@@ -1668,9 +1668,9 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 			int size = c.getList().size();
 
 			if( size == 0 ) {
-				showPropertiesPage( getSelectedLayer() );
+				showShapeProperties( getSelectedLayer() );
 			} else if( size == 1 ) {
-				c.getList().stream().findFirst().ifPresent( this::showPropertiesPage );
+				c.getList().stream().findFirst().ifPresent( this::showShapeProperties );
 			} else {
 				// If all selected shapes are of the same type then show the properties page for that type
 				Class<? extends DesignDrawable> type = c.getList().getFirst().getClass();
@@ -1683,7 +1683,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 					}
 				}
 
-				showPropertiesPage( new MultiNodeSettings( c.getList() ), type );
+				showShapeProperties( new MultiNodeSettings( c.getList() ), type );
 			}
 		}
 

@@ -224,8 +224,8 @@ public class DesignToolV2 extends BaseDesignTool {
 		// Add current layer property listener
 		currentLayerProperty().addListener( ( p, o, n ) -> settings.set( CURRENT_LAYER, n.getId() ) );
 
-		// Add the selected layer property listener to show its properties page
-		selectedLayerProperty().addListener( ( p, o, n ) -> showPropertiesPage( n ) );
+		// Add the selected layer property listener to show its shape properties page
+		selectedLayerProperty().addListener( ( p, o, n ) -> showShapeProperties( n ) );
 
 		// Add the selected layer property listener to store the selected layer in the settings
 		selectedLayerProperty().addListener( ( p, o, n ) -> settings.set( SELECTED_LAYER, n.getId() ) );
