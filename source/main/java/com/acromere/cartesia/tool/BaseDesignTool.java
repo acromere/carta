@@ -8,6 +8,7 @@ import com.acromere.cartesia.cursor.ReticuleCursor;
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.data.map.DesignUnitMapper;
 import com.acromere.cartesia.data.util.DesignPropertiesMap;
+import com.acromere.cartesia.math.CadPoints;
 import com.acromere.cartesia.snap.Snap;
 import com.acromere.cartesia.snap.SnapGrid;
 import com.acromere.cartesia.tool.design.BaseDesignRenderer;
@@ -976,6 +977,34 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	@Override
 	public ObservableList<DesignLayer> enabledLayers() {
 		return getRenderer().enabledLayers();
+	}
+
+	@Override
+	public Point3D nearestReferencePoint( Collection<DesignShape> shapes, Point3D point ) {
+		// Use screen coordinates to determine "nearest" since that is what the user sees
+
+		// Convert the world-point to screen-coordinates
+		Point3D mouse = worldToScreen( point );
+
+		// Go through all the reference points, convert them to screen coordinates and find the nearest
+		double distance;
+		double minDistance = Double.MAX_VALUE;
+		Point3D nearest = CadPoints.NONE;
+
+		for( DesignShape shape : shapes ) {
+			if( shape == null || shape.isPreview() ) continue;
+
+			List<Point3D> referencePoints = shape.getReferencePoints();
+			for( Point3D cp : referencePoints ) {
+				distance = mouse.distance( worldToScreen( cp ) );
+				if( distance < minDistance ) {
+					nearest = cp;
+					minDistance = distance;
+				}
+			}
+		}
+
+		return nearest;
 	}
 
 	/**

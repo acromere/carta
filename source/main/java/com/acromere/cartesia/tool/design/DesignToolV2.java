@@ -6,7 +6,6 @@ import com.acromere.cartesia.ParseUtil;
 import com.acromere.cartesia.cursor.Reticule;
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.data.map.DesignUnitMapper;
-import com.acromere.cartesia.math.CadPoints;
 import com.acromere.cartesia.tool.BaseDesignTool;
 import com.acromere.cartesia.tool.GridStyle;
 import com.acromere.cartesia.tool.RenderConstants;
@@ -27,7 +26,6 @@ import javafx.scene.input.TouchEvent;
 import javafx.scene.paint.Paint;
 import lombok.CustomLog;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -350,34 +348,6 @@ public class DesignToolV2 extends BaseDesignTool {
 	//		renderer.setViewZoom( zoom, zoom );
 	//		renderer.setViewRotate( rotate );
 	//	}
-
-	@Override
-	public Point3D nearestReferencePoint( Collection<DesignShape> shapes, Point3D point ) {
-		// Use screen coordinates to determine "nearest" since that is what the user sees
-
-		// Convert the world-point to screen-coordinates
-		Point3D mouse = worldToScreen( point );
-
-		// Go through all the reference points, convert them to screen coordinates and find the nearest
-		double distance;
-		double minDistance = Double.MAX_VALUE;
-		Point3D nearest = CadPoints.NONE;
-
-		for( DesignShape shape : shapes ) {
-			if( shape == null || shape.isPreview() ) continue;
-
-			List<Point3D> referencePoints = shape.getReferencePoints();
-			for( Point3D cp : referencePoints ) {
-				distance = mouse.distance( worldToScreen( cp ) );
-				if( distance < minDistance ) {
-					nearest = cp;
-					minDistance = distance;
-				}
-			}
-		}
-
-		return nearest;
-	}
 
 	@Override
 	public boolean isLayerVisible( DesignLayer layer ) {

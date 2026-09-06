@@ -65,13 +65,13 @@ public class CommandContext implements EventHandler<KeyEvent> {
 	@Getter
 	private Input inputMode;
 
-//	@Getter
-//	@Setter
-//	private Point2D screenAnchor;
+	//	@Getter
+	//	@Setter
+	//	private Point2D screenAnchor;
 
-//	@Getter
-//	@Setter
-//	private Point2D screenMouse;
+	//	@Getter
+	//	@Setter
+	//	private Point2D screenMouse;
 
 	@Getter
 	@Setter
@@ -369,10 +369,10 @@ public class CommandContext implements EventHandler<KeyEvent> {
 				if( task.getContext().isInteractive() ) {
 					getTool().getProgram().getNoticeManager().addNotice( new Notice( title, message ).setType( Notice.Type.WARN ) );
 				} else {
-					log.atWarn( exception ).log( "Invalid input={0}", task );
+					log.atWarn( exception ).log( "Invalid task={0}", task );
 				}
-			} else {
-				log.atError( exception ).log( "Unable to remove invalid input from command stack input={0}", task );
+			} else if( commandStack.contains( task ) ) {
+				log.atError( exception ).log( "Unable to remove task from command stack task={0}", task );
 			}
 		} catch( Exception exception ) {
 			cancelAllCommands();
@@ -497,7 +497,12 @@ public class CommandContext implements EventHandler<KeyEvent> {
 
 	private void passParameter( CommandTask task, Object parameter ) throws InvalidInputException {
 		if( task == null ) return;
-		if( parameter == null ) throw new InvalidInputException( task.getCommand(), "step-result", "null" );
+
+		if( parameter == null ) {
+			log.atWarn().log( "Cannot pass null parameter from command={0}", task );
+			return;
+		}
+
 		task.addParameter( parameter );
 	}
 

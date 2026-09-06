@@ -1,7 +1,5 @@
 package com.acromere.cartesia.tool.design;
 
-import com.acromere.cartesia.data.DesignLayer;
-import com.acromere.cartesia.data.DesignShape;
 import com.acromere.cartesia.tool.BaseDesignTool;
 import com.acromere.xenon.XenonProgramProduct;
 import com.acromere.xenon.resource.OpenResourceRequest;
@@ -9,8 +7,6 @@ import com.acromere.xenon.resource.Resource;
 import com.acromere.xenon.workpane.ToolException;
 import javafx.geometry.Point3D;
 import lombok.CustomLog;
-
-import java.util.Collection;
 
 @CustomLog
 public class DesignToolV3 extends BaseDesignTool {
@@ -47,11 +43,6 @@ public class DesignToolV3 extends BaseDesignTool {
 		//				getRenderer().setLayerVisible( developmentDesign.getLayers().getLayers().getFirst(), true );
 		//			}
 		//		}
-	}
-
-	@Override
-	public Point3D nearestReferencePoint( Collection<DesignShape> shapes, Point3D point ) {
-		return null;
 	}
 
 	@Override

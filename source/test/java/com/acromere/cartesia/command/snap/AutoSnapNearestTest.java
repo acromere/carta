@@ -6,7 +6,7 @@ import com.acromere.cartesia.command.CommandTrigger;
 import com.acromere.cartesia.command.InvalidInputException;
 import com.acromere.cartesia.command.base.Prompt;
 import com.acromere.cartesia.snap.Snap;
-import com.acromere.cartesia.snap.SnapNearestCp;
+import com.acromere.cartesia.snap.SnapNearest;
 import javafx.geometry.Point3D;
 import javafx.scene.input.InputEvent;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ public class AutoSnapNearestTest extends BaseCommandTest {
 
 	private final AutoSnap command = new AutoSnap();
 
-	private final Snap snap = new SnapNearestCp();
+	private final Snap snap = new SnapNearest();
 
 	@Test
 	void testRunTaskStepNoParameters() {

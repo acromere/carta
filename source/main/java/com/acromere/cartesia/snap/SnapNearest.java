@@ -4,7 +4,10 @@ import com.acromere.cartesia.math.CadPoints;
 import com.acromere.cartesia.tool.DesignTool;
 import javafx.geometry.Point3D;
 
-public class SnapNearestCp implements Snap {
+/**
+ * Snap to the nearest point.
+ */
+public class SnapNearest implements Snap {
 
 	@Override
 	public String getPromptKey() {

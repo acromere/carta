@@ -21,7 +21,7 @@ import com.acromere.cartesia.command.view.ViewUpdate;
 import com.acromere.cartesia.snap.SnapCenter;
 import com.acromere.cartesia.snap.SnapIntersection;
 import com.acromere.cartesia.snap.SnapMidpoint;
-import com.acromere.cartesia.snap.SnapNearestCp;
+import com.acromere.cartesia.snap.SnapNearest;
 import com.acromere.log.LazyEval;
 import com.acromere.util.TextUtil;
 import com.acromere.xenon.ActionLibrary;
@@ -193,14 +193,14 @@ public final class CommandMap {
 		// Snap commands
 		add( product, "snap-center", SnapSelect.class, new SnapCenter() );
 		add( product, "snap-midpoint", SnapSelect.class, new SnapMidpoint() );
-		add( product, "snap-nearest", SnapSelect.class, new SnapNearestCp() );
+		add( product, "snap-nearest", SnapSelect.class, new SnapNearest() );
 		add( product, "snap-intersection", SnapSelect.class, new SnapIntersection() );
 		//add( product, "snap-grid", SnapSelectCommand.class, new SnapGrid() ); // No one really does this
 
 		// Snap auto commands
 		add( product, "snap-auto-center", AutoSnap.class, new SnapCenter() );
 		add( product, "snap-auto-midpoint", AutoSnap.class, new SnapMidpoint() );
-		add( product, "snap-auto-nearest", AutoSnap.class, new SnapNearestCp() );
+		add( product, "snap-auto-nearest", AutoSnap.class, new SnapNearest() );
 		add( product, "snap-auto-intersection", AutoSnap.class, new SnapIntersection() );
 		//add( product, "snap-auto-grid", SnapAutoCommand.class, new SnapGrid() ); // No one really does this
 
