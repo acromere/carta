@@ -14,6 +14,7 @@ import com.acromere.event.EventHandler;
 import com.acromere.zerra.javafx.Fx;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.binding.NumberBinding;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -844,21 +845,29 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 		bindCommonShapeGeometry( designBox, box );
 
-		DesignDoubleBinding originXProperty = new DesignDoubleBinding( designBox, DesignBox.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
-		DesignDoubleBinding originYProperty = new DesignDoubleBinding( designBox, DesignBox.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
-		DesignDoubleBinding widthProperty = new DesignDoubleBinding( designBox, DesignBox.SIZE, v -> v.getSize() != null ? v.getSize().getX() : 0.0 );
-		DesignDoubleBinding heightProperty = new DesignDoubleBinding( designBox, DesignBox.SIZE, v -> v.getSize() != null ? v.getSize().getY() : 0.0 );
-		DesignDoubleBinding rotateProperty = new DesignDoubleBinding( designBox, DesignBox.ROTATE, DesignBox::calcRotate );
+		DesignDoubleBinding originXValue = new DesignDoubleBinding( designBox, DesignBox.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
+		DesignDoubleBinding originYValue = new DesignDoubleBinding( designBox, DesignBox.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
+		DesignDoubleBinding widthValue = new DesignDoubleBinding( designBox, DesignBox.SIZE, v -> v.getSize() != null ? v.getSize().getX() : 0.0 );
+		DesignDoubleBinding heightValue = new DesignDoubleBinding( designBox, DesignBox.SIZE, v -> v.getSize() != null ? v.getSize().getY() : 0.0 );
+		DesignDoubleBinding rotateValue = new DesignDoubleBinding( designBox, DesignBox.ROTATE, DesignBox::calcRotate );
 
-		box.xProperty().bind( shapeScaleXProperty().multiply( originXProperty ) );
-		box.yProperty().bind( shapeScaleYProperty().multiply( originYProperty ) );
-		box.widthProperty().bind( shapeScaleXProperty().multiply( widthProperty ) );
-		box.heightProperty().bind( shapeScaleYProperty().multiply( heightProperty ) );
+		// Box supports negative width and height
+		NumberBinding xValue = Bindings.min( originXValue, originXValue.add( widthValue ) );
+		NumberBinding yValue = Bindings.min( originYValue, originYValue.add( heightValue ) );
+		DoubleProperty wValue = new SimpleDoubleProperty();
+		DoubleProperty hValue = new SimpleDoubleProperty();
+		wValue.bind( widthValue.map( d -> Math.abs( (double)d ) ) );
+		hValue.bind( heightValue.map( d -> Math.abs( (double)d ) ) );
+
+		box.xProperty().bind( shapeScaleXProperty().multiply( xValue ) );
+		box.yProperty().bind( shapeScaleYProperty().multiply( yValue ) );
+		box.widthProperty().bind( shapeScaleXProperty().multiply( wValue ) );
+		box.heightProperty().bind( shapeScaleYProperty().multiply( hValue ) );
 
 		Rotate rotate = new Rotate();
-		rotate.angleProperty().bind( rotateProperty );
-		rotate.pivotXProperty().bind( shapeScaleXProperty().multiply( originXProperty ) );
-		rotate.pivotYProperty().bind( shapeScaleYProperty().multiply( originYProperty ) );
+		rotate.angleProperty().bind( rotateValue );
+		rotate.pivotXProperty().bind( shapeScaleXProperty().multiply( originXValue ) );
+		rotate.pivotYProperty().bind( shapeScaleYProperty().multiply( originYValue ) );
 		box.getTransforms().setAll( rotate );
 
 		return box;
