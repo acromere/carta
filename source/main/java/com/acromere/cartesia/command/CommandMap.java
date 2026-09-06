@@ -206,7 +206,7 @@ public final class CommandMap {
 
 		MouseAndGestureMap.CARTESIA.load( this );
 
-		printCommandMapByCommandInMarkdown();
+		//printCommandMapByCommandInMarkdown();
 		//printCommandMapByName();
 
 		return this;
