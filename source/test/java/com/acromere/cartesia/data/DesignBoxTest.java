@@ -4,6 +4,7 @@ import com.acromere.cartesia.math.CadMath;
 import com.acromere.cartesia.math.CadTransform;
 import com.acromere.cartesia.test.Point3DAssert;
 import com.acromere.zerra.color.Paints;
+import com.acromere.zerra.javafx.FxUtil;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point3D;
 import javafx.scene.paint.Color;
@@ -18,6 +19,86 @@ public class DesignBoxTest extends DesignShapeTest {
 
 	DesignBoxTest() {
 		super( new DesignBox( new Point3D( 0, 0, 0 ), new Point3D( 1, 1, 0 ) ) );
+	}
+
+	@Test
+	void testDesignBox() {
+		// when
+		DesignBox box = new DesignBox();
+
+		// then
+		assertThat( box.getOrigin() ).isNull();
+		assertThat( box.getSize() ).isNull();
+		assertThat( box.getRotate() ).isNull();
+	}
+
+	@Test
+	void testDesignBoxWithBounds() {
+		// when
+		DesignBox box = new DesignBox( FxUtil.bounds( new Point3D( 0, 0, 0 ), new Point3D( 3, 4, 0 ) ) );
+
+		// then
+		Point3DAssert.assertThat( box.getOrigin() ).isEqualTo( new Point3D( 1.5, 2, 0 ) );
+		Point3DAssert.assertThat( box.getSize() ).isEqualTo( new Point3D( 3, 4, 0 ) );
+		assertThat( box.getRotate() ).isNull();
+	}
+
+	@Test
+	void testDesignBoxWithBoundsAndRotate() {
+		// when
+		DesignBox box = new DesignBox( FxUtil.bounds( new Point3D( 0, 0, 0 ), new Point3D( 3, 4, 0 ) ), 45 );
+
+		// then
+		Point3DAssert.assertThat( box.getOrigin() ).isEqualTo( new Point3D( 1.5, 2, 0 ) );
+		Point3DAssert.assertThat( box.getSize() ).isEqualTo( new Point3D( 3, 4, 0 ) );
+		assertThat( box.getRotate() ).isEqualTo( "45.0" );
+		assertThat( box.calcRotate() ).isEqualTo( 45.0 );
+	}
+
+	@Test
+	void testDesignBoxWithXYWH() {
+		// when
+		DesignBox box = new DesignBox( 0, 0, 2, 3 );
+
+		// then
+		Point3DAssert.assertThat( box.getOrigin() ).isEqualTo( new Point3D( 0, 0, 0 ) );
+		Point3DAssert.assertThat( box.getSize() ).isEqualTo( new Point3D( 2, 3, 0 ) );
+		assertThat( box.getRotate() ).isNull();
+	}
+
+	@Test
+	void testDesignBoxWithXYWHR() {
+		// when
+		DesignBox box = new DesignBox( 0, 0, 2, 3, 30 );
+
+		// then
+		Point3DAssert.assertThat( box.getOrigin() ).isEqualTo( new Point3D( 0, 0, 0 ) );
+		Point3DAssert.assertThat( box.getSize() ).isEqualTo( new Point3D( 2, 3, 0 ) );
+		assertThat( box.getRotate() ).isEqualTo( "30.0" );
+		assertThat( box.calcRotate() ).isEqualTo( 30.0 );
+	}
+
+	@Test
+	void testDesignBoxWithOriginSize() {
+		// when
+		DesignBox box = new DesignBox( new Point3D( 3, 1, 0 ), new Point3D( 4, 2, 0 ) );
+
+		// then
+		Point3DAssert.assertThat( box.getOrigin() ).isEqualTo( new Point3D( 3, 1, 0 ) );
+		Point3DAssert.assertThat( box.getSize() ).isEqualTo( new Point3D( 4, 2, 0 ) );
+		assertThat( box.getRotate() ).isNull();
+	}
+
+	@Test
+	void testDesignBoxWithOriginSizeRotate() {
+		// when
+		DesignBox box = new DesignBox( new Point3D( 3, 1, 0 ), new Point3D( 4, 2, 0 ), -135.0 );
+
+		// then
+		Point3DAssert.assertThat( box.getOrigin() ).isEqualTo( new Point3D( 3, 1, 0 ) );
+		Point3DAssert.assertThat( box.getSize() ).isEqualTo( new Point3D( 4, 2, 0 ) );
+		assertThat( box.getRotate() ).isEqualTo( "-135.0" );
+		assertThat( box.calcRotate() ).isEqualTo( -135.0 );
 	}
 
 	@Test

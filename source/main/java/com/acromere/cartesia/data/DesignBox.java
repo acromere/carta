@@ -12,6 +12,10 @@ import lombok.CustomLog;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents a box or rectangle. The box is specified with an origin at x,y and
+ * a with and height.
+ */
 @CustomLog
 public class DesignBox extends DesignShape {
 
@@ -22,21 +26,34 @@ public class DesignBox extends DesignShape {
 	public static final String PERIMETER = "perimeter";
 
 	public DesignBox() {
-		this( null, null );
+		this( null, null, null );
+	}
+
+	public DesignBox( Bounds bounds ) {
+		this( bounds.getCenterX(), bounds.getCenterY(), bounds.getWidth(), bounds.getHeight() );
+	}
+
+	public DesignBox( Bounds bounds, double rotate ) {
+		this( bounds.getCenterX(), bounds.getCenterY(), bounds.getWidth(), bounds.getHeight(), rotate );
 	}
 
 	public DesignBox( double x, double y, double w, double h ) {
 		this( new Point3D( x, y, 0 ), new Point3D( w, h, 0 ) );
 	}
 
-	public DesignBox( Bounds bounds ) {
-		this( bounds.getMinX(), bounds.getMinY(), bounds.getWidth(), bounds.getHeight() );
+	public DesignBox( double x, double y, double w, double h, double r ) {
+		this( new Point3D( x, y, 0 ), new Point3D( w, h, 0 ), r );
 	}
 
 	public DesignBox( Point3D origin, Point3D size ) {
+		this( origin, size, null );
+	}
+
+	public DesignBox( Point3D origin, Point3D size, Double rotate ) {
 		super( origin );
 		addModifyingKeys( SIZE );
 		setSize( size );
+		setRotate( rotate == null || rotate == 0.0 ? null : rotate.toString() );
 	}
 
 	@Override
