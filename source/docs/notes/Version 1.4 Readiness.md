@@ -13,8 +13,8 @@ Put all the commands in a table and check that all are operational
 | c3  | 2026-09-05 |   ✓    | Circle 3-Point          | draw-circle-3            |
 | cc  | 2026-09-05 |   ✓    | Circle                  | draw-circle-2            |
 | cp  | 2026-09-05 | Failed | Copy                    | copy                     |
-| cs  | Deprecated |        | Select Window Intersect | select-window-intersect  |
-| ea  | 2026-09-05 | Failed | Ellipse Arc             | draw-ellipse-arc-5       |
+| cs  | Deprecated |  ---   | Select Window Intersect | select-window-intersect  |
+| ea  | 2026-09-05 |   ✓    | Ellipse Arc             | draw-ellipse-arc-5       |
 | ee  | 2026-09-05 |   ✓    | Ellipse                 | draw-ellipse-3           |
 | fl  | 2026-09-05 |   ✓    | Flip                    | flip                     |
 | gg  | 2026-09-05 |   ✓    | Toggle Grid             | grid-toggle              |
@@ -53,7 +53,7 @@ Put all the commands in a table and check that all are operational
 | vsl | 2026-09-05 |   ✓    | Rotate View Left        | camera-view-rotate-left  |
 | vsr | 2026-09-05 |   ✓    | Rotate View Right       | camera-view-rotate-right |
 | vv  | 2026-09-05 | Failed | Curve                   | draw-curve-4             |
-| ws  | Deprecated |        | Select Window Contain   | select-window-contain    |
+| ws  | Deprecated |  ---   | Select Window Contain   | select-window-contain    |
 | wu  |            |        | Update View             | view-update              |
 | wx  |            |        | Delete View             | view-delete              |
 | xt  | 2026-09-05 |   ✓    | Extend                  | extend                   |
