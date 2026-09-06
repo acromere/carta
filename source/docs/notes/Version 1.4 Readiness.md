@@ -7,7 +7,7 @@ Put all the commands in a table and check that all are operational
 |-----|------------|:------:|-------------------------|--------------------------|
 | a3  | 2026-09-05 |   ✓    | Arc 3-Point             | draw-arc-3               |
 | aa  | 2026-09-05 |   ✓    | Arc                     | draw-arc-2               |
-| bb  | 2026-09-05 | Failed | Box 2-Point             | draw-box-2               |
+| bb  | 2026-09-05 |   ✓    | Box 2-Point             | draw-box-2               |
 | bk  | 2026-09-05 |   ✓    | Split                   | split                    |
 | c2  | 2026-09-05 |   ✓    | Circle by Diameter      | draw-circle-diameter-2   |
 | c3  | 2026-09-05 |   ✓    | Circle 3-Point          | draw-circle-3            |
