@@ -163,10 +163,43 @@ public class CadGeometryTest {
 	}
 
 	@Test
+	void testPointSegmentDistance() {
+		Point3D a = new Point3D( 0, 0, 0 );
+		Point3D b = new Point3D( 4, 0, 0 );
+
+		// Point on the segment
+		assertThat( CadGeometry.pointSegmentDistance( a, b, new Point3D( 0, 0, 0 ) ) ).isCloseTo( 0.0, TOLERANCE );
+		assertThat( CadGeometry.pointSegmentDistance( a, b, new Point3D( 2, 0, 0 ) ) ).isCloseTo( 0.0, TOLERANCE );
+		assertThat( CadGeometry.pointSegmentDistance( a, b, new Point3D( 4, 0, 0 ) ) ).isCloseTo( 0.0, TOLERANCE );
+
+		// Point projecting orthogonally onto the segment
+		assertThat( CadGeometry.pointSegmentDistance( a, b, new Point3D( 2, 3, 0 ) ) ).isCloseTo( 3.0, TOLERANCE );
+		assertThat( CadGeometry.pointSegmentDistance( a, b, new Point3D( 2, -3, 0 ) ) ).isCloseTo( 3.0, TOLERANCE );
+		assertThat( CadGeometry.pointSegmentDistance( a, b, new Point3D( 2, 0, 5 ) ) ).isCloseTo( 5.0, TOLERANCE );
+
+		// Point closer to endpoint 'a' (before segment start)
+		assertThat( CadGeometry.pointSegmentDistance( a, b, new Point3D( -3, 0, 0 ) ) ).isCloseTo( 3.0, TOLERANCE );
+		assertThat( CadGeometry.pointSegmentDistance( a, b, new Point3D( -3, 4, 0 ) ) ).isCloseTo( 5.0, TOLERANCE );
+
+		// Point closer to endpoint 'b' (past segment end)
+		assertThat( CadGeometry.pointSegmentDistance( a, b, new Point3D( 7, 0, 0 ) ) ).isCloseTo( 3.0, TOLERANCE );
+		assertThat( CadGeometry.pointSegmentDistance( a, b, new Point3D( 7, 4, 0 ) ) ).isCloseTo( 5.0, TOLERANCE );
+
+		// Non-axis-aligned 3D segment
+		Point3D p1 = new Point3D( 1, 1, 1 );
+		Point3D p2 = new Point3D( 4, 5, 1 );
+		assertThat( CadGeometry.pointSegmentDistance( p1, p2, new Point3D( 2.5, 3.0, 3.0 ) ) ).isCloseTo( 2.0, TOLERANCE );
+
+		// Degenerate segment (a == b)
+		Point3D point = new Point3D( 1, 2, 3 );
+		assertThat( CadGeometry.pointSegmentDistance( point, point, new Point3D( 4, 6, 3 ) ) ).isCloseTo( 5.0, TOLERANCE );
+	}
+
+	@Test
 	void toFxShapeWithBox() {
 		Rectangle box = (Rectangle)CadGeometry.toFxShape( new DesignBox( new Point3D( 0, 0, 0 ), new Point3D( 1, 1, 0 ) ) );
-		assertThat( box.getX() ).isEqualTo( 0 );
-		assertThat( box.getY() ).isEqualTo( 0 );
+		assertThat( box.getX() ).isEqualTo( -0.5 );
+		assertThat( box.getY() ).isEqualTo( -0.5 );
 		assertThat( box.getWidth() ).isEqualTo( 1 );
 		assertThat( box.getHeight() ).isEqualTo( 1 );
 

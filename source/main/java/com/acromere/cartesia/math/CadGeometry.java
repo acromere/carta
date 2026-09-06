@@ -89,6 +89,21 @@ public class CadGeometry {
 	}
 
 	/**
+	 * Get the distance between a point and a line segment. If one of then end
+	 * points is closer, returns the distance to the endpoint.
+	 *
+	 * @param a The first point on the line
+	 * @param b The other point on the line
+	 * @param p The point
+	 * @return The distance between the point and the line
+	 */
+	public static double pointSegmentDistance( Point3D a, Point3D b, Point3D p ) {
+		if( a.equals( b ) ) return p.distance( a );
+		Point3D nearest = CadGeometry.nearestBoundLinePoint( a, b, p );
+		return nearest != null ? p.distance( nearest ) : Math.min( p.distance( a ), p.distance( b ) );
+	}
+
+	/**
 	 * Get the distance between a point and a line.
 	 *
 	 * @param p The point
