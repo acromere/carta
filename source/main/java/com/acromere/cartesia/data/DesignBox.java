@@ -77,7 +77,9 @@ public class DesignBox extends DesignShape {
 
 		Point3D origin = getOrigin();
 		Point3D size = getSize();
-		Bounds bounds = CadGeometry.getBounds( origin, origin.add( size ) );
+		Point3D corner = origin.subtract( size.multiply( 0.5 ) );
+
+		Bounds bounds = CadGeometry.getBounds( corner, corner.add( size ) );
 		return getRotateTransform().apply( bounds );
 	}
 

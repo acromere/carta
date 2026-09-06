@@ -331,7 +331,11 @@ public class CadGeometry {
 		Shape fxShape = switch( shape.getType() ) {
 			case BOX -> {
 				DesignBox box = (DesignBox)shape;
-				yield new Rectangle( box.getOrigin().getX(), box.getOrigin().getY(), box.getSize().getX(), box.getSize().getY() );
+				Point3D origin = box.getOrigin();
+				Point3D size = box.getSize();
+				Point3D corner = origin.subtract( size.multiply( 0.5 ) );
+				Bounds bounds = CadGeometry.getBounds( corner, corner.add( size ) );
+				yield new Rectangle( bounds.getMinX(), bounds.getMinY(), box.getSize().getX(), box.getSize().getY() );
 			}
 			case LINE -> {
 				DesignLine line = (DesignLine)shape;
