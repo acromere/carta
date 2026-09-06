@@ -816,25 +816,25 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 		bindCommonShapeGeometry( designArc, arc );
 
-		DesignDoubleBinding originXProperty = new DesignDoubleBinding( designArc, DesignArc.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
-		DesignDoubleBinding originYProperty = new DesignDoubleBinding( designArc, DesignArc.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
-		DesignDoubleBinding radiusXProperty = new DesignDoubleBinding( designArc, DesignArc.RADII, v -> v.getRadii() != null ? v.getRadii().getX() : 0.0 );
-		DesignDoubleBinding radiusYProperty = new DesignDoubleBinding( designArc, DesignArc.RADII, v -> v.getRadii() != null ? v.getRadii().getY() : 0.0 );
-		DesignDoubleBinding startAngleProperty = new DesignDoubleBinding( designArc, DesignArc.START, DesignArc::calcStart );
-		DesignDoubleBinding lengthProperty = new DesignDoubleBinding( designArc, DesignArc.EXTENT, DesignArc::calcExtent );
-		DesignDoubleBinding rotateProperty = new DesignDoubleBinding( designArc, DesignArc.ROTATE, DesignArc::calcRotate );
+		DesignDoubleBinding originXValue = new DesignDoubleBinding( designArc, DesignArc.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
+		DesignDoubleBinding originYValue = new DesignDoubleBinding( designArc, DesignArc.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
+		DesignDoubleBinding radiusXValue = new DesignDoubleBinding( designArc, DesignArc.RADII, v -> v.getRadii() != null ? v.getRadii().getX() : 0.0 );
+		DesignDoubleBinding radiusYValue = new DesignDoubleBinding( designArc, DesignArc.RADII, v -> v.getRadii() != null ? v.getRadii().getY() : 0.0 );
+		DesignDoubleBinding startAngleValue = new DesignDoubleBinding( designArc, DesignArc.START, DesignArc::calcStart );
+		DesignDoubleBinding lengthValue = new DesignDoubleBinding( designArc, DesignArc.EXTENT, DesignArc::calcExtent );
+		DesignDoubleBinding rotateValue = new DesignDoubleBinding( designArc, DesignArc.ROTATE, DesignArc::calcRotate );
 
-		arc.centerXProperty().bind( shapeScaleXProperty().multiply( originXProperty ) );
-		arc.centerYProperty().bind( shapeScaleYProperty().multiply( originYProperty ) );
-		arc.radiusXProperty().bind( shapeScaleXProperty().multiply( radiusXProperty ) );
-		arc.radiusYProperty().bind( shapeScaleYProperty().multiply( radiusYProperty ) );
-		arc.startAngleProperty().bind( startAngleProperty.negate() );
-		arc.lengthProperty().bind( lengthProperty.negate() );
+		arc.centerXProperty().bind( shapeScaleXProperty().multiply( originXValue ) );
+		arc.centerYProperty().bind( shapeScaleYProperty().multiply( originYValue ) );
+		arc.radiusXProperty().bind( shapeScaleXProperty().multiply( radiusXValue ) );
+		arc.radiusYProperty().bind( shapeScaleYProperty().multiply( radiusYValue ) );
+		arc.startAngleProperty().bind( startAngleValue.negate() );
+		arc.lengthProperty().bind( lengthValue.negate() );
 
 		Rotate rotate = new Rotate();
-		rotate.angleProperty().bind( rotateProperty );
-		rotate.pivotXProperty().bind( shapeScaleXProperty().multiply( originXProperty ) );
-		rotate.pivotYProperty().bind( shapeScaleYProperty().multiply( originYProperty ) );
+		rotate.angleProperty().bind( rotateValue );
+		rotate.pivotXProperty().bind( shapeScaleXProperty().multiply( originXValue ) );
+		rotate.pivotYProperty().bind( shapeScaleYProperty().multiply( originYValue ) );
 		arc.getTransforms().setAll( rotate );
 
 		return arc;
@@ -878,23 +878,23 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 		bindCommonShapeGeometry( designCubic, quad );
 
-		DesignDoubleBinding startXProperty = new DesignDoubleBinding( designCubic, DesignQuad.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
-		DesignDoubleBinding startYProperty = new DesignDoubleBinding( designCubic, DesignQuad.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
-		DesignDoubleBinding originControlXProperty = new DesignDoubleBinding( designCubic, DesignQuad.CONTROL, v -> v.getOriginControl() != null ? v.getOriginControl().getX() : 0.0 );
-		DesignDoubleBinding originControlYProperty = new DesignDoubleBinding( designCubic, DesignQuad.CONTROL, v -> v.getOriginControl() != null ? v.getOriginControl().getY() : 0.0 );
-		DesignDoubleBinding pointControlXProperty = new DesignDoubleBinding( designCubic, DesignQuad.POINT, v -> v.getPointControl() != null ? v.getPointControl().getX() : 0.0 );
-		DesignDoubleBinding pointControlYProperty = new DesignDoubleBinding( designCubic, DesignQuad.POINT, v -> v.getPointControl() != null ? v.getPointControl().getY() : 0.0 );
-		DesignDoubleBinding pointXProperty = new DesignDoubleBinding( designCubic, DesignQuad.POINT, v -> v.getPoint() != null ? v.getPoint().getX() : 0.0 );
-		DesignDoubleBinding pointYProperty = new DesignDoubleBinding( designCubic, DesignQuad.POINT, v -> v.getPoint() != null ? v.getPoint().getY() : 0.0 );
+		DesignDoubleBinding startXValue = new DesignDoubleBinding( designCubic, DesignQuad.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
+		DesignDoubleBinding startYValue = new DesignDoubleBinding( designCubic, DesignQuad.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
+		DesignDoubleBinding originControlXValue = new DesignDoubleBinding( designCubic, DesignQuad.CONTROL, v -> v.getOriginControl() != null ? v.getOriginControl().getX() : 0.0 );
+		DesignDoubleBinding originControlYValue = new DesignDoubleBinding( designCubic, DesignQuad.CONTROL, v -> v.getOriginControl() != null ? v.getOriginControl().getY() : 0.0 );
+		DesignDoubleBinding pointControlXValue = new DesignDoubleBinding( designCubic, DesignQuad.POINT, v -> v.getPointControl() != null ? v.getPointControl().getX() : 0.0 );
+		DesignDoubleBinding pointControlYValue = new DesignDoubleBinding( designCubic, DesignQuad.POINT, v -> v.getPointControl() != null ? v.getPointControl().getY() : 0.0 );
+		DesignDoubleBinding pointXValue = new DesignDoubleBinding( designCubic, DesignQuad.POINT, v -> v.getPoint() != null ? v.getPoint().getX() : 0.0 );
+		DesignDoubleBinding pointYValue = new DesignDoubleBinding( designCubic, DesignQuad.POINT, v -> v.getPoint() != null ? v.getPoint().getY() : 0.0 );
 
-		quad.startXProperty().bind( shapeScaleXProperty().multiply( startXProperty ) );
-		quad.startYProperty().bind( shapeScaleYProperty().multiply( startYProperty ) );
-		quad.controlX1Property().bind( shapeScaleXProperty().multiply( originControlXProperty ) );
-		quad.controlY1Property().bind( shapeScaleYProperty().multiply( originControlYProperty ) );
-		quad.controlX2Property().bind( shapeScaleXProperty().multiply( pointControlXProperty ) );
-		quad.controlY2Property().bind( shapeScaleYProperty().multiply( pointControlYProperty ) );
-		quad.endXProperty().bind( shapeScaleXProperty().multiply( pointXProperty ) );
-		quad.endYProperty().bind( shapeScaleYProperty().multiply( pointYProperty ) );
+		quad.startXProperty().bind( shapeScaleXProperty().multiply( startXValue ) );
+		quad.startYProperty().bind( shapeScaleYProperty().multiply( startYValue ) );
+		quad.controlX1Property().bind( shapeScaleXProperty().multiply( originControlXValue ) );
+		quad.controlY1Property().bind( shapeScaleYProperty().multiply( originControlYValue ) );
+		quad.controlX2Property().bind( shapeScaleXProperty().multiply( pointControlXValue ) );
+		quad.controlY2Property().bind( shapeScaleYProperty().multiply( pointControlYValue ) );
+		quad.endXProperty().bind( shapeScaleXProperty().multiply( pointXValue ) );
+		quad.endYProperty().bind( shapeScaleYProperty().multiply( pointYValue ) );
 
 		return quad;
 	}
@@ -904,21 +904,21 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 		bindCommonShapeGeometry( designEllipse, ellipse );
 
-		DesignDoubleBinding originXProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
-		DesignDoubleBinding originYProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
-		DesignDoubleBinding radiusXProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.RADII, v -> v.getRadii() != null ? v.getRadii().getX() : 0.0 );
-		DesignDoubleBinding radiusYProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.RADII, v -> v.getRadii() != null ? v.getRadii().getY() : 0.0 );
-		DesignDoubleBinding rotateProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.ROTATE, DesignEllipse::calcRotate );
+		DesignDoubleBinding originXValue = new DesignDoubleBinding( designEllipse, DesignEllipse.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
+		DesignDoubleBinding originYValue = new DesignDoubleBinding( designEllipse, DesignEllipse.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
+		DesignDoubleBinding radiusXValue = new DesignDoubleBinding( designEllipse, DesignEllipse.RADII, v -> v.getRadii() != null ? v.getRadii().getX() : 0.0 );
+		DesignDoubleBinding radiusYValue = new DesignDoubleBinding( designEllipse, DesignEllipse.RADII, v -> v.getRadii() != null ? v.getRadii().getY() : 0.0 );
+		DesignDoubleBinding rotateValue = new DesignDoubleBinding( designEllipse, DesignEllipse.ROTATE, DesignEllipse::calcRotate );
 
-		ellipse.centerXProperty().bind( shapeScaleXProperty().multiply( originXProperty ) );
-		ellipse.centerYProperty().bind( shapeScaleYProperty().multiply( originYProperty ) );
-		ellipse.radiusXProperty().bind( shapeScaleXProperty().multiply( radiusXProperty ) );
-		ellipse.radiusYProperty().bind( shapeScaleYProperty().multiply( radiusYProperty ) );
+		ellipse.centerXProperty().bind( shapeScaleXProperty().multiply( originXValue ) );
+		ellipse.centerYProperty().bind( shapeScaleYProperty().multiply( originYValue ) );
+		ellipse.radiusXProperty().bind( shapeScaleXProperty().multiply( radiusXValue ) );
+		ellipse.radiusYProperty().bind( shapeScaleYProperty().multiply( radiusYValue ) );
 
 		Rotate rotate = new Rotate();
-		rotate.angleProperty().bind( rotateProperty );
-		rotate.pivotXProperty().bind( shapeScaleXProperty().multiply( originXProperty ) );
-		rotate.pivotYProperty().bind( shapeScaleYProperty().multiply( originYProperty ) );
+		rotate.angleProperty().bind( rotateValue );
+		rotate.pivotXProperty().bind( shapeScaleXProperty().multiply( originXValue ) );
+		rotate.pivotYProperty().bind( shapeScaleYProperty().multiply( originYValue ) );
 		ellipse.getTransforms().setAll( rotate );
 
 		return ellipse;
@@ -929,15 +929,15 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 		bindCommonShapeGeometry( designLine, line );
 
-		DesignDoubleBinding startXProperty = new DesignDoubleBinding( designLine, DesignLine.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
-		DesignDoubleBinding startYProperty = new DesignDoubleBinding( designLine, DesignLine.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
-		DesignDoubleBinding pointXProperty = new DesignDoubleBinding( designLine, DesignLine.POINT, v -> v.getPoint() != null ? v.getPoint().getX() : 0.0 );
-		DesignDoubleBinding pointYProperty = new DesignDoubleBinding( designLine, DesignLine.POINT, v -> v.getPoint() != null ? v.getPoint().getY() : 0.0 );
+		DesignDoubleBinding startXValue = new DesignDoubleBinding( designLine, DesignLine.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
+		DesignDoubleBinding startYValue = new DesignDoubleBinding( designLine, DesignLine.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
+		DesignDoubleBinding pointXValue = new DesignDoubleBinding( designLine, DesignLine.POINT, v -> v.getPoint() != null ? v.getPoint().getX() : 0.0 );
+		DesignDoubleBinding pointYValue = new DesignDoubleBinding( designLine, DesignLine.POINT, v -> v.getPoint() != null ? v.getPoint().getY() : 0.0 );
 
-		line.startXProperty().bind( shapeScaleXProperty().multiply( startXProperty ) );
-		line.startYProperty().bind( shapeScaleYProperty().multiply( startYProperty ) );
-		line.endXProperty().bind( shapeScaleXProperty().multiply( pointXProperty ) );
-		line.endYProperty().bind( shapeScaleYProperty().multiply( pointYProperty ) );
+		line.startXProperty().bind( shapeScaleXProperty().multiply( startXValue ) );
+		line.startYProperty().bind( shapeScaleYProperty().multiply( startYValue ) );
+		line.endXProperty().bind( shapeScaleXProperty().multiply( pointXValue ) );
+		line.endYProperty().bind( shapeScaleYProperty().multiply( pointYValue ) );
 
 		return line;
 	}
@@ -996,19 +996,19 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 		bindCommonShapeGeometry( designQuad, quad );
 
-		DesignDoubleBinding startXProperty = new DesignDoubleBinding( designQuad, DesignQuad.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
-		DesignDoubleBinding startYProperty = new DesignDoubleBinding( designQuad, DesignQuad.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
-		DesignDoubleBinding controlXProperty = new DesignDoubleBinding( designQuad, DesignQuad.CONTROL, v -> v.getControl() != null ? v.getControl().getX() : 0.0 );
-		DesignDoubleBinding controlYProperty = new DesignDoubleBinding( designQuad, DesignQuad.CONTROL, v -> v.getControl() != null ? v.getControl().getY() : 0.0 );
-		DesignDoubleBinding pointXProperty = new DesignDoubleBinding( designQuad, DesignQuad.POINT, v -> v.getPoint() != null ? v.getPoint().getX() : 0.0 );
-		DesignDoubleBinding pointYProperty = new DesignDoubleBinding( designQuad, DesignQuad.POINT, v -> v.getPoint() != null ? v.getPoint().getY() : 0.0 );
+		DesignDoubleBinding startXValue = new DesignDoubleBinding( designQuad, DesignQuad.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
+		DesignDoubleBinding startYValue = new DesignDoubleBinding( designQuad, DesignQuad.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
+		DesignDoubleBinding controlXValue = new DesignDoubleBinding( designQuad, DesignQuad.CONTROL, v -> v.getControl() != null ? v.getControl().getX() : 0.0 );
+		DesignDoubleBinding controlYValue = new DesignDoubleBinding( designQuad, DesignQuad.CONTROL, v -> v.getControl() != null ? v.getControl().getY() : 0.0 );
+		DesignDoubleBinding pointXValue = new DesignDoubleBinding( designQuad, DesignQuad.POINT, v -> v.getPoint() != null ? v.getPoint().getX() : 0.0 );
+		DesignDoubleBinding pointYValue = new DesignDoubleBinding( designQuad, DesignQuad.POINT, v -> v.getPoint() != null ? v.getPoint().getY() : 0.0 );
 
-		quad.startXProperty().bind( shapeScaleXProperty().multiply( startXProperty ) );
-		quad.startYProperty().bind( shapeScaleYProperty().multiply( startYProperty ) );
-		quad.controlXProperty().bind( shapeScaleXProperty().multiply( controlXProperty ) );
-		quad.controlYProperty().bind( shapeScaleYProperty().multiply( controlYProperty ) );
-		quad.endXProperty().bind( shapeScaleXProperty().multiply( pointXProperty ) );
-		quad.endYProperty().bind( shapeScaleYProperty().multiply( pointYProperty ) );
+		quad.startXProperty().bind( shapeScaleXProperty().multiply( startXValue ) );
+		quad.startYProperty().bind( shapeScaleYProperty().multiply( startYValue ) );
+		quad.controlXProperty().bind( shapeScaleXProperty().multiply( controlXValue ) );
+		quad.controlYProperty().bind( shapeScaleYProperty().multiply( controlYValue ) );
+		quad.endXProperty().bind( shapeScaleXProperty().multiply( pointXValue ) );
+		quad.endYProperty().bind( shapeScaleYProperty().multiply( pointYValue ) );
 
 		return quad;
 	}
@@ -1019,33 +1019,30 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 		bindCommonShapeGeometry( designText, text );
 
-		DesignDoubleBinding originXProperty = new DesignDoubleBinding( designText, DesignText.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
-		DesignDoubleBinding originYProperty = new DesignDoubleBinding( designText, DesignText.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
-		DesignDoubleBinding rotateProperty = new DesignDoubleBinding( designText, DesignText.ROTATE, DesignShape::calcRotate );
-		DesignBinding<String> textProperty = new DesignBinding<>( designText, DesignText.TEXT, DesignText::getText );
-		DesignBinding<String> fontNameProperty = new DesignBinding<>( designText, DesignText.FONT_NAME, DesignText::getFontName );
-		DesignBinding<FontWeight> fontWeightProperty = new DesignBinding<>( designText, DesignText.FONT_WEIGHT, DesignText::calcFontWeight );
-		DesignBinding<FontPosture> fontPostureProperty = new DesignBinding<>( designText, DesignText.FONT_POSTURE, DesignText::calcFontPosture );
-		DesignDoubleBinding textSizeProperty = new DesignDoubleBinding( designText, DesignText.TEXT_SIZE, DesignText::calcTextSize );
+		DesignDoubleBinding originXValue = new DesignDoubleBinding( designText, DesignText.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
+		DesignDoubleBinding originYValue = new DesignDoubleBinding( designText, DesignText.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
+		DesignDoubleBinding rotateValue = new DesignDoubleBinding( designText, DesignText.ROTATE, DesignShape::calcRotate );
+		DesignBinding<String> textValue = new DesignBinding<>( designText, DesignText.TEXT, DesignText::getText );
+		DesignBinding<String> fontNameValue = new DesignBinding<>( designText, DesignText.FONT_NAME, DesignText::getFontName );
+		DesignBinding<FontWeight> fontWeightValue = new DesignBinding<>( designText, DesignText.FONT_WEIGHT, DesignText::calcFontWeight );
+		DesignBinding<FontPosture> fontPostureValue = new DesignBinding<>( designText, DesignText.FONT_POSTURE, DesignText::calcFontPosture );
+		DesignDoubleBinding textSizeValue = new DesignDoubleBinding( designText, DesignText.TEXT_SIZE, DesignText::calcTextSize );
 
-		text.textProperty().bind( textProperty );
+		text.textProperty().bind( textValue );
 
-		text.xProperty().bind( shapeScaleXProperty().multiply( originXProperty ) );
-		text.yProperty().bind( shapeScaleYProperty().multiply( originYProperty ).negate() );
+		text.xProperty().bind( shapeScaleXProperty().multiply( originXValue ) );
+		text.yProperty().bind( shapeScaleYProperty().multiply( originYValue ).negate() );
 
 		text.fontProperty().bind( Bindings.createObjectBinding(
-			() -> Font.font( fontNameProperty.get(), designText.calcFontWeight(), designText.calcFontPosture(), textSizeProperty.get() * shapeScaleYProperty().get() ),
-			fontNameProperty,
-			fontWeightProperty,
-			fontPostureProperty,
-			textSizeProperty,
+			() -> Font.font( fontNameValue.get(), designText.calcFontWeight(), designText.calcFontPosture(), textSizeValue.get() * shapeScaleYProperty().get() ), fontNameValue, fontWeightValue,
+			fontPostureValue, textSizeValue,
 			shapeScaleYProperty()
 		) );
 
 		Rotate rotate = new Rotate();
-		rotate.angleProperty().bind( rotateProperty );
-		rotate.pivotXProperty().bind( shapeScaleXProperty().multiply( originXProperty ) );
-		rotate.pivotYProperty().bind( shapeScaleYProperty().multiply( originYProperty ) );
+		rotate.angleProperty().bind( rotateValue );
+		rotate.pivotXProperty().bind( shapeScaleXProperty().multiply( originXValue ) );
+		rotate.pivotYProperty().bind( shapeScaleYProperty().multiply( originYValue ) );
 
 		// Rotate must be before scale
 		text.getTransforms().setAll( rotate, Transform.scale( 1, -1 ) );
@@ -1096,16 +1093,16 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		bindCommonApertureGeometry( designEllipse, ellipse );
 
 		DesignBooleanBinding apertureVisible = new DesignBooleanBinding( designEllipse, DesignShape.VISIBLE, DesignShape::isVisible );
-		DesignDoubleBinding originXProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
-		DesignDoubleBinding originYProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
-		DesignDoubleBinding radiusXProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.RADII, v -> v.getRadii() != null ? v.getRadii().getX() : 0.0 );
-		DesignDoubleBinding radiusYProperty = new DesignDoubleBinding( designEllipse, DesignEllipse.RADII, v -> v.getRadii() != null ? v.getRadii().getY() : 0.0 );
+		DesignDoubleBinding originXValue = new DesignDoubleBinding( designEllipse, DesignEllipse.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
+		DesignDoubleBinding originYValue = new DesignDoubleBinding( designEllipse, DesignEllipse.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
+		DesignDoubleBinding radiusXValue = new DesignDoubleBinding( designEllipse, DesignEllipse.RADII, v -> v.getRadii() != null ? v.getRadii().getX() : 0.0 );
+		DesignDoubleBinding radiusYValue = new DesignDoubleBinding( designEllipse, DesignEllipse.RADII, v -> v.getRadii() != null ? v.getRadii().getY() : 0.0 );
 
 		ellipse.visibleProperty().bind( Bindings.and( hotspotVisible(), apertureVisible ) );
-		ellipse.centerXProperty().bind( shapeScaleXProperty().multiply( originXProperty ) );
-		ellipse.centerYProperty().bind( shapeScaleYProperty().multiply( originYProperty ) );
-		ellipse.radiusXProperty().bind( apertureShapeScaleX.multiply( radiusXProperty ).divide( viewZoomXProperty() ) );
-		ellipse.radiusYProperty().bind( apertureShapeScaleY.multiply( radiusYProperty ).divide( viewZoomYProperty() ) );
+		ellipse.centerXProperty().bind( shapeScaleXProperty().multiply( originXValue ) );
+		ellipse.centerYProperty().bind( shapeScaleYProperty().multiply( originYValue ) );
+		ellipse.radiusXProperty().bind( apertureShapeScaleX.multiply( radiusXValue ).divide( viewZoomXProperty() ) );
+		ellipse.radiusYProperty().bind( apertureShapeScaleY.multiply( radiusYValue ).divide( viewZoomYProperty() ) );
 
 		return ellipse;
 	}
@@ -1115,16 +1112,16 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 		bindCommonApertureGeometry( designBox, box );
 
-		DesignDoubleBinding originXProperty = new DesignDoubleBinding( designBox, DesignBox.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
-		DesignDoubleBinding originYProperty = new DesignDoubleBinding( designBox, DesignBox.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
-		DesignDoubleBinding widthProperty = new DesignDoubleBinding( designBox, DesignBox.SIZE, v -> v.getSize() != null ? v.getSize().getX() : 0.0 );
-		DesignDoubleBinding heightProperty = new DesignDoubleBinding( designBox, DesignBox.SIZE, v -> v.getSize() != null ? v.getSize().getY() : 0.0 );
+		DesignDoubleBinding originXValue = new DesignDoubleBinding( designBox, DesignBox.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
+		DesignDoubleBinding originYValue = new DesignDoubleBinding( designBox, DesignBox.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
+		DesignDoubleBinding widthValue = new DesignDoubleBinding( designBox, DesignBox.SIZE, v -> v.getSize() != null ? v.getSize().getX() : 0.0 );
+		DesignDoubleBinding heightValue = new DesignDoubleBinding( designBox, DesignBox.SIZE, v -> v.getSize() != null ? v.getSize().getY() : 0.0 );
 
 		box.visibleProperty().bind( new DesignBinding<>( designBox, DesignShape.VISIBLE, DesignShape::isVisible ) );
-		box.xProperty().bind( shapeScaleXProperty().multiply( originXProperty ) );
-		box.yProperty().bind( shapeScaleYProperty().multiply( originYProperty ) );
-		box.widthProperty().bind( shapeScaleXProperty().multiply( widthProperty ) );
-		box.heightProperty().bind( shapeScaleYProperty().multiply( heightProperty ) );
+		box.xProperty().bind( shapeScaleXProperty().multiply( originXValue ) );
+		box.yProperty().bind( shapeScaleYProperty().multiply( originYValue ) );
+		box.widthProperty().bind( shapeScaleXProperty().multiply( widthValue ) );
+		box.heightProperty().bind( shapeScaleYProperty().multiply( heightValue ) );
 
 		return box;
 	}
@@ -1138,12 +1135,12 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 * @param shape The target FX shape
 	 */
 	private void bindCommonApertureGeometry( DesignShape designShape, Shape shape ) {
-		DesignDoubleBinding strokeWidthProperty = new DesignDoubleBinding( designShape, DesignShape.DRAW_WIDTH, DesignShape::calcDrawWidth );
+		DesignDoubleBinding strokeWidthValue = new DesignDoubleBinding( designShape, DesignShape.DRAW_WIDTH, DesignShape::calcDrawWidth );
 
 		shape.fillProperty().bind( new DesignBinding<>( designShape, DesignShape.FILL_PAINT, DesignShape::calcFillPaint ) );
 		shape.setStrokeType( StrokeType.INSIDE );
 		shape.strokeProperty().bind( new DesignBinding<>( designShape, DesignShape.DRAW_PAINT, DesignShape::calcDrawPaint ) );
-		shape.strokeWidthProperty().bind( apertureShapeScaleX.multiply( strokeWidthProperty ).divide( viewZoomXProperty() ).multiply( outputScaleXProperty() ) );
+		shape.strokeWidthProperty().bind( apertureShapeScaleX.multiply( strokeWidthValue ).divide( viewZoomXProperty() ).multiply( outputScaleXProperty() ) );
 	}
 
 	private record GeometryKey(DesignRenderer renderer, DesignDrawable drawable) {}
