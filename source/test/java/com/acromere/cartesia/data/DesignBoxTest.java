@@ -216,21 +216,20 @@ public class DesignBoxTest extends DesignShapeTest {
 	@Test
 	void getReferencePoints() {
 		// given
+		double a = 0.5 * CadMath.SQRT2_OVER_2;
+		double b = CadMath.SQRT2_OVER_2;
 		DesignBox box = new DesignBox( new Point3D( 1, 1, 0 ), new Point3D( 2, 1, 0 ) );
 		box.setRotate( 45 );
-		assertThat( box.getSize() ).isEqualTo( new Point3D( 2, 1, 0 ) );
-
-		double a = 2 * CadMath.SQRT2_OVER_2;
-		double b = 1 * CadMath.SQRT2_OVER_2;
 
 		// when
 		List<Point3D> points = box.getReferencePoints();
 
 		// then
-		Point3DAssert.assertThat( points.getFirst() ).isCloseTo( new Point3D( 1, 1, 0 ) );
-		Point3DAssert.assertThat( points.get( 1 ) ).isCloseTo( new Point3D( 1 + a, 1 + a, 0 ) );
-		Point3DAssert.assertThat( points.get( 2 ) ).isCloseTo( new Point3D( 1 + a - b, 1 + a + b, 0 ) );
-		Point3DAssert.assertThat( points.get( 3 ) ).isCloseTo( new Point3D( 1 - b, 1 + b, 0 ) );
+		assertThat( box.getSize() ).isEqualTo( new Point3D( 2, 1, 0 ) );
+		Point3DAssert.assertThat( points.get( 0 ) ).isCloseTo( new Point3D( 1 - a, 1 - a - b, 0 ) );
+		Point3DAssert.assertThat( points.get( 1 ) ).isCloseTo( new Point3D( 1 + a + b, 1 + a, 0 ) );
+		Point3DAssert.assertThat( points.get( 2 ) ).isCloseTo( new Point3D( 1 + a, 1 + a + b, 0 ) );
+		Point3DAssert.assertThat( points.get( 3 ) ).isCloseTo( new Point3D( 1 - a - b, 1 - a, 0 ) );
 		assertThat( points ).hasSize( 4 );
 	}
 
