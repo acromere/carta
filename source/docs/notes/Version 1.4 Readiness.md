@@ -53,7 +53,7 @@ Put all the commands in a table and check that all are operational
 | vr  | 2026-09-05 |   ✓    | Set View Right          | camera-view-right        |
 | vsl | 2026-09-05 |   ✓    | Rotate View Left        | camera-view-rotate-left  |
 | vsr | 2026-09-05 |   ✓    | Rotate View Right       | camera-view-rotate-right |
-| vv  | 2026-09-05 | Failed | Curve                   | draw-curve-4             |
+| vv  | 2026-09-05 |   ✓    | Curve                   | draw-curve-4             |
 | sw  | 2026-09-06 |   ✓    | Select Window Contain   | select-window-contain    |
 | wu  |            |        | Update View             | view-update              |
 | wx  |            |        | Delete View             | view-delete              |

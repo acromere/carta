@@ -36,6 +36,7 @@ public class DrawCurve4 extends DrawCommand {
 		// Step 3
 		if( task.getParameterCount() == 2 ) {
 			if( preview == null ) preview = createPreviewCubic( task );
+			preview.setOrigin( asPoint( task, "start-point", 0 ) );
 			preview.setOriginControl( asPoint( task, "control-point", 1 ) );
 			promptForPoint( task, "control-point" );
 			return INCOMPLETE;
@@ -44,6 +45,8 @@ public class DrawCurve4 extends DrawCommand {
 		// Step 4
 		if( task.getParameterCount() == 3 ) {
 			if( preview == null ) preview = createPreviewCubic( task );
+			preview.setOrigin( asPoint( task, "start-point", 0 ) );
+			preview.setOriginControl( asPoint( task, "control-point", 1 ) );
 			preview.setPointControl( asPoint( task, "control-point", 2 ) );
 			promptForPoint( task, "end-point" );
 			return INCOMPLETE;

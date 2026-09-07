@@ -882,14 +882,14 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 		bindCommonShapeGeometry( designCubic, quad );
 
-		DesignDoubleBinding startXValue = new DesignDoubleBinding( designCubic, DesignQuad.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
-		DesignDoubleBinding startYValue = new DesignDoubleBinding( designCubic, DesignQuad.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
-		DesignDoubleBinding originControlXValue = new DesignDoubleBinding( designCubic, DesignQuad.CONTROL, v -> v.getOriginControl() != null ? v.getOriginControl().getX() : 0.0 );
-		DesignDoubleBinding originControlYValue = new DesignDoubleBinding( designCubic, DesignQuad.CONTROL, v -> v.getOriginControl() != null ? v.getOriginControl().getY() : 0.0 );
-		DesignDoubleBinding pointControlXValue = new DesignDoubleBinding( designCubic, DesignQuad.POINT, v -> v.getPointControl() != null ? v.getPointControl().getX() : 0.0 );
-		DesignDoubleBinding pointControlYValue = new DesignDoubleBinding( designCubic, DesignQuad.POINT, v -> v.getPointControl() != null ? v.getPointControl().getY() : 0.0 );
-		DesignDoubleBinding pointXValue = new DesignDoubleBinding( designCubic, DesignQuad.POINT, v -> v.getPoint() != null ? v.getPoint().getX() : 0.0 );
-		DesignDoubleBinding pointYValue = new DesignDoubleBinding( designCubic, DesignQuad.POINT, v -> v.getPoint() != null ? v.getPoint().getY() : 0.0 );
+		DesignDoubleBinding startXValue = new DesignDoubleBinding( designCubic, DesignCubic.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
+		DesignDoubleBinding startYValue = new DesignDoubleBinding( designCubic, DesignCubic.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
+		DesignDoubleBinding originControlXValue = new DesignDoubleBinding( designCubic, DesignCubic.ORIGIN_CONTROL, v -> v.getOriginControl() != null ? v.getOriginControl().getX() : 0.0 );
+		DesignDoubleBinding originControlYValue = new DesignDoubleBinding( designCubic, DesignCubic.ORIGIN_CONTROL, v -> v.getOriginControl() != null ? v.getOriginControl().getY() : 0.0 );
+		DesignDoubleBinding pointControlXValue = new DesignDoubleBinding( designCubic, DesignCubic.POINT_CONTROL, v -> v.getPointControl() != null ? v.getPointControl().getX() : 0.0 );
+		DesignDoubleBinding pointControlYValue = new DesignDoubleBinding( designCubic, DesignCubic.POINT_CONTROL, v -> v.getPointControl() != null ? v.getPointControl().getY() : 0.0 );
+		DesignDoubleBinding pointXValue = new DesignDoubleBinding( designCubic, DesignCubic.POINT, v -> v.getPoint() != null ? v.getPoint().getX() : 0.0 );
+		DesignDoubleBinding pointYValue = new DesignDoubleBinding( designCubic, DesignCubic.POINT, v -> v.getPoint() != null ? v.getPoint().getY() : 0.0 );
 
 		quad.startXProperty().bind( shapeScaleXProperty().multiply( startXValue ) );
 		quad.startYProperty().bind( shapeScaleYProperty().multiply( startYValue ) );
