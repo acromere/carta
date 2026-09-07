@@ -68,14 +68,6 @@ public abstract class DesignShape extends DesignDrawable {
 	@Deprecated
 	private boolean preview;
 
-	// Convenience method for rendering
-
-	/**
-	 * The selected flag is a special flag that indicates the shape is a selected
-	 * shape. This flag is used to optimize the rendering process.
-	 */
-	private boolean selected;
-
 	public DesignShape() {
 		this( null );
 	}
@@ -182,6 +174,7 @@ public abstract class DesignShape extends DesignDrawable {
 
 	protected Bounds computeGeometricBounds() {
 		Shape shape = getFxShape();
+		if( shape == null ) return null;
 		shape.setStrokeWidth( 0 );
 		Bounds bounds = shape.getBoundsInParent();
 		shape.setStrokeWidth( calcDrawWidth() );
@@ -199,8 +192,17 @@ public abstract class DesignShape extends DesignDrawable {
 
 	protected Bounds computeSelectBounds() {
 		Shape shape = getFxShape();
+		if( shape == null ) return null;
 		shape.setStrokeWidth( calcDrawWidth() );
 		return shape.getBoundsInParent();
+	}
+
+	@Override
+	protected void invalidateCache( String key ) {
+		super.invalidateCache( key );
+		getCache().remove( CACHE_FX_SHAPE );
+		getCache().remove( CACHE_BOUNDS );
+		getCache().remove( CACHE_SELECT_BOUNDS );
 	}
 
 	public List<Point3D> getReferencePoints() {
@@ -259,7 +261,7 @@ public abstract class DesignShape extends DesignDrawable {
 
 	protected Map<String, Object> asMap() {
 		Map<String, Object> map = super.asMap();
-		map.putAll( asMap( ORIGIN ) );
+		map.putAll( asMap( ORIGIN, ROTATE ) );
 		return map;
 	}
 
@@ -274,7 +276,7 @@ public abstract class DesignShape extends DesignDrawable {
 		try( Txn ignore = Txn.create() ) {
 			this.setOrigin( shape.getOrigin() );
 		} catch( TxnException exception ) {
-			log.atWarn().log( "Unable to update curve" );
+			log.atWarn().log( "Unable to update shape" );
 		}
 
 		return this;
@@ -283,8 +285,8 @@ public abstract class DesignShape extends DesignDrawable {
 	@Override
 	public <T extends DataNode> Comparator<T> getNaturalComparator() {
 		return ( a, b ) -> {
-			if( a instanceof DesignShape && b instanceof DesignShape ) {
-				return ((DesignShape)b).getOrder() - ((DesignShape)a).getOrder();
+			if( (a == null || a instanceof DesignShape) && (b == null || b instanceof DesignShape) ) {
+				return getComparator().compare( (DesignShape)a, (DesignShape)b );
 			} else {
 				return 0;
 			}
