@@ -349,9 +349,9 @@ public class CommandContext implements EventHandler<KeyEvent> {
 				log.atConfig().log( "Pull command=%s", task.getCommand() );
 
 				if( task.getCommand() instanceof Value ) {
-					Object[] parameters = (Object[])stepResult;
-					Object parameter0 = parameters[ 0 ];
-					if( parameter0 instanceof Point3D ) setWorldAnchor( (Point3D)parameter0 );
+					if( stepResult instanceof Object[] array ) {
+						if( array[ 0 ] instanceof Point3D point ) setWorldAnchor( point );
+					}
 				}
 
 				// Pass the task result to the next task

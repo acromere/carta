@@ -62,7 +62,7 @@ public abstract class SelectByWindow extends SelectCommand {
 					task.getTool().setSelectAperture( POINT_SELECT_APERTURE );
 					return SUCCESS;
 				} else {
-					// The anchor had already been submitted, we only need to return the corner
+					// The anchor was set by SelectByPoint, only return the corner
 					return worldCorner;
 				}
 			}
