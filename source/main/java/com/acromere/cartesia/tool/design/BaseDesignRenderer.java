@@ -639,9 +639,15 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 
 		// This is the slow but accurate test if the shape is matched,
 		// even when the selector is not a box
-		Shape intersection = Shape.intersect( fxSelector, fxShape );
+		return matches( fxShape, fxSelector, intersect );
+	}
 
-		return intersect != intersection.getBoundsInLocal().isEmpty();
+	boolean matches( Shape fxShape, Shape fxSelector, boolean intersect ) {
+		if( intersect ) {
+			return !Shape.intersect( fxShape, fxSelector ).getBoundsInLocal().isEmpty();
+		} else {
+			return Shape.subtract( fxShape, fxSelector ).getBoundsInLocal().isEmpty();
+		}
 	}
 
 }

@@ -15,8 +15,12 @@ import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static com.acromere.cartesia.TestTimeouts.FX_STABILITY_TIMEOUT;
 import static com.acromere.cartesia.tool.RenderConstants.WINDOW_SELECT_APERTURE;
@@ -219,6 +223,44 @@ public abstract class BaseDesignRendererTest extends BaseCartesiaUnitTest {
 
 		Shape shape = Shape.intersect( box, line );
 		assertThat( ((Path)shape).getElements() ).isNotEmpty();
+	}
+
+	@ParameterizedTest
+	@MethodSource( "matchesArguments" )
+	void matches( Shape shape, Shape selector, boolean intersect, boolean expected ) {
+		assertThat( getRenderer().matches( shape, selector, intersect ) ).isEqualTo( expected );
+	}
+
+	private static Stream<Arguments> matchesArguments() {
+		Shape shapeInside = new Rectangle( 2, 2, 2, 2 );
+		Shape selectorSurrounding = new Rectangle( 0, 0, 10, 10 );
+
+		Shape shapeSurrounding = new Rectangle( 0, 0, 10, 10 );
+		Shape selectorInside = new Rectangle( 2, 2, 2, 2 );
+
+		Shape shapeOverlapping = new Rectangle( 0, 0, 5, 5 );
+		Shape selectorOverlapping = new Rectangle( 2, 2, 5, 5 );
+
+		Shape shapeDisjoint = new Rectangle( 0, 0, 2, 2 );
+		Shape selectorDisjoint = new Rectangle( 10, 10, 2, 2 );
+
+		return Stream.of(
+			// Selector contains Shape
+			Arguments.of( shapeInside, selectorSurrounding, true, true ),
+			Arguments.of( shapeInside, selectorSurrounding, false, true ),
+
+			// Shape contains Selector
+			Arguments.of( shapeSurrounding, selectorInside, true, true ),
+			Arguments.of( shapeSurrounding, selectorInside, false, false ),
+
+			// Shape and Selector overlap
+			Arguments.of( shapeOverlapping, selectorOverlapping, true, true ),
+			Arguments.of( shapeOverlapping, selectorOverlapping, false, false ),
+
+			// Shape and Selector are disjoint
+			Arguments.of( shapeDisjoint, selectorDisjoint, true, false ),
+			Arguments.of( shapeDisjoint, selectorDisjoint, false, false )
+		);
 	}
 
 	// --- Moved from BaseDesignRendererCoverageTest ---
