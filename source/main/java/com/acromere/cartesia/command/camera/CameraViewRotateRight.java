@@ -1,18 +1,16 @@
 package com.acromere.cartesia.command.camera;
 
-import com.acromere.cartesia.command.CommandTrigger;
-import com.acromere.cartesia.tool.CommandContext;
-import javafx.scene.input.InputEvent;
+import com.acromere.cartesia.command.CommandTask;
 
 import static com.acromere.cartesia.command.Command.Result.SUCCESS;
 
 public class CameraViewRotateRight extends CameraCommand {
 
 	@Override
-	public Object execute( CommandContext context, CommandTrigger trigger, InputEvent triggerEvent, Object... parameters ) throws Exception {
-		double angle = context.getTool().getViewRotate() - 5;
+	public Object execute( CommandTask task ) throws Exception {
+		double angle = task.getTool().getViewRotate() - 5;
 		if( angle < 180 ) angle += 360;
-		context.getTool().setViewRotate( angle );
+		task.getTool().setViewRotate( angle );
 
 		return SUCCESS;
 	}

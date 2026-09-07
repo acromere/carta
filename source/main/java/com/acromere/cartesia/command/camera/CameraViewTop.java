@@ -1,16 +1,14 @@
 package com.acromere.cartesia.command.camera;
 
-import com.acromere.cartesia.command.CommandTrigger;
-import com.acromere.cartesia.tool.CommandContext;
-import javafx.scene.input.InputEvent;
+import com.acromere.cartesia.command.CommandTask;
 
 import static com.acromere.cartesia.command.Command.Result.SUCCESS;
 
 public class CameraViewTop extends CameraCommand {
 
 	@Override
-	public Object execute( CommandContext context, CommandTrigger trigger, InputEvent triggerEvent, Object... parameters ) throws Exception {
-		context.getTool().setViewRotate( 0 );
+	public Object execute( CommandTask task ) throws Exception {
+		task.getTool().setViewRotate( 0 );
 		return SUCCESS;
 	}
 
