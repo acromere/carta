@@ -2,9 +2,7 @@ package com.acromere.cartesia.data;
 
 import com.acromere.cartesia.ParseUtil;
 import com.acromere.cartesia.math.CadGeometry;
-import com.acromere.cartesia.math.CadPoints;
 import com.acromere.cartesia.math.CadTransform;
-import com.acromere.curve.math.Geometry;
 import com.acromere.transaction.Txn;
 import com.acromere.transaction.TxnException;
 import javafx.geometry.Point3D;
@@ -41,8 +39,8 @@ public class DesignCubic extends DesignShape {
 	}
 
 	@Override
-	public DesignShape.Type getType() {
-		return DesignShape.Type.CUBIC;
+	public Type getType() {
+		return Type.CUBIC;
 	}
 
 	public Point3D getOriginControl() {
@@ -79,12 +77,7 @@ public class DesignCubic extends DesignShape {
 
 	@Override
 	public double distanceTo( Point3D point ) {
-		// TODO Improve DesignCurve.distanceTo()
-		// This implementation is a simple estimate based on the origin and point
-		double[] a = CadPoints.asPoint( getOrigin() );
-		double[] b = CadPoints.asPoint( getPoint() );
-		double[] p = CadPoints.asPoint( point );
-		return Geometry.linePointDistance( a, b, p );
+		return CadGeometry.pointCubicDistance( getOrigin(), this );
 	}
 
 	@Override
@@ -140,7 +133,7 @@ public class DesignCubic extends DesignShape {
 			this.setPointControl( curve.getPointControl() );
 			this.setPoint( curve.getPoint() );
 		} catch( TxnException exception ) {
-			log.atWarn().log( "Unable to update curve" );
+			log.atWarn().log( "Unable to update cubic" );
 		}
 
 		return this;

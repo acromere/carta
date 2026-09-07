@@ -19,6 +19,18 @@ public class DesignCubicTest extends DesignShapeTest {
 	}
 
 	@Test
+	void testGetType() {
+		DesignCubic curve = new DesignCubic();
+		assertThat( curve.getType() ).isEqualTo( DesignShape.Type.CUBIC );
+	}
+
+	@Test
+	void testDistanceTo() {
+		DesignCubic curve = new DesignCubic( new Point3D( 0, 0, 0 ), new Point3D( 0, 1, 0 ), new Point3D( 1, 1, 0 ), new Point3D( 1, 0, 0 ) );
+		assertThat( curve.distanceTo( new Point3D( 0.5, 0.5, 0 ) ) ).isEqualTo( 0.5 );
+	}
+
+	@Test
 	void testModify() {
 		DesignCubic curve = new DesignCubic( new Point3D( 0, 0, 0 ), new Point3D( 0, 0, 0 ), new Point3D( 0, 0, 0 ), new Point3D( 0, 0, 0 ) );
 		assertThat( curve.isModified() ).isTrue();
