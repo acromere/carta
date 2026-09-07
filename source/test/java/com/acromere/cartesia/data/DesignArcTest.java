@@ -203,14 +203,25 @@ public class DesignArcTest extends DesignShapeTest {
 
 	@Test
 	void testDistanceTo() {
-		// Test circles
-		DesignArc arc = new DesignArc( new Point3D( 5, 0, 0 ), 1.0, 0.0, 45.0, DesignArc.Type.OPEN );
-		assertThat( arc.distanceTo( new Point3D( 0, 0, 0 ) ) ).isEqualTo( 4.0 );
-		assertThat( arc.distanceTo( new Point3D( 5, 0, 0 ) ) ).isEqualTo( 1.0 );
+		// Test full circle arc
+		DesignArc circleArc = new DesignArc( new Point3D( 5, 0, 0 ), 1.0, 0.0, 360.0, DesignArc.Type.OPEN );
+		assertThat( circleArc.distanceTo( new Point3D( 0, 0, 0 ) ) ).isEqualTo( 4.0 );
+		assertThat( circleArc.distanceTo( new Point3D( 5, 0, 0 ) ) ).isEqualTo( 1.0 );
 
-		// TODO Test circle arcs
+		// Test arc where nearest point is on the arc
+		DesignArc halfArc = new DesignArc( new Point3D( 5, 0, 0 ), 1.0, 0.0, 180.0, DesignArc.Type.OPEN );
+		assertThat( halfArc.distanceTo( new Point3D( 0, 0, 0 ) ) ).isEqualTo( 4.0 );
 
-		// TODO Test ellipse arcs
+		// Test arc where nearest point is an endpoint
+		DesignArc quarterArc = new DesignArc( new Point3D( 5, 0, 0 ), 1.0, 0.0, 45.0, DesignArc.Type.OPEN );
+		assertThat( quarterArc.distanceTo( new Point3D( 0, 0, 0 ) ) ).isCloseTo( 5.7507449788584335, TOLERANCE );
+		assertThat( quarterArc.distanceTo( new Point3D( 5, 0, 0 ) ) ).isEqualTo( 1.0 );
+
+		// Test ellipse arc
+		DesignArc ellipseArc = new DesignArc( new Point3D( 0, 0, 0 ), 2.0, 1.0, 0.0, 90.0, DesignArc.Type.OPEN );
+		assertThat( ellipseArc.distanceTo( new Point3D( 2, 0, 0 ) ) ).isCloseTo( 0.0, TOLERANCE );
+		assertThat( ellipseArc.distanceTo( new Point3D( 0, 1, 0 ) ) ).isCloseTo( 0.0, TOLERANCE );
+		assertThat( ellipseArc.distanceTo( new Point3D( -2, 0, 0 ) ) ).isCloseTo( 2.23606797749979, TOLERANCE );
 	}
 
 	@Test
@@ -387,6 +398,99 @@ public class DesignArcTest extends DesignShapeTest {
 		Point3DAssert.assertThat( points.getFirst() ).isCloseTo( new Point3D( 1, 7, 0 ) );
 		Point3DAssert.assertThat( points.get( 1 ) ).isCloseTo( new Point3D( -4, 2, 0 ) );
 		Point3DAssert.assertThat( points.get( 2 ) ).isCloseTo( new Point3D( 1, -3, 0 ) );
+	}
+
+	@Test
+	void getReferencePointsWithRotation() {
+		// given
+		DesignArc arc = new DesignArc( new Point3D( 1, 2, 0 ), 5.0, 5.0, 90.0, 0.0, 180.0, DesignArc.Type.OPEN );
+
+		// when
+		List<Point3D> points = arc.getReferencePoints();
+
+		// then (rotated 90 degrees CCW, start angle 0 -> point at 90 deg = (1, 7, 0))
+		Point3DAssert.assertThat( points.getFirst() ).isCloseTo( new Point3D( 1, 7, 0 ) );
+		Point3DAssert.assertThat( points.get( 1 ) ).isCloseTo( new Point3D( -4, 2, 0 ) );
+		Point3DAssert.assertThat( points.get( 2 ) ).isCloseTo( new Point3D( 1, -3, 0 ) );
+	}
+
+	@Test
+	void testMoveEndpointStartPointCW() {
+		final double alpha = Math.toDegrees( Math.atan2( 3, 4 ) );
+
+		// Arc starting at (5, 5, 0) and ending at (6, 2, 0)
+		DesignArc arc = new DesignArc( new Point3D( 1, 2, 0 ), 5.0, alpha, -alpha, DesignArc.Type.OPEN );
+		// Move start point from (5, 5, 0) to (1, 7, 0) which is angle 90
+		arc.moveEndpoint( new Point3D( 5, 5, 0 ), new Point3D( 1, 7, 0 ) );
+
+		assertThat( arc.getOrigin() ).isEqualTo( new Point3D( 1, 2, 0 ) );
+		assertThat( arc.calcRotate() ).isEqualTo( 0.0 );
+		assertThat( arc.getStart() ).isEqualTo( 90.0 );
+		assertThat( arc.getExtent() ).isEqualTo( -90.0 );
+	}
+
+	@Test
+	void testMoveEndpointStartPointCCW() {
+		final double alpha = Math.toDegrees( Math.atan2( 3, 4 ) );
+
+		// Arc starting at (5, 5, 0) and ending at (-4, 2, 0)
+		DesignArc arc = new DesignArc( new Point3D( 1, 2, 0 ), 5.0, alpha, 180 - alpha, DesignArc.Type.OPEN );
+		// Move start point from (5, 5, 0) to (1, 7, 0) which is angle 90
+		arc.moveEndpoint( new Point3D( 5, 5, 0 ), new Point3D( 1, 7, 0 ) );
+
+		Point3DAssert.assertThat( arc.getOrigin() ).isEqualTo( new Point3D( 1, 2, 0 ) );
+		assertThat( arc.calcRotate() ).isEqualTo( 0.0 );
+		assertThat( arc.getStart() ).isEqualTo( 90.0 );
+		assertThat( arc.getExtent() ).isEqualTo( 90.0 );
+	}
+
+	@Test
+	void testDefaultConstructorNullSafety() {
+		DesignArc arc = new DesignArc();
+
+		assertThat( arc.calcStart() ).isEqualTo( 0.0 );
+		assertThat( arc.calcExtent() ).isEqualTo( 0.0 );
+		assertThat( arc.calcMid() ).isEqualTo( 0.0 );
+		assertThat( arc.calcEnd() ).isEqualTo( 0.0 );
+		assertThat( arc.calcStartPoint() ).isNull();
+		assertThat( arc.calcMidPoint() ).isNull();
+		assertThat( arc.calcEndPoint() ).isNull();
+		assertThat( arc.getReferencePoints() ).isEmpty();
+		assertThat( arc.distanceTo( new Point3D( 0, 0, 0 ) ) ).isNaN();
+		assertThat( arc.pathLength() ).isNaN();
+	}
+
+	@Test
+	void testUpdateFromWithNumbersAndEnum() {
+		Map<String, Object> map = new HashMap<>();
+		map.put( DesignArc.SHAPE, DesignArc.ARC );
+		map.put( DesignArc.ORIGIN, "1,2,3" );
+		map.put( DesignArc.RADII, "4,5,0" );
+		map.put( DesignArc.START, 30 );
+		map.put( DesignArc.EXTENT, 60 );
+		map.put( DesignArc.TYPE, DesignArc.Type.PIE );
+
+		DesignArc arc = new DesignArc();
+		arc.updateFrom( map );
+
+		assertThat( arc.getStart() ).isEqualTo( 30.0 );
+		assertThat( arc.getExtent() ).isEqualTo( 60.0 );
+		assertThat( arc.getArcType() ).isEqualTo( DesignArc.Type.PIE );
+	}
+
+	@Test
+	void testUpdateFromShape() {
+		DesignArc source = new DesignArc( new Point3D( 1, 2, 3 ), 4.0, 5.0, 6.0, 7.0, 8.0, DesignArc.Type.CHORD );
+		DesignArc target = new DesignArc();
+		target.updateFrom( source );
+
+		assertThat( target.getOrigin() ).isEqualTo( new Point3D( 1, 2, 3 ) );
+		assertThat( target.getXRadius() ).isEqualTo( 4.0 );
+		assertThat( target.getYRadius() ).isEqualTo( 5.0 );
+		assertThat( target.calcRotate() ).isEqualTo( 6.0 );
+		assertThat( target.getStart() ).isEqualTo( 7.0 );
+		assertThat( target.getExtent() ).isEqualTo( 8.0 );
+		assertThat( target.getArcType() ).isEqualTo( DesignArc.Type.CHORD );
 	}
 
 	@Test

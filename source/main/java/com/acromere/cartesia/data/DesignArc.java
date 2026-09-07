@@ -90,7 +90,8 @@ public class DesignArc extends DesignEllipse {
 	 * @return The start angle of the arc
 	 */
 	public double calcStart() {
-		return hasKey( START ) ? getStart() : 0.0;
+		Double start = getStart();
+		return start == null ? 0.0 : start;
 	}
 
 	public Double getStart() {
@@ -103,7 +104,8 @@ public class DesignArc extends DesignEllipse {
 	}
 
 	public double calcExtent() {
-		return hasKey( EXTENT ) ? getExtent() : 0.0;
+		Double extent = getExtent();
+		return extent == null ? 0.0 : extent;
 	}
 
 	public Double getExtent() {
@@ -134,15 +136,15 @@ public class DesignArc extends DesignEllipse {
 	}
 
 	public Point3D calcStartPoint() {
-		return CadGeometry.ellipsePoint360( this, getStart() );
+		return getOrigin() == null || getRadii() == null ? null : CadGeometry.ellipsePoint360( this, calcStart() );
 	}
 
 	public Point3D calcMidPoint() {
-		return CadGeometry.ellipsePoint360( this, calcMid() );
+		return getOrigin() == null || getRadii() == null ? null : CadGeometry.ellipsePoint360( this, calcMid() );
 	}
 
 	public Point3D calcEndPoint() {
-		return CadGeometry.ellipsePoint360( this, calcEnd() );
+		return getOrigin() == null || getRadii() == null ? null : CadGeometry.ellipsePoint360( this, calcEnd() );
 	}
 
 	public DesignArc.Type getArcType() {
@@ -173,19 +175,22 @@ public class DesignArc extends DesignEllipse {
 	@Override
 	public List<Point3D> getReferencePoints() {
 		// TODO Should the center of the arc also be a reference point?
-		return CadGeometry.rotate360( getOrigin(), calcRotate(), CadGeometry.arcReferencePoints( this ) );
+		if( getOrigin() == null || getRadii() == null ) return List.of();
+		return CadGeometry.arcReferencePoints( this );
 	}
 
 	@Override
 	public double distanceTo( Point3D point ) {
+		if( getOrigin() == null || getRadii() == null || point == null ) return Double.NaN;
 		double[] o = CadPoints.asPoint( getOrigin() );
 		double[] p = CadPoints.asPoint( point );
 		double[] r = CadPoints.asPoint( getRadii() );
-		return Geometry.pointArcDistance( p, o, r, calcRotate(), calcStart(), calcExtent() );
+		return Geometry.pointArcDistance( p, o, r, Math.toRadians( calcRotate() ), Math.toRadians( calcStart() ), Math.toRadians( calcExtent() ) );
 	}
 
 	@Override
 	public double pathLength() {
+		if( getOrigin() == null || getRadii() == null ) return Double.NaN;
 		return CadGeometry.arcLength( this );
 	}
 
@@ -223,10 +228,10 @@ public class DesignArc extends DesignEllipse {
 	public void apply( CadTransform transform ) {
 		CadOrientation newPose = getOrientation().clone().transform( transform );
 		double rotate = CadGeometry.angle360( newPose.getRotate() ) - 90;
-		double extent = getExtent();
+		double extent = calcExtent();
 		if( transform.isMirror() ) extent = -extent;
 
-		double oldStart = getStart() + calcRotate();
+		double oldStart = calcStart() + calcRotate();
 		Point3D startPoint = transform.apply( getOrigin().add( CadGeometry.polarToCartesian360( new Point3D( 1, oldStart, 0 ) ) ) );
 		double newStart = CadGeometry.cartesianToPolar360( startPoint.subtract( transform.apply( getOrigin() ) ) ).getY();
 		double rotatedStart = CadGeometry.normalizeAngle360( newStart - rotate );
@@ -249,9 +254,21 @@ public class DesignArc extends DesignEllipse {
 
 	public DesignArc updateFrom( Map<String, Object> map ) {
 		super.updateFrom( map );
-		if( map.containsKey( START ) ) setStart( (Double)map.get( START ) );
-		if( map.containsKey( EXTENT ) ) setExtent( (Double)map.get( EXTENT ) );
-		if( map.containsKey( TYPE ) ) setType( Type.valueOf( ((String)map.get( TYPE )).toUpperCase() ) );
+		if( map.containsKey( START ) ) {
+			Object start = map.get( START );
+			if( start instanceof Number ) setStart( ((Number)start).doubleValue() );
+			else if( start instanceof String ) setStart( Double.parseDouble( (String)start ) );
+		}
+		if( map.containsKey( EXTENT ) ) {
+			Object extent = map.get( EXTENT );
+			if( extent instanceof Number ) setExtent( ((Number)extent).doubleValue() );
+			else if( extent instanceof String ) setExtent( Double.parseDouble( (String)extent ) );
+		}
+		if( map.containsKey( TYPE ) ) {
+			Object type = map.get( TYPE );
+			if( type instanceof Type ) setType( (Type)type );
+			else if( type instanceof String ) setType( Type.valueOf( ((String)type).toUpperCase() ) );
+		}
 		return this;
 	}
 
@@ -261,13 +278,11 @@ public class DesignArc extends DesignEllipse {
 		if( !(shape instanceof DesignArc arc) ) return this;
 
 		try( Txn ignore = Txn.create() ) {
-			this.setRadii( arc.getRadii() );
-			this.setRotate( arc.getRotate() );
 			this.setStart( arc.getStart() );
 			this.setExtent( arc.getExtent() );
 			this.setType( arc.getArcType() );
 		} catch( TxnException exception ) {
-			log.atWarn().log( "Unable to update curve" );
+			log.atWarn().log( "Unable to update arc" );
 		}
 
 		return this;
@@ -277,7 +292,7 @@ public class DesignArc extends DesignEllipse {
 		if( source == null ) return;
 
 		// Determine the start point
-		Point3D startPoint = CadGeometry.ellipsePoint360( this, getStart() );
+		Point3D startPoint = calcStartPoint();
 
 		// Determine the target angle
 		double theta = CadGeometry.ellipseAngle360( this, target );
@@ -285,10 +300,10 @@ public class DesignArc extends DesignEllipse {
 		try( Txn ignore = Txn.create() ) {
 			double extent;
 			if( CadGeometry.areSamePoint( startPoint, source ) ) {
+				extent = calcExtent() + calcStart() - theta;
 				setStart( theta );
-				extent = getExtent() + getStart() - theta;
 			} else {
-				extent = theta - getStart();
+				extent = theta - calcStart();
 			}
 			setExtent( CadGeometry.clampAngle360( extent ) );
 		} catch( TxnException exception ) {
