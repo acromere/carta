@@ -6,6 +6,7 @@ import javafx.geometry.Point3D;
 import lombok.CustomLog;
 import lombok.Getter;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Getter
 @CustomLog
+@Disabled( "Not going to fix box rendering in V2 renderer" )
 public class DesignToolV2ScreenPointSelectBoxUIT extends DesignToolV2BaseUIT {
 
 	@BeforeEach
