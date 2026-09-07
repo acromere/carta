@@ -63,7 +63,7 @@ Put all the commands in a table and check that all are operational
 | yd  | 2026-09-05 |   ✓    | Layer Show              | layer-show               |
 | yh  | 2026-09-05 |   ✓    | Layer Hide              | layer-hide               |
 | yk  | 2026-09-05 |   ✓    | Layer Current           | layer-current            |
-| ys  | 2026-09-05 | Failed | Layer Sublayer          | layer-sublayer           |
+| ys  | 2026-09-05 |   ✓    | Layer Sublayer          | layer-sublayer           |
 | yx  | 2026-09-05 |   ✓    | Layer Delete            | layer-delete             |
 | yy  | 2026-09-05 |   ✓    | Layer Toggle            | layer-toggle             |
 | za  | 2026-09-05 |   ✓    | Zoom All                | camera-zoom-all          |
