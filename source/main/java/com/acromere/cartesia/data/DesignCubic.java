@@ -77,7 +77,7 @@ public class DesignCubic extends DesignShape {
 
 	@Override
 	public double distanceTo( Point3D point ) {
-		return CadGeometry.pointCubicDistance( getOrigin(), this );
+		return CadGeometry.pointCubicDistance( point, this );
 	}
 
 	@Override
