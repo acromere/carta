@@ -1,5 +1,6 @@
 package com.acromere.cartesia.data;
 
+import com.acromere.cartesia.math.CadTransform;
 import com.acromere.cartesia.test.FxBoundsAssert;
 import com.acromere.curve.math.Constants;
 import com.acromere.zerra.color.Paints;
@@ -91,8 +92,29 @@ public class DesignLineTest extends DesignShapeTest {
 
 	@Test
 	void testDistanceTo() {
-		DesignLine line = new DesignLine( new Point3D( 0, 0, 0 ), new Point3D( 1, 0, 0 ) );
-		assertThat( line.distanceTo( new Point3D( 0.5, 0.5, 0 ) ) ).isEqualTo( 0.5 );
+		DesignLine line = new DesignLine( new Point3D( 0, 0, 0 ), new Point3D( 4, 0, 0 ) );
+
+		// Point on segment
+		assertThat( line.distanceTo( new Point3D( 0, 0, 0 ) ) ).isCloseTo( 0.0, TOLERANCE );
+		assertThat( line.distanceTo( new Point3D( 2, 0, 0 ) ) ).isCloseTo( 0.0, TOLERANCE );
+		assertThat( line.distanceTo( new Point3D( 4, 0, 0 ) ) ).isCloseTo( 0.0, TOLERANCE );
+
+		// Point projecting orthogonally onto the segment
+		assertThat( line.distanceTo( new Point3D( 2, 3, 0 ) ) ).isCloseTo( 3.0, TOLERANCE );
+		assertThat( line.distanceTo( new Point3D( 2, -3, 0 ) ) ).isCloseTo( 3.0, TOLERANCE );
+		assertThat( line.distanceTo( new Point3D( 2, 0, 5 ) ) ).isCloseTo( 5.0, TOLERANCE );
+
+		// Point closer to endpoint origin (before segment start)
+		assertThat( line.distanceTo( new Point3D( -3, 0, 0 ) ) ).isCloseTo( 3.0, TOLERANCE );
+		assertThat( line.distanceTo( new Point3D( -3, 4, 0 ) ) ).isCloseTo( 5.0, TOLERANCE );
+
+		// Point closer to endpoint point (past segment end)
+		assertThat( line.distanceTo( new Point3D( 7, 0, 0 ) ) ).isCloseTo( 3.0, TOLERANCE );
+		assertThat( line.distanceTo( new Point3D( 7, 4, 0 ) ) ).isCloseTo( 5.0, TOLERANCE );
+
+		// Null cases
+		assertThat( line.distanceTo( null ) ).isNaN();
+		assertThat( new DesignLine().distanceTo( new Point3D( 1, 1, 0 ) ) ).isNaN();
 	}
 
 	@Test
@@ -274,6 +296,97 @@ public class DesignLineTest extends DesignShapeTest {
 		assertThat( bounds.getMaxY() ).isEqualTo( 2.5 );
 		assertThat( bounds.getWidth() ).isEqualTo( 2.0 );
 		assertThat( bounds.getHeight() ).isEqualTo( 3.0 );
+	}
+
+	@Test
+	void testApply() {
+		// given
+		DesignLine line = new DesignLine( new Point3D( 1, 2, 0 ), new Point3D( 4, 6, 0 ) );
+		CadTransform transform = CadTransform.translation( 2, 3, 0 );
+
+		// when
+		line.apply( transform );
+
+		// then
+		assertThat( line.getOrigin() ).isEqualTo( new Point3D( 3, 5, 0 ) );
+		assertThat( line.getPoint() ).isEqualTo( new Point3D( 6, 9, 0 ) );
+
+		// Apply null line
+		DesignLine empty = new DesignLine();
+		empty.apply( transform );
+		assertThat( empty.getOrigin() ).isNull();
+		assertThat( empty.getPoint() ).isNull();
+	}
+
+	@Test
+	void testMoveEndpoint() {
+		DesignLine line = new DesignLine( new Point3D( 1, 2, 0 ), new Point3D( 4, 6, 0 ) );
+
+		// Move origin
+		line.moveEndpoint( new Point3D( 1, 2, 0 ), new Point3D( 0, 0, 0 ) );
+		assertThat( line.getOrigin() ).isEqualTo( new Point3D( 0, 0, 0 ) );
+		assertThat( line.getPoint() ).isEqualTo( new Point3D( 4, 6, 0 ) );
+
+		// Move point
+		line.moveEndpoint( new Point3D( 4, 6, 0 ), new Point3D( 5, 5, 0 ) );
+		assertThat( line.getOrigin() ).isEqualTo( new Point3D( 0, 0, 0 ) );
+		assertThat( line.getPoint() ).isEqualTo( new Point3D( 5, 5, 0 ) );
+
+		// Move non-matching point
+		line.moveEndpoint( new Point3D( 10, 10, 0 ), new Point3D( 20, 20, 0 ) );
+		assertThat( line.getOrigin() ).isEqualTo( new Point3D( 0, 0, 0 ) );
+		assertThat( line.getPoint() ).isEqualTo( new Point3D( 5, 5, 0 ) );
+
+		// Null cases
+		line.moveEndpoint( null, new Point3D( 1, 1, 0 ) );
+		line.moveEndpoint( new Point3D( 0, 0, 0 ), null );
+		new DesignLine().moveEndpoint( new Point3D( 0, 0, 0 ), new Point3D( 1, 1, 0 ) );
+	}
+
+	@Test
+	void testToString() {
+		DesignLine line = new DesignLine( new Point3D( 1, 2, 0 ), new Point3D( 3, 4, 0 ) );
+		assertThat( line.toString() ).isEqualTo( "DesignLine{origin=Point3D [x = 1.0, y = 2.0, z = 0.0],point=Point3D [x = 3.0, y = 4.0, z = 0.0]}" );
+	}
+
+	@Test
+	void testGetInformation() {
+		DesignLine line = new DesignLine( new Point3D( 0, 0, 0 ), new Point3D( 3, 4, 0 ) );
+		Map<String, Object> info = line.getInformation();
+		assertThat( info.get( DesignLine.ORIGIN ) ).isEqualTo( new Point3D( 0, 0, 0 ) );
+		assertThat( info.get( DesignLine.POINT ) ).isEqualTo( new Point3D( 3, 4, 0 ) );
+		assertThat( (Double)info.get( DesignLine.LENGTH ) ).isCloseTo( 5.0, TOLERANCE );
+
+		// Empty line
+		DesignLine empty = new DesignLine();
+		Map<String, Object> emptyInfo = empty.getInformation();
+		assertThat( emptyInfo.get( DesignLine.ORIGIN ) ).isNull();
+		assertThat( emptyInfo.get( DesignLine.POINT ) ).isNull();
+		assertThat( (Double)emptyInfo.get( DesignLine.LENGTH ) ).isNaN();
+	}
+
+	@Test
+	void testUpdateFromShape() {
+		DesignLine source = new DesignLine( new Point3D( 1, 2, 3 ), new Point3D( 4, 5, 6 ) );
+		DesignLine target = new DesignLine();
+		target.updateFrom( source );
+
+		assertThat( target.getOrigin() ).isEqualTo( new Point3D( 1, 2, 3 ) );
+		assertThat( target.getPoint() ).isEqualTo( new Point3D( 4, 5, 6 ) );
+
+		// Update from non-line shape
+		DesignBox box = new DesignBox( new Point3D( 7, 8, 9 ), new Point3D( 1, 1, 0 ) );
+		target.updateFrom( box );
+		assertThat( target.getOrigin() ).isEqualTo( new Point3D( 7, 8, 9 ) );
+		assertThat( target.getPoint() ).isEqualTo( new Point3D( 4, 5, 6 ) );
+	}
+
+	@Test
+	void testNullSafety() {
+		DesignLine empty = new DesignLine();
+		assertThat( empty.getReferencePoints() ).isEmpty();
+		assertThat( empty.pathLength() ).isNaN();
+		assertThat( empty.getBounds() ).isNull();
 	}
 
 }

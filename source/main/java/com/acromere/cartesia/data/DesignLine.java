@@ -9,6 +9,7 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Point3D;
 import lombok.CustomLog;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,27 +56,35 @@ public class DesignLine extends DesignShape {
 
 	@Override
 	protected Bounds computeGeometricBounds() {
+		if( getOrigin() == null || getPoint() == null ) return null;
 		return CadGeometry.getBounds( getOrigin(), getPoint() );
 	}
 
 	@Override
 	public List<Point3D> getReferencePoints() {
+		if( getOrigin() == null || getPoint() == null ) return List.of();
 		return List.of( getOrigin(), getPoint() );
 	}
 
 	@Override
 	public double distanceTo( Point3D point ) {
-		return CadGeometry.linePointDistance( getOrigin(), getPoint(), point );
+		if( getOrigin() == null || getPoint() == null || point == null ) return Double.NaN;
+		return CadGeometry.pointSegmentDistance( getOrigin(), getPoint(), point );
 	}
 
 	@Override
 	public double pathLength() {
+		if( getOrigin() == null || getPoint() == null ) return Double.NaN;
 		return getPoint().distance( getOrigin() );
 	}
 
 	@Override
 	public Map<String, Object> getInformation() {
-		return Map.of( ORIGIN, getOrigin(), POINT, getPoint(), LENGTH, pathLength() );
+		Map<String, Object> info = new HashMap<>();
+		if( getOrigin() != null ) info.put( ORIGIN, getOrigin() );
+		if( getPoint() != null ) info.put( POINT, getPoint() );
+		info.put( LENGTH, pathLength() );
+		return info;
 	}
 
 	@Override
@@ -85,10 +94,14 @@ public class DesignLine extends DesignShape {
 
 	@Override
 	public void apply( CadTransform transform ) {
-		Txn.run( () -> {
+		if( getOrigin() == null || getPoint() == null ) return;
+
+		try( Txn ignored = Txn.create() ) {
 			setOrigin( transform.apply( getOrigin() ) );
 			setPoint( transform.apply( getPoint() ) );
-		} );
+		} catch( TxnException exception ) {
+			log.atWarn().log( "Unable to apply transform" );
+		}
 	}
 
 	protected Map<String, Object> asMap() {
@@ -100,78 +113,15 @@ public class DesignLine extends DesignShape {
 
 	public DesignLine updateFrom( Map<String, Object> map ) {
 		super.updateFrom( map );
-		setPoint( ParseUtil.parsePoint3D( (String)map.get( POINT ) ) );
+		if( map.containsKey( POINT ) ) {
+			Object point = map.get( POINT );
+			if( point instanceof Point3D ) setPoint( (Point3D)point );
+			else if( point instanceof String ) setPoint( ParseUtil.parsePoint3D( (String)point ) );
+		}
 		return this;
 	}
 
-	//	@Override
-	//	protected Bounds computeGeometricBounds() {
-	//		Point3D origin = getOrigin();
-	//		Point3D point = getPoint();
-	//		Bounds bounds = new BoundingBox( origin.getX(), origin.getY(), origin.getZ(), point.getX() - origin.getX(), point.getY() - origin.getY(), point.getZ() - origin.getZ() );
-	//		return getRotateTransform().apply( bounds );
-	//	}
-	//
-	//	@Override
-	//	protected Bounds computeVisualBounds() {
-	//		Point3D origin = getOrigin();
-	//		Point3D point = getPoint();
-	//		StrokeLineCap cap = calcDrawCap();
-	//		double length = origin.distance( point );
-	//		double drawWidth = calcDrawWidth();
-	//		double halfWidth = 0.5 * drawWidth;
-	//		boolean hasStroke = drawWidth > 0.0;
-	//
-	//		// Start with the line on the x-axis, at length
-	//		double x1 = 0;
-	//		double y1 = 0;
-	//		double x2 = length;
-	//
-	//		if( hasStroke ) {
-	//			// Adjust the line for the stroke width
-	//			StrokeType drawAlign = calcDrawAlign();
-	//			if( drawAlign == StrokeType.CENTERED ) {
-	//				y1 = -halfWidth;
-	//			} else if( drawAlign == StrokeType.INSIDE ) {
-	//				y1 = drawWidth;
-	//			} else if( drawAlign == StrokeType.OUTSIDE ) {
-	//				y1 = -drawWidth;
-	//			}
-	//
-	//			// Adjust the line for the stroke cap
-	//			if( cap == StrokeLineCap.SQUARE ) {
-	//				x1 -= halfWidth;
-	//				x2 += halfWidth;
-	//			}
-	//		}
-	//
-	//		// Calculate the width and height
-	//		double width = Math.abs( x2 - x1 );
-	//		double height = Math.abs( drawWidth );
-	//
-	//		// Create the initial bounding box
-	//		Bounds bounds = new BoundingBox( x1, y1, width, height );
-	//
-	//		// Create the transform
-	//		double angle = CadGeometry.angle360( point.subtract( origin ) );
-	//		CadTransform transform = CadTransform.translation( origin ).combine( CadTransform.rotation( angle ) );
-	//
-	//		// Apply the transform to the bounding box
-	//		bounds = transform.apply( bounds );
-	//
-	//		// If the line cap is round, calculate the bounding box with a different strategy
-	//		if( hasStroke && cap == StrokeLineCap.ROUND ) {
-	//			Bounds baseBounds = new BoundingBox( origin.getX(), origin.getY(), point.getX() - origin.getX(), point.getY() - origin.getY() );
-	//			x1 = Math.min( bounds.getMinX(), baseBounds.getMinX() - halfWidth );
-	//			y1 = Math.min( bounds.getMinY(), baseBounds.getMinY() - halfWidth );
-	//			width = Math.max( bounds.getWidth(), baseBounds.getWidth() + drawWidth );
-	//			height = Math.max( bounds.getHeight(), baseBounds.getHeight() + drawWidth );
-	//			bounds = new BoundingBox( x1, y1, width, height );
-	//		}
-	//
-	//		return bounds;
-	//	}
-
+	@Override
 	public DesignShape updateFrom( DesignShape shape ) {
 		super.updateFrom( shape );
 		if( !(shape instanceof DesignLine line) ) return this;
@@ -179,13 +129,15 @@ public class DesignLine extends DesignShape {
 		try( Txn ignore = Txn.create() ) {
 			this.setPoint( line.getPoint() );
 		} catch( TxnException exception ) {
-			log.atWarn().log( "Unable to update curve" );
+			log.atWarn().log( "Unable to update line" );
 		}
 
 		return this;
 	}
 
 	public void moveEndpoint( Point3D source, Point3D target ) {
+		if( source == null || target == null || getOrigin() == null || getPoint() == null ) return;
+
 		if( CadGeometry.areSamePoint( getOrigin(), source ) ) {
 			setOrigin( target );
 		} else if( CadGeometry.areSamePoint( getPoint(), source ) ) {
@@ -193,9 +145,9 @@ public class DesignLine extends DesignShape {
 		}
 	}
 
-	//	@Override
-	//	public String toString() {
-	//		return super.toString( ORIGIN, POINT );
-	//	}
+	@Override
+	public String toString() {
+		return super.toString( ORIGIN, POINT );
+	}
 
 }
