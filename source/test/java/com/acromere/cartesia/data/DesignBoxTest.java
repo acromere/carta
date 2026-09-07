@@ -10,9 +10,12 @@ import javafx.geometry.Point3D;
 import javafx.scene.paint.Color;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.acromere.cartesia.TestConstants.EXTRA_LOOSE_TOLERANCE;
+import static com.acromere.cartesia.TestConstants.TOLERANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DesignBoxTest extends DesignShapeTest {
@@ -255,6 +258,140 @@ public class DesignBoxTest extends DesignShapeTest {
 		// then
 		Point3DAssert.assertThat( box.getOrigin() ).isCloseTo( new Point3D( 6, 15, 0 ) );
 		Point3DAssert.assertThat( box.getSize() ).isCloseTo( new Point3D( 6, 12, 0 ) );
+	}
+
+	@Test
+	void testApplyWithRotate() {
+		// given
+		DesignBox box = new DesignBox( new Point3D( 1, 0, 0 ), new Point3D( 4, 2, 0 ), 30.0 );
+		CadTransform rotation = CadTransform.rotation( new Point3D( 0, 0, 0 ), new Point3D( 0, 0, 1 ), 60.0 );
+
+		// when
+		box.apply( rotation );
+
+		// then
+		Point3DAssert.assertThat( box.getOrigin() ).isCloseTo( new Point3D( 0.5, Math.sqrt( 3 ) / 2.0, 0 ) );
+		Point3DAssert.assertThat( box.getSize() ).isCloseTo( new Point3D( 4, 2, 0 ) );
+		assertThat( box.calcRotate() ).isCloseTo( 90.0, TOLERANCE );
+	}
+
+	@Test
+	void testDistanceTo() {
+		// Box centered at (0, 0, 0) with width 4, height 2
+		// Edges: x in [-2, 2], y = -1; x in [-2, 2], y = 1; x = -2, y in [-1, 1]; x = 2, y in [-1, 1]
+		DesignBox box = new DesignBox( new Point3D( 0, 0, 0 ), new Point3D( 4, 2, 0 ) );
+
+		// Point at center
+		assertThat( box.distanceTo( new Point3D( 0, 0, 0 ) ) ).isCloseTo( 1.0, TOLERANCE );
+
+		// Point on right edge
+		assertThat( box.distanceTo( new Point3D( 2, 0, 0 ) ) ).isCloseTo( 0.0, TOLERANCE );
+
+		// Point outside right
+		assertThat( box.distanceTo( new Point3D( 5, 0, 0 ) ) ).isCloseTo( 3.0, TOLERANCE );
+
+		// Point outside top
+		assertThat( box.distanceTo( new Point3D( 0, 4, 0 ) ) ).isCloseTo( 3.0, TOLERANCE );
+
+		// Point corner diagonal outside (3, 2, 0) -> distance to (2, 1, 0) is sqrt((3-2)^2 + (2-1)^2) = sqrt(2)
+		assertThat( box.distanceTo( new Point3D( 3, 2, 0 ) ) ).isCloseTo( CadMath.SQRT2, TOLERANCE );
+	}
+
+	@Test
+	void testDistanceToWithRotation() {
+		// 1x1 box centered at (0, 0, 0) rotated 45 degrees
+		DesignBox box = new DesignBox( new Point3D( 0, 0, 0 ), new Point3D( 2, 2, 0 ), 45.0 );
+
+		// Point at center: distance to any edge is 1.0
+		assertThat( box.distanceTo( new Point3D( 0, 0, 0 ) ) ).isCloseTo( 1.0, TOLERANCE );
+
+		// Corners are at distance sqrt(2) along axes: (sqrt(2), 0), (0, sqrt(2)), (-sqrt(2), 0), (0, -sqrt(2))
+		assertThat( box.distanceTo( new Point3D( CadMath.SQRT2, 0, 0 ) ) ).isCloseTo( 0.0, TOLERANCE );
+	}
+
+	@Test
+	void testPathLength() {
+		DesignBox box = new DesignBox( new Point3D( 0, 0, 0 ), new Point3D( 4, 2, 0 ) );
+		assertThat( box.pathLength() ).isEqualTo( 12.0 );
+	}
+
+	@Test
+	void testGetInformation() {
+		DesignBox box = new DesignBox( new Point3D( 1, 2, 0 ), new Point3D( 4, 2, 0 ) );
+		Map<String, Object> info = box.getInformation();
+
+		assertThat( info.get( DesignBox.ORIGIN ) ).isEqualTo( new Point3D( 1, 2, 0 ) );
+		assertThat( info.get( DesignBox.SIZE ) ).isEqualTo( new Point3D( 4, 2, 0 ) );
+		assertThat( info.get( DesignBox.PERIMETER ) ).isEqualTo( 12.0 );
+		assertThat( info.containsKey( DesignBox.ROTATE ) ).isFalse();
+	}
+
+	@Test
+	void testGetInformationWithRotate() {
+		DesignBox box = new DesignBox( new Point3D( 1, 2, 0 ), new Point3D( 4, 2, 0 ), 45.0 );
+		Map<String, Object> info = box.getInformation();
+
+		assertThat( info.get( DesignBox.ORIGIN ) ).isEqualTo( new Point3D( 1, 2, 0 ) );
+		assertThat( info.get( DesignBox.SIZE ) ).isEqualTo( new Point3D( 4, 2, 0 ) );
+		assertThat( info.get( DesignBox.ROTATE ) ).isEqualTo( "45.0" );
+		assertThat( info.get( DesignBox.PERIMETER ) ).isEqualTo( 12.0 );
+	}
+
+	@Test
+	void testAsMap() {
+		DesignBox box = new DesignBox( new Point3D( 1, 2, 0 ), new Point3D( 4, 2, 0 ) );
+		Map<String, Object> map = box.asMap();
+
+		assertThat( map.get( DesignBox.SHAPE ) ).isEqualTo( DesignBox.BOX );
+		assertThat( map.get( DesignBox.ORIGIN ) ).isEqualTo( new Point3D( 1, 2, 0 ) );
+		assertThat( map.get( DesignBox.SIZE ) ).isEqualTo( new Point3D( 4, 2, 0 ) );
+		assertThat( map.get( DesignBox.ROTATE ) ).isNull();
+	}
+
+	@Test
+	void testAsMapWithRotate() {
+		DesignBox box = new DesignBox( new Point3D( 1, 2, 0 ), new Point3D( 4, 2, 0 ), 45.0 );
+		Map<String, Object> map = box.asMap();
+
+		assertThat( map.get( DesignBox.SHAPE ) ).isEqualTo( DesignBox.BOX );
+		assertThat( map.get( DesignBox.ORIGIN ) ).isEqualTo( new Point3D( 1, 2, 0 ) );
+		assertThat( map.get( DesignBox.SIZE ) ).isEqualTo( new Point3D( 4, 2, 0 ) );
+		assertThat( map.get( DesignBox.ROTATE ) ).isEqualTo( "45.0" );
+	}
+
+	@Test
+	void testUpdateFromMap() {
+		Map<String, Object> map = new HashMap<>();
+		map.put( DesignBox.ORIGIN, "1,2,0" );
+		map.put( DesignBox.SIZE, "4,3,0" );
+		map.put( DesignBox.ROTATE, "30.0" );
+
+		DesignBox box = new DesignBox();
+		box.updateFrom( map );
+
+		assertThat( box.getOrigin() ).isEqualTo( new Point3D( 1, 2, 0 ) );
+		assertThat( box.getSize() ).isEqualTo( new Point3D( 4, 3, 0 ) );
+		assertThat( box.getRotate() ).isEqualTo( "30.0" );
+		assertThat( box.calcRotate() ).isEqualTo( 30.0 );
+	}
+
+	@Test
+	void testUpdateFromShape() {
+		DesignBox source = new DesignBox( new Point3D( 1, 2, 0 ), new Point3D( 4, 3, 0 ), 30.0 );
+		DesignBox target = new DesignBox();
+
+		target.updateFrom( source );
+
+		assertThat( target.getOrigin() ).isEqualTo( new Point3D( 1, 2, 0 ) );
+		assertThat( target.getSize() ).isEqualTo( new Point3D( 4, 3, 0 ) );
+		assertThat( target.getRotate() ).isEqualTo( "30.0" );
+		assertThat( target.calcRotate() ).isEqualTo( 30.0 );
+	}
+
+	@Test
+	void testToString() {
+		DesignBox box = new DesignBox( new Point3D( 1, 2, 0 ), new Point3D( 4, 3, 0 ), 30.0 );
+		assertThat( box.toString() ).isEqualTo( "DesignBox{origin=Point3D [x = 1.0, y = 2.0, z = 0.0],size=Point3D [x = 4.0, y = 3.0, z = 0.0],rotate=30.0}" );
 	}
 
 }

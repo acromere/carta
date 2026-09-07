@@ -2,6 +2,7 @@ package com.acromere.cartesia.data;
 
 import com.acromere.cartesia.ParseUtil;
 import com.acromere.cartesia.math.CadGeometry;
+import com.acromere.cartesia.math.CadOrientation;
 import com.acromere.cartesia.math.CadTransform;
 import com.acromere.transaction.Txn;
 import com.acromere.transaction.TxnException;
@@ -9,6 +10,7 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Point3D;
 import lombok.CustomLog;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -159,19 +161,17 @@ public class DesignBox extends DesignShape {
 
 	@Override
 	public double distanceTo( Point3D point ) {
-		Point3D origin = getOrigin();
-		Point3D size = getSize();
-
-		double x1 = origin.getX();
-		double y1 = origin.getY();
-		double x2 = origin.getX() + size.getX();
-		double y2 = origin.getY() + size.getY();
+		List<Point3D> points = getReferencePoints();
+		Point3D p1 = points.get( 0 );
+		Point3D p2 = points.get( 1 );
+		Point3D p3 = points.get( 2 );
+		Point3D p4 = points.get( 3 );
 
 		double distance = Double.MAX_VALUE;
-		distance = Math.min( distance, CadGeometry.linePointDistance( new Point3D( x1, y1, 0 ), new Point3D( x2, y1, 0 ), point ) );
-		distance = Math.min( distance, CadGeometry.linePointDistance( new Point3D( x1, y2, 0 ), new Point3D( x2, y2, 0 ), point ) );
-		distance = Math.min( distance, CadGeometry.linePointDistance( new Point3D( x1, y1, 0 ), new Point3D( x1, y2, 0 ), point ) );
-		distance = Math.min( distance, CadGeometry.linePointDistance( new Point3D( x2, y1, 0 ), new Point3D( x2, y2, 0 ), point ) );
+		distance = Math.min( distance, CadGeometry.pointSegmentDistance( p1, p2, point ) );
+		distance = Math.min( distance, CadGeometry.pointSegmentDistance( p2, p3, point ) );
+		distance = Math.min( distance, CadGeometry.pointSegmentDistance( p3, p4, point ) );
+		distance = Math.min( distance, CadGeometry.pointSegmentDistance( p4, p1, point ) );
 
 		return distance;
 	}
@@ -183,7 +183,12 @@ public class DesignBox extends DesignShape {
 
 	@Override
 	public Map<String, Object> getInformation() {
-		return Map.of( ORIGIN, getOrigin(), SIZE, getSize(), PERIMETER, pathLength() );
+		Map<String, Object> info = new HashMap<>();
+		info.put( ORIGIN, getOrigin() );
+		info.put( SIZE, getSize() );
+		if( getRotate() != null ) info.put( ROTATE, getRotate() );
+		info.put( PERIMETER, pathLength() );
+		return info;
 	}
 
 	@Override
@@ -193,38 +198,64 @@ public class DesignBox extends DesignShape {
 
 	@Override
 	public void apply( CadTransform transform ) {
-		Txn.run( () -> {
-			Point3D origin = transform.apply( getOrigin() );
-			Point3D point = transform.apply( getOrigin().add( getSize() ) );
+		CadTransform original = getOrientation().getLocalToWorldTransform();
+		CadOrientation newPose = getOrientation().clone().transform( transform );
+
+		// Size
+		CadTransform combined = newPose.getWorldToLocalTransform().combine( transform.combine( original ) );
+		double xSize = Math.abs( combined.apply( new Point3D( getSize().getX(), 0, 0 ) ).getX() );
+		double ySize = Math.abs( combined.apply( new Point3D( 0, getSize().getY(), 0 ) ).getY() );
+
+		// Rotate
+		double oldRotate = CadGeometry.angle360( getOrientation().getRotate() );
+		double newRotate = CadGeometry.angle360( newPose.getRotate() );
+		double dRotate = newRotate - oldRotate;
+
+		Point3D origin = transform.apply( getOrigin() );
+		Point3D size = new Point3D( xSize, ySize, 0 );
+		double rotate = calcRotate() + dRotate;
+
+		try( Txn ignored = Txn.create() ) {
 			setOrigin( origin );
-			setSize( point.subtract( origin ) );
-		} );
+			setSize( size );
+			setRotate( rotate );
+		} catch( TxnException exception ) {
+			log.atWarn().log( "Unable to apply transform" );
+		}
 	}
 
 	protected Map<String, Object> asMap() {
 		Map<String, Object> map = super.asMap();
 		map.put( SHAPE, BOX );
 		map.putAll( asMap( SIZE ) );
+		map.putAll( asMap( ROTATE ) );
 		return map;
 	}
 
 	public DesignBox updateFrom( Map<String, Object> map ) {
 		super.updateFrom( map );
-		setSize( ParseUtil.parsePoint3D( (String)map.get( SIZE ) ) );
+		if( map.containsKey( SIZE ) ) setSize( ParseUtil.parsePoint3D( (String)map.get( SIZE ) ) );
 		return this;
 	}
 
+	@Override
 	public DesignShape updateFrom( DesignShape shape ) {
 		super.updateFrom( shape );
 		if( !(shape instanceof DesignBox box) ) return this;
 
 		try( Txn ignore = Txn.create() ) {
 			this.setSize( box.getSize() );
+			this.setRotate( box.getRotate() );
 		} catch( TxnException exception ) {
-			log.atWarn().log( "Unable to update curve" );
+			log.atWarn().log( "Unable to update box" );
 		}
 
 		return this;
+	}
+
+	@Override
+	public String toString() {
+		return super.toString( ORIGIN, SIZE, ROTATE );
 	}
 
 }
