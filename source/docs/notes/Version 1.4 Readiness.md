@@ -44,7 +44,7 @@ Put all the commands in a table and check that all are operational
 | sm  | 2026-09-05 |   ✓    | Snap Midpoint           | snap-midpoint            |
 | sn  | 2026-09-05 |   ✓    | Snap Center             | snap-center              |
 | sp  | 2026-09-05 |   ✓    | Snap Nearest            | snap-nearest             |
-| st  | 2026-09-05 | Failed | Stretch                 | stretch                  |
+| st  | 2026-09-05 |   ✓    | Stretch                 | stretch                  |
 | sz  | 2026-09-05 |   ✓    | Scale                   | scale                    |
 | tt  | 2026-09-05 |   ✓    | Text                    | draw-text                |
 | uu  | 2026-09-05 |   ✓    | Redo                    | redo                     |
