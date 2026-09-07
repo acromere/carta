@@ -52,6 +52,7 @@ public class CameraMove extends CameraCommand {
 
 		// Prompt the user for a target
 		if( paramCount == 1 & noEvent ) {
+			originalViewPoint = task.getTool().getViewCenter();
 			Point3D worldAnchor = asPoint( task, "pan-anchor", 0 );
 			if( worldAnchor != null ) {
 				originalAnchor = worldAnchor;
@@ -67,7 +68,7 @@ public class CameraMove extends CameraCommand {
 		if( paramCount == 2 & noEvent ) {
 			Point3D worldAnchor = asPoint( task, "pan-anchor", 0 );
 			Point3D worldTarget = asPoint( task, "pan-target", 1 );
-			if( worldAnchor != null && worldTarget != null ) {
+			if( originalViewPoint != null && worldAnchor != null && worldTarget != null ) {
 				Point3D worldOffset = worldAnchor.subtract( worldTarget );
 				task.getTool().setViewCenter( originalViewPoint.add( worldOffset ) );
 				return SUCCESS;
