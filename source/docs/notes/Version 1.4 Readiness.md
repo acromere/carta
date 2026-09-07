@@ -34,7 +34,7 @@ Put all the commands in a table and check that all are operational
 | rr  |            |        | Toggle Reference Points | reference-toggle         |
 | vt  | 2026-09-05 |   ✓    | Set View Top            | camera-view-top          |
 | oo  | 2026-09-05 |   ✓    | Undo                    | undo                     |
-| pa  | 2026-09-05 | Failed | Camera Pan              | camera-move              |
+| pa  | 2026-09-05 |   ✓    | Camera Pan              | camera-move              |
 | rc  | 2026-09-05 |   ✓    | Radial Copy             | radial-copy              |
 | rm  | 2026-09-05 |   ✓    | Trim                    | trim                     |
 | ro  | 2026-09-05 |   ✓    | Rotate                  | rotate                   |

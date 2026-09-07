@@ -102,6 +102,15 @@ public class CameraMove extends CameraCommand {
 	/**
 	 * For testing purposes only.
 	 *
+	 * @return The original view point
+	 */
+	Point3D getOriginalViewPoint() {
+		return originalViewPoint;
+	}
+
+	/**
+	 * For testing purposes only.
+	 *
 	 * @param originalViewPoint The original view point
 	 */
 	void setOriginalViewPoint( Point3D originalViewPoint ) {

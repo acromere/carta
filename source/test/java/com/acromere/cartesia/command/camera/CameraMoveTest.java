@@ -84,6 +84,8 @@ public class CameraMoveTest extends BaseCommandTest {
 	@Test
 	void testExecuteWithOneParameter() throws Exception {
 		// given
+		Point3D viewCenter = new Point3D( 1, 2, 3 );
+		when( tool.getViewCenter() ).thenReturn( viewCenter );
 		CommandTask task = new CommandTask( commandContext, tool, null, null, command, "-1,1" );
 
 		// when
@@ -93,6 +95,7 @@ public class CameraMoveTest extends BaseCommandTest {
 		verify( commandContext, times( 1 ) ).setTool( eq( tool ) );
 		verify( commandContext, times( 1 ) ).submit( eq( tool ), any( Prompt.class ) );
 		verify( tool, timeout( FX_COMMAND_TIMEOUT ).times( 1 ) ).setCursor( RETICLE );
+		assertThat( command.getOriginalViewPoint() ).isEqualTo( viewCenter );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
