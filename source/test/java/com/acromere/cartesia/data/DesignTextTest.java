@@ -11,7 +11,9 @@ import javafx.scene.text.FontWeight;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.acromere.cartesia.math.CadMath.SQRT2_OVER_2;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -724,6 +726,121 @@ public class DesignTextTest extends DesignShapeTest {
 		// then
 		Point3DAssert.assertThat( points.getFirst() ).isCloseTo( new Point3D( 3, -1, 0 ) );
 		Point3DAssert.assertThat( points.get( 1 ) ).isCloseTo( new Point3D( 3 + a, -1 + a, 0 ) );
+	}
+
+	@Test
+	void testGetInformation() {
+		DesignText text = new DesignText( new Point3D( 1, 2, 0 ), "Hello", "30.0" );
+		text.setTextSize( "16.0" );
+		text.setFontName( "SansSerif" );
+		text.setFontWeight( "bold" );
+		text.setFontPosture( "italic" );
+		text.setFontUnderline( "true" );
+		text.setFontStrikethrough( "false" );
+
+		Map<String, Object> info = text.getInformation();
+		assertThat( info.get( DesignText.ORIGIN ) ).isEqualTo( new Point3D( 1, 2, 0 ) );
+		assertThat( info.get( DesignText.TEXT ) ).isEqualTo( "Hello" );
+		assertThat( info.get( DesignText.ROTATE ) ).isEqualTo( "30.0" );
+		assertThat( info.get( DesignText.TEXT_SIZE ) ).isEqualTo( "16.0" );
+		assertThat( info.get( DesignText.FONT_NAME ) ).isEqualTo( "SansSerif" );
+		assertThat( info.get( DesignText.FONT_WEIGHT ) ).isEqualTo( "bold" );
+		assertThat( info.get( DesignText.FONT_POSTURE ) ).isEqualTo( "italic" );
+		assertThat( info.get( DesignText.FONT_UNDERLINE ) ).isEqualTo( "true" );
+		assertThat( info.get( DesignText.FONT_STRIKETHROUGH ) ).isEqualTo( "false" );
+
+		// Empty text
+		DesignText empty = new DesignText();
+		Map<String, Object> emptyInfo = empty.getInformation();
+		assertThat( emptyInfo.get( DesignText.ORIGIN ) ).isNull();
+		assertThat( emptyInfo.get( DesignText.TEXT ) ).isNull();
+		assertThat( emptyInfo.get( DesignText.ROTATE ) ).isNull();
+		assertThat( emptyInfo.get( DesignText.TEXT_SIZE ) ).isNull();
+		assertThat( emptyInfo.get( DesignText.FONT_NAME ) ).isNull();
+		assertThat( emptyInfo.get( DesignText.FONT_WEIGHT ) ).isNull();
+		assertThat( emptyInfo.get( DesignText.FONT_POSTURE ) ).isNull();
+		assertThat( emptyInfo.get( DesignText.FONT_UNDERLINE ) ).isNull();
+		assertThat( emptyInfo.get( DesignText.FONT_STRIKETHROUGH ) ).isNull();
+	}
+
+	@Test
+	void testUpdateFromMap() {
+		Map<String, Object> map = new HashMap<>();
+		map.put( DesignText.ORIGIN, "1,2,0" );
+		map.put( DesignText.TEXT, "World" );
+		map.put( DesignText.ROTATE, "45.0" );
+		map.put( DesignText.TEXT_SIZE, "18.0" );
+		map.put( DesignText.FONT_NAME, "Arial" );
+		map.put( DesignText.FONT_WEIGHT, "bold" );
+		map.put( DesignText.FONT_POSTURE, "italic" );
+		map.put( DesignText.FONT_UNDERLINE, "true" );
+		map.put( DesignText.FONT_STRIKETHROUGH, "true" );
+
+		DesignText text = new DesignText();
+		text.updateFrom( map );
+
+		assertThat( text.getOrigin() ).isEqualTo( new Point3D( 1, 2, 0 ) );
+		assertThat( text.getText() ).isEqualTo( "World" );
+		assertThat( text.getRotate() ).isEqualTo( "45.0" );
+		assertThat( text.getTextSize() ).isEqualTo( "18.0" );
+		assertThat( text.getFontName() ).isEqualTo( "Arial" );
+		assertThat( text.getFontWeight() ).isEqualTo( "bold" );
+		assertThat( text.getFontPosture() ).isEqualTo( "italic" );
+		assertThat( text.getFontUnderline() ).isEqualTo( "true" );
+		assertThat( text.getFontStrikethrough() ).isEqualTo( "true" );
+	}
+
+	@Test
+	void testUpdateFromShape() {
+		DesignText source = new DesignText( new Point3D( 1, 2, 0 ), "Sample", "60.0" );
+		source.setTextSize( "20.0" );
+		source.setFontName( "Courier" );
+		source.setFontWeight( "light" );
+		source.setFontPosture( "regular" );
+		source.setFontUnderline( "false" );
+		source.setFontStrikethrough( "true" );
+
+		DesignText target = new DesignText();
+		target.updateFrom( source );
+
+		assertThat( target.getOrigin() ).isEqualTo( new Point3D( 1, 2, 0 ) );
+		assertThat( target.getText() ).isEqualTo( "Sample" );
+		assertThat( target.getRotate() ).isEqualTo( "60.0" );
+		assertThat( target.getTextSize() ).isEqualTo( "20.0" );
+		assertThat( target.getFontName() ).isEqualTo( "Courier" );
+		assertThat( target.getFontWeight() ).isEqualTo( "light" );
+		assertThat( target.getFontPosture() ).isEqualTo( "regular" );
+		assertThat( target.getFontUnderline() ).isEqualTo( "false" );
+		assertThat( target.getFontStrikethrough() ).isEqualTo( "true" );
+
+		// Update from non-text shape
+		DesignBox box = new DesignBox( new Point3D( 7, 8, 9 ), new Point3D( 1, 1, 0 ) );
+		target.updateFrom( box );
+		assertThat( target.getOrigin() ).isEqualTo( new Point3D( 7, 8, 9 ) );
+		assertThat( target.getText() ).isEqualTo( "Sample" );
+		assertThat( target.getRotate() ).isEqualTo( "60.0" );
+	}
+
+	@Test
+	void testCloneShape() {
+		DesignText source = new DesignText( new Point3D( 1, 2, 0 ), "Clone Me", "90.0" );
+		source.setTextSize( "24.0" );
+		source.setFontName( "Times New Roman" );
+		source.setFontWeight( "bold" );
+		source.setFontPosture( "italic" );
+		source.setFontUnderline( "true" );
+		source.setFontStrikethrough( "true" );
+
+		DesignText clone = source.cloneShape();
+		assertThat( clone.getOrigin() ).isEqualTo( new Point3D( 1, 2, 0 ) );
+		assertThat( clone.getText() ).isEqualTo( "Clone Me" );
+		assertThat( clone.getRotate() ).isEqualTo( "90.0" );
+		assertThat( clone.getTextSize() ).isEqualTo( "24.0" );
+		assertThat( clone.getFontName() ).isEqualTo( "Times New Roman" );
+		assertThat( clone.getFontWeight() ).isEqualTo( "bold" );
+		assertThat( clone.getFontPosture() ).isEqualTo( "italic" );
+		assertThat( clone.getFontUnderline() ).isEqualTo( "true" );
+		assertThat( clone.getFontStrikethrough() ).isEqualTo( "true" );
 	}
 
 }

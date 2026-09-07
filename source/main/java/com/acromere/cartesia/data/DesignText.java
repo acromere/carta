@@ -12,6 +12,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import lombok.CustomLog;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -390,26 +391,17 @@ public class DesignText extends DesignShape implements DesignTextSupport {
 
 	@Override
 	public Map<String, Object> getInformation() {
-		return Map.of(
-			ORIGIN,
-			getOrigin(),
-			TEXT,
-			getText(),
-			ROTATE,
-			getRotate(),
-			TEXT_SIZE,
-			getTextSize(),
-			FONT_NAME,
-			getFontName(),
-			FONT_WEIGHT,
-			getFontName(),
-			FONT_POSTURE,
-			getFontName(),
-			FONT_UNDERLINE,
-			getFontName(),
-			FONT_STRIKETHROUGH,
-			getFontName()
-		);
+		Map<String, Object> info = new HashMap<>();
+		if( getOrigin() != null ) info.put( ORIGIN, getOrigin() );
+		if( getText() != null ) info.put( TEXT, getText() );
+		if( getRotate() != null ) info.put( ROTATE, getRotate() );
+		if( getTextSize() != null ) info.put( TEXT_SIZE, getTextSize() );
+		if( getFontName() != null ) info.put( FONT_NAME, getFontName() );
+		if( getFontWeight() != null ) info.put( FONT_WEIGHT, getFontWeight() );
+		if( getFontPosture() != null ) info.put( FONT_POSTURE, getFontPosture() );
+		if( getFontUnderline() != null ) info.put( FONT_UNDERLINE, getFontUnderline() );
+		if( getFontStrikethrough() != null ) info.put( FONT_STRIKETHROUGH, getFontStrikethrough() );
+		return info;
 	}
 
 	@Override
@@ -448,10 +440,10 @@ public class DesignText extends DesignShape implements DesignTextSupport {
 
 		if( map.containsKey( TEXT_SIZE ) ) setTextSize( (String)map.get( TEXT_SIZE ) );
 		if( map.containsKey( FONT_NAME ) ) setFontName( (String)map.get( FONT_NAME ) );
-		if( map.containsKey( FONT_WEIGHT ) ) setTextSize( (String)map.get( FONT_WEIGHT ) );
-		if( map.containsKey( FONT_POSTURE ) ) setTextSize( (String)map.get( FONT_POSTURE ) );
-		if( map.containsKey( FONT_UNDERLINE ) ) setTextSize( (String)map.get( FONT_UNDERLINE ) );
-		if( map.containsKey( FONT_STRIKETHROUGH ) ) setTextSize( (String)map.get( FONT_STRIKETHROUGH ) );
+		if( map.containsKey( FONT_WEIGHT ) ) setFontWeight( (String)map.get( FONT_WEIGHT ) );
+		if( map.containsKey( FONT_POSTURE ) ) setFontPosture( (String)map.get( FONT_POSTURE ) );
+		if( map.containsKey( FONT_UNDERLINE ) ) setFontUnderline( (String)map.get( FONT_UNDERLINE ) );
+		if( map.containsKey( FONT_STRIKETHROUGH ) ) setFontStrikethrough( (String)map.get( FONT_STRIKETHROUGH ) );
 
 		return this;
 	}
@@ -462,9 +454,16 @@ public class DesignText extends DesignShape implements DesignTextSupport {
 		if( !(shape instanceof DesignText text) ) return this;
 
 		try( Txn ignore = Txn.create() ) {
+			this.setText( text.getText() );
 			this.setRotate( text.getRotate() );
+			this.setTextSize( text.getTextSize() );
+			this.setFontName( text.getFontName() );
+			this.setFontWeight( text.getFontWeight() );
+			this.setFontPosture( text.getFontPosture() );
+			this.setFontUnderline( text.getFontUnderline() );
+			this.setFontStrikethrough( text.getFontStrikethrough() );
 		} catch( TxnException exception ) {
-			log.atWarn().log( "Unable to update curve" );
+			log.atWarn().log( "Unable to update text" );
 		}
 
 		return this;
