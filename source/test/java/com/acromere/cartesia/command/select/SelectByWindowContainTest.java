@@ -28,7 +28,7 @@ public class SelectByWindowContainTest extends BaseCommandTest {
 	private final SelectByWindowContain command = new SelectByWindowContain();
 
 	/**
-	 * Select by window contain with no parameters or event, should prompt the
+	 * Select-by-window-contain, with no parameters or event, should prompt the
 	 * user to select an anchor point. The result should be incomplete.
 	 *
 	 * @throws Exception If an error occurs during the test
@@ -111,6 +111,27 @@ public class SelectByWindowContainTest extends BaseCommandTest {
 		// then
 		verify( tool, times( 1 ) ).worldWindowSelect( eq( new Point3D( -3, 3, 0 ) ), eq( new Point3D( 3, -3, 0 ) ), eq( false ), eq( false ) );
 		assertThat( result ).isEqualTo( SUCCESS );
+	}
+
+	/**
+	 * Select by window contain with two parameters, and commands on the command
+	 * stack, should return the corner point.
+	 *
+	 * @throws Exception If an error occurs during the test
+	 */
+	@Test
+	void testExecuteWithTwoParametersAndCommandStack() throws Exception {
+		// given
+		CommandTask task = new CommandTask( commandContext, tool, null, null, command, "-3,3", "3,-3" );
+		// Pretend there is another command on the stack
+		when( commandContext.isSelectMode() ).thenReturn( false );
+
+		// when
+		Object result = task.runTaskStep();
+
+		// then
+		verify( tool, times( 0 ) ).worldWindowSelect( any(), any(), anyBoolean(), anyBoolean() );
+		assertThat( result ).isEqualTo( new Point3D( 3, -3, 0 ) );
 	}
 
 	// Bad Parameter Tests -------------------------------------------------------

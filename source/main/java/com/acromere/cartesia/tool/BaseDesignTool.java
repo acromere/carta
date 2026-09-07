@@ -618,6 +618,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 	@Override
 	public void setView( DesignPortal portal ) {
+		if( portal == null ) return;
 		setView( portal.center(), portal.zoom(), portal.rotate() );
 	}
 
@@ -1150,6 +1151,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	 * {@inheritDoc}
 	 */
 	@Override
+	@NonNull
 	public DesignPortal getPriorPortal() {
 		// Remove the current portal
 		if( !portalStack.isEmpty() ) portalStack.pop();
