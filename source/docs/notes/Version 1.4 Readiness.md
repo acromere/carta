@@ -35,7 +35,7 @@ Put all the commands in a table and check that all are operational
 | vt  | 2026-09-05 |   ✓    | Set View Top            | camera-view-top          |
 | oo  | 2026-09-05 |   ✓    | Undo                    | undo                     |
 | pa  | 2026-09-05 | Failed | Camera Pan              | camera-move              |
-| rc  | 2026-09-05 | Failed | Radial Copy             | radial-copy              |
+| rc  | 2026-09-05 |   ✓    | Radial Copy             | radial-copy              |
 | rm  | 2026-09-05 |   ✓    | Trim                    | trim                     |
 | ro  | 2026-09-05 |   ✓    | Rotate                  | rotate                   |
 | sg  | 2026-09-05 |   ✓    | Toggle Grid Snap        | snap-grid-toggle         |
