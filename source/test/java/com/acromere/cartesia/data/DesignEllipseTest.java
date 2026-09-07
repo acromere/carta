@@ -216,13 +216,132 @@ public class DesignEllipseTest extends DesignShapeTest {
 	}
 
 	@Test
+	void testGetType() {
+		DesignEllipse ellipse = new DesignEllipse();
+		assertThat( ellipse.getType() ).isEqualTo( DesignShape.Type.ELLIPSE );
+	}
+
+	@Test
 	void testDistanceTo() {
 		// Test circles
-		DesignEllipse arc = new DesignEllipse( new Point3D( 5, 0, 0 ), 1.0 );
-		assertThat( arc.distanceTo( new Point3D( 0, 0, 0 ) ) ).isEqualTo( 4.0 );
-		assertThat( arc.distanceTo( new Point3D( 5, 0, 0 ) ) ).isEqualTo( 1.0 );
+		DesignEllipse circle = new DesignEllipse( new Point3D( 5, 0, 0 ), 1.0 );
+		assertThat( circle.distanceTo( new Point3D( 0, 0, 0 ) ) ).isEqualTo( 4.0 );
+		assertThat( circle.distanceTo( new Point3D( 5, 0, 0 ) ) ).isEqualTo( 1.0 );
+		assertThat( circle.distanceTo( new Point3D( 5, 3, 0 ) ) ).isEqualTo( 2.0 );
 
-		// TODO Test DesignEllipse.distanceTo()
+		// Test non-circular ellipse
+		DesignEllipse ellipse = new DesignEllipse( new Point3D( 0, 0, 0 ), 4.0, 2.0 );
+		assertThat( ellipse.distanceTo( new Point3D( 4, 0, 0 ) ) ).isCloseTo( 0.0, Offset.offset( Constants.RESOLUTION_LENGTH ) );
+		assertThat( ellipse.distanceTo( new Point3D( 0, 2, 0 ) ) ).isCloseTo( 0.0, Offset.offset( Constants.RESOLUTION_LENGTH ) );
+		assertThat( ellipse.distanceTo( new Point3D( 0, 5, 0 ) ) ).isCloseTo( 3.0, Offset.offset( Constants.RESOLUTION_LENGTH ) );
+		assertThat( ellipse.distanceTo( new Point3D( 6, 0, 0 ) ) ).isCloseTo( 2.0, Offset.offset( Constants.RESOLUTION_LENGTH ) );
+
+		// Test rotated ellipse
+		DesignEllipse rotated = new DesignEllipse( new Point3D( 0, 0, 0 ), 4.0, 2.0, 90.0 );
+		assertThat( rotated.distanceTo( new Point3D( 0, 4, 0 ) ) ).isCloseTo( 0.0, Offset.offset( Constants.RESOLUTION_LENGTH ) );
+		assertThat( rotated.distanceTo( new Point3D( 2, 0, 0 ) ) ).isCloseTo( 0.0, Offset.offset( Constants.RESOLUTION_LENGTH ) );
+
+		// Null safety
+		DesignEllipse empty = new DesignEllipse( null, (Point3D)null );
+		assertThat( empty.distanceTo( new Point3D( 0, 0, 0 ) ) ).isNaN();
+		assertThat( circle.distanceTo( null ) ).isNaN();
+	}
+
+	@Test
+	void testIsCoincident() {
+		DesignEllipse circle = new DesignEllipse( new Point3D( 0, 0, 0 ), 5.0 );
+		assertThat( circle.isCoincident( new Point3D( 5, 0, 0 ) ) ).isTrue();
+		assertThat( circle.isCoincident( new Point3D( 0, 5, 0 ) ) ).isTrue();
+		assertThat( circle.isCoincident( new Point3D( -5, 0, 0 ) ) ).isTrue();
+		assertThat( circle.isCoincident( new Point3D( 0, -5, 0 ) ) ).isTrue();
+		assertThat( circle.isCoincident( new Point3D( 0, 0, 0 ) ) ).isFalse();
+		assertThat( circle.isCoincident( new Point3D( 5, 5, 0 ) ) ).isFalse();
+		assertThat( circle.isCoincident( null ) ).isFalse();
+
+		DesignEllipse ellipse = new DesignEllipse( new Point3D( 1, 2, 0 ), 4.0, 2.0 );
+		assertThat( ellipse.isCoincident( new Point3D( 5, 2, 0 ) ) ).isTrue();
+		assertThat( ellipse.isCoincident( new Point3D( 1, 4, 0 ) ) ).isTrue();
+		assertThat( ellipse.isCoincident( new Point3D( -3, 2, 0 ) ) ).isTrue();
+		assertThat( ellipse.isCoincident( new Point3D( 1, 0, 0 ) ) ).isTrue();
+		assertThat( ellipse.isCoincident( new Point3D( 1, 2, 0 ) ) ).isFalse();
+
+		DesignEllipse rotated = new DesignEllipse( new Point3D( 0, 0, 0 ), 4.0, 2.0, 90.0 );
+		assertThat( rotated.isCoincident( new Point3D( 0, 4, 0 ) ) ).isTrue();
+		assertThat( rotated.isCoincident( new Point3D( -2, 0, 0 ) ) ).isTrue();
+
+		DesignEllipse empty = new DesignEllipse( null, (Point3D)null );
+		assertThat( empty.isCoincident( new Point3D( 0, 0, 0 ) ) ).isFalse();
+	}
+
+	@Test
+	void testIsCircular() {
+		assertThat( new DesignEllipse( new Point3D( 0, 0, 0 ), 5.0 ).isCircular() ).isTrue();
+		assertThat( new DesignEllipse( new Point3D( 0, 0, 0 ), 5.0, 5.0 ).isCircular() ).isTrue();
+		assertThat( new DesignEllipse( new Point3D( 0, 0, 0 ), 5.0, 3.0 ).isCircular() ).isFalse();
+		assertThat( new DesignEllipse( null, (Point3D)null ).isCircular() ).isFalse();
+	}
+
+	@Test
+	void testNullSafety() {
+		DesignEllipse ellipse = new DesignEllipse( null, (Point3D)null );
+		assertThat( ellipse.getRadius() ).isNull();
+		assertThat( ellipse.getXRadius() ).isNull();
+		assertThat( ellipse.getYRadius() ).isNull();
+		assertThat( ellipse.isCircular() ).isFalse();
+		assertThat( ellipse.getReferencePoints() ).isEmpty();
+		assertThat( ellipse.pathLength() ).isNaN();
+		assertThat( ellipse.distanceTo( new Point3D( 1, 1, 0 ) ) ).isNaN();
+		assertThat( ellipse.isCoincident( new Point3D( 1, 1, 0 ) ) ).isFalse();
+
+		ellipse.setRadius( null );
+		assertThat( ellipse.getRadii() ).isNull();
+
+		DesignEllipse ctorNulls = new DesignEllipse( null, (Double)null, (Double)null, (Double)null );
+		assertThat( ctorNulls.getRadii() ).isNull();
+	}
+
+	@Test
+	void testUpdateFromShape() {
+		DesignEllipse source = new DesignEllipse( new Point3D( 1, 2, 3 ), 4.0, 5.0, 6.0 );
+		DesignEllipse target = new DesignEllipse();
+		target.updateFrom( source );
+
+		assertThat( target.getOrigin() ).isEqualTo( new Point3D( 1, 2, 3 ) );
+		assertThat( target.getRadii() ).isEqualTo( new Point3D( 4, 5, 0 ) );
+		assertThat( target.calcRotate() ).isEqualTo( 6.0 );
+	}
+
+	@Test
+	void testUpdateFromMapWithNumericAndStringValues() {
+		Map<String, Object> map = new HashMap<>();
+		map.put( DesignEllipse.ORIGIN, "1,2,3" );
+		map.put( DesignEllipse.RADII, new Point3D( 4, 5, 0 ) );
+		map.put( DesignEllipse.ROTATE, "45.0" );
+
+		DesignEllipse ellipse = new DesignEllipse();
+		ellipse.updateFrom( map );
+
+		assertThat( ellipse.getOrigin() ).isEqualTo( new Point3D( 1, 2, 3 ) );
+		assertThat( ellipse.getRadii() ).isEqualTo( new Point3D( 4, 5, 0 ) );
+		assertThat( ellipse.calcRotate() ).isEqualTo( 45.0 );
+
+		Map<String, Object> mapDeprecatedRadius = new HashMap<>();
+		mapDeprecatedRadius.put( DesignEllipse.ORIGIN, "0,0,0" );
+		mapDeprecatedRadius.put( DesignEllipse.RADIUS, 7.5 );
+
+		ellipse = new DesignEllipse();
+		ellipse.updateFrom( mapDeprecatedRadius );
+		assertThat( ellipse.getRadius() ).isEqualTo( 7.5 );
+
+		Map<String, Object> mapDeprecatedRadii = new HashMap<>();
+		mapDeprecatedRadii.put( DesignEllipse.ORIGIN, "0,0,0" );
+		mapDeprecatedRadii.put( "x-radius", 3.0 );
+		mapDeprecatedRadii.put( "y-radius", 6.0 );
+
+		ellipse = new DesignEllipse();
+		ellipse.updateFrom( mapDeprecatedRadii );
+		assertThat( ellipse.getXRadius() ).isEqualTo( 3.0 );
+		assertThat( ellipse.getYRadius() ).isEqualTo( 6.0 );
 	}
 
 	@Test

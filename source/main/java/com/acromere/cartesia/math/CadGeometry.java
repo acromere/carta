@@ -244,6 +244,15 @@ public class CadGeometry {
 		return Geometry.pointCubicDistance( asPoint( p ), asPoint( cubic.getOrigin() ), asPoint( cubic.getOriginControl() ), asPoint( cubic.getPointControl() ), asPoint( cubic.getPoint() ) );
 	}
 
+	public static double pointEllipseDistance( Point3D p, DesignEllipse ellipse ) {
+		if( p == null || ellipse == null || ellipse.getOrigin() == null || ellipse.getRadii() == null ) return Double.NaN;
+		double[] o = asPoint( ellipse.getOrigin() );
+		double[] point = asPoint( p );
+		double[] r = asPoint( ellipse.getRadii() );
+		double rotate = Math.toRadians( ellipse.calcRotate() );
+		return Geometry.distance( point, Geometry.ellipsePoint( o, r, rotate, Geometry.ellipseAngle( o, r, rotate, point ) ) );
+	}
+
 	public static double getSpin( Point3D a, Point3D b, Point3D c ) {
 		return Geometry.getSpin( asPoint( a ), asPoint( b ), asPoint( c ) );
 	}

@@ -3,7 +3,6 @@ package com.acromere.cartesia.data;
 import com.acromere.cartesia.ParseUtil;
 import com.acromere.cartesia.math.CadGeometry;
 import com.acromere.cartesia.math.CadOrientation;
-import com.acromere.cartesia.math.CadPoints;
 import com.acromere.cartesia.math.CadTransform;
 import com.acromere.curve.math.Arithmetic;
 import com.acromere.curve.math.Constants;
@@ -69,7 +68,7 @@ public class DesignEllipse extends DesignShape {
 	}
 
 	public DesignEllipse( Point3D origin, Double xRadius, Double yRadius, Double rotate ) {
-		this( origin, new Point3D( xRadius, yRadius, 0.0 ), rotate );
+		this( origin, xRadius == null || yRadius == null ? null : new Point3D( xRadius, yRadius, 0.0 ), rotate );
 	}
 
 	public DesignEllipse( Point3D origin, Point3D radii, Double rotate ) {
@@ -80,8 +79,8 @@ public class DesignEllipse extends DesignShape {
 	}
 
 	@Override
-	public DesignShape.Type getType() {
-		return DesignShape.Type.ELLIPSE;
+	public Type getType() {
+		return Type.ELLIPSE;
 	}
 
 	public Point3D getRadii() {
@@ -95,38 +94,25 @@ public class DesignEllipse extends DesignShape {
 	}
 
 	public Double getRadius() {
-		return getRadii().getX();
+		Point3D radii = getRadii();
+		return radii == null ? null : radii.getX();
 	}
 
 	@SuppressWarnings( "unchecked" )
 	public <T extends DesignEllipse> T setRadius( Double value ) {
-		setRadii( new Point3D( value, value, 0 ) );
+		setRadii( value == null ? null : new Point3D( value, value, 0 ) );
 		return (T)this;
 	}
 
 	public Double getXRadius() {
-		return getRadii().getX();
+		Point3D radii = getRadii();
+		return radii == null ? null : radii.getX();
 	}
 
 	public Double getYRadius() {
-		return getRadii().getY();
+		Point3D radii = getRadii();
+		return radii == null ? null : radii.getY();
 	}
-
-	//	@SuppressWarnings( "unchecked" )
-	//	public double calcRotate() {
-	//		return hasKey( ROTATE ) ? getRotate() : 0.0;
-	//	}
-	//
-	//	public Double getRotate() {
-	//		return getValue( ROTATE );
-	//	}
-	//
-	//	@SuppressWarnings( "unchecked" )
-	//	public <T extends DesignEllipse> T setRotate( Double value ) {
-	//		if( value != null && CadGeometry.areSameAngle360( 0.0, value ) ) value = null;
-	//		setValue( ROTATE, value );
-	//		return (T)this;
-	//	}
 
 	/**
 	 * Test if a given point is on the ellipse.
@@ -135,9 +121,8 @@ public class DesignEllipse extends DesignShape {
 	 * @return
 	 */
 	public boolean isCoincident( Point3D point ) {
-		Point3D local = getOrientation().getWorldToLocalTransform().apply( point );
-		Point3D test = CadPoints.toFxPoint( Geometry.polarToCartesian( new double[]{ getXRadius(), getYRadius(), Math.atan2( local.getY(), local.getX() ) } ) );
-		return CadGeometry.areSamePoint( new Point3D( local.getX(), local.getY(), 0 ), new Point3D( test.getX(), test.getY(), 0 ) );
+		if( point == null || getOrigin() == null || getRadii() == null ) return false;
+		return CadGeometry.areSamePoint( point, CadGeometry.ellipsePoint360( this, CadGeometry.ellipseAngle360( this, point ) ) );
 	}
 
 	public CadTransform getRotateTransform() {
@@ -155,6 +140,8 @@ public class DesignEllipse extends DesignShape {
 
 	@Override
 	public List<Point3D> getReferencePoints() {
+		if( getOrigin() == null || getRadii() == null ) return List.of();
+
 		Point3D radii = getRadii();
 		Point3D p1 = getOrigin();
 		Point3D p2 = p1.add( radii.getX(), 0, 0 );
@@ -167,26 +154,29 @@ public class DesignEllipse extends DesignShape {
 
 	@Override
 	public double distanceTo( Point3D point ) {
-		// TODO Improve DesignEllipse.distanceTo()
-		// This implementation is a simple estimate based on the origin and radius
-		return isCircular() ? Math.abs( CadGeometry.distance( getOrigin(), point ) - getRadius() ) : Double.NaN;
+		return CadGeometry.pointEllipseDistance( point, this );
 	}
 
 	public boolean isCircular() {
-		return Geometry.areSameSize( getXRadius(), getYRadius() );
+		Point3D radii = getRadii();
+		if( radii == null ) return false;
+		return Geometry.areSameSize( radii.getX(), radii.getY() );
 	}
 
 	@Override
 	public double pathLength() {
-		// If the ellipse is circular then use the circle formula
+		if( getRadii() == null ) return Double.NaN;
+
+		// If the ellipse is circular, then use the circle formula
 		if( isCircular() ) return Constants.FULL_CIRCLE * getRadius();
 
 		double a = getXRadius();
 		double b = getYRadius();
-		double h = ((a - b) * (a - b)) / ((a + b) * (a + b));
 
 		if( Geometry.areSameSize( a, 0.0 ) ) return 4 * b;
 		if( Geometry.areSameSize( b, 0.0 ) ) return 4 * a;
+
+		double h = ((a - b) * (a - b)) / ((a + b) * (a + b));
 
 		double factor = 0.0;
 		for( int index = 0; index < 12; index++ ) {
@@ -222,6 +212,8 @@ public class DesignEllipse extends DesignShape {
 
 	@Override
 	public void apply( CadTransform transform ) {
+		if( getOrigin() == null || getRadii() == null ) return;
+
 		CadTransform original = getOrientation().getLocalToWorldTransform();
 		CadOrientation newPose = getOrientation().clone().transform( transform );
 
@@ -263,14 +255,21 @@ public class DesignEllipse extends DesignShape {
 	public DesignEllipse updateFrom( Map<String, Object> map ) {
 		super.updateFrom( map );
 		if( map.containsKey( RADII ) ) {
-			setRadii( ParseUtil.parsePoint3D( (String)map.get( RADII ) ) );
+			Object radii = map.get( RADII );
+			if( radii instanceof Point3D ) setRadii( (Point3D)radii );
+			else if( radii instanceof String ) setRadii( ParseUtil.parsePoint3D( (String)radii ) );
 		} else if( map.containsKey( RADIUS ) ) {
 			// For backward compatibility
-			double radius = (Double)map.get( RADIUS );
-			setRadii( new Point3D( radius, radius, 0.0 ) );
+			Object radius = map.get( RADIUS );
+			if( radius instanceof Number ) setRadius( ((Number)radius).doubleValue() );
+			else if( radius instanceof String ) setRadius( Double.parseDouble( (String)radius ) );
 		} else if( map.containsKey( X_RADIUS ) && map.containsKey( Y_RADIUS ) ) {
 			// For backward compatibility
-			setRadii( new Point3D( (Double)map.get( X_RADIUS ), (Double)map.get( Y_RADIUS ), 0 ) );
+			Object x = map.get( X_RADIUS );
+			Object y = map.get( Y_RADIUS );
+			double xr = x instanceof Number ? ((Number)x).doubleValue() : x instanceof String ? Double.parseDouble( (String)x ) : 0.0;
+			double yr = y instanceof Number ? ((Number)y).doubleValue() : y instanceof String ? Double.parseDouble( (String)y ) : 0.0;
+			setRadii( new Point3D( xr, yr, 0.0 ) );
 		}
 
 		return this;
@@ -285,7 +284,7 @@ public class DesignEllipse extends DesignShape {
 			this.setRadii( ellipse.getRadii() );
 			this.setRotate( ellipse.getRotate() );
 		} catch( TxnException exception ) {
-			log.atWarn().log( "Unable to update curve" );
+			log.atWarn().log( "Unable to update ellipse" );
 		}
 
 		return this;
