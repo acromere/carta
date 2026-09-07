@@ -259,11 +259,16 @@ public class CommandContext implements EventHandler<KeyEvent> {
 	}
 
 	public void setZoom( double zoom ) {
-		getCoordinateStatus().updateZoom( zoom );
+		CoordinateStatus coordinateStatus = getCoordinateStatus();
+		if( coordinateStatus == null ) return;
+
+		coordinateStatus.updateZoom( zoom );
 	}
 
 	public void setMouse( MouseEvent event ) {
 		CoordinateStatus coordinateStatus = getCoordinateStatus();
+		if( coordinateStatus == null ) return;
+
 		BaseDesignTool tool = (BaseDesignTool)event.getSource();
 
 		// Set the mouse position in screen coordinates
