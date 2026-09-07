@@ -85,7 +85,7 @@ public class DesignPathTest extends DesignShapeTest {
 		// Leave the path open
 
 		// then
-		assertThat( path.distanceTo( new Point3D( 3, 0, 0 ) ) ).isEqualTo( 2.1213203435596424, TOLERANCE );
+		assertThat( path.distanceTo( new Point3D( 3, 0, 0 ) ) ).isEqualTo( 1.8424029843769192, TOLERANCE );
 
 		// given
 		// Check that this point is closer to the start point before closing the path
@@ -109,10 +109,10 @@ public class DesignPathTest extends DesignShapeTest {
 		path.cubic( 8, 8, 9, 8, 10, 5 );
 
 		// then
-		assertThat( path.pathLength() ).isEqualTo( 11.899803353029451, TOLERANCE );
+		assertThat( path.pathLength() ).isEqualTo( 14.489793950449272, TOLERANCE );
 
 		path.close();
-		assertThat( path.pathLength() ).isEqualTo( 21.748661154825555, TOLERANCE );
+		assertThat( path.pathLength() ).isEqualTo( 24.338651752245376, TOLERANCE );
 	}
 
 	@Test
@@ -162,6 +162,31 @@ public class DesignPathTest extends DesignShapeTest {
 		Point3DAssert.assertThat( points.get( 3 ) ).isCloseTo( new Point3D( 7, 7, 0 ) );
 		Point3DAssert.assertThat( points.get( 4 ) ).isCloseTo( new Point3D( 10, 11, 0 ) );
 		assertThat( points ).hasSize( 5 );
+	}
+
+	@Test
+	void cloneIndependence() {
+		DesignPath path = new DesignPath( new Point3D( 1, 2, 0 ) );
+		path.line( 3, 4 );
+
+		DesignPath clone = path.cloneShape();
+		clone.getSteps().getFirst().data()[ 0 ] = 99;
+
+		assertThat( path.getSteps().getFirst().data()[ 0 ] ).isEqualTo( 1.0 );
+	}
+
+	@Test
+	void referencePointsWithCloseAndContinue() {
+		DesignPath path = new DesignPath( new Point3D( 0, 0, 0 ) );
+		path.line( 10, 0 );
+		path.close();
+		path.line( 0, 10 );
+
+		List<Point3D> points = path.getReferencePoints();
+		assertThat( points ).hasSize( 3 );
+		Point3DAssert.assertThat( points.get( 0 ) ).isCloseTo( new Point3D( 0, 0, 0 ) );
+		Point3DAssert.assertThat( points.get( 1 ) ).isCloseTo( new Point3D( 10, 0, 0 ) );
+		Point3DAssert.assertThat( points.get( 2 ) ).isCloseTo( new Point3D( 0, 10, 0 ) );
 	}
 
 }

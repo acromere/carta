@@ -58,7 +58,7 @@ public class DesignPath extends DesignShape {
 			if( step.command() != Command.M ) throw new IllegalArgumentException( "DesignPath does not start with a move command" );
 
 			setOrigin( new Point3D( step.data()[ 0 ], step.data()[ 1 ], 0 ) );
-			setSteps( path.getSteps() );
+			setSteps( source.stream().map( Step::clone ).toList() );
 		}
 	}
 
@@ -77,10 +77,8 @@ public class DesignPath extends DesignShape {
 
 	@Override
 	public List<Point3D> getReferencePoints() {
-		// TODO Implement DesignPath.getReferencePoints()
-
 		List<Point3D> points = new ArrayList<>();
-		Point3D start;
+		Point3D start = Point3D.ZERO;
 		Point3D prior = Point3D.ZERO;
 
 		for( Step step : getSteps() ) {
@@ -103,12 +101,12 @@ public class DesignPath extends DesignShape {
 				}
 				case A -> {
 					// Convert from endpoint format to arc center format
-					double[] arcAsCenter = Geometry.arcEndpointToCenter( CadPoints.asPoint( prior ), step.data );
+					double[] arcAsCenter = Geometry.arcEndpointToCenter( CadPoints.asPoint( prior ), step.data() );
 					// Calculate the arc reference points
 					double[][] arcPoints = Geometry.arcReferencePoints(
 						new double[]{ arcAsCenter[ 0 ], arcAsCenter[ 1 ], 0 },
 						new double[]{ arcAsCenter[ 2 ], arcAsCenter[ 3 ], 0 },
-						0,
+						step.data()[ 4 ],
 						arcAsCenter[ 4 ],
 						arcAsCenter[ 5 ]
 					);
@@ -146,12 +144,11 @@ public class DesignPath extends DesignShape {
 				}
 				case Z -> {
 					// The start point is already in the reference points
+					prior = start;
 				}
 			}
 		}
 
-		// This one is interesting because we want to include all the different
-		// reference points from all the geometry in the path.
 		return points;
 	}
 
@@ -174,18 +171,27 @@ public class DesignPath extends DesignShape {
 					prior = Point.of( step.data()[ 0 ], step.data()[ 1 ] );
 				}
 				case A -> {
+					double[] arcAsCenter = Geometry.arcEndpointToCenter( prior, step.data() );
 					distance = Math.min(
 						distance,
-						Geometry.pointArcDistance( gPoint, Point.of( step.data()[ 0 ], step.data()[ 1 ] ), Point.of( step.data()[ 2 ], step.data()[ 3 ] ), 0.0, step.data()[ 4 ], step.data()[ 5 ] )
+						Geometry.pointArcDistance( gPoint, Point.of( arcAsCenter[ 0 ], arcAsCenter[ 1 ] ), Point.of( arcAsCenter[ 2 ], arcAsCenter[ 3 ] ), step.data()[ 4 ], arcAsCenter[ 4 ], arcAsCenter[ 5 ] )
 					);
-					prior = Geometry.arcEndPoints( Point.of( step.data()[ 0 ], step.data()[ 1 ] ), Point.of( step.data()[ 2 ], step.data()[ 3 ] ), 0.0, step.data()[ 4 ], step.data()[ 5 ] )[ 1 ];
+					prior = Point.of( step.data()[ 0 ], step.data()[ 1 ] );
 				}
 				case Q -> {
-					// TODO Calculate point quad distance
-					prior = Point.of( step.data()[ 2 ], step.data()[ 3 ] );
+					double[] q0 = prior;
+					double[] q1 = Point.of( step.data()[ 0 ], step.data()[ 1 ] );
+					double[] q2 = Point.of( step.data()[ 2 ], step.data()[ 3 ] );
+					double[] c1 = Point.of( q0[ 0 ] + 2.0 / 3.0 * (q1[ 0 ] - q0[ 0 ]), q0[ 1 ] + 2.0 / 3.0 * (q1[ 1 ] - q0[ 1 ]) );
+					double[] c2 = Point.of( q2[ 0 ] + 2.0 / 3.0 * (q1[ 0 ] - q2[ 0 ]), q2[ 1 ] + 2.0 / 3.0 * (q1[ 1 ] - q2[ 1 ]) );
+					distance = Math.min( distance, Geometry.pointCubicDistance( gPoint, q0, c1, c2, q2 ) );
+					prior = q2;
 				}
 				case B -> {
-					// TODO Calculate point cubic distance
+					distance = Math.min(
+						distance,
+						Geometry.pointCubicDistance( gPoint, prior, Point.of( step.data()[ 0 ], step.data()[ 1 ] ), Point.of( step.data()[ 2 ], step.data()[ 3 ] ), Point.of( step.data()[ 4 ], step.data()[ 5 ] ) )
+					);
 					prior = Point.of( step.data()[ 4 ], step.data()[ 5 ] );
 				}
 				case Z -> {
@@ -214,8 +220,9 @@ public class DesignPath extends DesignShape {
 					prior = Point.of( step.data()[ 0 ], step.data()[ 1 ] );
 				}
 				case A -> {
-					length += Geometry.arcLength( Point.of( step.data()[ 0 ], step.data()[ 1 ] ), Point.of( step.data()[ 2 ], step.data()[ 3 ] ), 0.0, step.data()[ 4 ], step.data()[ 5 ] );
-					prior = Geometry.arcEndPoints( Point.of( step.data()[ 0 ], step.data()[ 1 ] ), Point.of( step.data()[ 2 ], step.data()[ 3 ] ), 0.0, step.data()[ 4 ], step.data()[ 5 ] )[ 1 ];
+					double[] arcAsCenter = Geometry.arcEndpointToCenter( prior, step.data() );
+					length += Geometry.arcLength( Point.of( arcAsCenter[ 0 ], arcAsCenter[ 1 ] ), Point.of( arcAsCenter[ 2 ], arcAsCenter[ 3 ] ), step.data()[ 4 ], arcAsCenter[ 4 ], arcAsCenter[ 5 ] );
+					prior = Point.of( step.data()[ 0 ], step.data()[ 1 ] );
 				}
 				case Q -> {
 					length += Geometry.quadArcLength( prior, Point.of( step.data()[ 0 ], step.data()[ 1 ] ), Point.of( step.data()[ 2 ], step.data()[ 3 ] ) );
@@ -237,14 +244,18 @@ public class DesignPath extends DesignShape {
 
 	@Override
 	public DesignPath cloneShape() {
-		return new DesignPath().copyFrom( this, true );
+		DesignPath clone = new DesignPath().copyFrom( this, true );
+		clone.setSteps( getSteps().stream().map( Step::clone ).toList() );
+		return clone;
 	}
 
 	@Override
 	public void apply( CadTransform transform ) {
 		try( Txn ignored = Txn.create() ) {
 			setOrigin( transform.apply( getOrigin() ) );
-			getSteps().forEach( step -> step.apply( transform ) );
+			List<Step> steps = getSteps();
+			steps.forEach( step -> step.apply( transform ) );
+			setSteps( steps );
 		} catch( TxnException exception ) {
 			log.atWarn().log( "Unable to apply transform" );
 		}
@@ -347,6 +358,16 @@ public class DesignPath extends DesignShape {
 	}
 
 	public record Step(DesignPath.Command command, double... data) {
+
+		public Step( DesignPath.Command command, double... data ) {
+			this.command = command;
+			this.data = data != null ? data.clone() : new double[ 0 ];
+		}
+
+		@Override
+		public Step clone() {
+			return new Step( command, data.clone() );
+		}
 
 		private static final String DELIMITER = " ";
 
