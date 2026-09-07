@@ -1,13 +1,12 @@
 package com.acromere.cartesia.command.camera;
 
 import com.acromere.cartesia.command.CommandTask;
-import com.acromere.cartesia.tool.BaseDesignTool;
 import com.acromere.zerra.javafx.FxUtil;
 import javafx.geometry.Point3D;
-import javafx.scene.input.MouseEvent;
 import lombok.CustomLog;
 
 import static com.acromere.cartesia.command.Command.Result.*;
+import static com.acromere.cartesia.tool.RenderConstants.POINT_SELECT_APERTURE;
 import static com.acromere.cartesia.tool.RenderConstants.WINDOW_SELECT_APERTURE;
 
 /**
@@ -36,14 +35,16 @@ import static com.acromere.cartesia.tool.RenderConstants.WINDOW_SELECT_APERTURE;
 @CustomLog
 public class CameraZoomWindow extends CameraCommand {
 
+	/*
+	 * This command relies on the SelectByWindow command to return the select
+	 * window corners.
+	 */
+
 	@Override
 	public Object execute( CommandTask task ) throws Exception {
 		setCaptureUndoChanges( task, false );
 
 		int paramCount = task.getParameters().length;
-		//InputEvent event = task.getEvent();
-		//boolean noEvent = event == null;
-		//boolean hasEvent = !noEvent;
 
 		if( paramCount == 0 ) {
 			// Zoom window anchor
@@ -67,22 +68,12 @@ public class CameraZoomWindow extends CameraCommand {
 			Point3D worldCorner = asPoint( task, "zoom-window-corner", 1 );
 			if( worldAnchor != null && worldCorner != null ) {
 				task.getTool().setWorldViewport( FxUtil.bounds( worldAnchor, worldCorner ) );
+				task.getTool().setSelectAperture( POINT_SELECT_APERTURE );
 				return SUCCESS;
 			}
 		}
 
 		return FAILURE;
-	}
-
-	@Override
-	public void handle( CommandTask task, MouseEvent event ) {
-		BaseDesignTool tool = (BaseDesignTool)event.getSource();
-		Point3D anchor = task.getContext().getLocalAnchor();
-		Point3D mouse = new Point3D( event.getX(), event.getY(), event.getZ() );
-
-		if( getStep() == 2 && event.getEventType().equals( MouseEvent.MOUSE_MOVED ) ) {
-			tool.moveSelectAperture( anchor, mouse );
-		}
 	}
 
 }

@@ -16,6 +16,8 @@ import static com.acromere.cartesia.tool.RenderConstants.WINDOW_SELECT_APERTURE;
 public abstract class SelectByWindow extends SelectCommand {
 
 	protected Object execute( CommandTask task, boolean intersect ) throws Exception {
+		setCaptureUndoChanges( task, false );
+
 		int paramCount = task.getParameters().length;
 		InputEvent event = task.getEvent();
 		boolean noEvent = event == null;
@@ -60,7 +62,8 @@ public abstract class SelectByWindow extends SelectCommand {
 					task.getTool().setSelectAperture( POINT_SELECT_APERTURE );
 					return SUCCESS;
 				} else {
-					return new Point3D[]{ worldAnchor, worldCorner };
+					// The anchor had already been submitted, we only need to return the corner
+					return worldCorner;
 				}
 			}
 		}

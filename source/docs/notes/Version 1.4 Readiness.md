@@ -71,5 +71,5 @@ Put all the commands in a table and check that all are operational
 | zo  | 2026-09-05 |   ✓    | Zoom Out                | camera-zoom-out          |
 | zp  | 2026-09-05 |   ✓    | Zoom Previous           | camera-view-previous     |
 | zs  | 2026-09-05 |   ✓    | Zoom Selected           | camera-zoom-selected     |
-| zw  | 2026-09-05 | Failed | Zoom Window             | camera-zoom-window       |
+| zw  | 2026-09-05 |   ✓    | Zoom Window             | camera-zoom-window       |
 | ww  |            |        | Create View             | view-create              |
