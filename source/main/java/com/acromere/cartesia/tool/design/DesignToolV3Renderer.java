@@ -642,7 +642,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		setDesignUnitScale( unit.to( 1, DesignUnit.IN ) );
 	}
 
-	@Note( Note.THREAD_SAFE )
+	@Note( Note.ANY_THREAD )
 	void updateGridFxGeometry() {
 		// Get a local reference for thread safety
 		final Workplane workplane = this.workplane;
