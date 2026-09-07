@@ -42,9 +42,9 @@ Put all the commands in a table and check that all are operational
 | sg  | 2026-09-05 |   ✓    | Toggle Grid Snap        | snap-grid-toggle         |
 | si  | 2026-09-05 |   ✓    | Snap Intersection       | snap-intersection        |
 | sm  | 2026-09-05 |   ✓    | Snap Midpoint           | snap-midpoint            |
-| sn  | 2026-09-05 |   ✓    | Snap Center             | snap-center              |
-| sp  | 2026-09-05 |   ✓    | Snap Nearest            | snap-nearest             |
-| st  | 2026-09-05 |   ✓    | Stretch                 | stretch                  |
+| sc  | 2026-09-07 |   ✓    | Snap Center             | snap-center              |
+| sn  | 2026-09-07 |   ✓    | Snap Nearest            | snap-nearest             |
+| st  | 2026-09-07 |   ✓    | Stretch                 | stretch                  |
 | sz  | 2026-09-05 |   ✓    | Scale                   | scale                    |
 | tt  | 2026-09-05 |   ✓    | Text                    | draw-text                |
 | uu  | 2026-09-05 |   ✓    | Redo                    | redo                     |
@@ -53,7 +53,7 @@ Put all the commands in a table and check that all are operational
 | vr  | 2026-09-05 |   ✓    | Set View Right          | camera-view-right        |
 | vsl | 2026-09-05 |   ✓    | Rotate View Left        | camera-view-rotate-left  |
 | vsr | 2026-09-05 |   ✓    | Rotate View Right       | camera-view-rotate-right |
-| vv  | 2026-09-05 |   ✓    | Curve                   | draw-curve-4             |
+| vv  | 2026-09-07 |   ✓    | Curve                   | draw-curve-4             |
 | sw  | 2026-09-06 |   ✓    | Select Window Contain   | select-window-contain    |
 | wu  |            |        | Update View             | view-update              |
 | wx  |            |        | Delete View             | view-delete              |
