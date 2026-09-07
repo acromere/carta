@@ -59,12 +59,13 @@ public class DesignMarker extends DesignShape {
 				double s = 0.5 * HALF_WIDTH * r;
 				double t = r - 2 * s;
 
-				DesignPath path = new DesignPath( new Point3D( 0, 0, 0 ) );
+				DesignPath path = new DesignPath();
 				path.circle( 0, 0, r );
+				path.close();
 
 				path.move( 0, 0 );
-				path.line( t, 0 );
-				path.arc( 0, -t, t, t, 0, 0, 0 );
+				path.line( 0, -t );
+				path.arc( t, 0, t, t, 0, 0, 1 );
 				path.close();
 
 				path.move( 0, 0 );
@@ -198,15 +199,16 @@ public class DesignMarker extends DesignShape {
 				path.getElements().add( new LineTo( -r, s ) );
 				path.getElements().add( new LineTo( -r, -s ) );
 				path.getElements().add( new LineTo( -s, -s ) );
+				path.getElements().add( new ClosePath() );
 
 				path.getElements().add( new MoveTo( 0, -r1 ) );
 				path.getElements().add( new ArcTo( r1, r1, 0, 0, r1, false, false ) );
 				path.getElements().add( new ArcTo( r1, r1, 0, 0, -r1, false, false ) );
+				path.getElements().add( new ClosePath() );
 
 				path.getElements().add( new MoveTo( 0, -r2 ) );
 				path.getElements().add( new ArcTo( r2, r2, 0, 0, r2, false, true ) );
 				path.getElements().add( new ArcTo( r2, r2, 0, 0, -r2, false, true ) );
-
 				path.getElements().add( new ClosePath() );
 
 				return path;
@@ -234,12 +236,14 @@ public class DesignMarker extends DesignShape {
 				path.line( -r, s );
 				path.line( -r, -s );
 				path.line( -s, -s );
+				path.close();
 
-				path.move( 0, -r1 );
 				path.circle( 0, 0, r1 );
-				path.move( 0, -r2 );
-				path.circle( 0, 0, r2 );
+				path.close();
 
+				path.move( 0, -r2 );
+				path.arc( 0, r2, r2, r2, 0, 0, 1 );
+				path.arc( 0, -r2, r2, r2, 0, 0, 1 );
 				path.close();
 
 				return path;
@@ -261,7 +265,8 @@ public class DesignMarker extends DesignShape {
 				double r = HALF_SIZE * 0.8;
 				DesignPath path = new DesignPath( CIRCLE.getDesignPath() );
 				path.move( 0, -r );
-				path.circle( 0, 0, r );
+				path.arc( 0, r, r, r, 0, 0, 1 );
+				path.arc( 0, -r, r, r, 0, 0, 1 );
 				path.close();
 				return path;
 			}
@@ -581,7 +586,7 @@ public class DesignMarker extends DesignShape {
 			this.setSize( marker.getSize() );
 			this.setType( marker.getMarkerType() );
 		} catch( TxnException exception ) {
-			log.atWarn().log( "Unable to update curve" );
+			log.atWarn().log( "Unable to update marker" );
 		}
 
 		return this;

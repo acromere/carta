@@ -130,6 +130,109 @@ public class DesignMarkerTest extends DesignShapeTest {
 	}
 
 	@Test
+	void testCgPath() {
+		DesignMarker marker = new DesignMarker( new Point3D( 0, 0, 0 ), DesignMarker.Type.CG );
+		List<DesignPath.Step> steps = marker.getSteps();
+		assertThat( steps ).hasSize( 12 );
+
+		// Circle
+		assertThat( steps.get( 0 ).command() ).isEqualTo( DesignPath.Command.M );
+		assertThat( steps.get( 0 ).data() ).isEqualTo( new double[]{ 0.0, -0.5 } );
+		assertThat( steps.get( 1 ).command() ).isEqualTo( DesignPath.Command.A );
+		assertThat( steps.get( 1 ).data() ).isEqualTo( new double[]{ 0.0, 0.5, 0.5, 0.5, 0, 0, 0 } );
+		assertThat( steps.get( 2 ).command() ).isEqualTo( DesignPath.Command.A );
+		assertThat( steps.get( 2 ).data() ).isEqualTo( new double[]{ 0.0, -0.5, 0.5, 0.5, 0, 0, 0 } );
+		assertThat( steps.get( 3 ).command() ).isEqualTo( DesignPath.Command.Z );
+
+		// Sector 1
+		assertThat( steps.get( 4 ).command() ).isEqualTo( DesignPath.Command.M );
+		assertThat( steps.get( 4 ).data() ).isEqualTo( new double[]{ 0.0, 0.0 } );
+		assertThat( steps.get( 5 ).command() ).isEqualTo( DesignPath.Command.L );
+		assertThat( steps.get( 5 ).data() ).isEqualTo( new double[]{ 0.0, -0.45 } );
+		assertThat( steps.get( 6 ).command() ).isEqualTo( DesignPath.Command.A );
+		assertThat( steps.get( 6 ).data() ).isEqualTo( new double[]{ 0.45, 0.0, 0.45, 0.45, 0, 0, 1 } );
+		assertThat( steps.get( 7 ).command() ).isEqualTo( DesignPath.Command.Z );
+
+		// Sector 2
+		assertThat( steps.get( 8 ).command() ).isEqualTo( DesignPath.Command.M );
+		assertThat( steps.get( 8 ).data() ).isEqualTo( new double[]{ 0.0, 0.0 } );
+		assertThat( steps.get( 9 ).command() ).isEqualTo( DesignPath.Command.L );
+		assertThat( steps.get( 9 ).data() ).isEqualTo( new double[]{ 0.0, 0.45 } );
+		assertThat( steps.get( 10 ).command() ).isEqualTo( DesignPath.Command.A );
+		assertThat( steps.get( 10 ).data() ).isEqualTo( new double[]{ -0.45, 0.0, 0.45, 0.45, 0, 0, 1 } );
+		assertThat( steps.get( 11 ).command() ).isEqualTo( DesignPath.Command.Z );
+	}
+
+	@Test
+	void testRingPath() {
+		DesignMarker marker = new DesignMarker( new Point3D( 0, 0, 0 ), DesignMarker.Type.RING );
+		List<DesignPath.Step> steps = marker.getSteps();
+		assertThat( steps ).hasSize( 8 );
+
+		// Outer circle
+		assertThat( steps.get( 0 ).command() ).isEqualTo( DesignPath.Command.M );
+		assertThat( steps.get( 0 ).data() ).isEqualTo( new double[]{ 0.0, -0.5 } );
+		assertThat( steps.get( 1 ).command() ).isEqualTo( DesignPath.Command.A );
+		assertThat( steps.get( 1 ).data() ).isEqualTo( new double[]{ 0.0, 0.5, 0.5, 0.5, 0, 0, 0 } );
+		assertThat( steps.get( 2 ).command() ).isEqualTo( DesignPath.Command.A );
+		assertThat( steps.get( 2 ).data() ).isEqualTo( new double[]{ 0.0, -0.5, 0.5, 0.5, 0, 0, 0 } );
+		assertThat( steps.get( 3 ).command() ).isEqualTo( DesignPath.Command.Z );
+
+		// Inner circle
+		assertThat( steps.get( 4 ).command() ).isEqualTo( DesignPath.Command.M );
+		assertThat( steps.get( 4 ).data() ).isEqualTo( new double[]{ 0.0, -0.4 } );
+		assertThat( steps.get( 5 ).command() ).isEqualTo( DesignPath.Command.A );
+		assertThat( steps.get( 5 ).data() ).isEqualTo( new double[]{ 0.0, 0.4, 0.4, 0.4, 0, 0, 1 } );
+		assertThat( steps.get( 6 ).command() ).isEqualTo( DesignPath.Command.A );
+		assertThat( steps.get( 6 ).data() ).isEqualTo( new double[]{ 0.0, -0.4, 0.4, 0.4, 0, 0, 1 } );
+		assertThat( steps.get( 7 ).command() ).isEqualTo( DesignPath.Command.Z );
+	}
+
+	@Test
+	void testReticlePath() {
+		DesignMarker marker = new DesignMarker( new Point3D( 0, 0, 0 ), DesignMarker.Type.RETICLE );
+		List<DesignPath.Step> steps = marker.getSteps();
+		assertThat( steps ).hasSize( 21 );
+
+		double s = 0.1 * 0.2;
+		double r = 0.5;
+		double r1 = 0.5 * r + s;
+		double r2 = 0.5 * r - s;
+
+		// Cross
+		assertThat( steps.get( 0 ).command() ).isEqualTo( DesignPath.Command.M );
+		assertThat( steps.get( 12 ).command() ).isEqualTo( DesignPath.Command.Z );
+
+		// Outer Circle (r1 = 0.27)
+		assertThat( steps.get( 13 ).command() ).isEqualTo( DesignPath.Command.M );
+		assertThat( steps.get( 13 ).data() ).isEqualTo( new double[]{ 0.0, -r1 } );
+		assertThat( steps.get( 14 ).command() ).isEqualTo( DesignPath.Command.A );
+		assertThat( steps.get( 14 ).data() ).isEqualTo( new double[]{ 0.0, r1, r1, r1, 0, 0, 0 } );
+		assertThat( steps.get( 15 ).command() ).isEqualTo( DesignPath.Command.A );
+		assertThat( steps.get( 15 ).data() ).isEqualTo( new double[]{ 0.0, -r1, r1, r1, 0, 0, 0 } );
+		assertThat( steps.get( 16 ).command() ).isEqualTo( DesignPath.Command.Z );
+
+		// Inner Circle (r2 = 0.23, sweep = 1)
+		assertThat( steps.get( 17 ).command() ).isEqualTo( DesignPath.Command.M );
+		assertThat( steps.get( 17 ).data() ).isEqualTo( new double[]{ 0.0, -r2 } );
+		assertThat( steps.get( 18 ).command() ).isEqualTo( DesignPath.Command.A );
+		assertThat( steps.get( 18 ).data() ).isEqualTo( new double[]{ 0.0, r2, r2, r2, 0, 0, 1 } );
+		assertThat( steps.get( 19 ).command() ).isEqualTo( DesignPath.Command.A );
+		assertThat( steps.get( 19 ).data() ).isEqualTo( new double[]{ 0.0, -r2, r2, r2, 0, 0, 1 } );
+		assertThat( steps.get( 20 ).command() ).isEqualTo( DesignPath.Command.Z );
+	}
+
+	@Test
+	void testAllMarkerTypesProduceValidDesignPath() {
+		for( DesignMarker.Type type : DesignMarker.Type.values() ) {
+			DesignPath designPath = type.getDesignPath();
+			assertThat( designPath ).isNotNull();
+			assertThat( designPath.getSteps() ).isNotEmpty();
+			assertThat( designPath.getSteps().getFirst().command() ).isEqualTo( DesignPath.Command.M );
+		}
+	}
+
+	@Test
 	void getReferencePoints() {
 		// given
 		DesignMarker marker = new DesignMarker( new Point3D( 5, -2, 0 ), DesignMarker.Type.CIRCLE );
