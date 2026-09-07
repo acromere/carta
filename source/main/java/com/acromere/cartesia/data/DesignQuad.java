@@ -5,9 +5,11 @@ import com.acromere.cartesia.math.CadGeometry;
 import com.acromere.cartesia.math.CadTransform;
 import com.acromere.transaction.Txn;
 import com.acromere.transaction.TxnException;
+import javafx.geometry.Bounds;
 import javafx.geometry.Point3D;
 import lombok.CustomLog;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -57,25 +59,37 @@ public class DesignQuad extends DesignShape {
 	}
 
 	@Override
+	protected Bounds computeGeometricBounds() {
+		if( getOrigin() == null || getControl() == null || getPoint() == null ) return null;
+		return super.computeGeometricBounds();
+	}
+
+	@Override
 	public List<Point3D> getReferencePoints() {
+		if( getOrigin() == null || getControl() == null || getPoint() == null ) return List.of();
 		return List.of( getOrigin(), getControl(), getPoint() );
 	}
 
 	@Override
 	public double distanceTo( Point3D point ) {
-		// TODO Improve DesignQuad.distanceTo()
-		// This implementation is a simple estimate based on the origin and point
-		return CadGeometry.linePointDistance( getOrigin(), getPoint(), point );
+		if( getOrigin() == null || getControl() == null || getPoint() == null || point == null ) return Double.NaN;
+		return CadGeometry.pointQuadDistance( point, this );
 	}
 
 	@Override
 	public double pathLength() {
+		if( getOrigin() == null || getControl() == null || getPoint() == null ) return Double.NaN;
 		return CadGeometry.quadArcLength( this );
 	}
 
 	@Override
 	public Map<String, Object> getInformation() {
-		return Map.of( ORIGIN, getOrigin(), CONTROL, getControl(), POINT, getPoint(), LENGTH, pathLength() );
+		Map<String, Object> info = new HashMap<>();
+		if( getOrigin() != null ) info.put( ORIGIN, getOrigin() );
+		if( getControl() != null ) info.put( CONTROL, getControl() );
+		if( getPoint() != null ) info.put( POINT, getPoint() );
+		info.put( LENGTH, pathLength() );
+		return info;
 	}
 
 	@Override
@@ -85,6 +99,8 @@ public class DesignQuad extends DesignShape {
 
 	@Override
 	public void apply( CadTransform transform ) {
+		if( getOrigin() == null || getControl() == null || getPoint() == null ) return;
+
 		try( Txn ignored = Txn.create() ) {
 			setOrigin( transform.apply( getOrigin() ) );
 			setControl( transform.apply( getControl() ) );
@@ -104,21 +120,29 @@ public class DesignQuad extends DesignShape {
 	@Override
 	public DesignQuad updateFrom( Map<String, Object> map ) {
 		super.updateFrom( map );
-		setControl( ParseUtil.parsePoint3D( (String)map.get( CONTROL ) ) );
-		setPoint( ParseUtil.parsePoint3D( (String)map.get( POINT ) ) );
+		if( map.containsKey( CONTROL ) ) {
+			Object control = map.get( CONTROL );
+			if( control instanceof Point3D ) setControl( (Point3D)control );
+			else if( control instanceof String ) setControl( ParseUtil.parsePoint3D( (String)control ) );
+		}
+		if( map.containsKey( POINT ) ) {
+			Object point = map.get( POINT );
+			if( point instanceof Point3D ) setPoint( (Point3D)point );
+			else if( point instanceof String ) setPoint( ParseUtil.parsePoint3D( (String)point ) );
+		}
 		return this;
 	}
 
 	@Override
 	public DesignShape updateFrom( DesignShape shape ) {
 		super.updateFrom( shape );
-		if( !(shape instanceof DesignQuad curve) ) return this;
+		if( !(shape instanceof DesignQuad quad) ) return this;
 
 		try( Txn ignore = Txn.create() ) {
-			this.setControl( curve.getControl() );
-			this.setPoint( curve.getPoint() );
+			this.setControl( quad.getControl() );
+			this.setPoint( quad.getPoint() );
 		} catch( TxnException exception ) {
-			log.atWarn().log( "Unable to update curve" );
+			log.atWarn().log( "Unable to update quad" );
 		}
 
 		return this;

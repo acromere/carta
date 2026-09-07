@@ -207,7 +207,13 @@ public class CadGeometry {
 	}
 
 	public static double quadArcLength( DesignQuad quad ) {
+		if( quad == null || quad.getOrigin() == null || quad.getControl() == null || quad.getPoint() == null ) return Double.NaN;
 		return Geometry.quadArcLength( asPoint( quad.getOrigin() ), asPoint( quad.getControl() ), asPoint( quad.getPoint() ), CadConstants.RESOLUTION_LENGTH );
+	}
+
+	public static double pointQuadDistance( Point3D p, DesignQuad quad ) {
+		if( p == null || quad == null || quad.getOrigin() == null || quad.getControl() == null || quad.getPoint() == null ) return Double.NaN;
+		return Geometry.pointQuadDistance( asPoint( p ), asPoint( quad.getOrigin() ), asPoint( quad.getControl() ), asPoint( quad.getPoint() ) );
 	}
 
 	public static double getCubicParametricValue( DesignCubic curve, Point3D point ) {
