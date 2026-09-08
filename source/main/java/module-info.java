@@ -53,6 +53,8 @@ module com.acromere.carta {
 	// Public resources
 	opens com.acromere.cartesia.bundles;
 	opens com.acromere.cartesia.design.props;
+	opens com.acromere.cartesia.manual;
+	opens com.acromere.cartesia.manual.commands;
 	opens com.acromere.cartesia.settings;
 
 	// Testing resources

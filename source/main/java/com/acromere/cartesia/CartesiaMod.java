@@ -286,9 +286,9 @@ public class CartesiaMod extends Module {
 	private void registerHelpPages() {
 		// FIXME Tag names are language specific
 
-		getProgram().getIndexService().submit( INDEX_ID, createIndexableDocument( "/docs/manual/introduction" ) );
-		getProgram().getIndexService().submit( INDEX_ID, createIndexableDocument( "/docs/manual/relative-coordinates" ) );
-		getProgram().getIndexService().submit( INDEX_ID, createIndexableDocument( "/docs/manual/selecting-geometry" ) );
+		getProgram().getIndexService().submit( INDEX_ID, createIndexableDocument( "/com/acromere/cartesia/manual/introduction" ) );
+		getProgram().getIndexService().submit( INDEX_ID, createIndexableDocument( "/com/acromere/cartesia/manual/relative-coordinates" ) );
+		getProgram().getIndexService().submit( INDEX_ID, createIndexableDocument( "/com/acromere/cartesia/manual/selecting-geometry" ) );
 
 		registerCommandHelpPages();
 	}
@@ -305,8 +305,8 @@ public class CartesiaMod extends Module {
 
 	private Document createIndexableDocument( String icon, String resourcePath, Map<String, String> values, List<String> tags, String defaultContent ) {
 		// Create the document URI
-		String modKey = getCard().getProductKey();
-		URI uri = URI.create( ProgramHelpType.URI + ":/" + modKey + resourcePath );
+		String moduleKey = getCard().getProductKey();
+		URI uri = URI.create( ProgramHelpType.URI + ":/" + moduleKey + resourcePath );
 
 		Map<String, String> replacementValues = new HashMap<>( values );
 		replacementValues.put( "module.name", getCard().getName() );
@@ -340,7 +340,7 @@ public class CartesiaMod extends Module {
 		Map<String, CommandMetadata> commands = getCommandMap().getAll();
 		for( CommandMetadata command : commands.values() ) {
 			ActionProxy action = getProgram().getActionLibrary().getAction( command.getAction() );
-			String resourcePath = "/docs/manual/commands/" + command.getAction();
+			String resourcePath = "/com/acromere/cartesia/manual/commands/" + command.getAction();
 			String icon = action.getIcon();
 
 			String actionName = Objects.requireNonNullElse( command.getName(), "" );
