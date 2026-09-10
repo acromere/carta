@@ -324,10 +324,7 @@ public class CartesiaMod extends Module {
 		document.properties().put( IndexService.STORE_CONTENT, true );
 
 		try {
-			// Create the resource content URL
-			URL url = (URL)ResourceBundle.getBundle( CartesiaHelp.class.getName() ).getObject( resourcePath );
-			document.url( url );
-			log.atDebug().log( "Resource found: %s", url );
+			document.url( (URL)ResourceBundle.getBundle( CartesiaHelp.class.getName() ).getObject( resourcePath ) );
 		} catch( MissingResourceException exception ) {
 			//log.atConfig().log( "Resource not found: %s", resourcePath );
 			if( defaultContent != null ) document.content( defaultContent );
