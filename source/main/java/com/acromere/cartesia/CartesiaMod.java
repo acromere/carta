@@ -283,9 +283,13 @@ public class CartesiaMod extends Module {
 		unregisterIcon( getCard().getArtifact(), new CartesiaIcon() );
 	}
 
-	private void registerHelpPages() {
-		// FIXME Tag names are language specific
+	private List<String> getUserManualTags() {
+		String commandTag = Rb.text( this, RbKey.TAG, "command" );
+		String userManualTag = Rb.text( this, RbKey.TAG, "user-manual" );
+		return List.of( commandTag, userManualTag );
+	}
 
+	private void registerHelpPages() {
 		getProgram().getIndexService().submit( INDEX_ID, createIndexableDocument( "/com/acromere/cartesia/manual/introduction" ) );
 		getProgram().getIndexService().submit( INDEX_ID, createIndexableDocument( "/com/acromere/cartesia/manual/relative-coordinates" ) );
 		getProgram().getIndexService().submit( INDEX_ID, createIndexableDocument( "/com/acromere/cartesia/manual/selecting-geometry" ) );
@@ -299,7 +303,7 @@ public class CartesiaMod extends Module {
 	 * @return The indexable document
 	 */
 	private Document createIndexableDocument( String resourcePath ) {
-		return createIndexableDocument( "document", resourcePath, Map.of(), List.of( "user manual" ), null );
+		return createIndexableDocument( "document", resourcePath, Map.of(), getUserManualTags(), null );
 	}
 
 	private Document createIndexableDocument( String icon, String resourcePath, Map<String, String> values, List<String> tags, String defaultContent ) {
@@ -338,9 +342,11 @@ public class CartesiaMod extends Module {
 			ActionProxy action = getProgram().getActionLibrary().getAction( command.getAction() );
 			String resourcePath = "/com/acromere/cartesia/manual/commands/" + command.getAction();
 			String icon = action.getIcon();
+
 			List<String> tags = new ArrayList<>( command.getTags() );
-			if( !tags.contains( "user manual" ) )tags.add( "user manual" );
-			if( !tags.contains( "command" ) )tags.add( "command" );
+			for( String tag : getUserManualTags() ) {
+				if( !tags.contains( tag  ) ) tags.add( tag );
+			}
 
 			String actionName = Objects.requireNonNullElse( command.getName(), "" );
 			String actionCommand = Objects.requireNonNullElse( command.getCommand(), "--" ).toUpperCase();
