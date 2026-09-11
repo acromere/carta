@@ -710,7 +710,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 					if( e.getNewValue() instanceof DesignLayer layer ) {
 						Fx.run( () -> pane.getChildren().add( mapDesignLayer( layer ) ) );
 					} else if( e.getNewValue() instanceof DesignShape shape ) {
-						Fx.run( () -> pane.getChildren().add( mapDesignShape( shape ) ) );
+						Fx.run( () -> pane.getChildren().add( mapDesignShape( designLayer, shape ) ) );
 					} else {
 						log.atTrace().log( "Unable to add unhandled child={0}", e.getNewValue() );
 					}
@@ -727,7 +727,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		);
 
 		designLayer.getShapes().forEach( shape -> {
-			Shape fxShape = mapDesignShape( shape );
+			Shape fxShape = mapDesignShape( designLayer, shape );
 			Fx.run( () -> pane.getChildren().add( fxShape ) );
 
 			// TODO Handlers need to be attached with the pane as owner
@@ -762,22 +762,22 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		return fxShape;
 	}
 
-	private Shape mapDesignShape( DesignShape designShape ) {
+	private Shape mapDesignShape( DesignLayer designLayer, DesignShape designShape ) {
 		Shape fxShape = getFxGeometry( designShape );
 
 		// If an FX shape is already bound, don't do it again
 		if( fxShape != null ) return fxShape;
 
 		fxShape = switch( designShape.getType() ) {
-			case ARC -> bindArcGeometry( (DesignArc)designShape );
-			case BOX -> bindBoxGeometry( (DesignBox)designShape );
-			case CUBIC -> bindCubicGeometry( (DesignCubic)designShape );
-			case ELLIPSE -> bindEllipseGeometry( (DesignEllipse)designShape );
-			case LINE -> bindLineGeometry( (DesignLine)designShape );
-			case MARKER -> bindMarkerGeometry( (DesignMarker)designShape );
-			case PATH -> bindPathGeometry( (DesignPath)designShape );
-			case QUAD -> bindQuadGeometry( (DesignQuad)designShape );
-			case TEXT -> bindTextGeometry( (DesignText)designShape );
+			case ARC -> bindArcGeometry( designLayer, (DesignArc)designShape );
+			case BOX -> bindBoxGeometry( designLayer, (DesignBox)designShape );
+			case CUBIC -> bindCubicGeometry( designLayer, (DesignCubic)designShape );
+			case ELLIPSE -> bindEllipseGeometry( designLayer, (DesignEllipse)designShape );
+			case LINE -> bindLineGeometry( designLayer, (DesignLine)designShape );
+			case MARKER -> bindMarkerGeometry( designLayer, (DesignMarker)designShape );
+			case PATH -> bindPathGeometry( designLayer, (DesignPath)designShape );
+			case QUAD -> bindQuadGeometry( designLayer, (DesignQuad)designShape );
+			case TEXT -> bindTextGeometry( designLayer, (DesignText)designShape );
 		};
 
 		fxShape.setManaged( false );
@@ -815,10 +815,10 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	// quad - done
 	// text - done
 
-	private Arc bindArcGeometry( DesignArc designArc ) {
+	private Arc bindArcGeometry( DesignLayer designLayer, DesignArc designArc ) {
 		Arc arc = new Arc();
 
-		bindCommonShapeGeometry( designArc, arc );
+		bindCommonShapeGeometry( designLayer, designArc, arc );
 
 		DesignDoubleBinding originXValue = new DesignDoubleBinding( designArc, DesignArc.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
 		DesignDoubleBinding originYValue = new DesignDoubleBinding( designArc, DesignArc.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
@@ -844,10 +844,10 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		return arc;
 	}
 
-	private Rectangle bindBoxGeometry( DesignBox designBox ) {
+	private Rectangle bindBoxGeometry( DesignLayer designLayer, DesignBox designBox ) {
 		Rectangle box = new Rectangle();
 
-		bindCommonShapeGeometry( designBox, box );
+		bindCommonShapeGeometry( designLayer, designBox, box );
 
 		DesignDoubleBinding originXValue = new DesignDoubleBinding( designBox, DesignBox.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
 		DesignDoubleBinding originYValue = new DesignDoubleBinding( designBox, DesignBox.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
@@ -877,10 +877,10 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		return box;
 	}
 
-	private CubicCurve bindCubicGeometry( DesignCubic designCubic ) {
+	private CubicCurve bindCubicGeometry( DesignLayer designLayer, DesignCubic designCubic ) {
 		CubicCurve quad = new CubicCurve();
 
-		bindCommonShapeGeometry( designCubic, quad );
+		bindCommonShapeGeometry( designLayer, designCubic, quad );
 
 		DesignDoubleBinding startXValue = new DesignDoubleBinding( designCubic, DesignCubic.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
 		DesignDoubleBinding startYValue = new DesignDoubleBinding( designCubic, DesignCubic.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
@@ -903,10 +903,10 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		return quad;
 	}
 
-	private Ellipse bindEllipseGeometry( DesignEllipse designEllipse ) {
+	private Ellipse bindEllipseGeometry( DesignLayer designLayer, DesignEllipse designEllipse ) {
 		Ellipse ellipse = new Ellipse();
 
-		bindCommonShapeGeometry( designEllipse, ellipse );
+		bindCommonShapeGeometry( designLayer, designEllipse, ellipse );
 
 		DesignDoubleBinding originXValue = new DesignDoubleBinding( designEllipse, DesignEllipse.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
 		DesignDoubleBinding originYValue = new DesignDoubleBinding( designEllipse, DesignEllipse.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
@@ -928,10 +928,10 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		return ellipse;
 	}
 
-	private Line bindLineGeometry( DesignLine designLine ) {
+	private Line bindLineGeometry( DesignLayer designLayer, DesignLine designLine ) {
 		Line line = new Line();
 
-		bindCommonShapeGeometry( designLine, line );
+		bindCommonShapeGeometry( designLayer, designLine, line );
 
 		DesignDoubleBinding startXValue = new DesignDoubleBinding( designLine, DesignLine.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
 		DesignDoubleBinding startYValue = new DesignDoubleBinding( designLine, DesignLine.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
@@ -946,10 +946,10 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		return line;
 	}
 
-	private Path bindMarkerGeometry( DesignMarker designMarker ) {
+	private Path bindMarkerGeometry( DesignLayer designLayer, DesignMarker designMarker ) {
 		Path path = new Path();
 
-		bindCommonShapeGeometry( designMarker, path );
+		bindCommonShapeGeometry( designLayer, designMarker, path );
 		path.setFillRule( FillRule.EVEN_ODD );
 
 		// Bind on steps and update the path geometry
@@ -971,10 +971,10 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		return path;
 	}
 
-	private Path bindPathGeometry( DesignPath designPath ) {
+	private Path bindPathGeometry( DesignLayer designLayer, DesignPath designPath ) {
 		Path path = new Path();
 
-		bindCommonShapeGeometry( designPath, path );
+		bindCommonShapeGeometry( designLayer, designPath, path );
 
 		// Bind on steps and update the path geometry
 		DesignBinding<List<DesignPath.Step>> stepsBinding = new DesignBinding<>( designPath, DesignPath.STEPS, DesignPath::getSteps );
@@ -995,10 +995,10 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		return path;
 	}
 
-	private QuadCurve bindQuadGeometry( DesignQuad designQuad ) {
+	private QuadCurve bindQuadGeometry( DesignLayer designLayer, DesignQuad designQuad ) {
 		QuadCurve quad = new QuadCurve();
 
-		bindCommonShapeGeometry( designQuad, quad );
+		bindCommonShapeGeometry( designLayer, designQuad, quad );
 
 		DesignDoubleBinding startXValue = new DesignDoubleBinding( designQuad, DesignQuad.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
 		DesignDoubleBinding startYValue = new DesignDoubleBinding( designQuad, DesignQuad.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
@@ -1018,10 +1018,10 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	}
 
 	// Eventually this should only have to be called once per design shape
-	private Text bindTextGeometry( DesignText designText ) {
+	private Text bindTextGeometry( DesignLayer designLayer, DesignText designText ) {
 		Text text = new Text();
 
-		bindCommonShapeGeometry( designText, text );
+		bindCommonShapeGeometry( designLayer, designText, text );
 
 		DesignDoubleBinding originXValue = new DesignDoubleBinding( designText, DesignText.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getX() : 0.0 );
 		DesignDoubleBinding originYValue = new DesignDoubleBinding( designText, DesignText.ORIGIN, v -> v.getOrigin() != null ? v.getOrigin().getY() : 0.0 );
@@ -1032,17 +1032,24 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		DesignBinding<FontPosture> fontPostureValue = new DesignBinding<>( designText, DesignText.FONT_POSTURE, DesignText::calcFontPosture );
 		DesignDoubleBinding textSizeValue = new DesignDoubleBinding( designText, DesignText.TEXT_SIZE, DesignText::calcTextSize );
 
-		text.textProperty().bind( textValue );
+		DesignBinding<String> layerFontNameValue = new DesignBinding<>( designLayer, DesignText.FONT_NAME, DesignLayer::getFontName );
+		DesignBinding<FontWeight> layerFontWeightValue = new DesignBinding<>( designLayer, DesignText.FONT_WEIGHT, DesignLayer::calcFontWeight );
+		DesignBinding<FontPosture> layerFontPostureValue = new DesignBinding<>( designLayer, DesignText.FONT_POSTURE, DesignLayer::calcFontPosture );
+		DesignDoubleBinding layerTextSizeValue = new DesignDoubleBinding( designLayer, DesignText.TEXT_SIZE, DesignLayer::calcTextSize );
 
+		text.textProperty().bind( textValue );
 		text.xProperty().bind( shapeScaleXProperty().multiply( originXValue ) );
 		text.yProperty().bind( shapeScaleYProperty().multiply( originYValue ).negate() );
-
 		text.fontProperty().bind( Bindings.createObjectBinding(
-			() -> Font.font( fontNameValue.get(), designText.calcFontWeight(), designText.calcFontPosture(), textSizeValue.get() * shapeScaleYProperty().get() ),
+			() -> Font.font( designText.calcFontName(), designText.calcFontWeight(), designText.calcFontPosture(), designText.calcTextSize() * shapeScaleYProperty().get() ),
 			fontNameValue,
 			fontWeightValue,
 			fontPostureValue,
 			textSizeValue,
+			layerFontNameValue,
+			layerFontWeightValue,
+			layerFontPostureValue,
+			layerTextSizeValue,
 			shapeScaleYProperty()
 		) );
 
@@ -1065,10 +1072,12 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 * @param designShape The source design shape
 	 * @param shape The target FX shape
 	 */
-	private void bindCommonShapeGeometry( DesignShape designShape, Shape shape ) {
+	private void bindCommonShapeGeometry( DesignLayer designLayer, DesignShape designShape, Shape shape ) {
 		DesignBooleanBinding isSelected = new DesignBooleanBinding( designShape, DesignShape.SELECTED, DesignShape::isSelected );
 		DesignBinding<Paint> shapeFill = new DesignBinding<>( designShape, DesignShape.FILL_PAINT, DesignShape::calcFillPaint );
 		DesignBinding<Paint> shapeDraw = new DesignBinding<>( designShape, DesignShape.DRAW_PAINT, DesignShape::calcDrawPaint );
+		DesignBinding<Paint> layerFill = new DesignBinding<>( designLayer, DesignLayer.FILL_PAINT, DesignLayer::calcFillPaint );
+		DesignBinding<Paint> layerDraw = new DesignBinding<>( designLayer, DesignLayer.DRAW_PAINT, DesignLayer::calcDrawPaint );
 
 		BooleanBinding hasFill = Bindings.and( shapeFill.isNotNull(), shapeFill.isNotEqualTo( Color.TRANSPARENT ) );
 		BooleanBinding hasDraw = Bindings.and( shapeDraw.isNotNull(), shapeDraw.isNotEqualTo( Color.TRANSPARENT ) );
