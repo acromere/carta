@@ -4,10 +4,10 @@ import com.acromere.cartesia.command.CommandMap;
 import com.acromere.cartesia.command.CommandMetadata;
 import com.acromere.cartesia.cursor.Reticule;
 import com.acromere.cartesia.data.util.DesignLayerOptionProvider;
-import com.acromere.cartesia.settings.DesignUnitOptionProvider;
 import com.acromere.cartesia.data.util.MarkerTypeOptionProvider;
 import com.acromere.cartesia.icon.*;
 import com.acromere.cartesia.rb.CartesiaHelp;
+import com.acromere.cartesia.settings.DesignUnitOptionProvider;
 import com.acromere.cartesia.settings.FontFamilyNameOptionProvider;
 import com.acromere.cartesia.settings.FontSettingEditor;
 import com.acromere.cartesia.tool.Design2dEditor;
@@ -289,7 +289,6 @@ public class CartesiaMod extends Module {
 		getProgram().getIndexService().submit( INDEX_ID, createIndexableDocument( "/com/acromere/cartesia/manual/introduction" ) );
 		getProgram().getIndexService().submit( INDEX_ID, createIndexableDocument( "/com/acromere/cartesia/manual/relative-coordinates" ) );
 		getProgram().getIndexService().submit( INDEX_ID, createIndexableDocument( "/com/acromere/cartesia/manual/selecting-geometry" ) );
-
 		registerCommandHelpPages();
 	}
 
@@ -300,7 +299,7 @@ public class CartesiaMod extends Module {
 	 * @return The indexable document
 	 */
 	private Document createIndexableDocument( String resourcePath ) {
-		return createIndexableDocument( "document", resourcePath, Map.of(), List.of(), null );
+		return createIndexableDocument( "document", resourcePath, Map.of(), List.of( "user manual" ), null );
 	}
 
 	private Document createIndexableDocument( String icon, String resourcePath, Map<String, String> values, List<String> tags, String defaultContent ) {
@@ -339,6 +338,9 @@ public class CartesiaMod extends Module {
 			ActionProxy action = getProgram().getActionLibrary().getAction( command.getAction() );
 			String resourcePath = "/com/acromere/cartesia/manual/commands/" + command.getAction();
 			String icon = action.getIcon();
+			List<String> tags = new ArrayList<>( command.getTags() );
+			if( !tags.contains( "user manual" ) )tags.add( "user manual" );
+			if( !tags.contains( "command" ) )tags.add( "command" );
 
 			String actionName = Objects.requireNonNullElse( command.getName(), "" );
 			String actionCommand = Objects.requireNonNullElse( command.getCommand(), "--" ).toUpperCase();
@@ -354,7 +356,7 @@ public class CartesiaMod extends Module {
 			defaultContent.append( "<h2>" ).append( actionCommand ).append( "</h2>" );
 			defaultContent.append( "</body></html>" );
 
-			Document document = createIndexableDocument( icon, resourcePath, values, command.getTags(), defaultContent.toString() );
+			Document document = createIndexableDocument( icon, resourcePath, values, tags, defaultContent.toString() );
 			getProgram().getIndexService().submit( INDEX_ID, document );
 		}
 	}
