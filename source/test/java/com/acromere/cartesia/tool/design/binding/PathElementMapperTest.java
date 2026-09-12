@@ -86,4 +86,79 @@ public class PathElementMapperTest {
 		assertThat( element ).isInstanceOf( ClosePath.class );
 	}
 
+	@Test
+	void mapMoveScaled() {
+		PathElementMapper mapper = Mappers.getMapper( PathElementMapper.class );
+		DesignPath.Step step = new DesignPath.Step( DesignPath.Command.M, 10, 20 );
+		PathElement element = mapper.map( step, 2.0, 3.0 );
+		assertThat( element ).isNotNull();
+		assertThat( element ).isInstanceOf( MoveTo.class );
+		assertThat( ((MoveTo)element).getX() ).isEqualTo( 20.0 );
+		assertThat( ((MoveTo)element).getY() ).isEqualTo( 60.0 );
+	}
+
+	@Test
+	void mapLineScaled() {
+		PathElementMapper mapper = Mappers.getMapper( PathElementMapper.class );
+		DesignPath.Step step = new DesignPath.Step( DesignPath.Command.L, 10, 20 );
+		PathElement element = mapper.map( step, 2.0, 3.0 );
+		assertThat( element ).isNotNull();
+		assertThat( element ).isInstanceOf( LineTo.class );
+		assertThat( ((LineTo)element).getX() ).isEqualTo( 20.0 );
+		assertThat( ((LineTo)element).getY() ).isEqualTo( 60.0 );
+	}
+
+	@Test
+	void mapArcScaled() {
+		PathElementMapper mapper = Mappers.getMapper( PathElementMapper.class );
+		DesignPath.Step step = new DesignPath.Step( DesignPath.Command.A, 10, 20, 30, 40, 50, 60, 70 );
+		PathElement element = mapper.map( step, 2.0, 3.0 );
+		assertThat( element ).isNotNull();
+		assertThat( element ).isInstanceOf( ArcTo.class );
+		assertThat( ((ArcTo)element).getRadiusX() ).isEqualTo( 60.0 );
+		assertThat( ((ArcTo)element).getRadiusY() ).isEqualTo( 120.0 );
+		assertThat( ((ArcTo)element).getXAxisRotation() ).isEqualTo( 50.0 );
+		assertThat( ((ArcTo)element).getX() ).isEqualTo( 20.0 );
+		assertThat( ((ArcTo)element).getY() ).isEqualTo( 60.0 );
+		assertThat( ((ArcTo)element).isLargeArcFlag() ).isTrue();
+		assertThat( ((ArcTo)element).isSweepFlag() ).isTrue();
+	}
+
+	@Test
+	void mapQuadScaled() {
+		PathElementMapper mapper = Mappers.getMapper( PathElementMapper.class );
+		DesignPath.Step step = new DesignPath.Step( DesignPath.Command.Q, 10, 20, 30, 40 );
+		PathElement element = mapper.map( step, 2.0, 3.0 );
+		assertThat( element ).isNotNull();
+		assertThat( element ).isInstanceOf( QuadCurveTo.class );
+		assertThat( ((QuadCurveTo)element).getControlX() ).isEqualTo( 20.0 );
+		assertThat( ((QuadCurveTo)element).getControlY() ).isEqualTo( 60.0 );
+		assertThat( ((QuadCurveTo)element).getX() ).isEqualTo( 60.0 );
+		assertThat( ((QuadCurveTo)element).getY() ).isEqualTo( 120.0 );
+	}
+
+	@Test
+	void mapCubicScaled() {
+		PathElementMapper mapper = Mappers.getMapper( PathElementMapper.class );
+		DesignPath.Step step = new DesignPath.Step( DesignPath.Command.B, 10, 20, 30, 40, 50, 60 );
+		PathElement element = mapper.map( step, 2.0, 3.0 );
+		assertThat( element ).isNotNull();
+		assertThat( element ).isInstanceOf( CubicCurveTo.class );
+		assertThat( ((CubicCurveTo)element).getControlX1() ).isEqualTo( 20.0 );
+		assertThat( ((CubicCurveTo)element).getControlY1() ).isEqualTo( 60.0 );
+		assertThat( ((CubicCurveTo)element).getControlX2() ).isEqualTo( 60.0 );
+		assertThat( ((CubicCurveTo)element).getControlY2() ).isEqualTo( 120.0 );
+		assertThat( ((CubicCurveTo)element).getX() ).isEqualTo( 100.0 );
+		assertThat( ((CubicCurveTo)element).getY() ).isEqualTo( 180.0 );
+	}
+
+	@Test
+	void mapCloseScaled() {
+		PathElementMapper mapper = Mappers.getMapper( PathElementMapper.class );
+		DesignPath.Step step = new DesignPath.Step( DesignPath.Command.Z );
+		PathElement element = mapper.map( step, 2.0, 3.0 );
+		assertThat( element ).isNotNull();
+		assertThat( element ).isInstanceOf( ClosePath.class );
+	}
+
 }
