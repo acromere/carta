@@ -5,10 +5,7 @@ import com.acromere.cartesia.DesignUnit;
 import com.acromere.cartesia.DesignValue;
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.tool.Workplane;
-import com.acromere.cartesia.tool.design.binding.DesignBinding;
-import com.acromere.cartesia.tool.design.binding.DesignBooleanBinding;
-import com.acromere.cartesia.tool.design.binding.DesignDoubleBinding;
-import com.acromere.cartesia.tool.design.binding.PathElementMapper;
+import com.acromere.cartesia.tool.design.binding.*;
 import com.acromere.data.DataNodeEvent;
 import com.acromere.event.EventHandler;
 import com.acromere.zerra.javafx.Fx;
@@ -952,18 +949,16 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		bindCommonShapeGeometry( designLayer, designMarker, path );
 		path.setFillRule( FillRule.EVEN_ODD );
 
+		// Create a DesignBinding on TYPE
+		DesignStringBinding markerType = new DesignStringBinding( designMarker, DesignMarker.TYPE, DesignMarker::getMarkerType );
+
 		// Bind on steps and update the path geometry
-		DesignBinding<List<DesignPath.Step>> stepsBinding = new DesignBinding<>( designMarker, DesignPath.STEPS, DesignMarker::getSteps );
 		ObjectBinding<List<PathElement>> elementsBinding = Bindings.createObjectBinding(
 			() -> {
-				List<PathElement> elements = new ArrayList<>();
-				double shapeScaleX = shapeScaleXProperty().get();
-				double shapeScaleY = shapeScaleYProperty().get();
-				for( DesignPath.Step step : stepsBinding.get() ) {
-					elements.add( pathElementMapper.map( step, shapeScaleX, shapeScaleY ) );
-				}
-				return elements;
-			}, stepsBinding, shapeScaleXProperty(), shapeScaleYProperty()
+				double shapeScaleX = getDesignShapeScaleX();
+				double shapeScaleY = getDesignShapeScaleY();
+				return designMarker.getSteps().stream().map( step -> pathElementMapper.map( step, shapeScaleX, shapeScaleY )).toList();
+			}, markerType, shapeScaleXProperty(), shapeScaleYProperty()
 		);
 		path.getElements().setAll( elementsBinding.get() );
 		elementsBinding.addListener( ( _, _, n ) -> path.getElements().setAll( n ) );

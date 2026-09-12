@@ -2,9 +2,11 @@ package com.acromere.cartesia.tool.design.binding;
 
 import com.acromere.data.DataNode;
 import javafx.beans.property.StringPropertyBase;
+import lombok.CustomLog;
 
 import java.util.function.Function;
 
+@CustomLog
 public class DesignStringBinding extends StringPropertyBase {
 
 	public <T extends DataNode, R extends String> DesignStringBinding( T node, String designPropertyName, Function<T, R> consumer ) {
