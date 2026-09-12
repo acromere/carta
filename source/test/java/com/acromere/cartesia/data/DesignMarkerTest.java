@@ -190,7 +190,7 @@ public class DesignMarkerTest extends DesignShapeTest {
 
 	@Test
 	void testReticlePath() {
-		DesignMarker marker = new DesignMarker( new Point3D( 0, 0, 0 ), DesignMarker.Type.RETICLE );
+		DesignMarker marker = new DesignMarker( new Point3D( 0, 0, 0 ), DesignMarker.Type.RETICULE );
 		List<DesignPath.Step> steps = marker.getSteps();
 		assertThat( steps ).hasSize( 21 );
 

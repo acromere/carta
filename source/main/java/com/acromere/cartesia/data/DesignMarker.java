@@ -175,7 +175,7 @@ public class DesignMarker extends DesignShape {
 				return STAR.getDesignPath();
 			}
 		},
-		RETICLE {
+		RETICULE {
 			public Path getFxPath() {
 				double s = 0.1 * LINE_WIDTH;
 				double r = HALF_SIZE;
