@@ -14,9 +14,9 @@ import com.acromere.cartesia.snap.SnapGrid;
 import com.acromere.cartesia.tool.design.BaseDesignRenderer;
 import com.acromere.cartesia.tool.design.DesignToolEvent;
 import com.acromere.cartesia.tool.design.LayerGuide;
+import com.acromere.data.DataNodeSettings;
 import com.acromere.data.IdDataNode;
 import com.acromere.data.MultiNodeSettings;
-import com.acromere.data.DataNodeSettings;
 import com.acromere.product.Rb;
 import com.acromere.settings.Settings;
 import com.acromere.skill.WritableIdentity;
@@ -1819,7 +1819,11 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 		@Override
 		public void handle( ActionEvent event ) {
-			getResource().getUndoManager().undo();
+			try {
+				getResource().getUndoManager().undo();
+			} catch( IllegalStateException exception ) {
+				log.atWarn().withCause( exception ).log( exception.getMessage() );
+			}
 		}
 
 	}
@@ -1837,7 +1841,11 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 		@Override
 		public void handle( ActionEvent event ) {
+			try {
 			getResource().getUndoManager().redo();
+			} catch( IllegalStateException exception ) {
+				log.atWarn().withCause( exception ).log( exception.getMessage() );
+			}
 		}
 
 	}
