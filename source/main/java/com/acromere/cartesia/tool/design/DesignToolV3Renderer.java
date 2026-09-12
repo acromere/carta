@@ -1076,28 +1076,90 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		DesignBooleanBinding isSelected = new DesignBooleanBinding( designShape, DesignShape.SELECTED, DesignShape::isSelected );
 		DesignBinding<Paint> shapeFill = new DesignBinding<>( designShape, DesignShape.FILL_PAINT, DesignShape::calcFillPaint );
 		DesignBinding<Paint> shapeDraw = new DesignBinding<>( designShape, DesignShape.DRAW_PAINT, DesignShape::calcDrawPaint );
+		DesignDoubleBinding shapeDrawWidth = new DesignDoubleBinding( designShape, DesignShape.DRAW_WIDTH, DesignShape::calcDrawWidth );
+		DesignBinding<StrokeLineCap> shapeDrawCap = new DesignBinding<>( designShape, DesignShape.DRAW_CAP, DesignShape::calcDrawCap );
+		DesignBinding<StrokeLineJoin> shapeDrawJoin = new DesignBinding<>( designShape, DesignShape.DRAW_JOIN, DesignShape::calcDrawJoin );
+		DesignDoubleBinding shapeDashOffset = new DesignDoubleBinding( designShape, DesignShape.DASH_OFFSET, DesignShape::calcDashOffset );
+		DesignBinding<List<Double>> shapePatternBinding = new DesignBinding<>( designShape, DesignShape.DASH_PATTERN, DesignShape::calcDashPattern );
+
 		DesignBinding<Paint> layerFill = new DesignBinding<>( designLayer, DesignLayer.FILL_PAINT, DesignLayer::calcFillPaint );
 		DesignBinding<Paint> layerDraw = new DesignBinding<>( designLayer, DesignLayer.DRAW_PAINT, DesignLayer::calcDrawPaint );
+		DesignDoubleBinding layerDrawWidth = new DesignDoubleBinding( designLayer, DesignLayer.DRAW_WIDTH, DesignLayer::calcDrawWidth );
+		DesignBinding<StrokeLineCap> layerDrawCap = new DesignBinding<>( designLayer, DesignLayer.DRAW_CAP, DesignLayer::calcDrawCap );
+		DesignBinding<StrokeLineJoin> layerDrawJoin = new DesignBinding<>( designLayer, DesignLayer.DRAW_JOIN, DesignLayer::calcDrawJoin );
+		DesignDoubleBinding layerDashOffset = new DesignDoubleBinding( designLayer, DesignLayer.DASH_OFFSET, DesignLayer::calcDashOffset );
+		DesignBinding<List<Double>> layerPatternBinding = new DesignBinding<>( designLayer, DesignLayer.DASH_PATTERN, DesignLayer::calcDashPattern );
 
 		BooleanBinding hasFill = Bindings.and( shapeFill.isNotNull(), shapeFill.isNotEqualTo( Color.TRANSPARENT ) );
 		BooleanBinding hasDraw = Bindings.and( shapeDraw.isNotNull(), shapeDraw.isNotEqualTo( Color.TRANSPARENT ) );
 
-		shape.fillProperty().bind( Bindings.when( hasFill ).then( Bindings.when( isSelected ).then( selectedFillPaint() ).otherwise( shapeFill ) ).otherwise( (Paint)null ) );
-		shape.strokeProperty().bind( Bindings.when( hasDraw ).then( Bindings.when( isSelected ).then( selectedDrawPaint() ).otherwise( shapeDraw ) ).otherwise( (Paint)null ) );
-		shape.strokeWidthProperty().bind( shapeScaleXProperty().multiply( new DesignDoubleBinding( designShape, DesignShape.DRAW_WIDTH, DesignShape::calcDrawWidth ) ) );
-		shape.strokeLineCapProperty().bind( new DesignBinding<>( designShape, DesignShape.DRAW_CAP, DesignShape::calcDrawCap ) );
-		shape.strokeLineJoinProperty().bind( new DesignBinding<>( designShape, DesignShape.DRAW_JOIN, DesignShape::calcDrawJoin ) );
-		//shape.strokeTypeProperty().bind( new DesignBinding<>( designShape, DesignShape.DRAW_TYPE, DesignShape::calcDrawType ) );
-		//shape.strokeMiterLimitProperty().bind( shapeScaleXProperty().multiply( new DesignDoubleBinding( designShape, DesignShape.DRAW_MITER_LIMIT, DesignShape::calcDrawMiterLimit ) ) );
+		shape.fillProperty().bind( Bindings.createObjectBinding(
+			() -> {
+				Paint fillPaint = designShape.calcFillPaint();
+				if( fillPaint != null && fillPaint != Color.TRANSPARENT ) {
+					if( designShape.isSelected() ) {
+						return getSelectedFillPaint();
+					} else {
+						return fillPaint;
+					}
+				}
+				return null;
+			}, hasFill, isSelected, shapeFill, layerFill, selectedFillPaint()
+		) );
+		shape.strokeProperty().bind( Bindings.createObjectBinding(
+			() -> {
+				Paint drawPaint = designShape.calcDrawPaint();
+				if( drawPaint != null && drawPaint != Color.TRANSPARENT ) {
+					if( designShape.isSelected() ) {
+						return getSelectedDrawPaint();
+					} else {
+						return drawPaint;
+					}
+				}
+				return null;
+			}, hasDraw, isSelected, shapeDraw, layerDraw, selectedDrawPaint()
+		) );
+		shape.strokeWidthProperty().bind( Bindings.createObjectBinding(
+			() -> {
+				return getDesignShapeScaleX() * designShape.calcDrawWidth();
+			}, shapeScaleXProperty(), shapeDrawWidth, layerDrawWidth
+		) );
+		shape.strokeLineCapProperty().bind( Bindings.createObjectBinding(
+			() -> {
+				return designShape.calcDrawCap();
+			}, shapeDrawCap, layerDrawCap
+		) );
+		shape.strokeLineJoinProperty().bind( Bindings.createObjectBinding(
+			() -> {
+				return designShape.calcDrawJoin();
+			}, shapeDrawJoin, layerDrawJoin
+		) );
+		// NOTE Future feature
+		//shape.strokeTypeProperty().bind( Bindings.createObjectBinding(
+		//	() -> {
+		//		return designShape.calcDrawType();
+		//	}, shapeDrawType, layerDrawType
+		//));
+		// NOTE Future feature
+		//shape.strokeMiterLimitProperty().bind( Bindings.createObjectBinding(
+		//	() -> {
+		//		return designShape.calcDrawMiterLimit();
+		//	}, shapeDrawMiterLimit, layerDrawMiterLimit
+		//));
 
 		// Dash offset
-		shape.strokeDashOffsetProperty().bind( shapeScaleXProperty().multiply( new DesignDoubleBinding( designShape, DesignShape.DASH_OFFSET, DesignShape::calcDashOffset ) ) );
+		shape.strokeDashOffsetProperty().bind( Bindings.createObjectBinding(
+			() -> {
+				return getDesignShapeScaleX() * designShape.calcDashOffset();
+			}, shapeScaleXProperty(), shapeDashOffset, layerDashOffset
+		) );
+
 		// Dash pattern
-		DesignBinding<List<Double>> patternBinding = new DesignBinding<>( designShape, DesignShape.DASH_PATTERN, DesignShape::calcDashPattern );
 		ObjectBinding<List<Double>> dashBinding = Bindings.createObjectBinding(
-			() -> patternBinding.get().stream().map( d -> d * shapeScaleXProperty().get() ).toList(),
+			() -> designShape.calcDashPattern().stream().map( d -> d * getDesignShapeScaleX() ).toList(),
 			shapeScaleXProperty(),
-			patternBinding
+			shapePatternBinding,
+			layerPatternBinding
 		);
 		shape.getStrokeDashArray().setAll( dashBinding.get() );
 		dashBinding.addListener( ( _, _, n ) -> shape.getStrokeDashArray().setAll( n ) );
