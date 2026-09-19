@@ -8,7 +8,7 @@ import com.acromere.cartesia.tool.Workplane;
 import com.acromere.cartesia.tool.design.binding.DesignBinding;
 import com.acromere.cartesia.tool.design.binding.DesignBooleanBinding;
 import com.acromere.cartesia.tool.design.binding.DesignDoubleBinding;
-import com.acromere.cartesia.tool.design.binding.PathElementMapper;
+import com.acromere.cartesia.tool.design.binding.DesignPathMapper;
 import com.acromere.data.DataNodeEvent;
 import com.acromere.event.EventHandler;
 import com.acromere.zerra.javafx.Fx;
@@ -44,7 +44,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @CustomLog
 public class DesignToolV3Renderer extends BaseDesignRenderer {
 
-	private static final PathElementMapper pathElementMapper;
+	private static final DesignPathMapper pathElementMapper;
 
 	/**
 	 * Caution: This map is shared among all renderers of this type. This could
@@ -154,7 +154,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	private final EventHandler<DataNodeEvent> designUnitChangeHandler = _ -> setDesignUnit( model.calcDesignUnit() );
 
 	static {
-		pathElementMapper = Mappers.getMapper( PathElementMapper.class );
+		pathElementMapper = Mappers.getMapper( DesignPathMapper.class );
 	}
 
 	/**
@@ -968,7 +968,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	private void updateMarkerElements( DesignMarker designMarker, Path path ) {
 		double shapeScaleX = getDesignShapeScaleX();
 		double shapeScaleY = getDesignShapeScaleY();
-		path.getElements().setAll( designMarker.getSteps().stream().map( step -> pathElementMapper.map( step, shapeScaleX, shapeScaleY ) ).toList() );
+		pathElementMapper.update( designMarker, path, shapeScaleX, shapeScaleY );
 	}
 
 	private Path bindPathGeometry( DesignLayer designLayer, DesignPath designPath ) {
@@ -988,7 +988,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	private void updatePathElements( DesignPath designPath, Path path ) {
 		double shapeScaleX = getDesignShapeScaleX();
 		double shapeScaleY = getDesignShapeScaleY();
-		path.getElements().setAll( designPath.getSteps().stream().map( step -> pathElementMapper.map( step, shapeScaleX, shapeScaleY ) ).toList() );
+		pathElementMapper.update( designPath, path, shapeScaleX, shapeScaleY );
 	}
 
 	private QuadCurve bindQuadGeometry( DesignLayer designLayer, DesignQuad designQuad ) {
@@ -1144,18 +1144,16 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		//));
 
 		// Dash offset
-		shape.strokeDashOffsetProperty().bind( Bindings.createObjectBinding(
-			() -> getDesignShapeScaleX() * designShape.calcDashOffset(), shapeScaleXProperty(), shapeDashOffset, layerDashOffset
-		) );
+		shape.strokeDashOffsetProperty().bind( Bindings.createObjectBinding( () -> getDesignShapeScaleX() * designShape.calcDashOffset(), shapeScaleXProperty(), shapeDashOffset, layerDashOffset ) );
 
 		// Bind the dash pattern with listeners
 		updateStrokeDashArray( designShape, shape );
-		shapeScaleXProperty().subscribe( ()-> this.updateStrokeDashArray( designShape, shape ) );
+		shapeScaleXProperty().subscribe( () -> this.updateStrokeDashArray( designShape, shape ) );
 		designShape.register( this, DesignShape.DASH_PATTERN, _ -> this.updateStrokeDashArray( designShape, shape ) );
 		designLayer.register( this, DesignLayer.DASH_PATTERN, _ -> this.updateStrokeDashArray( designShape, shape ) );
 	}
 
-	private void updateStrokeDashArray(DesignShape designShape, Shape shape ) {
+	private void updateStrokeDashArray( DesignShape designShape, Shape shape ) {
 		double shapeScaleX = getDesignShapeScaleX();
 		shape.getStrokeDashArray().setAll( designShape.calcDashPattern().stream().map( d -> d * shapeScaleX ).toList() );
 	}

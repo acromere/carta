@@ -7,11 +7,11 @@ import org.mapstruct.factory.Mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PathElementMapperTest {
+public class DesignPathMapperTest {
 
 	@Test
 	void mapMove() {
-		PathElementMapper mapper = Mappers.getMapper( PathElementMapper.class );
+		DesignPathMapper mapper = Mappers.getMapper( DesignPathMapper.class );
 		DesignPath.Step step = new DesignPath.Step( DesignPath.Command.M, 10, 20 );
 		PathElement element = mapper.map( step );
 		assertThat( element ).isNotNull();
@@ -22,7 +22,7 @@ public class PathElementMapperTest {
 
 	@Test
 	void mapLine() {
-		PathElementMapper mapper = Mappers.getMapper( PathElementMapper.class );
+		DesignPathMapper mapper = Mappers.getMapper( DesignPathMapper.class );
 		DesignPath.Step step = new DesignPath.Step( DesignPath.Command.L, 10, 20 );
 		PathElement element = mapper.map( step );
 		assertThat( element ).isNotNull();
@@ -33,7 +33,7 @@ public class PathElementMapperTest {
 
 	@Test
 	void mapArc() {
-		PathElementMapper mapper = Mappers.getMapper( PathElementMapper.class );
+		DesignPathMapper mapper = Mappers.getMapper( DesignPathMapper.class );
 		DesignPath.Step step = new DesignPath.Step( DesignPath.Command.A, 10, 20, 30, 40, 50, 60, 70 );
 		PathElement element = mapper.map( step );
 		assertThat( element ).isNotNull();
@@ -49,7 +49,7 @@ public class PathElementMapperTest {
 
 	@Test
 	void mapQuad() {
-		PathElementMapper mapper = Mappers.getMapper( PathElementMapper.class );
+		DesignPathMapper mapper = Mappers.getMapper( DesignPathMapper.class );
 		DesignPath.Step step = new DesignPath.Step( DesignPath.Command.Q, 10, 20, 30, 40 );
 		PathElement element = mapper.map( step );
 		assertThat( element ).isNotNull();
@@ -64,7 +64,7 @@ public class PathElementMapperTest {
 
 	@Test
 	void mapCubic() {
-		PathElementMapper mapper = Mappers.getMapper( PathElementMapper.class );
+		DesignPathMapper mapper = Mappers.getMapper( DesignPathMapper.class );
 		DesignPath.Step step = new DesignPath.Step( DesignPath.Command.B, 10, 20, 30, 40, 50, 60 );
 		PathElement element = mapper.map( step );
 		assertThat( element ).isNotNull();
@@ -79,7 +79,7 @@ public class PathElementMapperTest {
 
 	@Test
 	void mapClose() {
-		PathElementMapper mapper = Mappers.getMapper( PathElementMapper.class );
+		DesignPathMapper mapper = Mappers.getMapper( DesignPathMapper.class );
 		DesignPath.Step step = new DesignPath.Step( DesignPath.Command.Z );
 		PathElement element = mapper.map( step );
 		assertThat( element ).isNotNull();
@@ -88,7 +88,7 @@ public class PathElementMapperTest {
 
 	@Test
 	void mapMoveScaled() {
-		PathElementMapper mapper = Mappers.getMapper( PathElementMapper.class );
+		DesignPathMapper mapper = Mappers.getMapper( DesignPathMapper.class );
 		DesignPath.Step step = new DesignPath.Step( DesignPath.Command.M, 10, 20 );
 		PathElement element = mapper.map( step, 2.0, 3.0 );
 		assertThat( element ).isNotNull();
@@ -99,7 +99,7 @@ public class PathElementMapperTest {
 
 	@Test
 	void mapLineScaled() {
-		PathElementMapper mapper = Mappers.getMapper( PathElementMapper.class );
+		DesignPathMapper mapper = Mappers.getMapper( DesignPathMapper.class );
 		DesignPath.Step step = new DesignPath.Step( DesignPath.Command.L, 10, 20 );
 		PathElement element = mapper.map( step, 2.0, 3.0 );
 		assertThat( element ).isNotNull();
@@ -110,7 +110,7 @@ public class PathElementMapperTest {
 
 	@Test
 	void mapArcScaled() {
-		PathElementMapper mapper = Mappers.getMapper( PathElementMapper.class );
+		DesignPathMapper mapper = Mappers.getMapper( DesignPathMapper.class );
 		DesignPath.Step step = new DesignPath.Step( DesignPath.Command.A, 10, 20, 30, 40, 50, 60, 70 );
 		PathElement element = mapper.map( step, 2.0, 3.0 );
 		assertThat( element ).isNotNull();
@@ -126,7 +126,7 @@ public class PathElementMapperTest {
 
 	@Test
 	void mapQuadScaled() {
-		PathElementMapper mapper = Mappers.getMapper( PathElementMapper.class );
+		DesignPathMapper mapper = Mappers.getMapper( DesignPathMapper.class );
 		DesignPath.Step step = new DesignPath.Step( DesignPath.Command.Q, 10, 20, 30, 40 );
 		PathElement element = mapper.map( step, 2.0, 3.0 );
 		assertThat( element ).isNotNull();
@@ -139,7 +139,7 @@ public class PathElementMapperTest {
 
 	@Test
 	void mapCubicScaled() {
-		PathElementMapper mapper = Mappers.getMapper( PathElementMapper.class );
+		DesignPathMapper mapper = Mappers.getMapper( DesignPathMapper.class );
 		DesignPath.Step step = new DesignPath.Step( DesignPath.Command.B, 10, 20, 30, 40, 50, 60 );
 		PathElement element = mapper.map( step, 2.0, 3.0 );
 		assertThat( element ).isNotNull();
@@ -154,7 +154,7 @@ public class PathElementMapperTest {
 
 	@Test
 	void mapCloseScaled() {
-		PathElementMapper mapper = Mappers.getMapper( PathElementMapper.class );
+		DesignPathMapper mapper = Mappers.getMapper( DesignPathMapper.class );
 		DesignPath.Step step = new DesignPath.Step( DesignPath.Command.Z );
 		PathElement element = mapper.map( step, 2.0, 3.0 );
 		assertThat( element ).isNotNull();

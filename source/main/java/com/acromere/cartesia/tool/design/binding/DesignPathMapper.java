@@ -1,12 +1,39 @@
 package com.acromere.cartesia.tool.design.binding;
 
+import com.acromere.cartesia.data.DesignMarker;
 import com.acromere.cartesia.data.DesignPath;
 import javafx.scene.shape.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper
-public interface PathElementMapper {
+public interface DesignPathMapper {
+
+	@Mapping( target = "" )
+	default Path map( DesignPath designPath ){
+		Path path = new Path();
+		path.getElements().setAll( designPath.getSteps().stream().map( this::map ).toList() );
+		return path;
+	}
+
+	@Mapping( target = "" )
+	default Path map( DesignPath designPath, double shapeScaleX, double shapeScaleY ){
+		Path path = new Path();
+		path.getElements().setAll( designPath.getSteps().stream().map( step -> map( step, shapeScaleX, shapeScaleY ) ).toList() );
+		return path;
+	}
+
+	@Mapping( target = "" )
+	default Path update( DesignPath designPath, Path path, double shapeScaleX, double shapeScaleY ){
+		path.getElements().setAll( designPath.getSteps().stream().map( step -> map( step, shapeScaleX, shapeScaleY ) ).toList() );
+		return path;
+	}
+
+	@Mapping( target = "" )
+	default Path update( DesignMarker designMarker, Path path, double shapeScaleX, double shapeScaleY ){
+		path.getElements().setAll( designMarker.getSteps().stream().map( step -> map( step, shapeScaleX, shapeScaleY ) ).toList() );
+		return path;
+	}
 
 	@Mapping( target = "" )
 	default PathElement map( DesignPath.Step step ) {
