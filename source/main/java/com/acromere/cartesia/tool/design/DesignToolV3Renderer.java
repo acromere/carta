@@ -947,9 +947,14 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 	private Path bindMarkerGeometry( DesignLayer designLayer, DesignMarker designMarker ) {
 		Path path = new Path();
+		path.setFillRule( FillRule.EVEN_ODD );
 
 		bindCommonShapeGeometry( designLayer, designMarker, path );
-		path.setFillRule( FillRule.EVEN_ODD );
+
+		DesignDoubleBinding sizeValue = new DesignDoubleBinding( designMarker, DesignMarker.SIZE, DesignMarker::calcSize );
+
+		// Bind the marker values with listeners
+		sizeValue.subscribe( () -> updateMarkerElements( designMarker, path ) );
 
 		// Bind the marker elements with listeners
 		updateMarkerElements( designMarker, path );
