@@ -948,19 +948,18 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	private Path bindMarkerGeometry( DesignLayer designLayer, DesignMarker designMarker ) {
 		Path path = new Path();
 		path.setFillRule( FillRule.EVEN_ODD );
+		updateMarkerElements( designMarker, path );
 
 		bindCommonShapeGeometry( designLayer, designMarker, path );
 
+		DesignBinding<DesignMarker.Type> typeValue = new DesignBinding<>( designMarker, DesignMarker.TYPE, DesignMarker::calcType );
 		DesignDoubleBinding sizeValue = new DesignDoubleBinding( designMarker, DesignMarker.SIZE, DesignMarker::calcSize );
 
-		// Bind the marker values with listeners
-		sizeValue.subscribe( () -> updateMarkerElements( designMarker, path ) );
-
 		// Bind the marker elements with listeners
-		updateMarkerElements( designMarker, path );
+		typeValue.subscribe( () -> updateMarkerElements( designMarker, path ) );
+		sizeValue.subscribe( () -> updateMarkerElements( designMarker, path ) );
 		shapeScaleXProperty().subscribe( () -> updateMarkerElements( designMarker, path ) );
 		shapeScaleYProperty().subscribe( () -> updateMarkerElements( designMarker, path ) );
-		designMarker.register( this, DesignMarker.TYPE, _ -> this.updateMarkerElements( designMarker, path ) );
 
 		return path;
 	}
@@ -973,14 +972,16 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 	private Path bindPathGeometry( DesignLayer designLayer, DesignPath designPath ) {
 		Path path = new Path();
+		updatePathElements( designPath, path );
 
 		bindCommonShapeGeometry( designLayer, designPath, path );
 
+		DesignBinding<List<DesignPath.Step>> stepsValue = new DesignBinding<>( designPath, DesignPath.STEPS, DesignPath::getSteps );
+
 		// Bind the path elements with listeners
-		updatePathElements( designPath, path );
+		stepsValue.subscribe( () -> updatePathElements( designPath, path ) );
 		shapeScaleXProperty().subscribe( () -> updatePathElements( designPath, path ) );
 		shapeScaleYProperty().subscribe( () -> updatePathElements( designPath, path ) );
-		designPath.register( this, DesignPath.STEPS, _ -> this.updatePathElements( designPath, path ) );
 
 		return path;
 	}
