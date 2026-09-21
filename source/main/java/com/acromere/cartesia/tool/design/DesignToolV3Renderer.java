@@ -954,10 +954,12 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 		DesignBinding<DesignMarker.Type> typeValue = new DesignBinding<>( designMarker, DesignMarker.TYPE, DesignMarker::calcType );
 		DesignDoubleBinding sizeValue = new DesignDoubleBinding( designMarker, DesignMarker.SIZE, DesignMarker::calcSize );
+		DesignBinding<Point3D> originValue = new DesignBinding<>( designMarker, DesignMarker.ORIGIN, DesignMarker::getOrigin );
 
 		// Bind the marker elements with listeners
 		typeValue.subscribe( () -> updateMarkerElements( designMarker, path ) );
 		sizeValue.subscribe( () -> updateMarkerElements( designMarker, path ) );
+		originValue.subscribe( () -> updateMarkerElements( designMarker, path ) );
 		shapeScaleXProperty().subscribe( () -> updateMarkerElements( designMarker, path ) );
 		shapeScaleYProperty().subscribe( () -> updateMarkerElements( designMarker, path ) );
 
