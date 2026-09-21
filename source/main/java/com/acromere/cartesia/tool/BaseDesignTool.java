@@ -1124,7 +1124,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	 */
 	@Override
 	public void zoom( Point3D anchor, double factor ) {
-		Fx.onFxOrCurrent( () -> getRenderer().zoom( anchor, factor ) );
+		Fx.onFxOrHeadless( () -> getRenderer().zoom( anchor, factor ) );
 	}
 
 	// TODO Insert common design tool implementations here

@@ -646,7 +646,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 		// Get a local reference for thread safety
 		final Workplane workplane = this.workplane;
 
-		Fx.onFxOrCurrent( () -> {
+		Fx.onFxOrHeadless( () -> {
 			if( workplane == null ) {
 				grid.getChildren().clear();
 			} else {
