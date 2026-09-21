@@ -351,7 +351,7 @@ public class CommandContext implements EventHandler<KeyEvent> {
 
 				// Remove the command if it has completed
 				commandStack.remove( task );
-				log.atConfig().log( "Pull command=%s", task.getCommand() );
+				log.atTrace().log( "Pull command=%s", task.getCommand() );
 
 				if( task.getCommand() instanceof Value ) {
 					if( stepResult instanceof Object[] array ) {
@@ -475,8 +475,7 @@ public class CommandContext implements EventHandler<KeyEvent> {
 
 		// Push the new command on the command stack
 		commandStack.push( request );
-		//log.atTrace().log( "Command submitted %s", request );
-		log.atConfig().log( "Push command=%s", request.getCommand() );
+		log.atTrace().log( "Push command=%s", request.getCommand() );
 
 		// Run the processing on a task thread
 		getTool().getProduct().task( "process-commands", this::doProcessCommands );
