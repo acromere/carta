@@ -12,6 +12,7 @@ import static com.acromere.cartesia.command.Command.Result.*;
 @CustomLog
 public class DrawLine2 extends DrawCommand {
 
+	// FIXME We probably do not need a reference line when drawing a line
 	private DesignLine reference;
 
 	private DesignLine preview;
@@ -35,7 +36,7 @@ public class DrawLine2 extends DrawCommand {
 			reference.setPoint( origin ).setOrigin( origin );
 
 			if( preview == null ) preview = createPreviewLine( task );
-			preview.setOrigin( origin );
+			preview.setPoint( origin ).setOrigin( origin );
 
 			promptForPoint( task, "end-point" );
 			return INCOMPLETE;
@@ -65,11 +66,12 @@ public class DrawLine2 extends DrawCommand {
 			BaseDesignTool tool = (BaseDesignTool)event.getSource();
 			Point3D point = tool.screenToWorkplane( event.getX(), event.getY(), event.getZ() );
 			int step = getStep();
-			if( reference != null ) {
-				if( step == 1 ) reference.setPoint( point ).setOrigin( point );
+			if( step == 1 ) {
+				if( reference != null ) reference.setPoint( point ).setOrigin( point );
+				if( preview != null ) preview.setPoint( point ).setOrigin( point );
 			}
-			if( preview != null ) {
-				if( step == 2 ) preview.setPoint( point );
+			if( step == 2 ) {
+				if( preview != null ) preview.setPoint( point );
 			}
 		}
 	}
