@@ -34,7 +34,6 @@ public abstract class SelectByWindow extends SelectCommand {
 		// If there is an event, but no parameters, use the world anchor as the first parameter
 		if( paramCount == 0 & hasEvent && event instanceof MouseEvent mouseEvent && task.getTrigger().matches( mouseEvent ) ) {
 			// Submit a Value command to pass the anchor back to this command
-			task.getTool().setSelectAperture( WINDOW_SELECT_APERTURE );
 			Point3D anchor = task.getContext().getWorldAnchor();
 			task.getContext().setLocalAnchor( anchor );
 			task.getContext().submit( task.getTool(), new Value(), anchor );
@@ -45,6 +44,8 @@ public abstract class SelectByWindow extends SelectCommand {
 		if( paramCount == 1 & noEvent ) {
 			Point3D worldPoint = asPoint( task, "select-window-anchor", 0 );
 			if( worldPoint != null ) {
+				task.getTool().setSelectAperture( WINDOW_SELECT_APERTURE );
+				task.getTool().moveSelectAperture( worldPoint, worldPoint );
 				promptForWindow( task, "select-window-corner" );
 				return INCOMPLETE;
 			}
