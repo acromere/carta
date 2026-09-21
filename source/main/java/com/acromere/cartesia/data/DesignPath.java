@@ -10,6 +10,7 @@ import com.acromere.transaction.TxnException;
 import javafx.geometry.Point3D;
 import lombok.CustomLog;
 import lombok.Getter;
+import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -365,6 +366,7 @@ public class DesignPath extends DesignShape {
 		}
 
 		@Override
+		@SuppressWarnings( "CloneDoesntCallSuperClone" )
 		public Step clone() {
 			return new Step( command, data.clone() );
 		}
@@ -379,14 +381,20 @@ public class DesignPath extends DesignShape {
 				case B -> 6;
 				default -> 0;
 			};
+			// Apply the entire transform to points
 			for( int index = 0; index < count; index += 2 ) {
-				Point3D point = transform.apply( new Point3D( data[ index ], data[ index + 1 ], 0 ) );
+				Point3D point = transform.applyXY( new Point3D( data[ index ], data[ index + 1 ], 0 ) );
 				data[ index ] = point.getX();
 				data[ index + 1 ] = point.getY();
 			}
 
-			// TODO Transform distances (like radii)
-			// TODO Transform angles (like rotate)
+			// Transform radii
+			// Apply only the scale to the radii
+			if( command == DesignPath.Command.A ) {
+				Point3D point = transform.applyDirection( new Point3D( data[ 2 ], data[ 3 ], 0 ) );
+				data[ 2 ] = Math.abs( point.getX() );
+				data[ 3 ] = Math.abs( point.getY() );
+			}
 		}
 
 		public String marshall() {
@@ -398,6 +406,12 @@ public class DesignPath extends DesignShape {
 			Command command = Command.valueOf( parts[ 0 ].toUpperCase() );
 			String[] data = Arrays.copyOfRange( parts, 1, parts.length );
 			return new Step( command, Arrays.stream( data ).mapToDouble( Double::parseDouble ).toArray() );
+		}
+
+		@Override
+		@NonNull
+		public String toString() {
+			return "Step{ values={ " + Arrays.toString( data ) + " } }";
 		}
 
 	}
