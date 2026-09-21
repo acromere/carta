@@ -43,6 +43,8 @@ public class DrawArc2 extends DrawCommand {
 			referenceLine.setPoint( origin ).setOrigin( origin );
 
 			if( previewArc == null ) previewArc = createPreviewArc( task, origin );
+			previewArc.setOrigin( origin );
+
 			promptForPoint( task, "start" );
 
 			return INCOMPLETE;

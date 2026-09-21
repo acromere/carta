@@ -38,9 +38,11 @@ public class DrawArc3 extends DrawCommand {
 
 		// Step 2 - Get start, prompt for mid-point
 		if( task.getParameterCount() < 2 ) {
-			if( referenceLine == null ) referenceLine = createReferenceLine( task );
 			start = asPoint( task, "start-point", 0 );
-			referenceLine.setOrigin( start );
+
+			if( referenceLine == null ) referenceLine = createReferenceLine( task );
+			referenceLine.setPoint( start ).setOrigin( start );
+
 			promptForPoint( task, "mid-point" );
 			return INCOMPLETE;
 		}
@@ -50,6 +52,7 @@ public class DrawArc3 extends DrawCommand {
 			removeReference( task, referenceLine );
 
 			mid = asPoint( task, "mid-point", 1 );
+
 			if( previewArc == null ) previewArc = createPreviewArc3( task, start, mid );
 
 			promptForPoint( task, "end-point" );
