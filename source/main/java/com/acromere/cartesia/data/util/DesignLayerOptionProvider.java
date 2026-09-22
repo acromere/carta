@@ -22,10 +22,6 @@ public class DesignLayerOptionProvider implements SettingOptionProvider {
 
 	private final boolean showRoot;
 
-	public DesignLayerOptionProvider( XenonProgramProduct product ) {
-		this( product, false );
-	}
-
 	public DesignLayerOptionProvider( XenonProgramProduct product, boolean showRoot ) {
 		this.product = product;
 		this.showRoot = showRoot;
@@ -36,11 +32,12 @@ public class DesignLayerOptionProvider implements SettingOptionProvider {
 		Optional<DesignModel> optional = getDesign();
 		if( optional.isEmpty() ) return List.of();
 
-		DesignModel design = optional.get();
-		List<String> rootKey = List.of();
-		if( showRoot ) rootKey = List.of( design.getLayers().getId() );
+		DesignModel model = optional.get();
 
-		return Stream.concat( rootKey.stream(), design.getAllLayers().stream().map( IdDataNode::getId ) ).collect( Collectors.toList() );
+		List<String> rootKey = List.of();
+		if( showRoot ) rootKey = List.of( model.getLayers().getId() );
+
+		return Stream.concat( rootKey.stream(), model.getAllLayers().stream().map( IdDataNode::getId ) ).collect( Collectors.toList() );
 	}
 
 	@Override
@@ -48,11 +45,9 @@ public class DesignLayerOptionProvider implements SettingOptionProvider {
 		Optional<DesignModel> optional = getDesign();
 		if( optional.isEmpty() ) return TextUtil.EMPTY;
 
-		DesignModel design = optional.get();
+		DesignModel model = optional.get();
 		DesignLayer notfound = new DesignLayer();
-		List<DesignLayer> layers = design.getAllLayers();
-
-		DesignLayer layer = Stream.concat( Stream.of( design.getLayers() ), layers.stream() ).filter( l -> l.getId().equals( key ) ).findAny().orElse( notfound );
+		DesignLayer layer = model.getAllLayersAndRoot().stream().filter( l -> l.getId().equals( key ) ).findAny().orElse( notfound );
 
 		return layer == notfound ? key : layer.getFullName();
 	}
