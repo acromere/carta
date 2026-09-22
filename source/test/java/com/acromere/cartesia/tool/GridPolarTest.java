@@ -53,7 +53,7 @@ public class GridPolarTest {
 		workplane.setMinorGridX( "0.2" );
 		workplane.setMinorGridY( "10" );
 
-		Collection<Shape> shapes = Grid.POLAR.createFxGeometryGrid( workplane, 1.0 );
+		Collection<Shape> shapes = Grid.POLAR.createFxGeometryGrid( workplane, 100.0, 1.0 );
 
 		// Radius to workplane corners is 10 (Math.sqrt(8*8+6*6))
 
