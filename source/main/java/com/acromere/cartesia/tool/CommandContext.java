@@ -186,19 +186,24 @@ public class CommandContext implements EventHandler<KeyEvent> {
 
 	Command processText( String input, boolean strict ) {
 		boolean isTextInput = getInputMode() == CommandContext.Input.TEXT;
+		boolean isValidCommand = getTool().getMod().getCommandMap().hasCommand( input );
 		if( strict ) {
 			return switch( getInputMode() ) {
 				case NUMBER, POINT, TEXT -> submitCommand( new Value(), input );
 				default -> submitCommand( mapCommand( input ) );
 			};
-		} else if( !isTextInput && isAutoCommandEnabled() && getTool().getMod().getCommandMap().hasCommand( input ) ) {
+		} else if( !isTextInput && isAutoCommandEnabled() && isValidCommand ) {
 			return submitCommand( mapCommand( input ) );
 		}
 		return null;
 	}
 
 	public void command( String input ) {
-		submitCommand( mapCommand( input ) );
+		String[] values = input.split( " " );
+		String command = values[0];
+		Object[] parameters = Arrays.copyOfRange( values, 1, values.length );
+		CommandMetadata metadata = Objects.requireNonNull( mapCommand( command ) );
+		submitCommand( metadata.cloneWithParameters( parameters ) );
 	}
 
 	public boolean isPenMode() {
@@ -380,6 +385,7 @@ public class CommandContext implements EventHandler<KeyEvent> {
 				log.atError( exception ).log( "Unable to remove task from command stack task={0}", task );
 			}
 		} catch( Exception exception ) {
+			log.atWarn().log( exception.getMessage() );
 			cancelAllCommands();
 			throw exception;
 		}
@@ -443,6 +449,7 @@ public class CommandContext implements EventHandler<KeyEvent> {
 
 	private Command submitCommand( CommandMetadata metadata ) {
 		if( metadata == NONE ) return null;
+		// FIXME Wrong place to be setting prior command
 		priorCommand = metadata.getCommand();
 		return submitCommand( getLastUserTool(), null, metadata.getType(), metadata.getParameters() );
 	}

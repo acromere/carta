@@ -2,6 +2,7 @@ package com.acromere.cartesia.command;
 
 import com.acromere.util.TextUtil;
 import lombok.Getter;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -41,6 +42,7 @@ public class CommandMetadata implements Comparable<CommandMetadata> {
 		this.tags = tags;
 	}
 
+	@NonNull
 	public CommandMetadata cloneWithParameters( Object... parameters ) {
 		return new CommandMetadata( action, name, command, shortcut, null, type, parameters );
 	}
