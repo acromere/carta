@@ -41,6 +41,7 @@ import com.acromere.zerra.event.FxEventHub;
 import com.acromere.zerra.javafx.Fx;
 import com.acromere.zerra.javafx.FxUtil;
 import javafx.beans.property.*;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -191,6 +192,9 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 	@Getter
 	private final DelayedAction storePreviousViewAction;
+
+	private ChangeListener<Boolean> gridVisibleToggleHandler;
+	private ChangeListener<Boolean>snapGridToggleHandler;
 
 	private com.acromere.event.EventHandler<ResourceSwitchedEvent> resourceSwitchListener;
 
@@ -1468,10 +1472,10 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		pushCommandAction( "measure-point" );
 		pushCommandAction( "shape-information" );
 
-		//ProgramAction gridVisibleToggleAction = pushCommandAction( "grid-toggle", isGridVisible() ? "enabled" : "disabled" );
-		//gridVisible().addListener( gridVisibleToggleHandler = ( p, o, n ) -> gridVisibleToggleAction.setState( n ? "enabled" : "disabled" ) );
-		//ProgramAction snapGridToggleAction = pushCommandAction( "snap-grid-toggle", isGridSnapEnabled() ? "enabled" : "disabled" );
-		//gridSnapEnabled().addListener( snapGridToggleHandler = ( p, o, n ) -> snapGridToggleAction.setState( n ? "enabled" : "disabled" ) );
+		ProgramAction gridVisibleToggleAction = pushCommandAction( "grid-toggle", isGridVisible() ? "enabled" : "disabled" );
+		gridVisible().addListener( gridVisibleToggleHandler = ( p, o, n ) -> gridVisibleToggleAction.setState( n ? "enabled" : "disabled" ) );
+		ProgramAction snapGridToggleAction = pushCommandAction( "snap-grid-toggle", isGridSnapEnabled() ? "enabled" : "disabled" );
+		gridSnapEnabled().addListener( snapGridToggleHandler = ( p, o, n ) -> snapGridToggleAction.setState( n ? "enabled" : "disabled" ) );
 
 		String viewActions = "grid-toggle snap-grid-toggle";
 		String layerActions = "layer[layer-create layer-sublayer | layer-delete]";
@@ -1507,10 +1511,10 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		pullMenus();
 		pullTools();
 
-		//if( gridVisibleToggleHandler != null ) gridVisible().removeListener( gridVisibleToggleHandler );
-		//pullCommandAction( "grid-toggle" );
-		//if( snapGridToggleHandler != null ) gridSnapEnabled().removeListener( snapGridToggleHandler );
-		//pullCommandAction( "snap-grid-toggle" );
+		if( gridVisibleToggleHandler != null ) gridVisible().removeListener( gridVisibleToggleHandler );
+		pullCommandAction( "grid-toggle" );
+		if( snapGridToggleHandler != null ) gridSnapEnabled().removeListener( snapGridToggleHandler );
+		pullCommandAction( "snap-grid-toggle" );
 
 		pullCommandAction( "draw-path" );
 		pullCommandAction( "draw-marker" );
