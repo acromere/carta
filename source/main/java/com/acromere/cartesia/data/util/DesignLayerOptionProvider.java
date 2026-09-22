@@ -32,12 +32,11 @@ public class DesignLayerOptionProvider implements SettingOptionProvider {
 		Optional<DesignModel> optional = getDesign();
 		if( optional.isEmpty() ) return List.of();
 
-		DesignModel model = optional.get();
-
+		DesignModel design = optional.get();
 		List<String> rootKey = List.of();
-		if( showRoot ) rootKey = List.of( model.getLayers().getId() );
+		if( showRoot ) rootKey = List.of( design.getLayers().getId() );
 
-		return Stream.concat( rootKey.stream(), model.getAllLayers().stream().map( IdDataNode::getId ) ).collect( Collectors.toList() );
+		return Stream.concat( rootKey.stream(), design.getAllLayers().stream().map( IdDataNode::getId ) ).collect( Collectors.toList() );
 	}
 
 	@Override
@@ -45,9 +44,9 @@ public class DesignLayerOptionProvider implements SettingOptionProvider {
 		Optional<DesignModel> optional = getDesign();
 		if( optional.isEmpty() ) return TextUtil.EMPTY;
 
-		DesignModel model = optional.get();
+		DesignModel design = optional.get();
 		DesignLayer notfound = new DesignLayer();
-		DesignLayer layer = model.getAllLayersAndRoot().stream().filter( l -> l.getId().equals( key ) ).findAny().orElse( notfound );
+		DesignLayer layer = design.getAllLayersAndRoot().stream().filter( l -> l.getId().equals( key ) ).findAny().orElse( notfound );
 
 		return layer == notfound ? key : layer.getFullName();
 	}
