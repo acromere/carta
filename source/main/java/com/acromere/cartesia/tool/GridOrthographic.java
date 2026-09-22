@@ -22,10 +22,6 @@ import java.util.stream.Collectors;
 @CustomLog
 public class GridOrthographic implements Grid {
 
-	private static final double GRID_THRESHOLD = 5;
-
-	private static final double PIXEL_THRESHOLD = GRID_THRESHOLD;
-
 	@Override
 	public String name() {
 		return "ORTHO";
@@ -42,12 +38,12 @@ public class GridOrthographic implements Grid {
 		return point;
 	}
 
-	public Collection<Shape> createFxGeometryGrid( Workplane workplane, double scale ) {
+	public Collection<Shape> createFxGeometryGrid( Workplane workplane, double zoom, double scale ) {
 		if( workplane == null ) return Collections.emptyList();
-		return updateFxGeometryGrid( workplane, scale, FXCollections.observableArrayList() );
+		return updateFxGeometryGrid( workplane, zoom, scale, FXCollections.observableArrayList() );
 	}
 
-	public Collection<Shape> updateFxGeometryGrid( Workplane workplane, double scale, ObservableList<Node> existing ) {
+	public Collection<Shape> updateFxGeometryGrid( Workplane workplane, double zoom, double scale, ObservableList<Node> existing ) {
 		if( workplane == null ) return Collections.emptyList();
 
 		// Map the existing geometry from the node list to a collection
@@ -61,23 +57,26 @@ public class GridOrthographic implements Grid {
 		double originY = origin.getY() * scale;
 
 		boolean axisVisible = workplane.isGridAxisVisible();
-		Paint axisPaint = workplane.calcGridAxisPaint();
-		double axisWidth = workplane.calcGridAxisWidth() * scale;
-		axisWidth = 2.0;
+		Paint axisDrawPaint = workplane.calcGridAxisPaint();
+		double axisDrawWidth = workplane.calcGridAxisWidth() * scale;
 
-		boolean majorVisible = workplane.isMajorGridShowing() && workplane.isMajorGridVisible();
 		double majorIntervalX = workplane.calcMajorGridX() * scale;
 		double majorIntervalY = workplane.calcMajorGridY() * scale;
-		Paint majorPaint = workplane.calcMajorGridPaint();
-		double majorWidth = workplane.calcMajorGridWidth() * scale;
-		majorWidth = 1.0;
+		double majorPixelsX = majorIntervalX * zoom;
+		double majorPixelsY = majorIntervalY * zoom;
+		Paint majorDrawPaint = workplane.calcMajorGridPaint();
+		double majorDrawWidth = workplane.calcMajorGridWidth() * scale;
+		boolean majorGridTooSmall = majorPixelsX < PIXEL_THRESHOLD || majorPixelsY < PIXEL_THRESHOLD;
+		boolean majorVisible = !majorGridTooSmall && workplane.isMajorGridShowing() && workplane.isMajorGridVisible();
 
-		boolean minorVisible = workplane.isMinorGridShowing() && workplane.isMinorGridVisible();
 		double minorIntervalX = workplane.calcMinorGridX() * scale;
 		double minorIntervalY = workplane.calcMinorGridY() * scale;
-		Paint minorPaint = workplane.calcMinorGridPaint();
-		double minorWidth = workplane.calcMinorGridWidth() * scale;
-		minorWidth = 0.5;
+		double minorPixelsX = minorIntervalX * zoom;
+		double minorPixelsY = minorIntervalY * zoom;
+		Paint minorDrawPaint = workplane.calcMinorGridPaint();
+		double minorDrawWidth = workplane.calcMinorGridWidth() * scale;
+		boolean minorGridTooSmall = minorPixelsX < PIXEL_THRESHOLD || minorPixelsY < PIXEL_THRESHOLD;
+		boolean minorVisible = !minorGridTooSmall && workplane.isMinorGridShowing() && workplane.isMinorGridVisible();
 
 		double snapIntervalX = workplane.calcSnapGridX() * scale;
 		double snapIntervalY = workplane.calcSnapGridY() * scale;
@@ -131,16 +130,16 @@ public class GridOrthographic implements Grid {
 			// Lines
 			for( double value : minorOffsetsX ) {
 				Line shape = Grid.reuseOrNewLine( prior, value, majorBoundaryY1, value, majorBoundaryY2 );
-				shape.setStroke( minorPaint );
-				shape.setStrokeWidth( minorWidth );
+				shape.setStroke( minorDrawPaint );
+				shape.setStrokeWidth( minorDrawWidth );
 				shape.setStrokeDashOffset( dashOffset );
 				shape.getStrokeDashArray().setAll( dashSpacingY );
 				grid.add( shape );
 			}
 			for( double value : minorOffsetsY ) {
 				Line shape = Grid.reuseOrNewLine( prior, majorBoundaryX1, value, majorBoundaryX2, value );
-				shape.setStroke( minorPaint );
-				shape.setStrokeWidth( minorWidth );
+				shape.setStroke( minorDrawPaint );
+				shape.setStrokeWidth( minorDrawWidth );
 				shape.setStrokeDashOffset( dashOffset );
 				shape.getStrokeDashArray().setAll( dashSpacingX );
 				grid.add( shape );
@@ -164,16 +163,16 @@ public class GridOrthographic implements Grid {
 			// Lines
 			for( double value : majorOffsetsX ) {
 				Line shape = Grid.reuseOrNewLine( prior, value, majorBoundaryY1, value, majorBoundaryY2 );
-				shape.setStroke( majorPaint );
-				shape.setStrokeWidth( majorWidth );
+				shape.setStroke( majorDrawPaint );
+				shape.setStrokeWidth( majorDrawWidth );
 				shape.setStrokeDashOffset( dashOffset );
 				shape.getStrokeDashArray().setAll( dashSpacingY );
 				grid.add( shape );
 			}
 			for( double value : majorOffsetsY ) {
 				Line shape = Grid.reuseOrNewLine( prior, majorBoundaryX1, value, majorBoundaryX2, value );
-				shape.setStroke( majorPaint );
-				shape.setStrokeWidth( majorWidth );
+				shape.setStroke( majorDrawPaint );
+				shape.setStrokeWidth( majorDrawWidth );
 				shape.setStrokeDashOffset( dashOffset );
 				shape.getStrokeDashArray().setAll( dashSpacingX );
 				grid.add( shape );
@@ -198,16 +197,16 @@ public class GridOrthographic implements Grid {
 			// Lines
 			for( double value : axisOffsetsX ) {
 				Line shape = Grid.reuseOrNewLine( prior, value, majorBoundaryY1, value, majorBoundaryY2 );
-				shape.setStroke( axisPaint );
-				shape.setStrokeWidth( axisWidth );
+				shape.setStroke( axisDrawPaint );
+				shape.setStrokeWidth( axisDrawWidth );
 				shape.setStrokeDashOffset( dashOffset );
 				shape.getStrokeDashArray().setAll( dashSpacingY );
 				grid.add( shape );
 			}
 			for( double value : axisOffsetsY ) {
 				Line shape = Grid.reuseOrNewLine( prior, majorBoundaryX1, value, majorBoundaryX2, value );
-				shape.setStroke( axisPaint );
-				shape.setStrokeWidth( axisWidth );
+				shape.setStroke( axisDrawPaint );
+				shape.setStrokeWidth( axisDrawWidth );
 				shape.setStrokeDashOffset( dashOffset );
 				shape.getStrokeDashArray().setAll( dashSpacingX );
 				grid.add( shape );

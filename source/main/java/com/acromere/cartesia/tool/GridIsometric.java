@@ -21,12 +21,12 @@ public class GridIsometric implements Grid {
 	}
 
 	@Override
-	public Collection<Shape> createFxGeometryGrid( Workplane workplane, double scale ) {
+	public Collection<Shape> createFxGeometryGrid( Workplane workplane, double zoom, double scale ) {
 		return List.of();
 	}
 
 	@Override
-	public Collection<Shape> updateFxGeometryGrid( Workplane workplane, double scale, ObservableList<Node> existing ) {
+	public Collection<Shape> updateFxGeometryGrid( Workplane workplane, double zoom, double scale, ObservableList<Node> existing ) {
 		return List.of();
 	}
 

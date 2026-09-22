@@ -23,6 +23,10 @@ slows it down.
  */
 public interface Grid {
 
+	double GRID_THRESHOLD = 8;
+
+	double PIXEL_THRESHOLD = GRID_THRESHOLD;
+
 	Grid ORTHO = new GridOrthographic();
 
 	Grid POLAR = new GridPolar();
@@ -33,9 +37,9 @@ public interface Grid {
 
 	Point3D getNearest( Workplane workplane, Point3D point );
 
-	Collection<Shape> createFxGeometryGrid( Workplane workplane, double scale );
+	Collection<Shape> createFxGeometryGrid( Workplane workplane, double zoom, double scale );
 
-	Collection<Shape> updateFxGeometryGrid( Workplane workplane, double scale, ObservableList<Node> existing );
+	Collection<Shape> updateFxGeometryGrid( Workplane workplane, double zoom, double scale, ObservableList<Node> existing );
 
 	/**
 	 * @param renderer The FX renderer to draw the grid

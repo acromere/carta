@@ -650,7 +650,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 			if( workplane == null ) {
 				grid.getChildren().clear();
 			} else {
-				workplane.getGridSystem().updateFxGeometryGrid( workplane, getDesignShapeScaleX(), grid.getChildren() );
+				workplane.getGridSystem().updateFxGeometryGrid( workplane, getViewZoomX(), getDesignShapeScaleX(), grid.getChildren() );
 			}
 		} );
 	}

@@ -41,12 +41,12 @@ public class GridPolar implements Grid {
 	}
 
 	@Override
-	public Collection<Shape> createFxGeometryGrid( Workplane workplane, double scale ) {
-		return updateFxGeometryGrid( workplane, scale, FXCollections.observableArrayList() );
+	public Collection<Shape> createFxGeometryGrid( Workplane workplane, double zoom, double scale ) {
+		return updateFxGeometryGrid( workplane, zoom, scale, FXCollections.observableArrayList() );
 	}
 
 	@Override
-	public Collection<Shape> updateFxGeometryGrid( Workplane workplane, double scale, ObservableList<Node> existing ) {
+	public Collection<Shape> updateFxGeometryGrid( Workplane workplane, double zoom, double scale, ObservableList<Node> existing ) {
 		if( workplane == null ) return Collections.emptyList();
 
 		// The x spacing will be radius
@@ -76,21 +76,24 @@ public class GridPolar implements Grid {
 		boolean axisVisible = workplane.isGridAxisVisible();
 		Paint axisPaint = workplane.calcGridAxisPaint();
 		double axisWidth = workplane.calcGridAxisWidth() * scale;
-		axisWidth = 2.0;
 
-		boolean majorVisible = workplane.isMajorGridShowing() && workplane.isMajorGridVisible();
 		double majorIntervalR = workplane.calcMajorGridX() * scale;
 		double majorIntervalA = workplane.calcMajorGridY() * scale;
+		double majorPixelsR = majorIntervalR * zoom;
+		double majorPixelsA = majorIntervalA * zoom;
 		Paint majorPaint = workplane.calcMajorGridPaint();
 		double majorWidth = workplane.calcMajorGridWidth() * scale;
-		majorWidth = 1.0;
+		boolean majorGridTooSmall = majorPixelsR < PIXEL_THRESHOLD || majorPixelsA < PIXEL_THRESHOLD;
+		boolean majorVisible = !majorGridTooSmall && workplane.isMajorGridShowing() && workplane.isMajorGridVisible();
 
-		boolean minorVisible = workplane.isMinorGridShowing() && workplane.isMinorGridVisible();
 		double minorIntervalR = workplane.calcMinorGridX() * scale;
 		double minorIntervalA = workplane.calcMinorGridY() * scale;
+		double minorPixelsR = minorIntervalR * zoom;
+		double minorPixelsA = minorIntervalA * zoom;
 		Paint minorPaint = workplane.calcMinorGridPaint();
 		double minorWidth = workplane.calcMinorGridWidth() * scale;
-		minorWidth = 0.5;
+		boolean minorGridTooSmall = minorPixelsR < PIXEL_THRESHOLD || minorPixelsA < PIXEL_THRESHOLD;
+		boolean minorVisible = !minorGridTooSmall && workplane.isMinorGridShowing() && workplane.isMinorGridVisible();
 
 		double snapIntervalR = workplane.calcSnapGridX() * scale;
 		double snapIntervalA = workplane.calcSnapGridY() * scale;
