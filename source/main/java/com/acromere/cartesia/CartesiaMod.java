@@ -10,9 +10,7 @@ import com.acromere.cartesia.rb.CartesiaHelp;
 import com.acromere.cartesia.settings.DesignUnitOptionProvider;
 import com.acromere.cartesia.settings.FontFamilyNameOptionProvider;
 import com.acromere.cartesia.settings.FontSettingEditor;
-import com.acromere.cartesia.tool.Design2dEditor;
 import com.acromere.cartesia.tool.ShapePropertiesTool;
-import com.acromere.cartesia.tool.design.DesignToolV2;
 import com.acromere.cartesia.tool.design.DesignToolV3;
 import com.acromere.index.Document;
 import com.acromere.log.LazyEval;
@@ -206,16 +204,8 @@ public class CartesiaMod extends Module {
 		unregisterResourceType( shapePropertiesResourceType );
 
 		// Unregister Design3D
-		//unregisterTool( design3dResourceType, Design3dEditor.class );
+		//unregisterTool( design3dResourceType, Design3dToolV1Editor.class );
 		//unregisterResourceType( design3dResourceType );
-
-		// Unregister Design2D
-		unregisterTool( design2dResourceType, Design2dEditor.class );
-		unregisterResourceType( design2dResourceType );
-
-		// Unregister Design2D
-		unregisterTool( design2dResourceType, DesignToolV2.class );
-		unregisterResourceType( design2dResourceType );
 
 		// Unregister Design2D
 		unregisterTool( design2dResourceType, DesignToolV3.class );
