@@ -1,4 +1,4 @@
-package com.acromere.cartesia.tool;
+package com.acromere.cartesia.grid;
 
 public enum GridStyle {
 

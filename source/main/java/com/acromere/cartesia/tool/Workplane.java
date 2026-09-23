@@ -1,5 +1,7 @@
 package com.acromere.cartesia.tool;
 
+import com.acromere.cartesia.grid.Grid;
+import com.acromere.cartesia.grid.GridStyle;
 import com.acromere.cartesia.math.CadMath;
 import com.acromere.cartesia.math.CadShapes;
 import com.acromere.data.DataNode;

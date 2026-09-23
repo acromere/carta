@@ -1,5 +1,6 @@
 package com.acromere.cartesia.tool;
 
+import com.acromere.cartesia.grid.Grid;
 import com.acromere.cartesia.test.Point3DAssert;
 import com.acromere.curve.math.Constants;
 import javafx.geometry.Point3D;

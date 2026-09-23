@@ -2,7 +2,7 @@ package com.acromere.cartesia.tool.design;
 
 import com.acromere.annotation.Note;
 import com.acromere.cartesia.test.Point3DAssert;
-import com.acromere.cartesia.tool.Grid;
+import com.acromere.cartesia.grid.Grid;
 import com.acromere.marea.fx.FxRenderer2d;
 import com.acromere.xenon.resource.Resource;
 import com.acromere.zerra.javafx.Fx;

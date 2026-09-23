@@ -1,5 +1,6 @@
-package com.acromere.cartesia.tool;
+package com.acromere.cartesia.grid;
 
+import com.acromere.cartesia.tool.Workplane;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point3D;
 import javafx.scene.Node;

@@ -1,5 +1,6 @@
-package com.acromere.cartesia.tool;
+package com.acromere.cartesia.grid;
 
+import com.acromere.cartesia.tool.Workplane;
 import com.acromere.curve.math.Arithmetic;
 import com.acromere.curve.math.Constants;
 import com.acromere.marea.fx.FxRenderer2d;

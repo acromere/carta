@@ -7,7 +7,7 @@ import com.acromere.cartesia.cursor.Reticule;
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.data.map.DesignUnitMapper;
 import com.acromere.cartesia.tool.BaseDesignTool;
-import com.acromere.cartesia.tool.GridStyle;
+import com.acromere.cartesia.grid.GridStyle;
 import com.acromere.cartesia.tool.RenderConstants;
 import com.acromere.settings.Settings;
 import com.acromere.util.TypeReference;

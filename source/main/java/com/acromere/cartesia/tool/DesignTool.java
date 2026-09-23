@@ -6,6 +6,7 @@ import com.acromere.cartesia.DesignUnit;
 import com.acromere.cartesia.DesignValue;
 import com.acromere.cartesia.cursor.Reticule;
 import com.acromere.cartesia.data.*;
+import com.acromere.cartesia.grid.Grid;
 import com.acromere.cartesia.tool.design.BaseDesignRenderer;
 import com.acromere.xenon.XenonProgram;
 import com.acromere.xenon.XenonProgramProduct;

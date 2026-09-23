@@ -43,6 +43,7 @@ module com.acromere.carta {
 
 	// Private APIs
 	exports com.acromere.cartesia.cursor to com.acromere.zerra;
+	exports com.acromere.cartesia.grid to com.acromere.xenon;
 	exports com.acromere.cartesia.icon to com.acromere.zerra;
 	exports com.acromere.cartesia.settings to com.acromere.xenon;
 	exports com.acromere.cartesia.tool to com.acromere.xenon;

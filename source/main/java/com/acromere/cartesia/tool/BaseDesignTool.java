@@ -8,6 +8,7 @@ import com.acromere.cartesia.cursor.ReticuleCursor;
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.data.map.DesignUnitMapper;
 import com.acromere.cartesia.data.util.DesignPropertiesMap;
+import com.acromere.cartesia.grid.Grid;
 import com.acromere.cartesia.math.CadPoints;
 import com.acromere.cartesia.snap.Snap;
 import com.acromere.cartesia.snap.SnapGrid;

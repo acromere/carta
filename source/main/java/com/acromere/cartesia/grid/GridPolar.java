@@ -1,8 +1,9 @@
-package com.acromere.cartesia.tool;
+package com.acromere.cartesia.grid;
 
 import com.acromere.cartesia.math.CadGeometry;
 import com.acromere.cartesia.math.CadPoints;
 import com.acromere.cartesia.math.CadShapes;
+import com.acromere.cartesia.tool.Workplane;
 import com.acromere.curve.math.Arithmetic;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

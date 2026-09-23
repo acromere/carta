@@ -1,5 +1,6 @@
 package com.acromere.cartesia.tool;
 
+import com.acromere.cartesia.grid.Grid;
 import javafx.scene.shape.Line;
 import org.junit.jupiter.api.Test;
 
