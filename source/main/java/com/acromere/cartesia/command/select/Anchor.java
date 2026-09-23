@@ -7,6 +7,7 @@ import javafx.scene.input.MouseEvent;
 
 import static com.acromere.cartesia.command.Command.Result.*;
 
+// NEXT Remove Anchor command
 /**
  * @deprecated In favor of {@link SelectByPoint}
  */

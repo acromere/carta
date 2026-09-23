@@ -12,6 +12,9 @@ import static com.acromere.cartesia.command.Command.Result.*;
 import static com.acromere.cartesia.tool.RenderConstants.POINT_SELECT_APERTURE;
 import static com.acromere.cartesia.tool.RenderConstants.WINDOW_SELECT_APERTURE;
 
+// NEXT Remove SelectByWindowContains and SelectByWindowIntersects
+// Use task trigger matching to determine contains or intersect
+
 @CustomLog
 public abstract class SelectByWindow extends SelectCommand {
 
