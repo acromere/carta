@@ -251,6 +251,54 @@ public abstract class BaseDesignToolTest extends BaseCartesiaUnitTest {
 		Point3DAssert.assertThat( back ).isCloseTo( world );
 	}
 
+	@Test
+	void transforms_roundTripScaleWorldScreenPoint() {
+		BaseDesignTool tool = getTool();
+		assertThat( tool ).isNotNull();
+
+		// Non-trivial view parameters (rotation and center should not affect pure scale transformation)
+		tool.setViewRotate( 25.0 );
+		tool.setViewZoom( 1.5 );
+		tool.setViewCenter( new Point3D( 4.0, -2.0, 0 ) );
+
+		Point3D world = new Point3D( 3.5, -1.25, 0.0 );
+		Point3D screen = tool.scaleWorldToScreen( world );
+		Point3D back = tool.scaleScreenToWorld( screen );
+		Point3DAssert.assertThat( back ).isCloseTo( world );
+	}
+
+	@Test
+	void transforms_roundTripScaleScreenWorldPoint() {
+		BaseDesignTool tool = getTool();
+		assertThat( tool ).isNotNull();
+
+		// Non-trivial view parameters
+		tool.setViewRotate( 30.0 );
+		tool.setViewZoom( 2.0 );
+		tool.setViewCenter( new Point3D( -5.0, 3.0, 0 ) );
+
+		Point3D screen = new Point3D( 120.0, -80.0, 0.0 );
+		Point3D world = tool.scaleScreenToWorld( screen );
+		Point3D back = tool.scaleWorldToScreen( world );
+		Point3DAssert.assertThat( back ).isCloseTo( screen );
+	}
+
+	@Test
+	void scaleScreenToWorld_nullReturnsNull() {
+		BaseDesignTool tool = getTool();
+		assertThat( tool ).isNotNull();
+
+		assertThat( tool.scaleScreenToWorld( null ) ).isNull();
+	}
+
+	@Test
+	void scaleWorldToScreen_nullReturnsNull() {
+		BaseDesignTool tool = getTool();
+		assertThat( tool ).isNotNull();
+
+		assertThat( tool.scaleWorldToScreen( null ) ).isNull();
+	}
+
 	// ===== Grid system tests =====
 
 	@Test

@@ -39,6 +39,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+@Deprecated
 @CustomLog
 public class DesignToolV2Renderer extends BaseDesignRenderer {
 
@@ -1082,13 +1083,15 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 
 	double getInternalScaleX() {
 		// TODO This value can be cached
-		double scale = DesignUnit.IN.per( model.calcDesignUnit() );
+		DesignUnit unit = model == null ? DesignModel.DEFAULT_DESIGN_UNIT : model.calcDesignUnit();
+		double scale = DesignUnit.IN.per( unit );
 		return scale * renderer.getDpiX() * getViewZoomX();
 	}
 
 	double getInternalScaleY() {
 		// TODO This value can be cached
-		double scale = DesignUnit.IN.per( model.calcDesignUnit() );
+		DesignUnit unit = model == null ? DesignModel.DEFAULT_DESIGN_UNIT : model.calcDesignUnit();
+		double scale = DesignUnit.IN.per( unit );
 		return scale * renderer.getDpiY() * getViewZoomY();
 	}
 

@@ -16,7 +16,6 @@ import com.acromere.xenon.resource.OpenResourceRequest;
 import com.acromere.xenon.resource.Resource;
 import com.acromere.xenon.workpane.ToolException;
 import com.acromere.zerra.color.Paints;
-import com.acromere.zerra.javafx.Fx;
 import com.acromere.zerra.javafx.FxUtil;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point3D;
@@ -29,6 +28,7 @@ import lombok.CustomLog;
 import java.util.List;
 import java.util.Set;
 
+@Deprecated
 @CustomLog
 public class DesignToolV2 extends BaseDesignTool {
 
@@ -367,13 +367,11 @@ public class DesignToolV2 extends BaseDesignTool {
 		}
 	}
 
-	// FIXME Should this be converted to getter/setter?
 	@Override
 	public DesignLayer getPreviewLayer() {
 		return renderer.getPreviewLayer();
 	}
 
-	// FIXME Should this be converted to getter/setter?
 	@Override
 	public DesignLayer getReferenceLayer() {
 		return renderer.getReferenceLayer();
@@ -392,35 +390,6 @@ public class DesignToolV2 extends BaseDesignTool {
 	@Override
 	public Paint getSelectedFillPaint() {
 		return null;
-	}
-
-	@Override
-	public boolean isReferenceLayerVisible() {
-		return false;
-	}
-
-	@Override
-	public void setReferenceLayerVisible( boolean visible ) {
-
-	}
-
-	@Override
-	public void zoom( Point3D anchor, double factor ) {
-		Fx.run( () -> renderer.zoom( anchor, factor ) );
-	}
-
-	public Point3D scaleScreenToWorld( Point3D point ) {
-		// FIXME What happens when the view is rotated
-		double scaleX = renderer.getInternalScaleX();
-		double scaleY = renderer.getInternalScaleY();
-		return new Point3D( point.getX() / scaleX, point.getY() / scaleY, point.getZ() );
-	}
-
-	public Point3D scaleWorldToScreen( Point3D point ) {
-		// FIXME What happens when the view is rotated
-		double scaleX = renderer.getInternalScaleX();
-		double scaleY = renderer.getInternalScaleY();
-		return new Point3D( point.getX() * scaleX, point.getY() * scaleY, point.getZ() );
 	}
 
 	//	@Override

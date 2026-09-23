@@ -1124,12 +1124,30 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		return getDesignContext().getReferenceLayer();
 	}
 
+	@Override
+	public boolean isReferenceLayerVisible() {
+		return false;
+	}
+
+	@Override
+	public void setReferenceLayerVisible( boolean visible ) {}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void zoom( Point3D anchor, double factor ) {
 		Fx.onFxOrHeadless( () -> getRenderer().zoom( anchor, factor ) );
+	}
+
+	public Point3D scaleScreenToWorld( Point3D point ) {
+		if( point == null ) return null;
+		return getRenderer().screenToWorld( point );
+	}
+
+	public Point3D scaleWorldToScreen( Point3D point ) {
+		if( point == null ) return null;
+		return getRenderer().worldToScreen( point );
 	}
 
 	// TODO Insert common design tool implementations here
