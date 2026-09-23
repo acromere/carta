@@ -99,11 +99,11 @@ public final class CommandMap {
 		// shape fill paint
 
 		// Basic commands
-		add( product, "anchor", Anchor.class );
 		add( product, "select-touch", SelectByPoint.class );
-		add( product, "select-toggle", SelectToggle.class );
+		//add( product, "select-window", SelectByWindow.class );
 		add( product, "select-window-contain", SelectByWindowContain.class );
 		add( product, "select-window-intersect", SelectByWindowIntersect.class );
+		add( product, "select-toggle", SelectToggle.class );
 
 		// View commands
 		add( product, "camera-move", CameraMove.class );

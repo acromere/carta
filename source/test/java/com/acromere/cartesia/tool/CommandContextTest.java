@@ -5,18 +5,13 @@ import com.acromere.cartesia.command.Command;
 import com.acromere.cartesia.command.CommandTask;
 import com.acromere.cartesia.command.base.Prompt;
 import com.acromere.cartesia.command.base.Value;
-import com.acromere.cartesia.command.select.Anchor;
-import com.acromere.cartesia.command.select.SelectByPoint;
 import com.acromere.cartesia.error.UnknownCommand;
 import com.acromere.settings.MapSettings;
-import javafx.geometry.Point3D;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.acromere.cartesia.command.Command.Result.INCOMPLETE;
-import static com.acromere.cartesia.command.Command.Result.SUCCESS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowableOfType;
 import static org.mockito.ArgumentMatchers.any;
@@ -62,45 +57,6 @@ public class CommandContextTest extends BaseCommandTest {
 		// then
 		verify( commandContext, times( 0 ) ).submitCommand( any( CommandTask.class ) );
 		verify( commandContext, times( 1 ) ).sendEventToCommandStack( any( MouseEvent.class ) );
-	}
-
-	/**
-	 * This is about the simplest command test possible and still be realistic.
-	 * This test uses the Anchor command to verify the
-	 * {@link CommandContext#doProcessCommands} logic.
-	 */
-	@Test
-	@SuppressWarnings( "unchecked" )
-	void doProcessCommandsWithAnchor() throws Exception {
-		// given
-		// Submitting Anchor without any parameters
-		// will cause a Prompt to be added to the stack
-		commandContext.submit( tool, new Anchor() );
-		assertThat( commandContext.getCommandStackDepth() ).isEqualTo( 1 );
-		// FIXME verify( module, times( 1 ) ).task( eq( "process-commands" ), any( Callable.class ) );
-
-		// when
-		Object result1 = commandContext.doProcessCommands();
-
-		// then
-		// FIXME verify( module, times( 2 ) ).task( eq( "process-commands" ), any( Callable.class ) );
-		assertThat( commandContext.getCommandStackDepth() ).isEqualTo( 2 );
-		assertThat( commandContext.getCommand( 0 ).getCommand() ).isInstanceOf( Prompt.class );
-		assertThat( commandContext.getCommand( 1 ).getCommand() ).isInstanceOf( Anchor.class );
-		assertThat( result1 ).isEqualTo( INCOMPLETE );
-
-		// given
-		commandContext.submit( tool, new SelectByPoint(), "47,13" );
-		// FIXME verify( module, times( 3 ) ).task( eq( "process-commands" ), any( Callable.class ) );
-		assertThat( commandContext.getCommandStackDepth() ).isEqualTo( 3 );
-
-		// when
-		Object result2 = commandContext.doProcessCommands();
-
-		// then
-		assertThat( commandContext.getCommandStackDepth() ).isEqualTo( 0 );
-		assertThat( result2 ).isEqualTo( SUCCESS );
-		assertThat( commandContext.getWorldAnchor() ).isEqualTo( new Point3D( 47, 13, 0 ) );
 	}
 
 	@Test

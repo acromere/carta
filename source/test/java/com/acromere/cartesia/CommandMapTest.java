@@ -3,6 +3,7 @@ package com.acromere.cartesia;
 import com.acromere.cartesia.command.CommandMetadata;
 import com.acromere.cartesia.command.camera.CameraMove;
 import com.acromere.cartesia.command.camera.CameraZoom;
+import com.acromere.cartesia.command.camera.CameraZoomAll;
 import com.acromere.cartesia.command.select.*;
 import com.acromere.cartesia.command.snap.AutoSnap;
 import javafx.scene.input.InputEvent;
@@ -68,12 +69,12 @@ public class CommandMapTest extends BaseCommandMapTest {
 
 	@Test
 	void getCommandByShortcut() {
-		assertThat( getMod().getCommandMap().getCommandByShortcut( "ws" ).getType() ).isEqualTo( SelectByWindowContain.class );
+		assertThat( getMod().getCommandMap().getCommandByShortcut( "za" ).getType() ).isEqualTo( CameraZoomAll.class );
 	}
 
 	@Test
 	void getCommandByAction() {
-		assertThat( getMod().getCommandMap().getCommandByAction( "anchor" ).getType() ).isEqualTo( Anchor.class );
+		assertThat( getMod().getCommandMap().getCommandByAction( "camera-zoom-all" ).getType() ).isEqualTo( CameraZoomAll.class );
 	}
 
 	@ParameterizedTest

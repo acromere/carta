@@ -2,6 +2,7 @@ package com.acromere.cartesia.command.select;
 
 import com.acromere.cartesia.command.CommandTask;
 
+@Deprecated
 public class SelectByWindowIntersect extends SelectByWindow {
 
 	@Override
