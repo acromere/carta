@@ -1,7 +1,7 @@
 package com.acromere.cartesia.data;
 
-import com.acromere.data.IdDataNode;
 import com.acromere.data.DataNodeLink;
+import com.acromere.data.IdDataNode;
 import javafx.geometry.Point3D;
 import lombok.CustomLog;
 

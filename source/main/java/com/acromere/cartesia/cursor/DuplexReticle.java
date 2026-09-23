@@ -19,6 +19,10 @@ public class DuplexReticle extends RenderedIcon {
 		this.percent = percent;
 	}
 
+	public static void main( String[] commands ) {
+		Proof.proof( new DuplexReticle( 0.8, 48, 48 ) );
+	}
+
 	@Override
 	protected void render() {
 		startPath();
@@ -70,10 +74,6 @@ public class DuplexReticle extends RenderedIcon {
 		((DuplexReticle)copy).percent = this.percent;
 
 		return copy;
-	}
-
-	public static void main( String[] commands ) {
-		Proof.proof( new DuplexReticle( 0.8, 48, 48 ) );
 	}
 
 }

@@ -21,9 +21,9 @@ import java.util.List;
 @CustomLog
 public class FontSettingEditor extends SettingEditor {
 
-	private Label label;
-
 	private final FontPicker fontPicker;
+
+	private Label label;
 
 	private List<Node> nodes;
 

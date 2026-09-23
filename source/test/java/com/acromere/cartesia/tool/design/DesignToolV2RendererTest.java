@@ -7,7 +7,6 @@ import com.acromere.cartesia.data.Design;
 import com.acromere.cartesia.data.DesignModel2D;
 import com.acromere.cartesia.test.Point3DAssert;
 import com.acromere.cartesia.tool.DesignTool;
-import com.acromere.cartesia.tool.RenderConstants;
 import com.acromere.zerra.color.Colors;
 import com.acromere.zerra.color.Paints;
 import com.acromere.zerra.javafx.Fx;

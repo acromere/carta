@@ -23,7 +23,7 @@ public class Design<T extends DesignModel> extends DataNode {
 	public Design( T model ) {
 		this.designContext = new DesignContext();
 		addModifyingKeys( MODEL );
-		setDataModel(model);
+		setDataModel( model );
 	}
 
 	@SuppressWarnings( "unchecked" )

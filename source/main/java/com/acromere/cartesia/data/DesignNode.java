@@ -1,7 +1,7 @@
 package com.acromere.cartesia.data;
 
-import com.acromere.data.IdDataNode;
 import com.acromere.data.DataNode;
+import com.acromere.data.IdDataNode;
 
 import java.util.Map;
 import java.util.Optional;

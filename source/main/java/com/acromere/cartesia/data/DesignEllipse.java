@@ -27,6 +27,10 @@ public class DesignEllipse extends DesignShape {
 
 	public static final String RADII = "radii";
 
+	@Deprecated
+	// This is not to be used publicly
+	static final String RADIUS = "radius";
+
 	/**
 	 * @deprecated Maintained for backward compatibility only
 	 */
@@ -42,10 +46,6 @@ public class DesignEllipse extends DesignShape {
 	private static final String Y_RADIUS = "y-radius";
 
 	private static final String PERIMETER = "perimeter";
-
-	@Deprecated
-	// This is not to be used publicly
-	static final String RADIUS = "radius";
 
 	public DesignEllipse() {
 		this( null, 0.0 );
@@ -76,6 +76,10 @@ public class DesignEllipse extends DesignShape {
 		addModifyingKeys( RADII );
 		setRadii( radii );
 		setRotate( rotate == null || rotate == 0.0 ? null : rotate.toString() );
+	}
+
+	public static CadTransform calcLocalTransform( Point3D center, double xRadius, double yRadius, double rotate ) {
+		return CadTransform.scale( 1, xRadius / yRadius, 0 ).combine( calcOrientation( center, rotate ).getWorldToLocalTransform() );
 	}
 
 	@Override
@@ -127,10 +131,6 @@ public class DesignEllipse extends DesignShape {
 
 	public CadTransform getRotateTransform() {
 		return calcLocalTransform( getOrigin(), getXRadius(), getYRadius(), calcRotate() );
-	}
-
-	public static CadTransform calcLocalTransform( Point3D center, double xRadius, double yRadius, double rotate ) {
-		return CadTransform.scale( 1, xRadius / yRadius, 0 ).combine( calcOrientation( center, rotate ).getWorldToLocalTransform() );
 	}
 
 	@Override
@@ -256,13 +256,11 @@ public class DesignEllipse extends DesignShape {
 		super.updateFrom( map );
 		if( map.containsKey( RADII ) ) {
 			Object radii = map.get( RADII );
-			if( radii instanceof Point3D ) setRadii( (Point3D)radii );
-			else if( radii instanceof String ) setRadii( ParseUtil.parsePoint3D( (String)radii ) );
+			if( radii instanceof Point3D ) {setRadii( (Point3D)radii );} else if( radii instanceof String ) setRadii( ParseUtil.parsePoint3D( (String)radii ) );
 		} else if( map.containsKey( RADIUS ) ) {
 			// For backward compatibility
 			Object radius = map.get( RADIUS );
-			if( radius instanceof Number ) setRadius( ((Number)radius).doubleValue() );
-			else if( radius instanceof String ) setRadius( Double.parseDouble( (String)radius ) );
+			if( radius instanceof Number ) {setRadius( ((Number)radius).doubleValue() );} else if( radius instanceof String ) setRadius( Double.parseDouble( (String)radius ) );
 		} else if( map.containsKey( X_RADIUS ) && map.containsKey( Y_RADIUS ) ) {
 			// For backward compatibility
 			Object x = map.get( X_RADIUS );

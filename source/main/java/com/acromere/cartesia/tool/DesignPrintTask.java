@@ -38,6 +38,13 @@ public class DesignPrintTask extends Task<Void> {
 		setName( Rb.textOr( RbKey.LABEL, "print", "Print" ) + " " + resource.getName() );
 	}
 
+	private static Printer getPrinterByName( String name, Printer orElse ) {
+		for( Printer p : Printer.getAllPrinters() ) {
+			if( p.getName().equalsIgnoreCase( name ) ) return p;
+		}
+		return orElse;
+	}
+
 	@Override
 	public Void call() throws Exception {
 		log.atDebug().log( "Starting design print task..." );
@@ -207,13 +214,6 @@ public class DesignPrintTask extends Task<Void> {
 		//		log.atConfig().log( "Print size: " + renderer.getWidth() + "x" + renderer.getHeight() + " = " + (renderer.getWidth() * renderer.getHeight()) );
 
 		return job.printPage( layout, renderer ) && job.endJob();
-	}
-
-	private static Printer getPrinterByName( String name, Printer orElse ) {
-		for( Printer p : Printer.getAllPrinters() ) {
-			if( p.getName().equalsIgnoreCase( name ) ) return p;
-		}
-		return orElse;
 	}
 
 	private String invertLuminance( Paint paint ) {

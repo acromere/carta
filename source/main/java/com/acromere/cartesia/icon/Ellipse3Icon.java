@@ -6,6 +6,10 @@ import javafx.scene.shape.StrokeLineJoin;
 
 public class Ellipse3Icon extends DrawIcon {
 
+	public static void main( String[] commands ) {
+		Proof.proof( new Ellipse3Icon() );
+	}
+
 	protected void define() {
 		super.define();
 		double r = 16;
@@ -22,10 +26,6 @@ public class Ellipse3Icon extends DrawIcon {
 		fill( circle( 16, 16, getDotRadius() ) );
 		fill( circle( 16 + g, 16 - g, getDotRadius() ) );
 		fill( circle( 16 - h, 16 - h, getDotRadius() ) );
-	}
-
-	public static void main( String[] commands ) {
-		Proof.proof( new Ellipse3Icon() );
 	}
 
 }

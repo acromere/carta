@@ -20,17 +20,6 @@ public class PointListAssert extends AbstractAssert<PointListAssert, List<Point3
 		return new PointListAssert( actual );
 	}
 
-	public PointListAssert areCloseTo( Point3D... expected ) {
-		return areCloseTo( Arrays.asList( expected ), TOLERANCE.value );
-	}
-
-	public PointListAssert areCloseTo( List<Point3D> points, double tolerance ) {
-		for( Point3D expected : points ) {
-			Assertions.assertThat( areCloseTo( expected, actual, tolerance ) ).isTrue();
-		}
-		return this;
-	}
-
 	static boolean areCloseTo( Point3D point, List<Point3D> points, double tolerance ) {
 		for( Point3D check : points ) {
 			if( closeTo( point, check, tolerance ) ) return true;
@@ -40,6 +29,17 @@ public class PointListAssert extends AbstractAssert<PointListAssert, List<Point3
 
 	static boolean closeTo( Point3D a, Point3D b, double tolerance ) {
 		return CadGeometry.distance( a, b ) <= tolerance;
+	}
+
+	public PointListAssert areCloseTo( Point3D... expected ) {
+		return areCloseTo( Arrays.asList( expected ), TOLERANCE.value );
+	}
+
+	public PointListAssert areCloseTo( List<Point3D> points, double tolerance ) {
+		for( Point3D expected : points ) {
+			Assertions.assertThat( areCloseTo( expected, actual, tolerance ) ).isTrue();
+		}
+		return this;
 	}
 
 }

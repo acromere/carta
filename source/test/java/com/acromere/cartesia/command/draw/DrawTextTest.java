@@ -28,6 +28,12 @@ public class DrawTextTest extends BaseCommandTest {
 
 	// Script Tests --------------------------------------------------------------
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "anchor" ), Arguments.of( new String[]{ "-3,3", null }, "text" ) );
+	}
+
+	// Interactive Tests ---------------------------------------------------------
+
 	/**
 	 * Draw text with two parameters should set both the origin and the text
 	 * string, and then add the text to the current layer. The result should be
@@ -49,8 +55,6 @@ public class DrawTextTest extends BaseCommandTest {
 		assertThat( command.getPreview() ).hasSize( 0 );
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
-
-	// Interactive Tests ---------------------------------------------------------
 
 	/**
 	 * Draw text with no parameters or event, should prompt the
@@ -76,6 +80,8 @@ public class DrawTextTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
+	// Bad Parameter Tests -------------------------------------------------------
+
 	/**
 	 * Draw text with one parameter should set the text origin. The
 	 * result should be incomplete.
@@ -96,8 +102,6 @@ public class DrawTextTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) {
@@ -113,10 +117,6 @@ public class DrawTextTest extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "anchor" ), Arguments.of( new String[]{ "-3,3", null }, "text" ) );
 	}
 
 	@Test

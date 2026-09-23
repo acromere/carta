@@ -75,33 +75,6 @@ public class BaseCommandTest extends BaseCartesiaUnitTest {
 	@Mock
 	protected DesignLayer referenceLayer;
 
-	@BeforeEach
-	public void setup() throws Exception {
-		super.setup();
-
-		// Resource mock
-		lenient().doReturn( design ).when( resource ).getModel();
-
-		// Tool mock
-		lenient().doReturn( resource ).when( tool ).getResource();
-		lenient().when( tool.snapToGrid( any() ) ).then( i -> i.getArgument( 0 ) );
-		lenient().doReturn( Fx.IDENTITY_TRANSFORM ).when( tool ).getScreenToWorldTransform();
-
-		lenient().doReturn( program ).when( tool ).getProgram();
-		lenient().doReturn( module ).when( tool ).getProduct();
-		lenient().doReturn( module ).when( tool ).getMod();
-		lenient().doReturn( design ).when( tool ).getDesignModel();
-		lenient().doReturn( designContext ).when( tool ).getDesignContext();
-		lenient().doReturn( commandContext ).when( tool ).getCommandContext();
-		lenient().doReturn( selectedLayer ).when( tool ).getSelectedLayer();
-		lenient().doReturn( currentLayer ).when( tool ).getCurrentLayer();
-		lenient().doReturn( previewLayer ).when( tool ).getPreviewLayer();
-		lenient().doReturn( referenceLayer ).when( tool ).getReferenceLayer();
-		lenient().doReturn( RETICLE ).when( tool ).getReticuleCursor();
-		lenient().doReturn( tool ).when( commandContext ).getTool();
-		lenient().doReturn( commandPrompt ).when( commandContext ).getCommandPrompt();
-	}
-
 	protected static CommandMetadata createMetadata( String action, String name, String command, Class<? extends Command> type ) {
 		return new CommandMetadata( action, name, command, null, List.of(), type );
 	}
@@ -291,6 +264,33 @@ public class BaseCommandTest extends BaseCartesiaUnitTest {
 		double factor
 	) {
 		return new ZoomEvent( type, x, y, x, y, shift, control, alt, meta, direct, inertia, factor, factor, null );
+	}
+
+	@BeforeEach
+	public void setup() throws Exception {
+		super.setup();
+
+		// Resource mock
+		lenient().doReturn( design ).when( resource ).getModel();
+
+		// Tool mock
+		lenient().doReturn( resource ).when( tool ).getResource();
+		lenient().when( tool.snapToGrid( any() ) ).then( i -> i.getArgument( 0 ) );
+		lenient().doReturn( Fx.IDENTITY_TRANSFORM ).when( tool ).getScreenToWorldTransform();
+
+		lenient().doReturn( program ).when( tool ).getProgram();
+		lenient().doReturn( module ).when( tool ).getProduct();
+		lenient().doReturn( module ).when( tool ).getMod();
+		lenient().doReturn( design ).when( tool ).getDesignModel();
+		lenient().doReturn( designContext ).when( tool ).getDesignContext();
+		lenient().doReturn( commandContext ).when( tool ).getCommandContext();
+		lenient().doReturn( selectedLayer ).when( tool ).getSelectedLayer();
+		lenient().doReturn( currentLayer ).when( tool ).getCurrentLayer();
+		lenient().doReturn( previewLayer ).when( tool ).getPreviewLayer();
+		lenient().doReturn( referenceLayer ).when( tool ).getReferenceLayer();
+		lenient().doReturn( RETICLE ).when( tool ).getReticuleCursor();
+		lenient().doReturn( tool ).when( commandContext ).getTool();
+		lenient().doReturn( commandPrompt ).when( commandContext ).getCommandPrompt();
 	}
 
 }

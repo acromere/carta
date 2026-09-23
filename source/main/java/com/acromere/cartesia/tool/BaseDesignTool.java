@@ -84,11 +84,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 	// GUIDES
 
-	/**
-	 * The layer guide for this tool.
-	 */
-	@Getter
-	private final LayerGuide layerGuide;
+	protected final DesignPropertiesMap designPropertiesMap;
 
 	/**
 	 * The view guide for this tool.
@@ -99,6 +95,12 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	 * The print guide for this tool.
 	 */
 	//	private final PrintGuide printGuide;
+
+	/**
+	 * The layer guide for this tool.
+	 */
+	@Getter
+	private final LayerGuide layerGuide;
 
 	/**
 	 * The toast prompt for the tool. Shows initialization messages to the user.
@@ -112,15 +114,15 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	@Getter
 	private final BaseDesignRenderer renderer;
 
-	/**
-	 * The stack of portals the user has used to view the design in this tool.
-	 */
-	private final Stack<DesignPortal> portalStack;
-
 	// FX properties (what others should be here?)
 
 	// Current:
 	// selectAperture
+
+	/**
+	 * The stack of portals the user has used to view the design in this tool.
+	 */
+	private final Stack<DesignPortal> portalStack;
 
 	/**
 	 * The current layer for adding geometry to the design.
@@ -132,12 +134,6 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	 */
 	private final ObjectProperty<DesignLayer> selectedLayer;
 
-	/**
-	 * @deprecated In favor of portalStack
-	 */
-	@Deprecated
-	private final ObjectProperty<DesignView> currentView;
-
 	// Proposed:
 	// gridVisible - renderer property
 	// viewpoint - renderer property
@@ -146,9 +142,11 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 
 	// TOOL PROPERTIES
 
-	private BooleanProperty gridSnapEnabled;
-
-	private BooleanProperty showHotspotEnabled;
+	/**
+	 * @deprecated In favor of portalStack
+	 */
+	@Deprecated
+	private final ObjectProperty<DesignView> currentView;
 
 	/**
 	 * The reticule is the more specialized equivalent of the crosshair cursor.
@@ -157,9 +155,11 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	 */
 	private final ObjectProperty<Reticule> reticule;
 
+	private final ObjectProperty<DesignValue> selectTolerance;
+
 	// The renderer might also have some properties that should be exposed
 
-	private final ObjectProperty<DesignValue> selectTolerance;
+	private final Workplane workplane;
 
 	// portal (viewport)
 
@@ -169,11 +169,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	// Design layers
 	// Grid
 
-	private final Workplane workplane;
-
 	private final Map<String, ProgramAction> commandActions;
-
-	protected final DesignPropertiesMap designPropertiesMap;
 
 	@Getter
 	private final PrintAction printAction;
@@ -193,8 +189,13 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 	@Getter
 	private final DelayedAction storePreviousViewAction;
 
+	private BooleanProperty gridSnapEnabled;
+
+	private BooleanProperty showHotspotEnabled;
+
 	private ChangeListener<Boolean> gridVisibleToggleHandler;
-	private ChangeListener<Boolean>snapGridToggleHandler;
+
+	private ChangeListener<Boolean> snapGridToggleHandler;
 
 	private com.acromere.event.EventHandler<ResourceSwitchedEvent> resourceSwitchListener;
 
@@ -1846,7 +1847,7 @@ public abstract class BaseDesignTool extends GuidedTool implements DesignTool, E
 		@Override
 		public void handle( ActionEvent event ) {
 			try {
-			getResource().getUndoManager().redo();
+				getResource().getUndoManager().redo();
 			} catch( IllegalStateException exception ) {
 				log.atWarn().withCause( exception ).log( exception.getMessage() );
 			}

@@ -43,6 +43,38 @@ public class MovePoints extends EditCommand {
 
 	private Point3D anchor;
 
+	private static Set<PointCoordinate> computePointsToMove( DesignTool tool, Collection<DesignShape> shapes, Bounds bounds ) {
+		Set<PointCoordinate> points = new HashSet<>();
+
+		for( DesignShape shape : shapes ) {
+			for( String key : getShapePointKeys( shape ) ) {
+				Point3D point = shape.getValue( key );
+				if( bounds.contains( point ) ) points.add( new PointCoordinate( shape, key ) );
+			}
+		}
+
+		return points;
+	}
+
+	private static Set<String> getShapePointKeys( DesignShape shape ) {
+		if( shape instanceof DesignLine ) {
+			return Set.of( DesignLine.ORIGIN, DesignLine.POINT );
+		} else if( shape instanceof DesignEllipse ) {
+			return Set.of( DesignLine.ORIGIN );
+		} else if( shape instanceof DesignCubic ) {
+			return Set.of( DesignLine.ORIGIN, DesignLine.POINT );
+		}
+		return Set.of();
+	}
+
+	private static void modifyShapes( Set<PointCoordinate> points, Point3D anchor, Point3D target ) {
+		// Get an offset vector
+		Point3D offset = target.subtract( anchor );
+
+		// Go through the points to move and add the offset
+		Txn.run( () -> points.forEach( p -> p.update( p.getPoint().add( offset ) ) ) );
+	}
+
 	@Override
 	public Object execute( CommandTask task ) throws Exception {
 		if( task.getTool().getSelectedShapes().isEmpty() ) return SUCCESS;
@@ -127,38 +159,6 @@ public class MovePoints extends EditCommand {
 				}
 			}
 		}
-	}
-
-	private static Set<PointCoordinate> computePointsToMove( DesignTool tool, Collection<DesignShape> shapes, Bounds bounds ) {
-		Set<PointCoordinate> points = new HashSet<>();
-
-		for( DesignShape shape : shapes ) {
-			for( String key : getShapePointKeys( shape ) ) {
-				Point3D point = shape.getValue( key );
-				if( bounds.contains( point ) ) points.add( new PointCoordinate( shape, key ) );
-			}
-		}
-
-		return points;
-	}
-
-	private static Set<String> getShapePointKeys( DesignShape shape ) {
-		if( shape instanceof DesignLine ) {
-			return Set.of( DesignLine.ORIGIN, DesignLine.POINT );
-		} else if( shape instanceof DesignEllipse ) {
-			return Set.of( DesignLine.ORIGIN );
-		} else if( shape instanceof DesignCubic ) {
-			return Set.of( DesignLine.ORIGIN, DesignLine.POINT );
-		}
-		return Set.of();
-	}
-
-	private static void modifyShapes( Set<PointCoordinate> points, Point3D anchor, Point3D target ) {
-		// Get an offset vector
-		Point3D offset = target.subtract( anchor );
-
-		// Go through the points to move and add the offset
-		Txn.run( () -> points.forEach( p -> p.update( p.getPoint().add( offset ) ) ) );
 	}
 
 	private static class PointCoordinate {

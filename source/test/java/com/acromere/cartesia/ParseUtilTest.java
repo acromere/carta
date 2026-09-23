@@ -13,36 +13,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ParseUtilTest {
 
-	@ParameterizedTest
-	@MethodSource
-	void testParseValue( String string, Double expected, Exception exception ) {
-		if( exception == null ) {
-			assertThat( ParseUtil.parseValue( string ) ).isEqualTo( expected );
-		} else {
-			assertThatThrownBy( () -> ParseUtil.parseValue( string ) ).hasMessage( exception.getMessage() ).isInstanceOf( exception.getClass() );
-		}
-	}
-
-	@ParameterizedTest
-	@MethodSource
-	void testParsePoint2D( String string, Point2D expected, Exception exception ) {
-		if( exception == null ) {
-			assertThat( ParseUtil.parsePoint2D( string ) ).isEqualTo( expected );
-		} else {
-			assertThatThrownBy( () -> ParseUtil.parsePoint2D( string ) ).hasMessage( exception.getMessage() ).isInstanceOf( exception.getClass() );
-		}
-	}
-
-	@ParameterizedTest
-	@MethodSource
-	void testParsePoint3D( String string, Point3D expected, Exception exception ) {
-		if( exception == null ) {
-			assertThat( ParseUtil.parsePoint3D( string ) ).isEqualTo( expected );
-		} else {
-			assertThatThrownBy( () -> ParseUtil.parsePoint3D( string ) ).hasMessage( exception.getMessage() ).isInstanceOf( exception.getClass() );
-		}
-	}
-
 	private static Stream<Arguments> testParseValue() {
 		return Stream.of(
 			// Valid Points
@@ -97,6 +67,36 @@ public class ParseUtilTest {
 			// Exceptions
 			Arguments.of( "Not,a,Point", null, new NumberFormatException( "For input string: \"Not\"" ) )
 		);
+	}
+
+	@ParameterizedTest
+	@MethodSource
+	void testParseValue( String string, Double expected, Exception exception ) {
+		if( exception == null ) {
+			assertThat( ParseUtil.parseValue( string ) ).isEqualTo( expected );
+		} else {
+			assertThatThrownBy( () -> ParseUtil.parseValue( string ) ).hasMessage( exception.getMessage() ).isInstanceOf( exception.getClass() );
+		}
+	}
+
+	@ParameterizedTest
+	@MethodSource
+	void testParsePoint2D( String string, Point2D expected, Exception exception ) {
+		if( exception == null ) {
+			assertThat( ParseUtil.parsePoint2D( string ) ).isEqualTo( expected );
+		} else {
+			assertThatThrownBy( () -> ParseUtil.parsePoint2D( string ) ).hasMessage( exception.getMessage() ).isInstanceOf( exception.getClass() );
+		}
+	}
+
+	@ParameterizedTest
+	@MethodSource
+	void testParsePoint3D( String string, Point3D expected, Exception exception ) {
+		if( exception == null ) {
+			assertThat( ParseUtil.parsePoint3D( string ) ).isEqualTo( expected );
+		} else {
+			assertThatThrownBy( () -> ParseUtil.parsePoint3D( string ) ).hasMessage( exception.getMessage() ).isInstanceOf( exception.getClass() );
+		}
 	}
 
 }

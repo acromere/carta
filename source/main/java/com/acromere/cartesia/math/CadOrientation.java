@@ -33,6 +33,12 @@ public class CadOrientation {
 		this.orientation = orientation;
 	}
 
+	public static CadOrientation fromThreePoints( Point3D origin, Point3D xaxis, Point3D point ) {
+		return new CadOrientation( Orientation.fromThreePoints( CadPoints.asPoint( origin ), CadPoints.asPoint( xaxis ), CadPoints.asPoint( point ) ) );
+	}
+
+	public static boolean areGeometricallyEqual( CadOrientation a, CadOrientation b ) {return Orientation.areGeometricallyEqual( a.orientation, b.orientation );}
+
 	@SuppressWarnings( "MethodDoesntCallSuperMethod" )
 	public CadOrientation clone() {
 		return new CadOrientation( getOrigin(), getNormal(), getRotate() );
@@ -121,12 +127,6 @@ public class CadOrientation {
 	}
 
 	public String toJson() {return orientation.toJson();}
-
-	public static CadOrientation fromThreePoints( Point3D origin, Point3D xaxis, Point3D point ) {
-		return new CadOrientation( Orientation.fromThreePoints( CadPoints.asPoint( origin ), CadPoints.asPoint( xaxis ), CadPoints.asPoint( point ) ) );
-	}
-
-	public static boolean areGeometricallyEqual( CadOrientation a, CadOrientation b ) {return Orientation.areGeometricallyEqual( a.orientation, b.orientation );}
 
 	Orientation getOrientation() {
 		return orientation;

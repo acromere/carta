@@ -122,9 +122,9 @@ public interface DesignRenderer extends ToolAndRenderer {
 	 */
 	void setDpi( double dpiX, double dpiY );
 
-	void setDpiX( double dpi );
-
 	double getDpiX();
+
+	void setDpiX( double dpi );
 
 	DoubleProperty dpiXProperty();
 

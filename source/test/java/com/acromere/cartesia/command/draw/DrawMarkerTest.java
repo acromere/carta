@@ -27,6 +27,12 @@ public class DrawMarkerTest extends BaseCommandTest {
 
 	// Script Tests --------------------------------------------------------------
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "select-touch" ) );
+	}
+
+	// Interactive Tests ---------------------------------------------------------
+
 	/**
 	 * Draw marker with one parameter should set the origin point, and then add
 	 * the marker to the current layer. The result should be success.
@@ -48,7 +54,7 @@ public class DrawMarkerTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
 
-	// Interactive Tests ---------------------------------------------------------
+	// Bad Parameter Tests -------------------------------------------------------
 
 	/**
 	 * Draw marker with no parameters or event, should prompt the
@@ -73,8 +79,6 @@ public class DrawMarkerTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) {
@@ -90,10 +94,6 @@ public class DrawMarkerTest extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "select-touch" ) );
 	}
 
 	@Test

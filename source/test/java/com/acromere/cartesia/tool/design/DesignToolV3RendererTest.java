@@ -79,6 +79,128 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 		renderer.layout();
 	}
 
+	private static Stream<Arguments> screenToWorldWithRotate() {
+		return Stream.of(
+			Arguments.arguments( 0, 0, 0, 500, 500, 0, 0 ),
+			// No angle should change the center
+			Arguments.arguments( -180, 0, 0, 500, 500, 0, 0 ),
+			Arguments.arguments( -135, 1, 2, 500, 500, 1, 2 ),
+			Arguments.arguments( -90, 2, 3, 500, 500, 2, 3 ),
+			Arguments.arguments( -45, 3, 4, 500, 500, 3, 4 ),
+			Arguments.arguments( 0, 4, 5, 500, 500, 4, 5 ),
+			Arguments.arguments( 45, 5, 6, 500, 500, 5, 6 ),
+			Arguments.arguments( 90, 6, 7, 500, 500, 6, 7 ),
+			Arguments.arguments( 135, 7, 8, 500, 500, 7, 8 ),
+			Arguments.arguments( 180, 8, 9, 500, 500, 8, 9 ),
+
+			Arguments.arguments( 45, 0, 0, 500, 500 - 1 * gz, Constants.SQRT_ONE_HALF, Constants.SQRT_ONE_HALF )
+		);
+	}
+
+	private static Stream<Arguments> screenToWorldWithZoom() {
+		return Stream.of(
+			Arguments.arguments( 0.5, 0.5, 500, 500, 0, 0 ),
+			Arguments.arguments( 0.5, 0.5, 500 + 0.5 * gz, 500 - 0.5 * gz, 1, 1 ),
+			Arguments.arguments( 0.5, 0.5, 500 + 0.5 * gz, 500 + 0.5 * gz, 1, -1 ),
+			Arguments.arguments( 0.5, 0.5, 500 - 0.5 * gz, 500 + 0.5 * gz, -1, -1 ),
+			Arguments.arguments( 0.5, 0.5, 500 - 0.5 * gz, 500 - 0.5 * gz, -1, 1 ),
+
+			Arguments.arguments( 1, 1, 500, 500, 0, 0 ),
+			Arguments.arguments( 1, 1, 500 + 1 * gz, 500 - 1 * gz, 1, 1 ),
+			Arguments.arguments( 1, 1, 500 + 1 * gz, 500 + 1 * gz, 1, -1 ),
+			Arguments.arguments( 1, 1, 500 - 1 * gz, 500 + 1 * gz, -1, -1 ),
+			Arguments.arguments( 1, 1, 500 - 1 * gz, 500 - 1 * gz, -1, 1 ),
+
+			Arguments.arguments( 2, 2, 500, 500, 0, 0 ),
+			Arguments.arguments( 2, 2, 500 + 2 * gz, 500 - 2 * gz, 1, 1 ),
+			Arguments.arguments( 2, 2, 500 + 2 * gz, 500 + 2 * gz, 1, -1 ),
+			Arguments.arguments( 2, 2, 500 - 2 * gz, 500 + 2 * gz, -1, -1 ),
+			Arguments.arguments( 2, 2, 500 - 2 * gz, 500 - 2 * gz, -1, 1 )
+		);
+	}
+
+	private static Stream<Arguments> screenToWorldWithCenter() {
+		return Stream.of(
+			Arguments.arguments( 2, 2, 500, 500, 2, 2 ),
+			Arguments.arguments( 2, 2, 500, 500 - 2 * gz, 2, 4 ),
+			Arguments.arguments( 2, 2, 500 + 2 * gz, 500 - 2 * gz, 4, 4 ),
+			Arguments.arguments( 2, 2, 500 + 2 * gz, 500, 4, 2 ),
+			Arguments.arguments( 2, 2, 500 + 2 * gz, 500 + 2 * gz, 4, 0 ),
+			Arguments.arguments( 2, 2, 500, 500 + 2 * gz, 2, 0 ),
+			Arguments.arguments( 2, 2, 500 - 2 * gz, 500 + 2 * gz, 0, 0 ),
+			Arguments.arguments( 2, 2, 500 - 2 * gz, 500, 0, 2 ),
+			Arguments.arguments( 2, 2, 500 - 2 * gz, 500 - 2 * gz, 0, 4 )
+		);
+	}
+
+	private static Stream<Arguments> worldToScreenWithRotate() {
+		return Stream.of(
+			Arguments.arguments( 0, 0, 0, 0, 0, 500, 500 ),
+			// No angle should change the center
+			Arguments.arguments( -180, 0, 1, 0, 1, 500, 500 ),
+			Arguments.arguments( -135, 1, 2, 1, 2, 500, 500 ),
+			Arguments.arguments( -90, 2, 3, 2, 3, 500, 500 ),
+			Arguments.arguments( -45, 3, 4, 3, 4, 500, 500 ),
+			Arguments.arguments( 0, 4, 5, 4, 5, 500, 500 ),
+			Arguments.arguments( 45, 5, 6, 5, 6, 500, 500 ),
+			Arguments.arguments( 90, 6, 7, 6, 7, 500, 500 ),
+			Arguments.arguments( 135, 7, 8, 7, 8, 500, 500 ),
+			Arguments.arguments( 180, 8, 9, 8, 9, 500, 500 ),
+
+			Arguments.arguments( 45, 0, 0, 1, 0, 500 + 1 * gz * Constants.SQRT_ONE_HALF, 500 - 1 * gz * Constants.SQRT_ONE_HALF )
+		);
+	}
+
+	private static Stream<Arguments> worldToScreenWithZoom() {
+		return Stream.of(
+			Arguments.arguments( 0.5, 0.5, 0, 0, 500, 500 ),
+			Arguments.arguments( 0.5, 0.5, 1, 1, 500 + 0.5 * gz, 500 - 0.5 * gz ),
+			Arguments.arguments( 0.5, 0.5, 1, -1, 500 + 0.5 * gz, 500 + 0.5 * gz ),
+			Arguments.arguments( 0.5, 0.5, -1, -1, 500 - 0.5 * gz, 500 + 0.5 * gz ),
+			Arguments.arguments( 0.5, 0.5, -1, 1, 500 - 0.5 * gz, 500 - 0.5 * gz ),
+
+			Arguments.arguments( 1, 1, 0, 0, 500, 500 ),
+			Arguments.arguments( 1, 1, 1, 1, 500 + 1 * gz, 500 - 1 * gz ),
+			Arguments.arguments( 1, 1, 1, -1, 500 + 1 * gz, 500 + 1 * gz ),
+			Arguments.arguments( 1, 1, -1, -1, 500 - 1 * gz, 500 + 1 * gz ),
+			Arguments.arguments( 1, 1, -1, 1, 500 - 1 * gz, 500 - 1 * gz ),
+
+			Arguments.arguments( 2, 2, 0, 0, 500, 500 ),
+			Arguments.arguments( 2, 2, 1, 1, 500 + 2 * gz, 500 - 2 * gz ),
+			Arguments.arguments( 2, 2, 1, -1, 500 + 2 * gz, 500 + 2 * gz ),
+			Arguments.arguments( 2, 2, -1, -1, 500 - 2 * gz, 500 + 2 * gz ),
+			Arguments.arguments( 2, 2, -1, 1, 500 - 2 * gz, 500 - 2 * gz )
+		);
+	}
+
+	private static Stream<Arguments> worldToScreenWithCenter() {
+		return Stream.of(
+			Arguments.arguments( 2, 2, 2, 2, 500, 500 ),
+			Arguments.arguments( 2, 2, 2, 4, 500, 500 - 2 * gz ),
+			Arguments.arguments( 2, 2, 4, 4, 500 + 2 * gz, 500 - 2 * gz ),
+			Arguments.arguments( 2, 2, 4, 2, 500 + 2 * gz, 500 ),
+			Arguments.arguments( 2, 2, 4, 0, 500 + 2 * gz, 500 + 2 * gz ),
+			Arguments.arguments( 2, 2, 2, 0, 500, 500 + 2 * gz ),
+			Arguments.arguments( 2, 2, 0, 0, 500 - 2 * gz, 500 + 2 * gz ),
+			Arguments.arguments( 2, 2, 0, 2, 500 - 2 * gz, 500 ),
+			Arguments.arguments( 2, 2, 0, 4, 500 - 2 * gz, 500 - 2 * gz )
+		);
+	}
+
+	private static Stream<Arguments> worldToScreenDoesNotChangeWithDifferentOutputScales() {
+		return Stream.of(
+			Arguments.of( 1, new Point2D( -1, 0 ), new Point2D( 462.20472440944883, 500 ) ),
+			Arguments.of( 1.25, new Point2D( -1, 0 ), new Point2D( 462.20472440944883, 500 ) ),
+			Arguments.of( 1.5, new Point2D( -1, 0 ), new Point2D( 462.20472440944883, 500 ) ),
+			Arguments.of( 1.75, new Point2D( -1, 0 ), new Point2D( 462.20472440944883, 500 ) ),
+			Arguments.of( 2, new Point2D( -1, 0 ), new Point2D( 462.20472440944883, 500 ) ),
+			Arguments.of( 2.25, new Point2D( -1, 0 ), new Point2D( 462.20472440944883, 500 ) ),
+			Arguments.of( 2.5, new Point2D( -1, 0 ), new Point2D( 462.20472440944883, 500 ) ),
+			Arguments.of( 2.75, new Point2D( -1, 0 ), new Point2D( 462.20472440944883, 500 ) ),
+			Arguments.of( 3, new Point2D( -1, 0 ), new Point2D( 462.20472440944883, 500 ) )
+		);
+	}
+
 	@BeforeEach
 	void setUp() {
 		renderer = new DesignToolV3Renderer();
@@ -867,24 +989,6 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 		assertThat( result.getY() ).isCloseTo( worldY, TOLERANCE );
 	}
 
-	private static Stream<Arguments> screenToWorldWithRotate() {
-		return Stream.of(
-			Arguments.arguments( 0, 0, 0, 500, 500, 0, 0 ),
-			// No angle should change the center
-			Arguments.arguments( -180, 0, 0, 500, 500, 0, 0 ),
-			Arguments.arguments( -135, 1, 2, 500, 500, 1, 2 ),
-			Arguments.arguments( -90, 2, 3, 500, 500, 2, 3 ),
-			Arguments.arguments( -45, 3, 4, 500, 500, 3, 4 ),
-			Arguments.arguments( 0, 4, 5, 500, 500, 4, 5 ),
-			Arguments.arguments( 45, 5, 6, 500, 500, 5, 6 ),
-			Arguments.arguments( 90, 6, 7, 500, 500, 6, 7 ),
-			Arguments.arguments( 135, 7, 8, 500, 500, 7, 8 ),
-			Arguments.arguments( 180, 8, 9, 500, 500, 8, 9 ),
-
-			Arguments.arguments( 45, 0, 0, 500, 500 - 1 * gz, Constants.SQRT_ONE_HALF, Constants.SQRT_ONE_HALF )
-		);
-	}
-
 	@ParameterizedTest
 	@MethodSource
 	void screenToWorldWithZoom( double zoomX, double zoomY, double screenX, double screenY, double worldX, double worldY ) {
@@ -900,28 +1004,6 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 		assertThat( renderer.screenToWorld( screenX, screenY ).getY() ).isCloseTo( worldY, TOLERANCE );
 	}
 
-	private static Stream<Arguments> screenToWorldWithZoom() {
-		return Stream.of(
-			Arguments.arguments( 0.5, 0.5, 500, 500, 0, 0 ),
-			Arguments.arguments( 0.5, 0.5, 500 + 0.5 * gz, 500 - 0.5 * gz, 1, 1 ),
-			Arguments.arguments( 0.5, 0.5, 500 + 0.5 * gz, 500 + 0.5 * gz, 1, -1 ),
-			Arguments.arguments( 0.5, 0.5, 500 - 0.5 * gz, 500 + 0.5 * gz, -1, -1 ),
-			Arguments.arguments( 0.5, 0.5, 500 - 0.5 * gz, 500 - 0.5 * gz, -1, 1 ),
-
-			Arguments.arguments( 1, 1, 500, 500, 0, 0 ),
-			Arguments.arguments( 1, 1, 500 + 1 * gz, 500 - 1 * gz, 1, 1 ),
-			Arguments.arguments( 1, 1, 500 + 1 * gz, 500 + 1 * gz, 1, -1 ),
-			Arguments.arguments( 1, 1, 500 - 1 * gz, 500 + 1 * gz, -1, -1 ),
-			Arguments.arguments( 1, 1, 500 - 1 * gz, 500 - 1 * gz, -1, 1 ),
-
-			Arguments.arguments( 2, 2, 500, 500, 0, 0 ),
-			Arguments.arguments( 2, 2, 500 + 2 * gz, 500 - 2 * gz, 1, 1 ),
-			Arguments.arguments( 2, 2, 500 + 2 * gz, 500 + 2 * gz, 1, -1 ),
-			Arguments.arguments( 2, 2, 500 - 2 * gz, 500 + 2 * gz, -1, -1 ),
-			Arguments.arguments( 2, 2, 500 - 2 * gz, 500 - 2 * gz, -1, 1 )
-		);
-	}
-
 	@ParameterizedTest
 	@MethodSource
 	void screenToWorldWithCenter( double centerX, double centerY, double screenX, double screenY, double worldX, double worldY ) {
@@ -935,20 +1017,6 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 		// then
 		assertThat( renderer.screenToWorld( screenX, screenY ).getX() ).isCloseTo( worldX, TOLERANCE );
 		assertThat( renderer.screenToWorld( screenX, screenY ).getY() ).isCloseTo( worldY, TOLERANCE );
-	}
-
-	private static Stream<Arguments> screenToWorldWithCenter() {
-		return Stream.of(
-			Arguments.arguments( 2, 2, 500, 500, 2, 2 ),
-			Arguments.arguments( 2, 2, 500, 500 - 2 * gz, 2, 4 ),
-			Arguments.arguments( 2, 2, 500 + 2 * gz, 500 - 2 * gz, 4, 4 ),
-			Arguments.arguments( 2, 2, 500 + 2 * gz, 500, 4, 2 ),
-			Arguments.arguments( 2, 2, 500 + 2 * gz, 500 + 2 * gz, 4, 0 ),
-			Arguments.arguments( 2, 2, 500, 500 + 2 * gz, 2, 0 ),
-			Arguments.arguments( 2, 2, 500 - 2 * gz, 500 + 2 * gz, 0, 0 ),
-			Arguments.arguments( 2, 2, 500 - 2 * gz, 500, 0, 2 ),
-			Arguments.arguments( 2, 2, 500 - 2 * gz, 500 - 2 * gz, 0, 4 )
-		);
 	}
 
 	@Test
@@ -1108,24 +1176,6 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 		assertThat( point2d.getY() ).isCloseTo( screenY, TOLERANCE ); // 500.0000000000000 expecting 473.27470433310685
 	}
 
-	private static Stream<Arguments> worldToScreenWithRotate() {
-		return Stream.of(
-			Arguments.arguments( 0, 0, 0, 0, 0, 500, 500 ),
-			// No angle should change the center
-			Arguments.arguments( -180, 0, 1, 0, 1, 500, 500 ),
-			Arguments.arguments( -135, 1, 2, 1, 2, 500, 500 ),
-			Arguments.arguments( -90, 2, 3, 2, 3, 500, 500 ),
-			Arguments.arguments( -45, 3, 4, 3, 4, 500, 500 ),
-			Arguments.arguments( 0, 4, 5, 4, 5, 500, 500 ),
-			Arguments.arguments( 45, 5, 6, 5, 6, 500, 500 ),
-			Arguments.arguments( 90, 6, 7, 6, 7, 500, 500 ),
-			Arguments.arguments( 135, 7, 8, 7, 8, 500, 500 ),
-			Arguments.arguments( 180, 8, 9, 8, 9, 500, 500 ),
-
-			Arguments.arguments( 45, 0, 0, 1, 0, 500 + 1 * gz * Constants.SQRT_ONE_HALF, 500 - 1 * gz * Constants.SQRT_ONE_HALF )
-		);
-	}
-
 	@ParameterizedTest
 	@MethodSource
 	void worldToScreenWithZoom( double zoomX, double zoomY, double worldX, double worldY, double screenX, double screenY ) {
@@ -1141,28 +1191,6 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 		assertThat( renderer.worldToScreen( worldX, worldY ).getY() ).isCloseTo( screenY, TOLERANCE );
 	}
 
-	private static Stream<Arguments> worldToScreenWithZoom() {
-		return Stream.of(
-			Arguments.arguments( 0.5, 0.5, 0, 0, 500, 500 ),
-			Arguments.arguments( 0.5, 0.5, 1, 1, 500 + 0.5 * gz, 500 - 0.5 * gz ),
-			Arguments.arguments( 0.5, 0.5, 1, -1, 500 + 0.5 * gz, 500 + 0.5 * gz ),
-			Arguments.arguments( 0.5, 0.5, -1, -1, 500 - 0.5 * gz, 500 + 0.5 * gz ),
-			Arguments.arguments( 0.5, 0.5, -1, 1, 500 - 0.5 * gz, 500 - 0.5 * gz ),
-
-			Arguments.arguments( 1, 1, 0, 0, 500, 500 ),
-			Arguments.arguments( 1, 1, 1, 1, 500 + 1 * gz, 500 - 1 * gz ),
-			Arguments.arguments( 1, 1, 1, -1, 500 + 1 * gz, 500 + 1 * gz ),
-			Arguments.arguments( 1, 1, -1, -1, 500 - 1 * gz, 500 + 1 * gz ),
-			Arguments.arguments( 1, 1, -1, 1, 500 - 1 * gz, 500 - 1 * gz ),
-
-			Arguments.arguments( 2, 2, 0, 0, 500, 500 ),
-			Arguments.arguments( 2, 2, 1, 1, 500 + 2 * gz, 500 - 2 * gz ),
-			Arguments.arguments( 2, 2, 1, -1, 500 + 2 * gz, 500 + 2 * gz ),
-			Arguments.arguments( 2, 2, -1, -1, 500 - 2 * gz, 500 + 2 * gz ),
-			Arguments.arguments( 2, 2, -1, 1, 500 - 2 * gz, 500 - 2 * gz )
-		);
-	}
-
 	@ParameterizedTest
 	@MethodSource
 	void worldToScreenWithCenter( double centerX, double centerY, double worldX, double worldY, double screenX, double screenY ) {
@@ -1176,20 +1204,6 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 		// then
 		assertThat( renderer.worldToScreen( worldX, worldY ).getX() ).isCloseTo( screenX, TOLERANCE );
 		assertThat( renderer.worldToScreen( worldX, worldY ).getY() ).isEqualTo( screenY, TOLERANCE );
-	}
-
-	private static Stream<Arguments> worldToScreenWithCenter() {
-		return Stream.of(
-			Arguments.arguments( 2, 2, 2, 2, 500, 500 ),
-			Arguments.arguments( 2, 2, 2, 4, 500, 500 - 2 * gz ),
-			Arguments.arguments( 2, 2, 4, 4, 500 + 2 * gz, 500 - 2 * gz ),
-			Arguments.arguments( 2, 2, 4, 2, 500 + 2 * gz, 500 ),
-			Arguments.arguments( 2, 2, 4, 0, 500 + 2 * gz, 500 + 2 * gz ),
-			Arguments.arguments( 2, 2, 2, 0, 500, 500 + 2 * gz ),
-			Arguments.arguments( 2, 2, 0, 0, 500 - 2 * gz, 500 + 2 * gz ),
-			Arguments.arguments( 2, 2, 0, 2, 500 - 2 * gz, 500 ),
-			Arguments.arguments( 2, 2, 0, 4, 500 - 2 * gz, 500 - 2 * gz )
-		);
 	}
 
 	@ParameterizedTest
@@ -1246,20 +1260,6 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 		assertThat( fxBox.getY() ).isEqualTo( 0 );
 		assertThat( fxBox.getWidth() ).isCloseTo( 113.4, Offset.offset( 0.1 ) );
 		assertThat( fxBox.getHeight() ).isCloseTo( 189.0, Offset.offset( 0.1 ) );
-	}
-
-	private static Stream<Arguments> worldToScreenDoesNotChangeWithDifferentOutputScales() {
-		return Stream.of(
-			Arguments.of( 1, new Point2D( -1, 0 ), new Point2D( 462.20472440944883, 500 ) ),
-			Arguments.of( 1.25, new Point2D( -1, 0 ), new Point2D( 462.20472440944883, 500 ) ),
-			Arguments.of( 1.5, new Point2D( -1, 0 ), new Point2D( 462.20472440944883, 500 ) ),
-			Arguments.of( 1.75, new Point2D( -1, 0 ), new Point2D( 462.20472440944883, 500 ) ),
-			Arguments.of( 2, new Point2D( -1, 0 ), new Point2D( 462.20472440944883, 500 ) ),
-			Arguments.of( 2.25, new Point2D( -1, 0 ), new Point2D( 462.20472440944883, 500 ) ),
-			Arguments.of( 2.5, new Point2D( -1, 0 ), new Point2D( 462.20472440944883, 500 ) ),
-			Arguments.of( 2.75, new Point2D( -1, 0 ), new Point2D( 462.20472440944883, 500 ) ),
-			Arguments.of( 3, new Point2D( -1, 0 ), new Point2D( 462.20472440944883, 500 ) )
-		);
 	}
 
 	private void assertBounds( Region region, double x, double y, double width, double height ) {

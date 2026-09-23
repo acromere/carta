@@ -26,6 +26,10 @@ public class CameraZoomWindowTest extends BaseCommandTest {
 
 	private final Command command = new CameraZoomWindow();
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "zoom-window-anchor" ), Arguments.of( new String[]{ "1,3", "bad parameter" }, "zoom-window-corner" ) );
+	}
+
 	/**
 	 * Camera zoom by window with no parameters or event, should prompt the
 	 * user to select an anchor point. The result should be incomplete.
@@ -68,6 +72,8 @@ public class CameraZoomWindowTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
+	// Bad Parameter Tests -------------------------------------------------------
+
 	/**
 	 * Camera zoom by window with two parameters should set both the anchor
 	 * and the corner, and then zoom the view to the window bounds. The
@@ -88,8 +94,6 @@ public class CameraZoomWindowTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) {
@@ -105,10 +109,6 @@ public class CameraZoomWindowTest extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "zoom-window-anchor" ), Arguments.of( new String[]{ "1,3", "bad parameter" }, "zoom-window-corner" ) );
 	}
 
 }

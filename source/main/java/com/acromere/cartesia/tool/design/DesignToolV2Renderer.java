@@ -42,13 +42,6 @@ import java.util.List;
 @CustomLog
 public class DesignToolV2Renderer extends BaseDesignRenderer {
 
-	private Design<? extends DesignModel> design;
-
-	private DesignModel model;
-
-	@Getter
-	private Workplane workplane;
-
 	private final FxRenderer2d renderer;
 
 	private final ObservableList<DesignLayer> enabledLayers;
@@ -61,19 +54,13 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 	@Getter
 	private final DesignLayer referenceLayer;
 
-	// Properties ----------------------------------------------------------------
-
-	private SimpleBooleanProperty gridVisible;
-
-	private SimpleBooleanProperty referencePointsVisible;
-
-	private SimpleBooleanProperty constructionPointsVisible;
-
 	private final SimpleStringProperty selectedDrawPaint;
 
 	private final SimpleStringProperty selectedFillPaint;
 
 	private final SimpleStringProperty previewDrawPaint;
+
+	// Properties ----------------------------------------------------------------
 
 	private final SimpleStringProperty previewFillPaint;
 
@@ -81,19 +68,32 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 
 	private final SimpleStringProperty referenceFillPaint;
 
-	// Cached values
+	private final EventHandler<DataNodeEvent> unitValueWatcher = e -> setLengthUnit( e.getNewValue() );
 
-	private Paint cachedSelectedFillPaint;
+	private Design<? extends DesignModel> design;
 
-	private Paint cachedSelectedDrawPaint;
+	private DesignModel model;
 
-	// Listeners -----------------------------------------------------------------
+	@Getter
+	private Workplane workplane;
 
 	private final EventHandler<DataNodeEvent> designWatcher = e -> {
 		render();
 	};
 
-	private final EventHandler<DataNodeEvent> unitValueWatcher = e -> setLengthUnit( e.getNewValue() );
+	private SimpleBooleanProperty gridVisible;
+
+	// Cached values
+
+	private SimpleBooleanProperty referencePointsVisible;
+
+	private SimpleBooleanProperty constructionPointsVisible;
+
+	// Listeners -----------------------------------------------------------------
+
+	private Paint cachedSelectedFillPaint;
+
+	private Paint cachedSelectedDrawPaint;
 
 	public DesignToolV2Renderer() {
 		// Ensure the minimum layout size can go to zero
@@ -392,37 +392,37 @@ public class DesignToolV2Renderer extends BaseDesignRenderer {
 		return cachedSelectedDrawPaint;
 	}
 
-//	public String getSelectedDrawPaint() {
-//		return selectedDrawPaint.get();
-//	}
-//
-//	public void setSelectedDrawPaint( String paint ) {
-//		selectedDrawPaint.set( paint );
-//		cachedSelectedDrawPaint = null;
-//	}
-//
-//	public SimpleStringProperty selectedDrawPaint() {
-//		return selectedDrawPaint;
-//	}
+	//	public String getSelectedDrawPaint() {
+	//		return selectedDrawPaint.get();
+	//	}
+	//
+	//	public void setSelectedDrawPaint( String paint ) {
+	//		selectedDrawPaint.set( paint );
+	//		cachedSelectedDrawPaint = null;
+	//	}
+	//
+	//	public SimpleStringProperty selectedDrawPaint() {
+	//		return selectedDrawPaint;
+	//	}
 
 	@Deprecated
 	public Paint calcSelectedFillPaint() {
-		if( cachedSelectedFillPaint == null ) cachedSelectedFillPaint =  getSelectedFillPaint();
+		if( cachedSelectedFillPaint == null ) cachedSelectedFillPaint = getSelectedFillPaint();
 		return cachedSelectedFillPaint;
 	}
 
-//	public String getSelectedFillPaint() {
-//		return selectedFillPaint.get();
-//	}
-//
-//	public void setSelectedFillPaint( String paint ) {
-//		selectedFillPaint.set( paint );
-//		cachedSelectedFillPaint = null;
-//	}
-//
-//	public ReadOnlyProperty<Paint> selectedFillPaint() {
-//		return selectedFillPaint;
-//	}
+	//	public String getSelectedFillPaint() {
+	//		return selectedFillPaint.get();
+	//	}
+	//
+	//	public void setSelectedFillPaint( String paint ) {
+	//		selectedFillPaint.set( paint );
+	//		cachedSelectedFillPaint = null;
+	//	}
+	//
+	//	public ReadOnlyProperty<Paint> selectedFillPaint() {
+	//		return selectedFillPaint;
+	//	}
 
 	// Preview Paints -----------------------------------------------------------
 

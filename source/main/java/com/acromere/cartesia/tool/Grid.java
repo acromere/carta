@@ -33,22 +33,6 @@ public interface Grid {
 
 	Grid ISO = new GridIsometric();
 
-	String name();
-
-	Point3D getNearest( Workplane workplane, Point3D point );
-
-	Collection<Shape> createFxGeometryGrid( Workplane workplane, double zoom, double scale );
-
-	Collection<Shape> updateFxGeometryGrid( Workplane workplane, double zoom, double scale, ObservableList<Node> existing );
-
-	/**
-	 * @param renderer The FX renderer to draw the grid
-	 * @param workplane The workplane that defines the grid configuration
-	 * @deprecated Most likely be moving back to using FX geometry
-	 */
-	@Deprecated
-	default void drawMareaGeometryGrid( FxRenderer2d renderer, Workplane workplane ) {}
-
 	static Grid valueOf( String name ) {
 		return switch( name ) {
 			case "POLAR" -> POLAR;
@@ -132,5 +116,21 @@ public interface Grid {
 
 		return circle;
 	}
+
+	String name();
+
+	Point3D getNearest( Workplane workplane, Point3D point );
+
+	Collection<Shape> createFxGeometryGrid( Workplane workplane, double zoom, double scale );
+
+	Collection<Shape> updateFxGeometryGrid( Workplane workplane, double zoom, double scale, ObservableList<Node> existing );
+
+	/**
+	 * @param renderer The FX renderer to draw the grid
+	 * @param workplane The workplane that defines the grid configuration
+	 * @deprecated Most likely be moving back to using FX geometry
+	 */
+	@Deprecated
+	default void drawMareaGeometryGrid( FxRenderer2d renderer, Workplane workplane ) {}
 
 }

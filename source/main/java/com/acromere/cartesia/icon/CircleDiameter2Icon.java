@@ -6,6 +6,10 @@ import javafx.scene.shape.StrokeLineJoin;
 
 public class CircleDiameter2Icon extends DrawIcon {
 
+	public static void main( String[] commands ) {
+		Proof.proof( new CircleDiameter2Icon() );
+	}
+
 	protected void define() {
 		super.define();
 		double r = 12;
@@ -13,10 +17,6 @@ public class CircleDiameter2Icon extends DrawIcon {
 		draw( "M4,16 A12,12,0,0,0,28,16 A12,12,0,0,0,4,16Z", null, getLineWidth(), StrokeLineCap.BUTT, StrokeLineJoin.MITER );
 		fill( circle( 16 - g, 16 + g, getDotRadius() ) );
 		fill( circle( 16 + g, 16 - g, getDotRadius() ) );
-	}
-
-	public static void main( String[] commands ) {
-		Proof.proof( new CircleDiameter2Icon() );
 	}
 
 }

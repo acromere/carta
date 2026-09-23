@@ -4,11 +4,6 @@ import com.acromere.cartesia.command.Command;
 
 public abstract class SelectCommand extends Command {
 
-	public enum Mode {
-		POINT,
-		WINDOW
-	}
-
 	@Override
 	public boolean clearSelectionWhenComplete() {
 		return false;
@@ -17,6 +12,11 @@ public abstract class SelectCommand extends Command {
 	@Override
 	public boolean clearReferenceAndPreviewWhenComplete() {
 		return false;
+	}
+
+	public enum Mode {
+		POINT,
+		WINDOW
 	}
 
 }

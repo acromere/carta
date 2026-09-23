@@ -16,11 +16,7 @@ public class UndoFxUndoManagerTest {
 	void testUnlimitedHistorySingleChangeUMSingleValue() {
 		EventSource<String> events = new EventSource<>();
 
-		UndoManager<String> undoManager = UndoManagerFactory.unlimitedHistorySingleChangeUM(
-			events,
-			change -> {return null;},
-			change -> {},
-			(c1, c2) -> java.util.Optional.of( c1 + c2 ));
+		UndoManager<String> undoManager = UndoManagerFactory.unlimitedHistorySingleChangeUM( events, change -> {return null;}, change -> {}, ( c1, c2 ) -> java.util.Optional.of( c1 + c2 ) );
 
 		assertThat( undoManager.isUndoAvailable() ).isFalse();
 		assertThat( undoManager.isRedoAvailable() ).isFalse();
@@ -47,22 +43,20 @@ public class UndoFxUndoManagerTest {
 		EventSource<List<String>> events = new EventSource<>();
 
 		UndoManager<List<String>> undoManager = UndoManagerFactory.unlimitedHistorySingleChangeUM(
-			events,
-			change -> {return null;},
-			change -> {},
-			(c1, c2) -> {
+			events, change -> {return null;}, change -> {}, ( c1, c2 ) -> {
 				ArrayList<String> list = new ArrayList<>();
-				list.addAll(c1);
-				list.addAll(c2);
+				list.addAll( c1 );
+				list.addAll( c2 );
 				return java.util.Optional.of( list );
-			});
+			}
+		);
 
 		assertThat( undoManager.isUndoAvailable() ).isFalse();
 		assertThat( undoManager.isRedoAvailable() ).isFalse();
 		assertThat( undoManager.getNextUndo() ).isNull();
 		assertThat( undoManager.getNextRedo() ).isNull();
 
-		events.push( List.of("a" ) );
+		events.push( List.of( "a" ) );
 
 		assertThat( undoManager.isUndoAvailable() ).isTrue();
 		assertThat( undoManager.isRedoAvailable() ).isFalse();
@@ -82,12 +76,7 @@ public class UndoFxUndoManagerTest {
 		EventSource<List<String>> events = new EventSource<>();
 
 		// MultiChange managers take lists of changes
-		UndoManager<List<String>> undoManager = UndoManagerFactory.unlimitedHistoryMultiChangeUM(
-			events,
-			c -> {return null;},
-			c -> {},
-			( c1, c2 ) -> java.util.Optional.of( c1 + c2 )
-		);
+		UndoManager<List<String>> undoManager = UndoManagerFactory.unlimitedHistoryMultiChangeUM( events, c -> {return null;}, c -> {}, ( c1, c2 ) -> java.util.Optional.of( c1 + c2 ) );
 
 		assertThat( undoManager.isUndoAvailable() ).isFalse();
 		assertThat( undoManager.isRedoAvailable() ).isFalse();

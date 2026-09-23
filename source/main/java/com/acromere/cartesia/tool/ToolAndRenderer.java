@@ -1,9 +1,7 @@
 package com.acromere.cartesia.tool;
 
 import com.acromere.cartesia.DesignValue;
-import com.acromere.cartesia.data.DesignShape;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;

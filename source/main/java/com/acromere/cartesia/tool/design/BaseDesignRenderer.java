@@ -29,6 +29,13 @@ import java.util.stream.Collectors;
 @CustomLog
 public abstract class BaseDesignRenderer extends StackPane implements DesignRenderer, RenderConstants {
 
+	static {
+		POINT_SELECT_APERTURE.setDrawPaint( Paints.toString( DEFAULT_APERTURE_DRAW_PAINT ) );
+		POINT_SELECT_APERTURE.setFillPaint( Paints.toString( DEFAULT_APERTURE_FILL_PAINT ) );
+		WINDOW_SELECT_APERTURE.setDrawPaint( Paints.toString( DEFAULT_APERTURE_DRAW_PAINT ) );
+		WINDOW_SELECT_APERTURE.setFillPaint( Paints.toString( DEFAULT_APERTURE_FILL_PAINT ) );
+	}
+
 	private final DoubleProperty dpiX;
 
 	private final DoubleProperty dpiY;
@@ -68,13 +75,6 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 	private final SimpleStringProperty apertureFillPaint;
 
 	private final SimpleObjectProperty<DesignShape> selectAperture;
-
-	static {
-		POINT_SELECT_APERTURE.setDrawPaint( Paints.toString( DEFAULT_APERTURE_DRAW_PAINT ) );
-		POINT_SELECT_APERTURE.setFillPaint( Paints.toString( DEFAULT_APERTURE_FILL_PAINT ) );
-		WINDOW_SELECT_APERTURE.setDrawPaint( Paints.toString( DEFAULT_APERTURE_DRAW_PAINT ) );
-		WINDOW_SELECT_APERTURE.setFillPaint( Paints.toString( DEFAULT_APERTURE_FILL_PAINT ) );
-	}
 
 	public BaseDesignRenderer() {
 		getStyleClass().add( "tool-renderer" );
@@ -135,13 +135,13 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 	}
 
 	@Override
-	public void setDpiX( double dpi ) {
-		dpiX.set( dpi );
+	public double getDpiX() {
+		return dpiX.get();
 	}
 
 	@Override
-	public double getDpiX() {
-		return dpiX.get();
+	public void setDpiX( double dpi ) {
+		dpiX.set( dpi );
 	}
 
 	@Override
@@ -205,6 +205,11 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		return new Point3D( viewCenterX.get(), viewCenterY.get(), viewCenterZ.get() );
 	}
 
+	@Override
+	public void setViewCenter( Point3D center ) {
+		setViewCenter( center.getX(), center.getY(), center.getZ() );
+	}
+
 	public void setViewCenter( double x, double y ) {
 		setViewCenter( x, y, 0 );
 	}
@@ -214,11 +219,6 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 		viewCenterX.set( x );
 		viewCenterY.set( y );
 		viewCenterZ.set( z );
-	}
-
-	@Override
-	public void setViewCenter( Point3D center ) {
-		setViewCenter( center.getX(), center.getY(), center.getZ() );
 	}
 
 	@Override
@@ -292,15 +292,15 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 	}
 
 	@Override
-	public void setViewZoom( double zoomX, double zoomY ) {
-		setViewZoomX( zoomX );
-		setViewZoomY( zoomY );
-	}
-
-	@Override
 	public void setViewZoom( Point2D zoom ) {
 		setViewZoomX( zoom.getX() );
 		setViewZoomY( zoom.getY() );
+	}
+
+	@Override
+	public void setViewZoom( double zoomX, double zoomY ) {
+		setViewZoomX( zoomX );
+		setViewZoomY( zoomY );
 	}
 
 	@Override
@@ -480,6 +480,14 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 	 * {@inheritDoc}
 	 */
 	@Override
+	public DesignShape getSelectAperture() {
+		return selectAperture.get();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void setSelectAperture( DesignShape aperture ) {
 		if( aperture == null ) aperture = DEFAULT_SELECT_APERTURE;
 		if( !ALLOWED_SELECT_APERTURES.contains( aperture ) ) throw new IllegalArgumentException( "Invalid select aperture: " + aperture );
@@ -495,14 +503,6 @@ public abstract class BaseDesignRenderer extends StackPane implements DesignRend
 			DesignShape newAperture = selectAperture.get();
 			newAperture.setVisible( true );
 		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public DesignShape getSelectAperture() {
-		return selectAperture.get();
 	}
 
 	/**

@@ -10,13 +10,13 @@ public class LayerHiddenIcon extends LayerIcon {
 
 	private final double r = 0.0625 * Math.sqrt( R * R + R * R );
 
+	public static void main( String[] commands ) {
+		Proof.proof( new LayerHiddenIcon() );
+	}
+
 	protected void define() {
 		fill( getPath(), Colors.mix( (Color)getStrokePaint(), Color.TRANSPARENT, 0.2 ) );
 		draw( getPath(), null, 2, StrokeLineCap.BUTT, StrokeLineJoin.MITER, 2 * r, 4 * r, 4 * r );
-	}
-
-	public static void main( String[] commands ) {
-		Proof.proof( new LayerHiddenIcon() );
 	}
 
 }

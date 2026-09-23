@@ -44,6 +44,10 @@ public abstract class DesignDrawable extends DesignNode {
 
 	public static final String FILL_PAINT = "fill-paint";
 
+	public static final String MODE_LAYER = "layer";
+
+	public static final String SHAPE_NODE = "shape-node";
+
 	static final String VIRTUAL_LAYER = "layer";
 
 	static final String VIRTUAL_DRAW_PAINT_MODE = "draw-paint-mode";
@@ -58,15 +62,11 @@ public abstract class DesignDrawable extends DesignNode {
 
 	static final String MODE_CUSTOM = "custom";
 
-	public static final String MODE_LAYER = "layer";
-
-	public static final String SHAPE_NODE = "shape-node";
-
 	private static final Set<String> nonCustomModes = Set.of( MODE_LAYER );
 
-	protected SettingsPage page;
-
 	private final Map<String, Object> cache;
+
+	protected SettingsPage page;
 
 	protected DesignDrawable() {
 		addModifyingKeys( ORDER, DRAW_PAINT, DRAW_WIDTH, DRAW_ALIGN, DRAW_CAP, DASH_OFFSET, DASH_PATTERN, FILL_PAINT );

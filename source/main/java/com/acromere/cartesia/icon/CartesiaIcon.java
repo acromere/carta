@@ -17,6 +17,10 @@ public class CartesiaIcon extends SvgIcon {
 
 	private static final double ARM_WIDTH = 2.5;
 
+	public static void main( String[] commands ) {
+		Proof.proof( new CartesiaIcon() );
+	}
+
 	protected void define() {
 		super.define();
 
@@ -78,10 +82,6 @@ public class CartesiaIcon extends SvgIcon {
 		right += "L" + (CX + dX) + "," + (CY + dY);
 		right += "Z";
 		return right;
-	}
-
-	public static void main( String[] commands ) {
-		Proof.proof( new CartesiaIcon() );
 	}
 
 }

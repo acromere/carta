@@ -108,9 +108,9 @@ public interface DesignTool extends RenderConstants, ToolAndRenderer {
 	@Deprecated
 	String DEFAULT_PREVIEW_FILL = "#ff00c040";
 
-//	String DEFAULT_SELECTED_DRAW = "#ff00c0ff";
-//
-//	String DEFAULT_SELECTED_FILL = "#ff00c040";
+	//	String DEFAULT_SELECTED_DRAW = "#ff00c0ff";
+	//
+	//	String DEFAULT_SELECTED_FILL = "#ff00c040";
 
 	boolean DEFAULT_GRID_SNAP_ENABLED = true;
 
@@ -144,16 +144,14 @@ public interface DesignTool extends RenderConstants, ToolAndRenderer {
 	 */
 	CommandContext getCommandContext();
 
-	@NonNull
-	Workplane getWorkplane();
+	@NonNull Workplane getWorkplane();
 
 	/**
 	 * A convenience method to get the workplane grid system.
 	 *
 	 * @return The workplane grid system
 	 */
-	@NonNull
-	Grid getGridSystem();
+	@NonNull Grid getGridSystem();
 
 	/**
 	 * A convenience method to set the workplane grid system.
@@ -466,7 +464,7 @@ public interface DesignTool extends RenderConstants, ToolAndRenderer {
 	 */
 	List<DesignShape> getSelectedShapes();
 
-	void setSelectedShapes(List<DesignShape> shapes, boolean selected );
+	void setSelectedShapes( List<DesignShape> shapes, boolean selected );
 
 	ObservableList<DesignShape> selectedShapes();
 

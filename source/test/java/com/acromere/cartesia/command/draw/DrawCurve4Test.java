@@ -27,6 +27,17 @@ public class DrawCurve4Test extends BaseCommandTest {
 
 	// Script Tests --------------------------------------------------------------
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of(
+			Arguments.of( new String[]{ "bad parameter" }, "start-point" ),
+			Arguments.of( new String[]{ "-3,0", "bad parameter" }, "control-point" ),
+			Arguments.of( new String[]{ "-3,0", "-1,3", "bad parameter" }, "control-point" ),
+			Arguments.of( new String[]{ "-3,0", "-1,3", "1,-3", "bad parameter" }, "end-point" )
+		);
+	}
+
+	// Interactive Tests ---------------------------------------------------------
+
 	/**
 	 * Draw cubic with all parameters should set the cubic control points. A cubic
 	 * should be added to the current layer. The result should be success.
@@ -48,8 +59,6 @@ public class DrawCurve4Test extends BaseCommandTest {
 		assertThat( command.getPreview() ).hasSize( 0 );
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
-
-	// Interactive Tests ---------------------------------------------------------
 
 	/**
 	 * Draw cubic with no parameters or event, should prompt the
@@ -120,6 +129,8 @@ public class DrawCurve4Test extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
+	// Bad Parameter Tests -------------------------------------------------------
+
 	/**
 	 * Draw cubic with three parameters should set the cubic origin, origin
 	 * control point and point control point. The result should be incomplete.
@@ -143,8 +154,6 @@ public class DrawCurve4Test extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) {
@@ -160,15 +169,6 @@ public class DrawCurve4Test extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of(
-			Arguments.of( new String[]{ "bad parameter" }, "start-point" ),
-			Arguments.of( new String[]{ "-3,0", "bad parameter" }, "control-point" ),
-			Arguments.of( new String[]{ "-3,0", "-1,3", "bad parameter" }, "control-point" ),
-			Arguments.of( new String[]{ "-3,0", "-1,3", "1,-3", "bad parameter" }, "end-point" )
-		);
 	}
 
 	@Test

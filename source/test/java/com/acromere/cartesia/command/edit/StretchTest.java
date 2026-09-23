@@ -29,6 +29,16 @@ public class StretchTest extends BaseCommandTest {
 
 	// Script Tests --------------------------------------------------------------
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of(
+			Arguments.of( new Object[]{ BAD_POINT_PARAMETER }, "anchor" ),
+			Arguments.of( new Object[]{ "2,0", BAD_POINT_PARAMETER }, "reference" ),
+			Arguments.of( new Object[]{ "2,0", "2,2", BAD_POINT_PARAMETER }, "target" )
+		);
+	}
+
+	// Interactive Tests ---------------------------------------------------------
+
 	/**
 	 * Stretch should stretch the selected shapes. The result should be success.
 	 *
@@ -55,8 +65,6 @@ public class StretchTest extends BaseCommandTest {
 		assertThat( command.getPreview() ).hasSize( 0 );
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
-
-	// Interactive Tests ---------------------------------------------------------
 
 	@Test
 	void testExecuteWithNoSelectedShapes() throws Exception {
@@ -114,6 +122,8 @@ public class StretchTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
+	// Bad Parameter Tests -------------------------------------------------------
+
 	@Test
 	void testExecuteWithSelectedShapesAndTwoParameters() throws Exception {
 		// given
@@ -136,8 +146,6 @@ public class StretchTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) {
@@ -154,14 +162,6 @@ public class StretchTest extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of(
-			Arguments.of( new Object[]{ BAD_POINT_PARAMETER }, "anchor" ),
-			Arguments.of( new Object[]{ "2,0", BAD_POINT_PARAMETER }, "reference" ),
-			Arguments.of( new Object[]{ "2,0", "2,2", BAD_POINT_PARAMETER }, "target" )
-		);
 	}
 
 	@Test

@@ -31,6 +31,12 @@ public class JoinTest extends BaseCommandTest {
 
 	// Script Tests --------------------------------------------------------------
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "select-meet-shape" ), Arguments.of( new String[]{ "1,1", "bad parameter" }, "select-meet-shape" ) );
+	}
+
+	// Interactive Tests ---------------------------------------------------------
+
 	/**
 	 * Join should ask the user for two shapes to join, by trimming the shapes to
 	 * the nearest common intersection point. The result should be success.
@@ -72,8 +78,6 @@ public class JoinTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
 
-	// Interactive Tests ---------------------------------------------------------
-
 	/**
 	 * Trim with no parameters, should prompt the user to select a shape to trim.
 	 * The result should be incomplete.
@@ -95,6 +99,8 @@ public class JoinTest extends BaseCommandTest {
 		assertThat( command.getPreview() ).hasSize( 0 );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
+
+	// Bad Parameter Tests -------------------------------------------------------
 
 	/**
 	 * Trim with one parameter, should prompt the user to select a shape to use
@@ -120,8 +126,6 @@ public class JoinTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) {
@@ -137,10 +141,6 @@ public class JoinTest extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "select-meet-shape" ), Arguments.of( new String[]{ "1,1", "bad parameter" }, "select-meet-shape" ) );
 	}
 
 	@Test

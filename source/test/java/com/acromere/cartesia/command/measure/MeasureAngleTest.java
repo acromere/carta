@@ -27,6 +27,17 @@ public class MeasureAngleTest extends BaseCommandTest {
 
 	// Script Tests --------------------------------------------------------------
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of(
+			Arguments.of( new String[]{ "bad parameter" }, "center" ),
+			Arguments.of( new String[]{ "-3,3", "bad parameter" }, "start" ),
+			Arguments.of( new String[]{ "-3,3", "3,-3", "bad parameter" }, "extent" ),
+			Arguments.of( new String[]{ "-3,3", "3,-3", "3,3", "bad parameter" }, "spin" )
+		);
+	}
+
+	// Interactive Tests ---------------------------------------------------------
+
 	/**
 	 * Measure angle with three parameters should calculate the angle and display
 	 * it as a notice. The result should be success.
@@ -48,8 +59,6 @@ public class MeasureAngleTest extends BaseCommandTest {
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
 	}
-
-	// Interactive Tests ---------------------------------------------------------
 
 	/**
 	 * Measure arc with no parameters or event, should prompt the
@@ -73,6 +82,8 @@ public class MeasureAngleTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
+	// Bad Parameter Tests -------------------------------------------------------
+
 	@Test
 	void testRunTaskStepWithOneParameters() throws Exception {
 		// given
@@ -90,8 +101,6 @@ public class MeasureAngleTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) {
@@ -107,15 +116,6 @@ public class MeasureAngleTest extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of(
-			Arguments.of( new String[]{ "bad parameter" }, "center" ),
-			Arguments.of( new String[]{ "-3,3", "bad parameter" }, "start" ),
-			Arguments.of( new String[]{ "-3,3", "3,-3", "bad parameter" }, "extent" ),
-			Arguments.of( new String[]{ "-3,3", "3,-3", "3,3", "bad parameter" }, "spin" )
-		);
 	}
 
 	@Test

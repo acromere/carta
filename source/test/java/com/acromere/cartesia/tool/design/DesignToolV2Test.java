@@ -23,10 +23,10 @@ public class DesignToolV2Test extends BaseDesignToolTest {
 
 	private static final double DPC = FxRenderer2d.DEFAULT_DPI / 2.54;
 
-	private DesignToolV2 tool;
-
 	@Mock
 	protected Resource resource;
+
+	private DesignToolV2 tool;
 
 	@BeforeEach
 	protected void setup() throws Exception {

@@ -1,6 +1,5 @@
 package com.acromere.cartesia.data;
 
-import com.acromere.cartesia.BaseCartesiaUnitTest;
 import com.acromere.cartesia.math.CadMath;
 import com.acromere.cartesia.test.Point3DAssert;
 import com.acromere.curve.math.Geometry;

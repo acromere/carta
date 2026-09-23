@@ -30,16 +30,16 @@ public enum Reticule {
 		this.icon = icon;
 	}
 
+	public static void clearCursorCache() {
+		cursorCache.clear();
+	}
+
 	public ReticuleCursor getCursor( XenonProgram program ) {
 		if( cursorCache.containsKey( this ) ) return cursorCache.get( this );
 		icon.setTheme( program.getWorkspaceManager().getThemeMetadata().getMotif() );
 		ReticuleCursor cursor = new ReticuleCursor( this );
 		cursorCache.put( this, cursor );
 		return cursor;
-	}
-
-	public static void clearCursorCache() {
-		cursorCache.clear();
 	}
 
 }

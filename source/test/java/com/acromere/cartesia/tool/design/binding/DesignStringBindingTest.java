@@ -10,26 +10,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class DesignStringBindingTest {
 
-	private static class MockNode extends DataNode {
-
-		static final String KEY = "name";
-
-		static final String OTHER = "other";
-
-		String getName() {
-			return getValue( KEY );
-		}
-
-		void setName( String name ) {
-			setValue( KEY, name );
-		}
-
-		void setOther( String other ) {
-			setValue( OTHER, other );
-		}
-
-	}
-
 	@Test
 	void testInitialValue() {
 		MockNode node = new MockNode();
@@ -110,6 +90,26 @@ class DesignStringBindingTest {
 
 		assertThat( binding.getBean() ).isNull();
 		assertThat( binding.getName() ).isNull();
+	}
+
+	private static class MockNode extends DataNode {
+
+		static final String KEY = "name";
+
+		static final String OTHER = "other";
+
+		String getName() {
+			return getValue( KEY );
+		}
+
+		void setName( String name ) {
+			setValue( KEY, name );
+		}
+
+		void setOther( String other ) {
+			setValue( OTHER, other );
+		}
+
 	}
 
 }

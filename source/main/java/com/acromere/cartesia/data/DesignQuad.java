@@ -122,13 +122,11 @@ public class DesignQuad extends DesignShape {
 		super.updateFrom( map );
 		if( map.containsKey( CONTROL ) ) {
 			Object control = map.get( CONTROL );
-			if( control instanceof Point3D ) setControl( (Point3D)control );
-			else if( control instanceof String ) setControl( ParseUtil.parsePoint3D( (String)control ) );
+			if( control instanceof Point3D ) {setControl( (Point3D)control );} else if( control instanceof String ) setControl( ParseUtil.parsePoint3D( (String)control ) );
 		}
 		if( map.containsKey( POINT ) ) {
 			Object point = map.get( POINT );
-			if( point instanceof Point3D ) setPoint( (Point3D)point );
-			else if( point instanceof String ) setPoint( ParseUtil.parsePoint3D( (String)point ) );
+			if( point instanceof Point3D ) {setPoint( (Point3D)point );} else if( point instanceof String ) setPoint( ParseUtil.parsePoint3D( (String)point ) );
 		}
 		return this;
 	}

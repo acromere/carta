@@ -36,10 +36,6 @@ public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 
 	protected DesignToolV3 tool;
 
-	private Resource resource;
-
-	private DesignModel designModel;
-
 	protected double dpu;
 
 	protected double width;
@@ -49,6 +45,10 @@ public abstract class DesignToolV3BaseUIT extends BaseCartesiaUiTest {
 	protected double originX;
 
 	protected double originY;
+
+	private Resource resource;
+
+	private DesignModel designModel;
 
 	@BeforeEach
 	protected void setup() throws Exception {

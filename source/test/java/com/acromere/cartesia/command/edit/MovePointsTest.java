@@ -29,6 +29,17 @@ public class MovePointsTest extends BaseCommandTest {
 
 	// Script Tests --------------------------------------------------------------
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of(
+			Arguments.of( new Object[]{ BAD_POINT_PARAMETER }, "select-window-anchor" ),
+			Arguments.of( new Object[]{ "1,3", BAD_POINT_PARAMETER }, "select-window-corner" ),
+			Arguments.of( new Object[]{ "1,3", "4,1", BAD_POINT_PARAMETER }, "anchor" ),
+			Arguments.of( new Object[]{ "1,3", "4,1", "4,3", BAD_POINT_PARAMETER }, "target" )
+		);
+	}
+
+	// Interactive Tests ---------------------------------------------------------
+
 	/**
 	 * Move Points should move specific points on the selected shapes. The result
 	 * should be success.
@@ -56,8 +67,6 @@ public class MovePointsTest extends BaseCommandTest {
 		assertThat( command.getPreview() ).hasSize( 0 );
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
-
-	// Interactive Tests ---------------------------------------------------------
 
 	@Test
 	void testExecuteWithNoSelectedShapes() throws Exception {
@@ -135,6 +144,8 @@ public class MovePointsTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
+	// Bad Parameter Tests -------------------------------------------------------
+
 	@Test
 	void testExecuteWithSelectedShapesAndThreeParameters() throws Exception {
 		// given
@@ -157,8 +168,6 @@ public class MovePointsTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) {
@@ -177,15 +186,6 @@ public class MovePointsTest extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of(
-			Arguments.of( new Object[]{ BAD_POINT_PARAMETER }, "select-window-anchor" ),
-			Arguments.of( new Object[]{ "1,3", BAD_POINT_PARAMETER }, "select-window-corner" ),
-			Arguments.of( new Object[]{ "1,3", "4,1", BAD_POINT_PARAMETER }, "anchor" ),
-			Arguments.of( new Object[]{ "1,3", "4,1", "4,3", BAD_POINT_PARAMETER }, "target" )
-		);
 	}
 
 	@Test

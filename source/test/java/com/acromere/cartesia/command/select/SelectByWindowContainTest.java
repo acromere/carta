@@ -27,6 +27,10 @@ public class SelectByWindowContainTest extends BaseCommandTest {
 
 	private final SelectByWindowContain command = new SelectByWindowContain();
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "select-window-anchor" ), Arguments.of( new String[]{ "1,3", "bad parameter" }, "select-window-corner" ) );
+	}
+
 	/**
 	 * Select-by-window-contain, with no parameters or event, should prompt the
 	 * user to select an anchor point. The result should be incomplete.
@@ -113,6 +117,8 @@ public class SelectByWindowContainTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
 
+	// Bad Parameter Tests -------------------------------------------------------
+
 	/**
 	 * Select by window contain with two parameters, and commands on the command
 	 * stack, should return the corner point.
@@ -134,8 +140,6 @@ public class SelectByWindowContainTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( new Point3D( 3, -3, 0 ) );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) {
@@ -151,10 +155,6 @@ public class SelectByWindowContainTest extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "select-window-anchor" ), Arguments.of( new String[]{ "1,3", "bad parameter" }, "select-window-corner" ) );
 	}
 
 }

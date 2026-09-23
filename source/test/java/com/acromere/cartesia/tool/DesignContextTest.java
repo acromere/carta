@@ -45,7 +45,7 @@ class DesignContextTest {
 		context.setSelectedShapes( List.of( line ), true );
 
 		// then
-		assertThat( changes).hasSize( 1 );
+		assertThat( changes ).hasSize( 1 );
 	}
 
 }

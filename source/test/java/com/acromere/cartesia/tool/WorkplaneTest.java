@@ -16,6 +16,107 @@ class WorkplaneTest {
 
 	private final Workplane workplane = new Workplane();
 
+	private static Stream<Arguments> gridAxisWidthArguments() {
+		return widthArguments( Workplane.DEFAULT_GRID_AXIS_WIDTH );
+	}
+
+	private static Stream<Arguments> majorGridWidthArguments() {
+		return widthArguments( Workplane.DEFAULT_GRID_MAJOR_WIDTH );
+	}
+
+	private static Stream<Arguments> minorGridWidthArguments() {
+		return widthArguments( Workplane.DEFAULT_GRID_MINOR_WIDTH );
+	}
+
+	private static Stream<Arguments> gridAxisVisibleArguments() {
+		return booleanArguments( Workplane.DEFAULT_GRID_AXIS_VISIBLE );
+	}
+
+	private static Stream<Arguments> gridMajorVisibleArguments() {
+		return booleanArguments( Workplane.DEFAULT_GRID_MAJOR_VISIBLE );
+	}
+
+	private static Stream<Arguments> gridMinorVisibleArguments() {
+		return booleanArguments( Workplane.DEFAULT_GRID_MINOR_VISIBLE );
+	}
+
+	private static Stream<Arguments> majorGridShowingArguments() {
+		return booleanArguments( Workplane.DEFAULT_GRID_MAJOR_VISIBLE );
+	}
+
+	private static Stream<Arguments> minorGridShowingArguments() {
+		return booleanArguments( Workplane.DEFAULT_GRID_MINOR_VISIBLE );
+	}
+
+	private static Stream<Arguments> booleanArguments( boolean defaultBoolean ) {
+		return Stream.of( Arguments.of( null, defaultBoolean ), Arguments.of( Boolean.FALSE, false ), Arguments.of( null, defaultBoolean ) );
+	}
+
+	private static Stream<Arguments> gridAxisPaintArguments() {
+		return paintArguments( Workplane.DEFAULT_GRID_AXIS_PAINT );
+	}
+
+	private static Stream<Arguments> majorGridPaintArguments() {
+		return paintArguments( Workplane.DEFAULT_GRID_MAJOR_PAINT );
+	}
+
+	private static Stream<Arguments> minorGridPaintArguments() {
+		return paintArguments( Workplane.DEFAULT_GRID_MINOR_PAINT );
+	}
+
+	private static Stream<Arguments> majorGridSizeArguments() {
+		return valueArguments( Workplane.DEFAULT_GRID_MAJOR_SIZE );
+	}
+
+	private static Stream<Arguments> minorGridSizeArguments() {
+		return valueArguments( Workplane.DEFAULT_GRID_MINOR_SIZE );
+	}
+
+	private static Stream<Arguments> snapGridSizeArguments() {
+		return valueArguments( Workplane.DEFAULT_GRID_SNAP_SIZE );
+	}
+
+	private static Stream<Arguments> paintArguments( String defaultColor ) {
+		return Stream.of(
+			Arguments.of( null, Colors.parse( defaultColor ) ),
+			Arguments.of( "#000000", Colors.parse( "#000000ff" ) ),
+			Arguments.of( "#ff0000", Colors.parse( "#ff0000ff" ) ),
+			Arguments.of( "#00ff00", Colors.parse( "#00ff00ff" ) ),
+			Arguments.of( "#0000ff", Colors.parse( "#0000ffff" ) ),
+			Arguments.of( "#ffffff", Colors.parse( "#ffffffff" ) ),
+			Arguments.of( "#000000ff", Colors.parse( "#000000ff" ) ),
+			Arguments.of( "#ff0000ff", Colors.parse( "#ff0000ff" ) ),
+			Arguments.of( "#00ff00ff", Colors.parse( "#00ff00ff" ) ),
+			Arguments.of( "#0000ffff", Colors.parse( "#0000ffff" ) ),
+			Arguments.of( "#ffffffff", Colors.parse( "#ffffffff" ) ),
+			Arguments.of( null, Colors.parse( defaultColor ) )
+		);
+	}
+
+	private static Stream<Arguments> widthArguments( String defaultWidth ) {
+		return Stream.of(
+			Arguments.of( null, CadMath.eval( defaultWidth ) ),
+			Arguments.of( "0.5", 0.5 ),
+			Arguments.of( "1/2", 0.5 ),
+			Arguments.of( "1.0", 1.0 ),
+			Arguments.of( "2/1", 2.0 ),
+			Arguments.of( "2.0", 2.0 ),
+			Arguments.of( null, CadMath.eval( defaultWidth ) )
+		);
+	}
+
+	private static Stream<Arguments> valueArguments( String defaultValue ) {
+		return Stream.of(
+			Arguments.of( null, CadMath.eval( defaultValue ) ),
+			Arguments.of( "0.5", 0.5 ),
+			Arguments.of( "1/2", 0.5 ),
+			Arguments.of( "1.0", 1.0 ),
+			Arguments.of( "2/1", 2.0 ),
+			Arguments.of( "2.0", 2.0 ),
+			Arguments.of( null, CadMath.eval( defaultValue ) )
+		);
+	}
+
 	@Test
 	void defaultOriginConstant() {
 		// The default origin should be "0,0". The workplane is a 2D plane and has no Z coordinate.
@@ -241,107 +342,6 @@ class WorkplaneTest {
 
 		// then
 		assertThat( workplane.calcSnapGridY() ).isEqualTo( expected );
-	}
-
-	private static Stream<Arguments> gridAxisWidthArguments() {
-		return widthArguments( Workplane.DEFAULT_GRID_AXIS_WIDTH );
-	}
-
-	private static Stream<Arguments> majorGridWidthArguments() {
-		return widthArguments( Workplane.DEFAULT_GRID_MAJOR_WIDTH );
-	}
-
-	private static Stream<Arguments> minorGridWidthArguments() {
-		return widthArguments( Workplane.DEFAULT_GRID_MINOR_WIDTH );
-	}
-
-	private static Stream<Arguments> gridAxisVisibleArguments() {
-		return booleanArguments( Workplane.DEFAULT_GRID_AXIS_VISIBLE );
-	}
-
-	private static Stream<Arguments> gridMajorVisibleArguments() {
-		return booleanArguments( Workplane.DEFAULT_GRID_MAJOR_VISIBLE );
-	}
-
-	private static Stream<Arguments> gridMinorVisibleArguments() {
-		return booleanArguments( Workplane.DEFAULT_GRID_MINOR_VISIBLE );
-	}
-
-	private static Stream<Arguments> majorGridShowingArguments() {
-		return booleanArguments( Workplane.DEFAULT_GRID_MAJOR_VISIBLE );
-	}
-
-	private static Stream<Arguments> minorGridShowingArguments() {
-		return booleanArguments( Workplane.DEFAULT_GRID_MINOR_VISIBLE );
-	}
-
-	private static Stream<Arguments> booleanArguments( boolean defaultBoolean ) {
-		return Stream.of( Arguments.of( null, defaultBoolean ), Arguments.of( Boolean.FALSE, false ), Arguments.of( null, defaultBoolean ) );
-	}
-
-	private static Stream<Arguments> gridAxisPaintArguments() {
-		return paintArguments( Workplane.DEFAULT_GRID_AXIS_PAINT );
-	}
-
-	private static Stream<Arguments> majorGridPaintArguments() {
-		return paintArguments( Workplane.DEFAULT_GRID_MAJOR_PAINT );
-	}
-
-	private static Stream<Arguments> minorGridPaintArguments() {
-		return paintArguments( Workplane.DEFAULT_GRID_MINOR_PAINT );
-	}
-
-	private static Stream<Arguments> majorGridSizeArguments() {
-		return valueArguments( Workplane.DEFAULT_GRID_MAJOR_SIZE );
-	}
-
-	private static Stream<Arguments> minorGridSizeArguments() {
-		return valueArguments( Workplane.DEFAULT_GRID_MINOR_SIZE );
-	}
-
-	private static Stream<Arguments> snapGridSizeArguments() {
-		return valueArguments( Workplane.DEFAULT_GRID_SNAP_SIZE );
-	}
-
-	private static Stream<Arguments> paintArguments( String defaultColor ) {
-		return Stream.of(
-			Arguments.of( null, Colors.parse( defaultColor ) ),
-			Arguments.of( "#000000", Colors.parse( "#000000ff" ) ),
-			Arguments.of( "#ff0000", Colors.parse( "#ff0000ff" ) ),
-			Arguments.of( "#00ff00", Colors.parse( "#00ff00ff" ) ),
-			Arguments.of( "#0000ff", Colors.parse( "#0000ffff" ) ),
-			Arguments.of( "#ffffff", Colors.parse( "#ffffffff" ) ),
-			Arguments.of( "#000000ff", Colors.parse( "#000000ff" ) ),
-			Arguments.of( "#ff0000ff", Colors.parse( "#ff0000ff" ) ),
-			Arguments.of( "#00ff00ff", Colors.parse( "#00ff00ff" ) ),
-			Arguments.of( "#0000ffff", Colors.parse( "#0000ffff" ) ),
-			Arguments.of( "#ffffffff", Colors.parse( "#ffffffff" ) ),
-			Arguments.of( null, Colors.parse( defaultColor ) )
-		);
-	}
-
-	private static Stream<Arguments> widthArguments( String defaultWidth ) {
-		return Stream.of(
-			Arguments.of( null, CadMath.eval( defaultWidth ) ),
-			Arguments.of( "0.5", 0.5 ),
-			Arguments.of( "1/2", 0.5 ),
-			Arguments.of( "1.0", 1.0 ),
-			Arguments.of( "2/1", 2.0 ),
-			Arguments.of( "2.0", 2.0 ),
-			Arguments.of( null, CadMath.eval( defaultWidth ) )
-		);
-	}
-
-	private static Stream<Arguments> valueArguments( String defaultValue ) {
-		return Stream.of(
-			Arguments.of( null, CadMath.eval( defaultValue ) ),
-			Arguments.of( "0.5", 0.5 ),
-			Arguments.of( "1/2", 0.5 ),
-			Arguments.of( "1.0", 1.0 ),
-			Arguments.of( "2/1", 2.0 ),
-			Arguments.of( "2.0", 2.0 ),
-			Arguments.of( null, CadMath.eval( defaultValue ) )
-		);
 	}
 
 }

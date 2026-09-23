@@ -52,12 +52,12 @@ public class FontPicker extends Button {
 		return pickerPane.getFont();
 	}
 
-	public StringProperty fontAsStringProperty() {
-		return pickerPane.fontProperty();
-	}
-
 	public void setFontAsString( String font ) {
 		pickerPane.setFont( font );
+	}
+
+	public StringProperty fontAsStringProperty() {
+		return pickerPane.fontProperty();
 	}
 
 	public void setPrior( String paint ) {

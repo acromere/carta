@@ -10,26 +10,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class DesignBooleanBindingTest {
 
-	private static class MockNode extends DataNode {
-
-		static final String KEY = "visible";
-
-		static final String OTHER = "other";
-
-		Boolean isVisible() {
-			return getValue( KEY, false );
-		}
-
-		void setVisible( Boolean visible ) {
-			setValue( KEY, visible );
-		}
-
-		void setOther( String other ) {
-			setValue( OTHER, other );
-		}
-
-	}
-
 	@Test
 	void testInitialValue() {
 		MockNode node = new MockNode();
@@ -108,6 +88,26 @@ class DesignBooleanBindingTest {
 
 		assertThat( binding.getBean() ).isNull();
 		assertThat( binding.getName() ).isNull();
+	}
+
+	private static class MockNode extends DataNode {
+
+		static final String KEY = "visible";
+
+		static final String OTHER = "other";
+
+		Boolean isVisible() {
+			return getValue( KEY, false );
+		}
+
+		void setVisible( Boolean visible ) {
+			setValue( KEY, visible );
+		}
+
+		void setOther( String other ) {
+			setValue( OTHER, other );
+		}
+
 	}
 
 }

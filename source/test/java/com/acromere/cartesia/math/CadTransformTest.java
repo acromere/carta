@@ -15,6 +15,44 @@ import static org.assertj.core.api.Fail.fail;
 
 public class CadTransformTest {
 
+	private static void assertMatrixValues(
+		CadTransform transform,
+		double e00,
+		double e01,
+		double e02,
+		double e03,
+		double e10,
+		double e11,
+		double e12,
+		double e13,
+		double e20,
+		double e21,
+		double e22,
+		double e23,
+		double e30,
+		double e31,
+		double e32,
+		double e33
+	) {
+		double[][] m = transform.getMatrixArray();
+		assertThat( m[ 0 ][ 0 ] ).isCloseTo( e00, TOLERANCE );
+		assertThat( m[ 0 ][ 1 ] ).isCloseTo( e01, TOLERANCE );
+		assertThat( m[ 0 ][ 2 ] ).isCloseTo( e02, TOLERANCE );
+		assertThat( m[ 0 ][ 3 ] ).isCloseTo( e03, TOLERANCE );
+		assertThat( m[ 1 ][ 0 ] ).isCloseTo( e10, TOLERANCE );
+		assertThat( m[ 1 ][ 1 ] ).isCloseTo( e11, TOLERANCE );
+		assertThat( m[ 1 ][ 2 ] ).isCloseTo( e12, TOLERANCE );
+		assertThat( m[ 1 ][ 3 ] ).isCloseTo( e13, TOLERANCE );
+		assertThat( m[ 2 ][ 0 ] ).isCloseTo( e20, TOLERANCE );
+		assertThat( m[ 2 ][ 1 ] ).isCloseTo( e21, TOLERANCE );
+		assertThat( m[ 2 ][ 2 ] ).isCloseTo( e22, TOLERANCE );
+		assertThat( m[ 2 ][ 3 ] ).isCloseTo( e23, TOLERANCE );
+		assertThat( m[ 3 ][ 0 ] ).isCloseTo( e30, TOLERANCE );
+		assertThat( m[ 3 ][ 1 ] ).isCloseTo( e31, TOLERANCE );
+		assertThat( m[ 3 ][ 2 ] ).isCloseTo( e32, TOLERANCE );
+		assertThat( m[ 3 ][ 3 ] ).isCloseTo( e33, TOLERANCE );
+	}
+
 	@Test
 	void testConstructorWithArrays() {
 		new CadTransform( new double[ 4 ][ 4 ] );
@@ -173,13 +211,6 @@ public class CadTransformTest {
 		assertThat( CadGeometry.distance( new Point3D( 0, 0, -1 ), transform.apply( new Point3D( 1, 0, 0 ) ) ) ).isCloseTo( 0.0, Offset.offset( 1e-16 ) );
 	}
 
-	@Test
-	void testZrotation() {
-		CadTransform transform = CadTransform.zrotation( 90 );
-		assertMatrixValues( transform, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 );
-		assertThat( CadGeometry.distance( new Point3D( -1, 0, 0 ), transform.apply( new Point3D( 0, 1, 0 ) ) ) ).isCloseTo( 0.0, Offset.offset( 1e-16 ) );
-	}
-
 	//	@Test
 	//	 void testMirror() throws Exception {
 	//		Transform transform = null;
@@ -190,6 +221,13 @@ public class CadTransformTest {
 	//		transform = CadTransform.mirror( new Point3D( 2, 0 ), new Point3D( 0, 2 ), Vector.getUnitZ() );
 	//		assertThat( new Point3D(), CadTransform.times( new Point3D( 2, 2, 0 ) ), 1e-12 );
 	//	}
+
+	@Test
+	void testZrotation() {
+		CadTransform transform = CadTransform.zrotation( 90 );
+		assertMatrixValues( transform, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 );
+		assertThat( CadGeometry.distance( new Point3D( -1, 0, 0 ), transform.apply( new Point3D( 0, 1, 0 ) ) ) ).isCloseTo( 0.0, Offset.offset( 1e-16 ) );
+	}
 
 	@Test
 	void testLocalCadTransform() {
@@ -333,44 +371,6 @@ public class CadTransformTest {
 		builder.append( "  0.0, 0.0, 0.0, 1.0\n" );
 		builder.append( "]\n" );
 		assertThat( CadTransform.identity().toString() ).isEqualTo( builder.toString() );
-	}
-
-	private static void assertMatrixValues(
-		CadTransform transform,
-		double e00,
-		double e01,
-		double e02,
-		double e03,
-		double e10,
-		double e11,
-		double e12,
-		double e13,
-		double e20,
-		double e21,
-		double e22,
-		double e23,
-		double e30,
-		double e31,
-		double e32,
-		double e33
-	) {
-		double[][] m = transform.getMatrixArray();
-		assertThat( m[ 0 ][ 0 ] ).isCloseTo( e00, TOLERANCE );
-		assertThat( m[ 0 ][ 1 ] ).isCloseTo( e01, TOLERANCE );
-		assertThat( m[ 0 ][ 2 ] ).isCloseTo( e02, TOLERANCE );
-		assertThat( m[ 0 ][ 3 ] ).isCloseTo( e03, TOLERANCE );
-		assertThat( m[ 1 ][ 0 ] ).isCloseTo( e10, TOLERANCE );
-		assertThat( m[ 1 ][ 1 ] ).isCloseTo( e11, TOLERANCE );
-		assertThat( m[ 1 ][ 2 ] ).isCloseTo( e12, TOLERANCE );
-		assertThat( m[ 1 ][ 3 ] ).isCloseTo( e13, TOLERANCE );
-		assertThat( m[ 2 ][ 0 ] ).isCloseTo( e20, TOLERANCE );
-		assertThat( m[ 2 ][ 1 ] ).isCloseTo( e21, TOLERANCE );
-		assertThat( m[ 2 ][ 2 ] ).isCloseTo( e22, TOLERANCE );
-		assertThat( m[ 2 ][ 3 ] ).isCloseTo( e23, TOLERANCE );
-		assertThat( m[ 3 ][ 0 ] ).isCloseTo( e30, TOLERANCE );
-		assertThat( m[ 3 ][ 1 ] ).isCloseTo( e31, TOLERANCE );
-		assertThat( m[ 3 ][ 2 ] ).isCloseTo( e32, TOLERANCE );
-		assertThat( m[ 3 ][ 3 ] ).isCloseTo( e33, TOLERANCE );
 	}
 
 }

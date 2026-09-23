@@ -28,6 +28,12 @@ public class DrawCircle2Test extends BaseCommandTest {
 
 	// Script Tests --------------------------------------------------------------
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "center" ), Arguments.of( new String[]{ "1,3", "bad parameter" }, "radius" ) );
+	}
+
+	// Interactive Tests ---------------------------------------------------------
+
 	@Test
 	void testRunTaskStepWithAllParameters() throws Exception {
 		// given
@@ -43,8 +49,6 @@ public class DrawCircle2Test extends BaseCommandTest {
 		assertThat( command.getPreview() ).hasSize( 0 );
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
-
-	// Interactive Tests ---------------------------------------------------------
 
 	/**
 	 * Draw arc with no parameters or event, should prompt the
@@ -68,6 +72,8 @@ public class DrawCircle2Test extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
+	// Bad Parameter Tests -------------------------------------------------------
+
 	/**
 	 * Draw line with one parameter should set the line origin. The
 	 * result should be incomplete.
@@ -90,8 +96,6 @@ public class DrawCircle2Test extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) {
@@ -107,10 +111,6 @@ public class DrawCircle2Test extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "center" ), Arguments.of( new String[]{ "1,3", "bad parameter" }, "radius" ) );
 	}
 
 	@Test

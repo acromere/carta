@@ -26,6 +26,15 @@ public class DrawArc2Test extends BaseCommandTest {
 
 	private final DrawArc2 command = new DrawArc2();
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of(
+			Arguments.of( new Object[]{ BAD_POINT_PARAMETER }, "center" ),
+			Arguments.of( new Object[]{ "8,3", BAD_POINT_PARAMETER }, "start" ),
+			Arguments.of( new Object[]{ "8,3", "1,0", BAD_POINT_PARAMETER }, "extent" ),
+			Arguments.of( new Object[]{ "8,3", "1,0", "1,1", BAD_NUMBER_PARAMETER }, "spin" )
+		);
+	}
+
 	/**
 	 * Draw arc with no parameters or event. Should prompt the
 	 * user to select an origin point. The result should be incomplete.
@@ -64,6 +73,8 @@ public class DrawArc2Test extends BaseCommandTest {
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
 
+	// Stepped tests -------------------------------------------------------------
+
 	@Test
 	void testRunTaskStepWithFourParameters() throws Exception {
 		// given
@@ -78,8 +89,6 @@ public class DrawArc2Test extends BaseCommandTest {
 		assertThat( command.getPreview() ).hasSize( 0 );
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
-
-	// Stepped tests -------------------------------------------------------------
 
 	@Test
 	void testRunTaskStepWithOneStep() throws Exception {
@@ -124,6 +133,8 @@ public class DrawArc2Test extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
+	// Bad Parameter Tests -------------------------------------------------------
+
 	@Test
 	void testRunTaskStepWithThreePriorSteps() throws Exception {
 		// given
@@ -146,8 +157,6 @@ public class DrawArc2Test extends BaseCommandTest {
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) throws Exception {
@@ -163,15 +172,6 @@ public class DrawArc2Test extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of(
-			Arguments.of( new Object[]{ BAD_POINT_PARAMETER }, "center" ),
-			Arguments.of( new Object[]{ "8,3", BAD_POINT_PARAMETER }, "start" ),
-			Arguments.of( new Object[]{ "8,3", "1,0", BAD_POINT_PARAMETER }, "extent" ),
-			Arguments.of( new Object[]{ "8,3", "1,0", "1,1", BAD_NUMBER_PARAMETER }, "spin" )
-		);
 	}
 
 	@Test

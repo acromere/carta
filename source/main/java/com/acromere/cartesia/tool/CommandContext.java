@@ -43,14 +43,6 @@ public class CommandContext implements EventHandler<KeyEvent> {
 
 	public static final CommandContext EMPTY = new CommandContext();
 
-	public enum Input {
-		NONE,
-		NUMBER,
-		POINT,
-		SHAPE,
-		TEXT
-	}
-
 	private static final boolean DEFAULT_AUTO_COMMAND = true;
 
 	private static final Level COMMAND_STACK_LOG_LEVEL = Level.FINE;
@@ -65,6 +57,10 @@ public class CommandContext implements EventHandler<KeyEvent> {
 	@Getter
 	private Input inputMode;
 
+	@Getter
+	@Setter
+	private Point3D localAnchor;
+
 	//	@Getter
 	//	@Setter
 	//	private Point2D screenAnchor;
@@ -72,10 +68,6 @@ public class CommandContext implements EventHandler<KeyEvent> {
 	//	@Getter
 	//	@Setter
 	//	private Point2D screenMouse;
-
-	@Getter
-	@Setter
-	private Point3D localAnchor;
 
 	@Getter
 	@Setter
@@ -200,7 +192,7 @@ public class CommandContext implements EventHandler<KeyEvent> {
 
 	public void command( String input ) {
 		String[] values = input.split( " " );
-		String command = values[0];
+		String command = values[ 0 ];
 		Object[] parameters = Arrays.copyOfRange( values, 1, values.length );
 		CommandMetadata metadata = Objects.requireNonNull( mapCommand( command ) );
 		submitCommand( metadata.cloneWithParameters( parameters ) );
@@ -519,6 +511,14 @@ public class CommandContext implements EventHandler<KeyEvent> {
 
 	private String getPriorCommand() {
 		return priorCommand;
+	}
+
+	public enum Input {
+		NONE,
+		NUMBER,
+		POINT,
+		SHAPE,
+		TEXT
 	}
 
 }

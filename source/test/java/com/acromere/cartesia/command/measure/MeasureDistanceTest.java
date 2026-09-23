@@ -25,6 +25,12 @@ public class MeasureDistanceTest extends BaseCommandTest {
 
 	// Script Tests --------------------------------------------------------------
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "start-point" ), Arguments.of( new String[]{ "-3,3", "bad parameter" }, "end-point" ) );
+	}
+
+	// Interactive Tests ---------------------------------------------------------
+
 	/**
 	 * Measure distance with all parameters should calculate the distance and
 	 * display it as a notice. The result should be success.
@@ -46,8 +52,6 @@ public class MeasureDistanceTest extends BaseCommandTest {
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
 	}
-
-	// Interactive Tests ---------------------------------------------------------
 
 	/**
 	 * Measure distance with no parameters or event, should prompt the
@@ -73,6 +77,8 @@ public class MeasureDistanceTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
+	// Bad Parameter Tests -------------------------------------------------------
+
 	@Test
 	void testRunTaskStepWithOneParameters() throws Exception {
 		// given
@@ -90,8 +96,6 @@ public class MeasureDistanceTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) {
@@ -107,10 +111,6 @@ public class MeasureDistanceTest extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "start-point" ), Arguments.of( new String[]{ "-3,3", "bad parameter" }, "end-point" ) );
 	}
 
 	@Test

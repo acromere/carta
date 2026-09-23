@@ -20,22 +20,6 @@ import java.util.Map;
 @CustomLog
 public class DesignPath extends DesignShape {
 
-	@Getter
-	public enum Command {
-		M( "Move" ),
-		A( "Arc" ),
-		B( "Cubic" ),
-		L( "Line" ),
-		Q( "Quad" ),
-		Z( "Close" );
-
-		private final String title;
-
-		Command( String name ) {
-			this.title = name;
-		}
-	}
-
 	public static final String PATH = "path";
 
 	public static final String STEPS = "steps";
@@ -358,11 +342,36 @@ public class DesignPath extends DesignShape {
 		return map;
 	}
 
+	@Getter
+	public enum Command {
+		M( "Move" ),
+		A( "Arc" ),
+		B( "Cubic" ),
+		L( "Line" ),
+		Q( "Quad" ),
+		Z( "Close" );
+
+		private final String title;
+
+		Command( String name ) {
+			this.title = name;
+		}
+	}
+
 	public record Step(DesignPath.Command command, double... data) {
+
+		private static final String DELIMITER = " ";
 
 		public Step( DesignPath.Command command, double... data ) {
 			this.command = command;
 			this.data = data != null ? data.clone() : new double[ 0 ];
+		}
+
+		public static Step unmarshall( String string ) {
+			String[] parts = string.split( DELIMITER );
+			Command command = Command.valueOf( parts[ 0 ].toUpperCase() );
+			String[] data = Arrays.copyOfRange( parts, 1, parts.length );
+			return new Step( command, Arrays.stream( data ).mapToDouble( Double::parseDouble ).toArray() );
 		}
 
 		@Override
@@ -370,8 +379,6 @@ public class DesignPath extends DesignShape {
 		public Step clone() {
 			return new Step( command, data.clone() );
 		}
-
-		private static final String DELIMITER = " ";
 
 		public void apply( CadTransform transform ) {
 			// Transform points
@@ -399,13 +406,6 @@ public class DesignPath extends DesignShape {
 
 		public String marshall() {
 			return (command.name() + DELIMITER + String.join( DELIMITER, Arrays.stream( data ).mapToObj( String::valueOf ).toList() )).trim();
-		}
-
-		public static Step unmarshall( String string ) {
-			String[] parts = string.split( DELIMITER );
-			Command command = Command.valueOf( parts[ 0 ].toUpperCase() );
-			String[] data = Arrays.copyOfRange( parts, 1, parts.length );
-			return new Step( command, Arrays.stream( data ).mapToDouble( Double::parseDouble ).toArray() );
 		}
 
 		@Override

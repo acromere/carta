@@ -11,6 +11,27 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SplitTest {
 
+	private static boolean containsLine( Collection<DesignShape> shapes, DesignShape shape ) {
+		for( DesignShape test : shapes ) {
+			if( test.equals( shape, DesignLine.ORIGIN, DesignLine.POINT ) ) return true;
+		}
+		return false;
+	}
+
+	private static boolean containsArc( Collection<DesignShape> shapes, DesignShape shape ) {
+		for( DesignShape test : shapes ) {
+			if( test.equals( shape, DesignArc.ORIGIN, DesignArc.RADII, DesignArc.ROTATE, DesignArc.START, DesignArc.EXTENT ) ) return true;
+		}
+		return false;
+	}
+
+	private static boolean containsCurve( Collection<DesignShape> shapes, DesignShape shape ) {
+		for( DesignShape test : shapes ) {
+			if( test.equals( shape, DesignCubic.ORIGIN, DesignCubic.ORIGIN_CONTROL, DesignCubic.POINT_CONTROL, DesignLine.POINT ) ) return true;
+		}
+		return false;
+	}
+
 	@Test
 	void testSplitLine() {
 		DesignLine a = new DesignLine( new Point3D( 1, 1, 0 ), new Point3D( 3, 1, 0 ) );
@@ -61,27 +82,6 @@ public class SplitTest {
 		assertThat( containsCurve( shapes, b ) ).isTrue();
 		assertThat( containsCurve( shapes, c ) ).isTrue();
 		assertThat( shapes.isEmpty() ).isFalse();
-	}
-
-	private static boolean containsLine( Collection<DesignShape> shapes, DesignShape shape ) {
-		for( DesignShape test : shapes ) {
-			if( test.equals( shape, DesignLine.ORIGIN, DesignLine.POINT ) ) return true;
-		}
-		return false;
-	}
-
-	private static boolean containsArc( Collection<DesignShape> shapes, DesignShape shape ) {
-		for( DesignShape test : shapes ) {
-			if( test.equals( shape, DesignArc.ORIGIN, DesignArc.RADII, DesignArc.ROTATE, DesignArc.START, DesignArc.EXTENT ) ) return true;
-		}
-		return false;
-	}
-
-	private static boolean containsCurve( Collection<DesignShape> shapes, DesignShape shape ) {
-		for( DesignShape test : shapes ) {
-			if( test.equals( shape, DesignCubic.ORIGIN, DesignCubic.ORIGIN_CONTROL, DesignCubic.POINT_CONTROL, DesignLine.POINT ) ) return true;
-		}
-		return false;
 	}
 
 }

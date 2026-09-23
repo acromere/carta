@@ -16,17 +16,17 @@ import javafx.util.Callback;
 
 public class FontPickerPane extends VBox {
 
-	private StringProperty font;
-
 	private final ComboBox<String> fontFamily;
-
-	private ObservableList<String> fontFamilyOptions;
 
 	private final ComboBox<FontWeight> fontWeight;
 
-	private ObservableList<FontWeight> fontWeightOptions;
-
 	private final Label sample;
+
+	private StringProperty font;
+
+	private ObservableList<String> fontFamilyOptions;
+
+	private ObservableList<FontWeight> fontWeightOptions;
 
 	private String prior;
 
@@ -77,17 +77,17 @@ public class FontPickerPane extends VBox {
 		return font == null ? null : font.get();
 	}
 
-	public StringProperty fontProperty() {
-		if( font == null ) font = new SimpleStringProperty();
-		return font;
-	}
-
 	public void setFont( String string ) {
 		// Do not call doSetFontProperty() here, changing the fontField will do that if needed
 		//sample.setText( string );
 		Font font = FontUtil.decode( string );
 		fontFamily.getSelectionModel().select( font.getFamily() );
 		fontWeight.getSelectionModel().select( FontUtil.getFontWeight( font.getStyle() ) );
+	}
+
+	public StringProperty fontProperty() {
+		if( font == null ) font = new SimpleStringProperty();
+		return font;
 	}
 
 	private void doSetFontProperty( String family, FontWeight weight ) {

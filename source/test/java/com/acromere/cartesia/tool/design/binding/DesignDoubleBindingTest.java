@@ -10,26 +10,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class DesignDoubleBindingTest {
 
-	private static class MockNode extends DataNode {
-
-		static final String KEY = "width";
-
-		static final String OTHER = "other";
-
-		Double getWidth() {
-			return getValue( KEY, 0.0 );
-		}
-
-		void setWidth( Double width ) {
-			setValue( KEY, width );
-		}
-
-		void setOther( String other ) {
-			setValue( OTHER, other );
-		}
-
-	}
-
 	@Test
 	void testInitialValue() {
 		MockNode node = new MockNode();
@@ -107,6 +87,26 @@ class DesignDoubleBindingTest {
 
 		assertThat( binding.getBean() ).isNull();
 		assertThat( binding.getName() ).isNull();
+	}
+
+	private static class MockNode extends DataNode {
+
+		static final String KEY = "width";
+
+		static final String OTHER = "other";
+
+		Double getWidth() {
+			return getValue( KEY, 0.0 );
+		}
+
+		void setWidth( Double width ) {
+			setValue( KEY, width );
+		}
+
+		void setOther( String other ) {
+			setValue( OTHER, other );
+		}
+
 	}
 
 }

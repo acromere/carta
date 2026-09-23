@@ -21,17 +21,17 @@ import java.util.WeakHashMap;
 @CustomLog
 public class ShapePropertiesTool extends ProgramTool {
 
-	private final ScrollPane scroller;
-
-	private final EventHandler<ShapePropertiesToolEvent> showHandler;
-
-	private final EventHandler<ShapePropertiesToolEvent> hideHandler;
-
 	private static final Map<SettingsPage, SettingsPagePanel> settingsPagePanelCache;
 
 	static {
 		settingsPagePanelCache = Collections.synchronizedMap( new WeakHashMap<>() );
 	}
+
+	private final ScrollPane scroller;
+
+	private final EventHandler<ShapePropertiesToolEvent> showHandler;
+
+	private final EventHandler<ShapePropertiesToolEvent> hideHandler;
 
 	public ShapePropertiesTool( XenonProgramProduct product, Resource resource ) {
 		super( product, resource );

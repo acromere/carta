@@ -51,6 +51,12 @@ public class CommandTask {
 		this.parameters = parameters;
 	}
 
+	private static <T> T[] concatArrays( T[] array1, T[] array2 ) {
+		T[] result = Arrays.copyOf( array1, array1.length + array2.length );
+		System.arraycopy( array2, 0, result, array1.length, array2.length );
+		return result;
+	}
+
 	public int getParameterCount() {
 		return parameters.length;
 	}
@@ -75,12 +81,6 @@ public class CommandTask {
 		// Clear the trigger and event when a prior result is added
 		trigger = null;
 		event = null;
-	}
-
-	private static <T> T[] concatArrays( T[] array1, T[] array2 ) {
-		T[] result = Arrays.copyOf( array1, array1.length + array2.length );
-		System.arraycopy( array2, 0, result, array1.length, array2.length );
-		return result;
 	}
 
 	public Object runTaskStep() throws Exception {

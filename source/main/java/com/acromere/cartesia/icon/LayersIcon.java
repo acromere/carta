@@ -5,6 +5,8 @@ import com.acromere.zerra.image.SvgIcon;
 
 public class LayersIcon extends SvgIcon {
 
+	private static final double OFFSET = 3;
+
 	private static final double H = 12;
 
 	private static final double V = 6;
@@ -13,21 +15,23 @@ public class LayersIcon extends SvgIcon {
 
 	private static final double N = C - V;
 
-	private static final double S = C + V;
-
-	private static final double W = C - H;
-
-	private static final double E = C + H;
-
-	private static final double OFFSET = 3;
-
 	private static final double N2 = N + 1.5 * OFFSET;
+
+	private static final double S = C + V;
 
 	private static final double S2 = S - OFFSET;
 
+	private static final double W = C - H;
+
 	private static final double W2 = W + OFFSET;
 
+	private static final double E = C + H;
+
 	private static final double E2 = E - OFFSET;
+
+	public static void main( String[] commands ) {
+		Proof.proof( new LayersIcon() );
+	}
 
 	protected void define() {
 		fill( upperLayer( -6 ) );
@@ -55,10 +59,6 @@ public class LayersIcon extends SvgIcon {
 
 		layer += "Z";
 		return layer;
-	}
-
-	public static void main( String[] commands ) {
-		Proof.proof( new LayersIcon() );
 	}
 
 }

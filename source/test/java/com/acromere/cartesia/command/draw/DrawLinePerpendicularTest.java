@@ -30,6 +30,16 @@ public class DrawLinePerpendicularTest extends BaseCommandTest {
 
 	// Script Tests --------------------------------------------------------------
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of(
+			Arguments.of( new String[]{ "bad parameter" }, "reference-shape-perpendicular" ),
+			Arguments.of( new String[]{ "1,1", "bad parameter" }, "start-point" ),
+			Arguments.of( new String[]{ "1,1", "1,-1", "bad parameter" }, "end-point" )
+		);
+	}
+
+	// Interactive Tests ---------------------------------------------------------
+
 	/**
 	 * Draw perpendicular line with all parameters should set both the origin
 	 * and the point, and then add the line to the current layer. The result
@@ -53,8 +63,6 @@ public class DrawLinePerpendicularTest extends BaseCommandTest {
 		assertThat( command.getPreview() ).hasSize( 0 );
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
-
-	// Interactive Tests ---------------------------------------------------------
 
 	/**
 	 * Draw perpendicular line with no parameters should prompt the
@@ -104,6 +112,8 @@ public class DrawLinePerpendicularTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
+	// Bad Parameter Tests -------------------------------------------------------
+
 	/**
 	 * Draw circle with two parameters should set the circle start and mid-point.
 	 * The result should be incomplete.
@@ -127,8 +137,6 @@ public class DrawLinePerpendicularTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) {
@@ -144,14 +152,6 @@ public class DrawLinePerpendicularTest extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of(
-			Arguments.of( new String[]{ "bad parameter" }, "reference-shape-perpendicular" ),
-			Arguments.of( new String[]{ "1,1", "bad parameter" }, "start-point" ),
-			Arguments.of( new String[]{ "1,1", "1,-1", "bad parameter" }, "end-point" )
-		);
 	}
 
 	@Test

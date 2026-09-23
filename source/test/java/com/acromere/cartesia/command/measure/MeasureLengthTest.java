@@ -27,6 +27,12 @@ public class MeasureLengthTest extends BaseCommandTest {
 
 	// Script Tests --------------------------------------------------------------
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "select-shape" ) );
+	}
+
+	// Interactive Tests ---------------------------------------------------------
+
 	/**
 	 * Measure length with all parameters should calculate the length of the
 	 * selected shape and display it as a notice. The result should be success.
@@ -51,7 +57,7 @@ public class MeasureLengthTest extends BaseCommandTest {
 		assertThat( command.getPreview() ).hasSize( 0 );
 	}
 
-	// Interactive Tests ---------------------------------------------------------
+	// Bad Parameter Tests -------------------------------------------------------
 
 	/**
 	 * Measure length with no parameters or event, should prompt the
@@ -75,8 +81,6 @@ public class MeasureLengthTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) {
@@ -92,10 +96,6 @@ public class MeasureLengthTest extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "select-shape" ) );
 	}
 
 	@Test

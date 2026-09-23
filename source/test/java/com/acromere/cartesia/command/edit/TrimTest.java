@@ -31,6 +31,12 @@ public class TrimTest extends BaseCommandTest {
 
 	// Script Tests --------------------------------------------------------------
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "select-trim-shape" ), Arguments.of( new String[]{ "1,1", "bad parameter" }, "select-trim-edge" ) );
+	}
+
+	// Interactive Tests ---------------------------------------------------------
+
 	/**
 	 * Trim with all parameters should trim the trim shape to the edge shape. The
 	 * result should be success.
@@ -62,8 +68,6 @@ public class TrimTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
 
-	// Interactive Tests ---------------------------------------------------------
-
 	/**
 	 * Trim with no parameters, should prompt the user to select a shape to trim.
 	 * The result should be incomplete.
@@ -85,6 +89,8 @@ public class TrimTest extends BaseCommandTest {
 		assertThat( command.getPreview() ).hasSize( 0 );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
+
+	// Bad Parameter Tests -------------------------------------------------------
 
 	/**
 	 * Trim with one parameter, should prompt the user to select a shape to use
@@ -110,8 +116,6 @@ public class TrimTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) {
@@ -127,10 +131,6 @@ public class TrimTest extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "select-trim-shape" ), Arguments.of( new String[]{ "1,1", "bad parameter" }, "select-trim-edge" ) );
 	}
 
 	@Test

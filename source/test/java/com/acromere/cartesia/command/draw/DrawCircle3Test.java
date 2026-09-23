@@ -28,6 +28,16 @@ public class DrawCircle3Test extends BaseCommandTest {
 
 	// Script Tests --------------------------------------------------------------
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of(
+			Arguments.of( new String[]{ "bad parameter" }, "start-point" ),
+			Arguments.of( new String[]{ "1,3", "bad parameter" }, "mid-point" ),
+			Arguments.of( new String[]{ "1,3", "2,3", "bad parameter" }, "end-point" )
+		);
+	}
+
+	// Interactive Tests ---------------------------------------------------------
+
 	/**
 	 * Draw circle with all parameters should set the circle start, mid-point and
 	 * end. A circle should be added to the current layer. The result should be
@@ -50,8 +60,6 @@ public class DrawCircle3Test extends BaseCommandTest {
 		assertThat( command.getPreview() ).hasSize( 0 );
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
-
-	// Interactive Tests ---------------------------------------------------------
 
 	/**
 	 * Draw circle with no parameters or event, should prompt the
@@ -99,6 +107,8 @@ public class DrawCircle3Test extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
+	// Bad Parameter Tests -------------------------------------------------------
+
 	/**
 	 * Draw circle with two parameters should set the circle start and mid-point.
 	 * The result should be incomplete.
@@ -122,8 +132,6 @@ public class DrawCircle3Test extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) {
@@ -139,14 +147,6 @@ public class DrawCircle3Test extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of(
-			Arguments.of( new String[]{ "bad parameter" }, "start-point" ),
-			Arguments.of( new String[]{ "1,3", "bad parameter" }, "mid-point" ),
-			Arguments.of( new String[]{ "1,3", "2,3", "bad parameter" }, "end-point" )
-		);
 	}
 
 	@Test

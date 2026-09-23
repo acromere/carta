@@ -15,6 +15,10 @@ public class DuplexCircleReticle extends DuplexReticle {
 		super( percent, width, height );
 	}
 
+	public static void main( String[] commands ) {
+		Proof.proof( new DuplexCircleReticle( 0.8, 64, 64 ) );
+	}
+
 	@Override
 	protected void render() {
 		super.render();
@@ -23,10 +27,6 @@ public class DuplexCircleReticle extends DuplexReticle {
 		getGraphicsContext2D().appendSVGPath( SvgIcon.circle( getC() - 0.5, getC() - 0.5, circleR ) );
 		setStrokeWidth( 1.5 );
 		draw();
-	}
-
-	public static void main( String[] commands ) {
-		Proof.proof( new DuplexCircleReticle( 0.8, 64, 64 ) );
 	}
 
 }

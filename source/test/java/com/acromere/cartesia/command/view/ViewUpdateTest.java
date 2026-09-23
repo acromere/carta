@@ -13,10 +13,10 @@ import static org.mockito.Mockito.*;
 
 public class ViewUpdateTest extends BaseCommandTest {
 
+	private final ViewUpdate command = new ViewUpdate();
+
 	@Mock
 	private DesignView view;
-
-	private final ViewUpdate command = new ViewUpdate();
 
 	@Test
 	void runTaskStepNoParameters() throws Exception {

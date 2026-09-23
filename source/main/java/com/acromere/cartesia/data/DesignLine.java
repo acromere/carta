@@ -115,8 +115,7 @@ public class DesignLine extends DesignShape {
 		super.updateFrom( map );
 		if( map.containsKey( POINT ) ) {
 			Object point = map.get( POINT );
-			if( point instanceof Point3D ) setPoint( (Point3D)point );
-			else if( point instanceof String ) setPoint( ParseUtil.parsePoint3D( (String)point ) );
+			if( point instanceof Point3D ) {setPoint( (Point3D)point );} else if( point instanceof String ) setPoint( ParseUtil.parsePoint3D( (String)point ) );
 		}
 		return this;
 	}

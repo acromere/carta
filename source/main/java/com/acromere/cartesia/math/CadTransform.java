@@ -49,66 +49,6 @@ public class CadTransform {
 		this.transform = transform;
 	}
 
-	public boolean isMirror() {
-		return transform.isMirror();
-	}
-
-	public final Point3D apply( Point3D vector ) {
-		return CadPoints.toFxPoint( transform.apply( CadPoints.asPoint( vector ) ) );
-	}
-
-	public final Bounds apply( Bounds bounds ) {
-		Point3D a = apply( new Point3D( bounds.getMinX(), bounds.getMinY(), 0 ) );
-		Point3D b = apply( new Point3D( bounds.getMaxX(), bounds.getMinY(), 0 ) );
-		Point3D c = apply( new Point3D( bounds.getMinX(), bounds.getMaxY(), 0 ) );
-		Point3D d = apply( new Point3D( bounds.getMaxX(), bounds.getMaxY(), 0 ) );
-
-		double x = min4( a.getX(), b.getX(), c.getX(), d.getX() );
-		double y = min4( a.getY(), b.getY(), c.getY(), d.getY() );
-		double w = max4( a.getX(), b.getX(), c.getX(), d.getX() ) - x;
-		double h = max4( a.getY(), b.getY(), c.getY(), d.getY() ) - y;
-
-		return new BoundingBox( x, y, w, h );
-	}
-
-	private double min4( double a, double b, double c, double d ) {
-		return Math.min( Math.min( Math.min( a, b ), c ), d );
-	}
-
-	private double max4( double a, double b, double c, double d ) {
-		return Math.max( Math.max( Math.max( a, b ), c ), d );
-	}
-
-	public Point3D applyDirection( Point3D vector ) {
-		return CadPoints.toFxPoint( transform.applyDirection( CadPoints.asPoint( vector ) ) );
-	}
-
-	public Point3D applyXY( Point3D vector ) {
-		return CadPoints.toFxPoint( transform.applyXY( CadPoints.asPoint( vector ) ) );
-	}
-
-	public double applyZ( Point3D vector ) {
-		return transform.applyZ( CadPoints.asPoint( vector ) );
-	}
-
-	/**
-	 * Combines this transform with another transform.
-	 *
-	 * @param transform The transform to combine with this transform
-	 * @return A new transform that is the combination of this transform and the given transform
-	 */
-	public CadTransform combine( CadTransform transform ) {
-		return new CadTransform( this.transform.combine( transform.transform ) );
-	}
-
-	public CadTransform inverse() {
-		return new CadTransform( transform.inverse() );
-	}
-
-	public DoubleBuffer getMatrix() {
-		return transform.getMatrix();
-	}
-
 	public static CadTransform identity() {
 		return new CadTransform( Transform.identity() );
 	}
@@ -238,6 +178,66 @@ public class CadTransform {
 
 	public static CadTransform perspective( double distance ) {
 		return new CadTransform( Transform.perspective( distance ) );
+	}
+
+	public boolean isMirror() {
+		return transform.isMirror();
+	}
+
+	public final Point3D apply( Point3D vector ) {
+		return CadPoints.toFxPoint( transform.apply( CadPoints.asPoint( vector ) ) );
+	}
+
+	public final Bounds apply( Bounds bounds ) {
+		Point3D a = apply( new Point3D( bounds.getMinX(), bounds.getMinY(), 0 ) );
+		Point3D b = apply( new Point3D( bounds.getMaxX(), bounds.getMinY(), 0 ) );
+		Point3D c = apply( new Point3D( bounds.getMinX(), bounds.getMaxY(), 0 ) );
+		Point3D d = apply( new Point3D( bounds.getMaxX(), bounds.getMaxY(), 0 ) );
+
+		double x = min4( a.getX(), b.getX(), c.getX(), d.getX() );
+		double y = min4( a.getY(), b.getY(), c.getY(), d.getY() );
+		double w = max4( a.getX(), b.getX(), c.getX(), d.getX() ) - x;
+		double h = max4( a.getY(), b.getY(), c.getY(), d.getY() ) - y;
+
+		return new BoundingBox( x, y, w, h );
+	}
+
+	private double min4( double a, double b, double c, double d ) {
+		return Math.min( Math.min( Math.min( a, b ), c ), d );
+	}
+
+	private double max4( double a, double b, double c, double d ) {
+		return Math.max( Math.max( Math.max( a, b ), c ), d );
+	}
+
+	public Point3D applyDirection( Point3D vector ) {
+		return CadPoints.toFxPoint( transform.applyDirection( CadPoints.asPoint( vector ) ) );
+	}
+
+	public Point3D applyXY( Point3D vector ) {
+		return CadPoints.toFxPoint( transform.applyXY( CadPoints.asPoint( vector ) ) );
+	}
+
+	public double applyZ( Point3D vector ) {
+		return transform.applyZ( CadPoints.asPoint( vector ) );
+	}
+
+	/**
+	 * Combines this transform with another transform.
+	 *
+	 * @param transform The transform to combine with this transform
+	 * @return A new transform that is the combination of this transform and the given transform
+	 */
+	public CadTransform combine( CadTransform transform ) {
+		return new CadTransform( this.transform.combine( transform.transform ) );
+	}
+
+	public CadTransform inverse() {
+		return new CadTransform( transform.inverse() );
+	}
+
+	public DoubleBuffer getMatrix() {
+		return transform.getMatrix();
 	}
 
 	@Override

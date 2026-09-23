@@ -30,6 +30,12 @@ public class MirrorTest extends BaseCommandTest {
 
 	// Script Tests --------------------------------------------------------------
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of( Arguments.of( new Object[]{ BAD_POINT_PARAMETER }, "axis-anchor" ), Arguments.of( new Object[]{ "-3,3", BAD_POINT_PARAMETER }, "axis-point" ) );
+	}
+
+	// Interactive Tests ---------------------------------------------------------
+
 	/**
 	 * Mirror should mirror the selected shapes. The result should be success.
 	 *
@@ -51,8 +57,6 @@ public class MirrorTest extends BaseCommandTest {
 		// then
 		assertSuccessfulMirror( result, layer, line );
 	}
-
-	// Interactive Tests ---------------------------------------------------------
 
 	@Test
 	void testExecuteWithNoSelectedShapes() throws Exception {
@@ -88,6 +92,10 @@ public class MirrorTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
+	// Bad Parameter Tests -------------------------------------------------------
+
+	// Bad Parameter Tests -------------------------------------------------------
+
 	@Test
 	void testExecuteWithSelectedShapesAndOneParameter() throws Exception {
 		// given
@@ -109,10 +117,6 @@ public class MirrorTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) {
@@ -129,10 +133,6 @@ public class MirrorTest extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of( Arguments.of( new Object[]{ BAD_POINT_PARAMETER }, "axis-anchor" ), Arguments.of( new Object[]{ "-3,3", BAD_POINT_PARAMETER }, "axis-point" ) );
 	}
 
 	@Test

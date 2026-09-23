@@ -65,6 +65,10 @@ public class DesignText extends DesignShape implements DesignTextSupport {
 		setRotate( rotate );
 	}
 
+	public static CadOrientation calcOrientation( Point3D center, double rotate ) {
+		return new CadOrientation( center, CadPoints.UNIT_Z, CadGeometry.rotate360( CadPoints.UNIT_Y, rotate ) );
+	}
+
 	@Override
 	public DesignShape.Type getType() {
 		return DesignShape.Type.TEXT;
@@ -74,6 +78,8 @@ public class DesignText extends DesignShape implements DesignTextSupport {
 		return getValue( TEXT );
 	}
 
+	// Text size
+
 	@SuppressWarnings( "unchecked" )
 	public <T extends DesignText> T setText( String value ) {
 		setValue( TEXT, value );
@@ -82,8 +88,6 @@ public class DesignText extends DesignShape implements DesignTextSupport {
 
 		return (T)this;
 	}
-
-	// Text size
 
 	public double calcTextSize() {
 		return CadMath.eval( getTextSizeWithInheritance() );
@@ -298,10 +302,6 @@ public class DesignText extends DesignShape implements DesignTextSupport {
 
 	public CadOrientation getOrientation() {
 		return calcOrientation( getOrigin(), calcRotate() );
-	}
-
-	public static CadOrientation calcOrientation( Point3D center, double rotate ) {
-		return new CadOrientation( center, CadPoints.UNIT_Z, CadGeometry.rotate360( CadPoints.UNIT_Y, rotate ) );
 	}
 
 	@Override

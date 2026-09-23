@@ -30,6 +30,14 @@ public class RadialCopyTest extends BaseCommandTest {
 
 	// Script Tests --------------------------------------------------------------
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of(
+			Arguments.of( new Object[]{ BAD_POINT_PARAMETER }, "anchor" ),
+			Arguments.of( new Object[]{ "-3,3", BAD_POINT_PARAMETER }, "start-point" ),
+			Arguments.of( new Object[]{ "-3,3", "3,3", BAD_POINT_PARAMETER }, "target" )
+		);
+	}
+
 	/**
 	 * Radial copy should copy the selected shapes around the specified center.
 	 * The result should be success.
@@ -53,6 +61,8 @@ public class RadialCopyTest extends BaseCommandTest {
 		assertSuccessfulCopy( result, layer, line );
 	}
 
+	// Interactive Tests ---------------------------------------------------------
+
 	/**
 	 * Radial copy should copy the selected shapes around the specified center.
 	 * The result should be success.
@@ -75,8 +85,6 @@ public class RadialCopyTest extends BaseCommandTest {
 		// then
 		assertSuccessfulCopy( result, layer, line );
 	}
-
-	// Interactive Tests ---------------------------------------------------------
 
 	@Test
 	void testExecuteWithNoSelectedShapes() throws Exception {
@@ -132,6 +140,8 @@ public class RadialCopyTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
+	// Bad Parameter Tests -------------------------------------------------------
+
 	@Test
 	void testExecuteWithSelectedShapesAndTwoParameters() throws Exception {
 		// given
@@ -153,8 +163,6 @@ public class RadialCopyTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) {
@@ -171,14 +179,6 @@ public class RadialCopyTest extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of(
-			Arguments.of( new Object[]{ BAD_POINT_PARAMETER }, "anchor" ),
-			Arguments.of( new Object[]{ "-3,3", BAD_POINT_PARAMETER }, "start-point" ),
-			Arguments.of( new Object[]{ "-3,3", "3,3", BAD_POINT_PARAMETER }, "target" )
-		);
 	}
 
 	@Test

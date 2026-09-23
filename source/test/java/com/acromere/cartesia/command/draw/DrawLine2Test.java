@@ -27,6 +27,12 @@ public class DrawLine2Test extends BaseCommandTest {
 
 	// Script Tests --------------------------------------------------------------
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of( Arguments.of( new Object[]{ BAD_POINT_PARAMETER }, "start-point" ), Arguments.of( new Object[]{ "-3,3", BAD_POINT_PARAMETER }, "end-point" ) );
+	}
+
+	// Interactive Tests ---------------------------------------------------------
+
 	/**
 	 * Draw line with two parameters should set both the origin
 	 * and the point, and then add the line to the current layer. The
@@ -48,8 +54,6 @@ public class DrawLine2Test extends BaseCommandTest {
 		assertThat( command.getPreview() ).hasSize( 0 );
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
-
-	// Interactive Tests ---------------------------------------------------------
 
 	/**
 	 * Draw a line with no parameters or event. Should prompt the
@@ -73,6 +77,8 @@ public class DrawLine2Test extends BaseCommandTest {
 		assertThat( command.getPreview() ).hasSize( 0 );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
+
+	// Bad Parameter Tests -------------------------------------------------------
 
 	/**
 	 * Draw line with one parameter should set the line origin. The
@@ -98,8 +104,6 @@ public class DrawLine2Test extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) {
@@ -115,10 +119,6 @@ public class DrawLine2Test extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of( Arguments.of( new Object[]{ BAD_POINT_PARAMETER }, "start-point" ), Arguments.of( new Object[]{ "-3,3", BAD_POINT_PARAMETER }, "end-point" ) );
 	}
 
 	@Test

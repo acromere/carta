@@ -27,18 +27,6 @@ public abstract class DesignShape extends DesignDrawable {
 	// The shape types in order of simplicity:
 	// BOX, LINE, ELLIPSE, ARC, QUAD, CUBIC, PATH, MARKER, TEXT
 
-	public enum Type {
-		ARC,
-		BOX,
-		CUBIC,
-		ELLIPSE,
-		LINE,
-		MARKER,
-		PATH,
-		QUAD,
-		TEXT
-	}
-
 	public static final DesignShape NONE = new DesignShape() {}.setId( "NONE" );
 
 	public static final String SHAPE = "shape";
@@ -51,15 +39,13 @@ public abstract class DesignShape extends DesignDrawable {
 
 	public static final String SELECTED = "selected";
 
-	//public static final String REFERENCE = "reference";
-
 	private static final String CACHE_BOUNDS = "bounds";
+
+	//public static final String REFERENCE = "reference";
 
 	private static final String CACHE_FX_SHAPE = "fx-shape";
 
 	private static final String CACHE_SELECT_BOUNDS = "select-bounds";
-
-	// Convenience method for rendering
 
 	/**
 	 * The preview flag is a special flag that indicates the shape is a preview
@@ -68,6 +54,8 @@ public abstract class DesignShape extends DesignDrawable {
 	@Deprecated
 	private boolean preview;
 
+	// Convenience method for rendering
+
 	public DesignShape() {
 		this( null );
 	}
@@ -75,6 +63,14 @@ public abstract class DesignShape extends DesignDrawable {
 	public DesignShape( Point3D origin ) {
 		addModifyingKeys( ORIGIN, ROTATE );
 		setOrigin( origin );
+	}
+
+	public static CadOrientation calcOrientation( Point3D origin, double rotate ) {
+		return new CadOrientation( origin, CadPoints.UNIT_Z, CadGeometry.rotate360( CadPoints.UNIT_Y, rotate ) );
+	}
+
+	public static Comparator<DesignShape> getComparator() {
+		return new DesignShapeOrderComparator();
 	}
 
 	public Type getType() {
@@ -232,10 +228,6 @@ public abstract class DesignShape extends DesignDrawable {
 		return calcOrientation( getOrigin(), calcRotate() );
 	}
 
-	public static CadOrientation calcOrientation( Point3D origin, double rotate ) {
-		return new CadOrientation( origin, CadPoints.UNIT_Z, CadGeometry.rotate360( CadPoints.UNIT_Y, rotate ) );
-	}
-
 	/**
 	 * Get a map of the shape information keyed by RB label.
 	 *
@@ -293,8 +285,16 @@ public abstract class DesignShape extends DesignDrawable {
 		};
 	}
 
-	public static Comparator<DesignShape> getComparator() {
-		return new DesignShapeOrderComparator();
+	public enum Type {
+		ARC,
+		BOX,
+		CUBIC,
+		ELLIPSE,
+		LINE,
+		MARKER,
+		PATH,
+		QUAD,
+		TEXT
 	}
 
 }

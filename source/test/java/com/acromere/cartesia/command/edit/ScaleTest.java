@@ -30,6 +30,14 @@ public class ScaleTest extends BaseCommandTest {
 
 	// Script Tests --------------------------------------------------------------
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of(
+			Arguments.of( new Object[]{ BAD_POINT_PARAMETER }, "anchor" ),
+			Arguments.of( new Object[]{ "0,0", BAD_POINT_PARAMETER }, "reference" ),
+			Arguments.of( new Object[]{ "0,0", "1,0", BAD_POINT_PARAMETER }, "target" )
+		);
+	}
+
 	/**
 	 * Scale should scale the selected shapes. The result should be success.
 	 *
@@ -54,6 +62,8 @@ public class ScaleTest extends BaseCommandTest {
 		Point3DAssert.assertThat( line.getPoint() ).isCloseTo( new Point3D( 4, 4, 0 ) );
 	}
 
+	// Interactive Tests ---------------------------------------------------------
+
 	@Test
 	void testExecuteWithAnchorScale() throws Exception {
 		// given
@@ -72,8 +82,6 @@ public class ScaleTest extends BaseCommandTest {
 		Point3DAssert.assertThat( line.getOrigin() ).isCloseTo( new Point3D( 2, 2, 0 ) );
 		Point3DAssert.assertThat( line.getPoint() ).isCloseTo( new Point3D( 4, 4, 0 ) );
 	}
-
-	// Interactive Tests ---------------------------------------------------------
 
 	@Test
 	void testExecuteWithNoSelectedShapes() throws Exception {
@@ -129,6 +137,8 @@ public class ScaleTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
+	// Bad Parameter Tests -------------------------------------------------------
+
 	@Test
 	void testExecuteWithSelectedShapesAndTwoParameter() throws Exception {
 		// given
@@ -150,8 +160,6 @@ public class ScaleTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) {
@@ -168,14 +176,6 @@ public class ScaleTest extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of(
-			Arguments.of( new Object[]{ BAD_POINT_PARAMETER }, "anchor" ),
-			Arguments.of( new Object[]{ "0,0", BAD_POINT_PARAMETER }, "reference" ),
-			Arguments.of( new Object[]{ "0,0", "1,0", BAD_POINT_PARAMETER }, "target" )
-		);
 	}
 
 	@Test

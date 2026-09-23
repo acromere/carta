@@ -29,6 +29,10 @@ public class CameraMoveTest extends BaseCommandTest {
 
 	private final CameraMove command = new CameraMove();
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "pan-anchor" ), Arguments.of( new String[]{ "1,3", "bad parameter" }, "pan-target" ) );
+	}
+
 	/**
 	 * Camera move with no parameters or event. Should prompt the
 	 * user to select an anchor point. The result should be incomplete.
@@ -99,6 +103,8 @@ public class CameraMoveTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
+	// Bad Parameter Tests -------------------------------------------------------
+
 	/**
 	 * Camera move with two parameters should set both the anchor and the target,
 	 * and then move the camera accordingly. The result should be success.
@@ -120,8 +126,6 @@ public class CameraMoveTest extends BaseCommandTest {
 		verify( commandPrompt, times( 0 ) ).clear();
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
-
-	// Bad Parameter Tests -------------------------------------------------------
 
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
@@ -156,10 +160,6 @@ public class CameraMoveTest extends BaseCommandTest {
 
 		// then
 		verify( task.getContext() ).submit( eq( tool ), any( Value.class ), eq( SUCCESS ) );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "pan-anchor" ), Arguments.of( new String[]{ "1,3", "bad parameter" }, "pan-target" ) );
 	}
 
 }

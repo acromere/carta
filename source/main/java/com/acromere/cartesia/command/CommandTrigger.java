@@ -24,17 +24,6 @@ import java.util.Set;
 @CustomLog
 public class CommandTrigger {
 
-	public enum Modifier {
-		CONTROL,
-		SHIFT,
-		ALT,
-		META,
-		DIRECT,
-		INERTIA,
-		OVER_GEOMETRY,
-		GEOMETRY_SELECTED
-	}
-
 	private final EventType<?> type;
 
 	// There can only be one mouse button
@@ -60,6 +49,41 @@ public class CommandTrigger {
 		//		if( type == MouseEvent.MOUSE_DRAGGED && modifiers.isEmpty() ) {
 		//			this.modifiers.add( Modifier.MOVING );
 		//		}
+	}
+
+	public static CommandTrigger from( InputEvent event ) {
+		// This method creates a command trigger from an input event to use
+		// the event trigger to look up a command in the command map.
+
+		if( event == null ) return null;
+
+		// Look up the mouse button
+		MouseButton button = null;
+		if( event instanceof MouseEvent mouseEvent ) button = mouseEvent.getButton();
+
+		// Generate the command trigger
+		CommandTrigger trigger = new CommandTrigger( event.getEventType(), button );
+
+		// Add modifiers
+		if( event instanceof MouseEvent mouseEvent ) {
+			if( mouseEvent.isControlDown() ) trigger.modifiers.add( Modifier.CONTROL );
+			if( mouseEvent.isShiftDown() ) trigger.modifiers.add( Modifier.SHIFT );
+			if( mouseEvent.isAltDown() ) trigger.modifiers.add( Modifier.ALT );
+			if( mouseEvent.isMetaDown() ) trigger.modifiers.add( Modifier.META );
+			//if( !mouseEvent.isStillSincePress() ) trigger.modifiers.add( Modifier.MOVED );
+		} else if( event instanceof GestureEvent gestureEvent ) {
+			if( gestureEvent.isControlDown() ) trigger.modifiers.add( Modifier.CONTROL );
+			if( gestureEvent.isShiftDown() ) trigger.modifiers.add( Modifier.SHIFT );
+			if( gestureEvent.isAltDown() ) trigger.modifiers.add( Modifier.ALT );
+			if( gestureEvent.isMetaDown() ) trigger.modifiers.add( Modifier.META );
+			if( gestureEvent.isDirect() ) trigger.modifiers.add( Modifier.DIRECT );
+			if( gestureEvent.isInertia() ) trigger.modifiers.add( Modifier.INERTIA );
+		} else {
+			log.atWarn().log( "Unhandled event type" );
+			return null;
+		}
+
+		return trigger;
 	}
 
 	public EventType<?> getEventType() {
@@ -107,39 +131,15 @@ public class CommandTrigger {
 		return this.equals( from( event ) );
 	}
 
-	public static CommandTrigger from( InputEvent event ) {
-		// This method creates a command trigger from an input event to use
-		// the event trigger to look up a command in the command map.
-
-		if( event == null ) return null;
-
-		// Look up the mouse button
-		MouseButton button = null;
-		if( event instanceof MouseEvent mouseEvent ) button = mouseEvent.getButton();
-
-		// Generate the command trigger
-		CommandTrigger trigger = new CommandTrigger( event.getEventType(), button );
-
-		// Add modifiers
-		if( event instanceof MouseEvent mouseEvent ) {
-			if( mouseEvent.isControlDown() ) trigger.modifiers.add( Modifier.CONTROL );
-			if( mouseEvent.isShiftDown() ) trigger.modifiers.add( Modifier.SHIFT );
-			if( mouseEvent.isAltDown() ) trigger.modifiers.add( Modifier.ALT );
-			if( mouseEvent.isMetaDown() ) trigger.modifiers.add( Modifier.META );
-			//if( !mouseEvent.isStillSincePress() ) trigger.modifiers.add( Modifier.MOVED );
-		} else if( event instanceof GestureEvent gestureEvent ) {
-			if( gestureEvent.isControlDown() ) trigger.modifiers.add( Modifier.CONTROL );
-			if( gestureEvent.isShiftDown() ) trigger.modifiers.add( Modifier.SHIFT );
-			if( gestureEvent.isAltDown() ) trigger.modifiers.add( Modifier.ALT );
-			if( gestureEvent.isMetaDown() ) trigger.modifiers.add( Modifier.META );
-			if( gestureEvent.isDirect() ) trigger.modifiers.add( Modifier.DIRECT );
-			if( gestureEvent.isInertia() ) trigger.modifiers.add( Modifier.INERTIA );
-		} else {
-			log.atWarn().log( "Unhandled event type" );
-			return null;
-		}
-
-		return trigger;
+	public enum Modifier {
+		CONTROL,
+		SHIFT,
+		ALT,
+		META,
+		DIRECT,
+		INERTIA,
+		OVER_GEOMETRY,
+		GEOMETRY_SELECTED
 	}
 
 }

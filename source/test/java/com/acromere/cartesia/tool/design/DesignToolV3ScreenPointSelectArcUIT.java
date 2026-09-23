@@ -6,7 +6,6 @@ import javafx.geometry.Point3D;
 import lombok.CustomLog;
 import lombok.Getter;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

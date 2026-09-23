@@ -35,6 +35,10 @@ public class CommandPrompt extends BorderPane {
 		command.textProperty().addListener( this::handleTextChange );
 	}
 
+	public String getPrompt() {
+		return prompt.getText().trim();
+	}
+
 	public void setPrompt( String prompt ) {
 		final String effectivePrompt = !TextUtil.isEmpty( prompt ) ? prompt : Rb.text( "prompt", "command" );
 		final DesignTool tool = context.getTool();
@@ -42,10 +46,6 @@ public class CommandPrompt extends BorderPane {
 			if( tool != null ) tool.showCommandPrompt();
 			this.prompt.setText( effectivePrompt );
 		} );
-	}
-
-	public String getPrompt() {
-		return prompt.getText().trim();
 	}
 
 	public String getCommand() {

@@ -12,6 +12,10 @@ public class CrosshairReticle extends RenderedIcon {
 		resize( width, height );
 	}
 
+	public static void main( String[] commands ) {
+		Proof.proof( new CrosshairReticle( 48, 48 ) );
+	}
+
 	@Override
 	protected void render() {
 		double w = getWidth() - 1;
@@ -28,10 +32,6 @@ public class CrosshairReticle extends RenderedIcon {
 		setStrokeWidth( 1 );
 		move( 0.5, 0.5 );
 		draw();
-	}
-
-	public static void main( String[] commands ) {
-		Proof.proof( new CrosshairReticle( 48, 48 ) );
 	}
 
 }

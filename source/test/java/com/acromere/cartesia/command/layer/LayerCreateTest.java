@@ -30,6 +30,12 @@ public class LayerCreateTest extends BaseCommandTest {
 
 	// Script Tests --------------------------------------------------------------
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of( Arguments.of( new String[]{ null }, "layer-name" ) );
+	}
+
+	// Interactive Tests ---------------------------------------------------------
+
 	/**
 	 * Layer create with all parameters should create and add a new layer to the
 	 * design. The result should be success.
@@ -54,7 +60,7 @@ public class LayerCreateTest extends BaseCommandTest {
 		assertThat( command.getPreview() ).hasSize( 0 );
 	}
 
-	// Interactive Tests ---------------------------------------------------------
+	// Bad Parameter Tests -------------------------------------------------------
 
 	/**
 	 * Measure point with no parameters or event, should prompt the
@@ -78,8 +84,6 @@ public class LayerCreateTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) {
@@ -95,10 +99,6 @@ public class LayerCreateTest extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of( Arguments.of( new String[]{ null }, "layer-name" ) );
 	}
 
 	@Test

@@ -29,6 +29,17 @@ public class DrawEllipseArc5Test extends BaseCommandTest {
 
 	// Script Tests --------------------------------------------------------------
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of(
+			Arguments.of( new String[]{ "bad parameter" }, "center" ),
+			Arguments.of( new String[]{ "8,3", "bad parameter" }, "radius" ),
+			Arguments.of( new String[]{ "8,3", "7,4", "bad parameter" }, "radius" ),
+			Arguments.of( new String[]{ "8,3", "7,4", "8,5", "bad parameter" }, "start" ),
+			Arguments.of( new String[]{ "8,3", "7,4", "8,5", "7,3", "bad parameter" }, "extent" ),
+			Arguments.of( new String[]{ "8,3", "7,4", "8,5", "7,3", "9,7", "bad parameter" }, "spin" )
+		);
+	}
+
 	/**
 	 * Draw ellipse with all parameters should set the ellipse origin, axis
 	 * radius one and axis radius two. An ellipse should be added to the current
@@ -75,6 +86,8 @@ public class DrawEllipseArc5Test extends BaseCommandTest {
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
 
+	// Interactive Tests ---------------------------------------------------------
+
 	/**
 	 * Draw ellipse with all parameters should set the ellipse origin, axis
 	 * radius one and axis radius two. An ellipse should be added to the current
@@ -97,8 +110,6 @@ public class DrawEllipseArc5Test extends BaseCommandTest {
 		assertThat( command.getPreview() ).hasSize( 0 );
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
-
-	// Interactive Tests ---------------------------------------------------------
 
 	/**
 	 * Draw circle with no parameters or event, should prompt the
@@ -218,6 +229,8 @@ public class DrawEllipseArc5Test extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
+	// Bad Parameter Tests -------------------------------------------------------
+
 	/**
 	 * Draw circle with two parameters should set the circle start and mid-point.
 	 * The result should be incomplete.
@@ -242,8 +255,6 @@ public class DrawEllipseArc5Test extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) {
@@ -259,17 +270,6 @@ public class DrawEllipseArc5Test extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of(
-			Arguments.of( new String[]{ "bad parameter" }, "center" ),
-			Arguments.of( new String[]{ "8,3", "bad parameter" }, "radius" ),
-			Arguments.of( new String[]{ "8,3", "7,4", "bad parameter" }, "radius" ),
-			Arguments.of( new String[]{ "8,3", "7,4", "8,5", "bad parameter" }, "start" ),
-			Arguments.of( new String[]{ "8,3", "7,4", "8,5", "7,3", "bad parameter" }, "extent" ),
-			Arguments.of( new String[]{ "8,3", "7,4", "8,5", "7,3", "9,7", "bad parameter" }, "spin" )
-		);
 	}
 
 	@Test

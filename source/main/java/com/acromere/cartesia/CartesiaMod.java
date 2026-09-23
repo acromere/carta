@@ -345,7 +345,7 @@ public class CartesiaMod extends Module {
 
 			List<String> tags = new ArrayList<>( command.getTags() );
 			for( String tag : getUserManualTags() ) {
-				if( !tags.contains( tag  ) ) tags.add( tag );
+				if( !tags.contains( tag ) ) tags.add( tag );
 			}
 
 			String actionName = Objects.requireNonNullElse( command.getName(), "" );

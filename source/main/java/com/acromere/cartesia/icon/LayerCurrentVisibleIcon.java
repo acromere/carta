@@ -6,13 +6,13 @@ import javafx.scene.shape.StrokeLineJoin;
 
 public class LayerCurrentVisibleIcon extends LayerVisibleIcon {
 
+	public static void main( String[] commands ) {
+		Proof.proof( new LayerCurrentVisibleIcon() );
+	}
+
 	protected void define() {
 		super.define();
 		draw( getCurrentPath(), null, 2, StrokeLineCap.BUTT, StrokeLineJoin.MITER );
-	}
-
-	public static void main( String[] commands ) {
-		Proof.proof( new LayerCurrentVisibleIcon() );
 	}
 
 }

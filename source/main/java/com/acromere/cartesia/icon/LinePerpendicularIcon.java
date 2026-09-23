@@ -10,6 +10,10 @@ public class LinePerpendicularIcon extends DrawIcon {
 
 	private static final double G = Math.sqrt( 0.5 * (R * R) );
 
+	public static void main( String[] commands ) {
+		Proof.proof( new LinePerpendicularIcon() );
+	}
+
 	protected void define() {
 		super.define();
 		draw( "M4,28L28,4", null, getLineWidth(), StrokeLineCap.ROUND, StrokeLineJoin.MITER, G / 1.5, 0, G / 1.5 );
@@ -18,10 +22,6 @@ public class LinePerpendicularIcon extends DrawIcon {
 		fill( circle( 28, 4, getDotRadius() ) );
 		fill( circle( 16, 16, getDotRadius() ) );
 		fill( circle( 28, 28, getDotRadius() ) );
-	}
-
-	public static void main( String[] commands ) {
-		Proof.proof( new LinePerpendicularIcon() );
 	}
 
 }

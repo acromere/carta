@@ -2,8 +2,8 @@ package com.acromere.cartesia;
 
 import com.acromere.cartesia.data.*;
 import com.acromere.cartesia.data.map.DesignUnitMapper;
-import com.acromere.data.IdDataNode;
 import com.acromere.data.DataNode;
+import com.acromere.data.IdDataNode;
 import com.acromere.log.LazyEval;
 import com.acromere.product.Product;
 import com.acromere.util.TextUtil;
@@ -39,6 +39,22 @@ public abstract class CartesiaDesignCodec extends Codec {
 
 	static final String CODEC_VERSION = "1";
 
+	static final Map<String, String> saveLayerPaintMapping;
+
+	static final Map<String, String> loadLayerPaintMapping;
+
+	static final Map<String, String> saveLayerPropertyMapping;
+
+	static final Map<String, String> loadLayerPropertyMapping;
+
+	static final Map<String, String> savePaintMapping;
+
+	static final Map<String, String> loadPaintMapping;
+
+	static final Map<String, String> savePropertyMapping;
+
+	static final Map<String, String> loadPropertyMapping;
+
 	private static final String POINT = "point";
 
 	/**
@@ -62,26 +78,6 @@ public abstract class CartesiaDesignCodec extends Codec {
 	@SuppressWarnings( "DeprecatedIsStillUsed" )
 	private static final String Y_RADIUS = "y-radius";
 
-	static final Map<String, String> saveLayerPaintMapping;
-
-	static final Map<String, String> loadLayerPaintMapping;
-
-	static final Map<String, String> saveLayerPropertyMapping;
-
-	static final Map<String, String> loadLayerPropertyMapping;
-
-	static final Map<String, String> savePaintMapping;
-
-	static final Map<String, String> loadPaintMapping;
-
-	static final Map<String, String> savePropertyMapping;
-
-	static final Map<String, String> loadPropertyMapping;
-
-	private final Product product;
-
-	private final Map<Class<? extends DesignShape>, Function<DesignShape, Map<String, Object>>> geometryMappers;
-
 	static {
 		JSON_MAPPER = new ObjectMapper();
 		JSON_MAPPER.configure( SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true );
@@ -101,6 +97,10 @@ public abstract class CartesiaDesignCodec extends Codec {
 		loadPropertyMapping = Map.of( "null", DesignDrawable.MODE_LAYER );
 	}
 
+	private final Product product;
+
+	private final Map<Class<? extends DesignShape>, Function<DesignShape, Map<String, Object>>> geometryMappers;
+
 	public CartesiaDesignCodec( Product product ) {
 		this.product = product;
 
@@ -114,6 +114,33 @@ public abstract class CartesiaDesignCodec extends Codec {
 		geometryMappers.put( DesignPath.class, m -> mapPath( (DesignPath)m ) );
 		geometryMappers.put( DesignMarker.class, m -> mapMarker( (DesignMarker)m ) );
 		geometryMappers.put( DesignText.class, m -> mapText( (DesignText)m ) );
+	}
+
+	static void remapValue( Map<String, Object> map, String key, Map<?, ?> values ) {
+		Object currentValue = map.get( key );
+		if( currentValue == null ) currentValue = "null";
+
+		// The currentValue becomes the key for the values map
+		Object newValue = values.get( currentValue );
+
+		// If there is not a new value there is nothing to do
+		if( newValue == null ) return;
+
+		if( "null".equals( newValue ) ) {
+			map.remove( key );
+		} else {
+			map.put( key, newValue );
+		}
+	}
+
+	private static Map<String, Object> asMap( DataNode node, String... keys ) {
+		return asMap( node, Map.of(), keys );
+	}
+
+	private static Map<String, Object> asMap( DataNode node, Map<String, Object> map, String... keys ) {
+		Map<String, Object> result = new HashMap<>( map );
+		result.putAll( Arrays.stream( keys ).filter( k -> node.getValue( k ) != null ).collect( Collectors.toMap( k -> k, node::getValue ) ) );
+		return result;
 	}
 
 	protected Product getProduct() {
@@ -513,33 +540,6 @@ public abstract class CartesiaDesignCodec extends Codec {
 			DesignText.FONT_UNDERLINE,
 			DesignText.FONT_STRIKETHROUGH
 		);
-	}
-
-	static void remapValue( Map<String, Object> map, String key, Map<?, ?> values ) {
-		Object currentValue = map.get( key );
-		if( currentValue == null ) currentValue = "null";
-
-		// The currentValue becomes the key for the values map
-		Object newValue = values.get( currentValue );
-
-		// If there is not a new value there is nothing to do
-		if( newValue == null ) return;
-
-		if( "null".equals( newValue ) ) {
-			map.remove( key );
-		} else {
-			map.put( key, newValue );
-		}
-	}
-
-	private static Map<String, Object> asMap( DataNode node, String... keys ) {
-		return asMap( node, Map.of(), keys );
-	}
-
-	private static Map<String, Object> asMap( DataNode node, Map<String, Object> map, String... keys ) {
-		Map<String, Object> result = new HashMap<>( map );
-		result.putAll( Arrays.stream( keys ).filter( k -> node.getValue( k ) != null ).collect( Collectors.toMap( k -> k, node::getValue ) ) );
-		return result;
 	}
 
 	@SuppressWarnings( "unused" )

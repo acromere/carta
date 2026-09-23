@@ -6,6 +6,10 @@ import javafx.scene.shape.StrokeLineJoin;
 
 public class Curve3Icon extends DrawIcon {
 
+	public static void main( String[] commands ) {
+		Proof.proof( new Curve3Icon() );
+	}
+
 	protected void define() {
 		super.define();
 		double factor = 1.032;
@@ -14,10 +18,6 @@ public class Curve3Icon extends DrawIcon {
 		fill( circle( 4, 28, getDotRadius() ) );
 		fill( circle( 16, 4, getDotRadius() ) );
 		fill( circle( 28, 28, getDotRadius() ) );
-	}
-
-	public static void main( String[] commands ) {
-		Proof.proof( new Curve3Icon() );
 	}
 
 }

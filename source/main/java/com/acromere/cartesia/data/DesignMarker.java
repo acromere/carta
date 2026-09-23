@@ -18,6 +18,195 @@ import java.util.Map;
 @CustomLog
 public class DesignMarker extends DesignShape {
 
+	public static final String MARKER = "marker";
+
+	public static final String SIZE = "size";
+
+	public static final String TYPE = "type";
+
+	public static final Type DEFAULT_TYPE = Type.CROSS;
+
+	public static final double DEFAULT_SIZE = 1.0;
+
+	private static final double ZERO_DRAW_WIDTH = 0.0;
+
+	public DesignMarker() {
+		this( null );
+	}
+
+	public DesignMarker( Point3D origin ) {
+		this( origin, "1", DEFAULT_TYPE );
+	}
+
+	public DesignMarker( Point3D origin, String size ) {
+		this( origin, size, DEFAULT_TYPE );
+	}
+
+	public DesignMarker( Point3D origin, Type type ) {
+		this( origin, String.valueOf( DEFAULT_SIZE ), type );
+	}
+
+	public DesignMarker( Point3D origin, double size, Type type ) {
+		this( origin, String.valueOf( size ), type );
+	}
+
+	public DesignMarker( Point3D origin, String size, Type type ) {
+		super( origin );
+		setSize( size );
+		setType( type.name() );
+		addModifyingKeys( ORIGIN, SIZE, TYPE );
+	}
+
+	@Override
+	public DesignShape.Type getType() {
+		return DesignShape.Type.MARKER;
+	}
+
+	/**
+	 * Set the marker type. This string must correspond to a known marker type.
+	 * The value is converted to lower case.
+	 *
+	 * @param type The marker type
+	 * @return The marker
+	 */
+	public DesignMarker setType( String type ) {
+		if( type != null ) type = type.toLowerCase();
+		setValue( TYPE, type );
+		return this;
+	}
+
+	public DesignPath getPath() {
+		DesignPath path = calcType().getDesignPath();
+
+		path.apply( CadTransform.translation( getOrigin() ).combine( CadTransform.scale( calcSize() ) ) );
+
+		return path;
+	}
+
+	public List<DesignPath.Step> getSteps() {
+		DesignPath path = getPath();
+		return path == null ? List.of() : path.getSteps();
+	}
+
+	public double calcSize() {
+		String size = getSize();
+		if( size != null ) return CadMath.eval( size );
+		return DEFAULT_SIZE;
+	}
+
+	public String getSize() {
+		return getValue( SIZE );
+	}
+
+	public DesignMarker setSize( String size ) {
+		setValue( SIZE, size );
+		return this;
+	}
+
+	public Type calcType() {
+		String type = getMarkerType();
+		if( type == null ) type = DesignMarker.DEFAULT_TYPE.name();
+		return DesignMarker.Type.valueOf( type.toUpperCase() );
+	}
+
+	/**
+	 * Get the marker type. This string should correspond to a known marker type.
+	 *
+	 * @return The lower case string value of the marker type
+	 */
+	public String getMarkerType() {
+		return getValue( TYPE );
+	}
+
+	@Override
+	public double calcDrawWidth() {
+		return ZERO_DRAW_WIDTH;
+	}
+
+	@Override
+	public Paint calcFillPaint() {
+		return calcDrawPaint();
+	}
+
+	@Override
+	public List<Point3D> getReferencePoints() {
+		return List.of( getOrigin() );
+	}
+
+	@Override
+	public double distanceTo( Point3D point ) {
+		double[] o = CadPoints.asPoint( getOrigin() );
+		double[] p = CadPoints.asPoint( point );
+		return Geometry.distance( o, p );
+	}
+
+	@Override
+	public double pathLength() {
+		return 0.0;
+	}
+
+	@Override
+	public Map<String, Object> getInformation() {
+		return Map.of( ORIGIN, getOrigin() );
+	}
+
+	@Override
+	public DesignMarker cloneShape() {
+		return new DesignMarker().copyFrom( this, true );
+	}
+
+	@Override
+	public void apply( CadTransform transform ) {
+		try( Txn ignored = Txn.create() ) {
+			setOrigin( transform.apply( getOrigin() ) );
+		} catch( TxnException exception ) {
+			log.atWarn().log( "Unable to apply transform" );
+		}
+	}
+
+	protected Map<String, Object> asMap() {
+		Map<String, Object> map = super.asMap();
+		map.put( SHAPE, MARKER );
+		map.putAll( asMap( SIZE, TYPE ) );
+		return map;
+	}
+
+	//	@Override
+	//	public Bounds getVisualBounds() {
+	//		// Special handling of markers because they are not shapes
+	//		Point3D origin = getOrigin();
+	//		double size = calcSize();
+	//		double halfSize = 0.5 * size;
+	//		return new BoundingBox( origin.getX() - halfSize, origin.getY() - halfSize, size, size );
+	//	}
+
+	public DesignMarker updateFrom( Map<String, Object> map ) {
+		super.updateFrom( map );
+		setSize( (String)map.get( SIZE ) );
+		setType( (String)map.get( TYPE ) );
+		return this;
+	}
+
+	@Override
+	public DesignMarker updateFrom( DesignShape shape ) {
+		super.updateFrom( shape );
+		if( !(shape instanceof DesignMarker marker) ) return this;
+
+		try( Txn ignore = Txn.create() ) {
+			this.setSize( marker.getSize() );
+			this.setType( marker.getMarkerType() );
+		} catch( TxnException exception ) {
+			log.atWarn().log( "Unable to update marker" );
+		}
+
+		return this;
+	}
+
+	@Override
+	public String toString() {
+		return super.toString( ORIGIN );
+	}
+
 	public enum Type {
 
 		DEFAULT {
@@ -406,195 +595,6 @@ public class DesignMarker extends DesignShape {
 		 * @return The {@link DesignPath} of the marker
 		 */
 		public abstract DesignPath getDesignPath();
-	}
-
-	public static final String MARKER = "marker";
-
-	public static final String SIZE = "size";
-
-	public static final String TYPE = "type";
-
-	public static final Type DEFAULT_TYPE = Type.CROSS;
-
-	public static final double DEFAULT_SIZE = 1.0;
-
-	private static final double ZERO_DRAW_WIDTH = 0.0;
-
-	public DesignMarker() {
-		this( null );
-	}
-
-	public DesignMarker( Point3D origin ) {
-		this( origin, "1", DEFAULT_TYPE );
-	}
-
-	public DesignMarker( Point3D origin, String size ) {
-		this( origin, size, DEFAULT_TYPE );
-	}
-
-	public DesignMarker( Point3D origin, Type type ) {
-		this( origin, String.valueOf( DEFAULT_SIZE ), type );
-	}
-
-	public DesignMarker( Point3D origin, double size, Type type ) {
-		this( origin, String.valueOf( size ), type );
-	}
-
-	public DesignMarker( Point3D origin, String size, Type type ) {
-		super( origin );
-		setSize( size );
-		setType( type.name() );
-		addModifyingKeys( ORIGIN, SIZE, TYPE );
-	}
-
-	@Override
-	public DesignShape.Type getType() {
-		return DesignShape.Type.MARKER;
-	}
-
-	public DesignPath getPath() {
-		DesignPath path = calcType().getDesignPath();
-
-		path.apply( CadTransform.translation( getOrigin() ).combine( CadTransform.scale( calcSize() ) ) );
-
-		return path;
-	}
-
-	public List<DesignPath.Step> getSteps() {
-		DesignPath path = getPath();
-		return path == null ? List.of() : path.getSteps();
-	}
-
-	public double calcSize() {
-		String size = getSize();
-		if( size != null ) return CadMath.eval( size );
-		return DEFAULT_SIZE;
-	}
-
-	public String getSize() {
-		return getValue( SIZE );
-	}
-
-	public DesignMarker setSize( String size ) {
-		setValue( SIZE, size );
-		return this;
-	}
-
-	public Type calcType() {
-		String type = getMarkerType();
-		if( type == null ) type = DesignMarker.DEFAULT_TYPE.name();
-		return DesignMarker.Type.valueOf( type.toUpperCase() );
-	}
-
-	/**
-	 * Get the marker type. This string should correspond to a known marker type.
-	 *
-	 * @return The lower case string value of the marker type
-	 */
-	public String getMarkerType() {
-		return getValue( TYPE );
-	}
-
-	/**
-	 * Set the marker type. This string must correspond to a known marker type.
-	 * The value is converted to lower case.
-	 *
-	 * @param type The marker type
-	 * @return The marker
-	 */
-	public DesignMarker setType( String type ) {
-		if( type != null ) type = type.toLowerCase();
-		setValue( TYPE, type );
-		return this;
-	}
-
-	@Override
-	public double calcDrawWidth() {
-		return ZERO_DRAW_WIDTH;
-	}
-
-	@Override
-	public Paint calcFillPaint() {
-		return calcDrawPaint();
-	}
-
-	@Override
-	public List<Point3D> getReferencePoints() {
-		return List.of( getOrigin() );
-	}
-
-	@Override
-	public double distanceTo( Point3D point ) {
-		double[] o = CadPoints.asPoint( getOrigin() );
-		double[] p = CadPoints.asPoint( point );
-		return Geometry.distance( o, p );
-	}
-
-	@Override
-	public double pathLength() {
-		return 0.0;
-	}
-
-	@Override
-	public Map<String, Object> getInformation() {
-		return Map.of( ORIGIN, getOrigin() );
-	}
-
-	@Override
-	public DesignMarker cloneShape() {
-		return new DesignMarker().copyFrom( this, true );
-	}
-
-	@Override
-	public void apply( CadTransform transform ) {
-		try( Txn ignored = Txn.create() ) {
-			setOrigin( transform.apply( getOrigin() ) );
-		} catch( TxnException exception ) {
-			log.atWarn().log( "Unable to apply transform" );
-		}
-	}
-
-	//	@Override
-	//	public Bounds getVisualBounds() {
-	//		// Special handling of markers because they are not shapes
-	//		Point3D origin = getOrigin();
-	//		double size = calcSize();
-	//		double halfSize = 0.5 * size;
-	//		return new BoundingBox( origin.getX() - halfSize, origin.getY() - halfSize, size, size );
-	//	}
-
-	protected Map<String, Object> asMap() {
-		Map<String, Object> map = super.asMap();
-		map.put( SHAPE, MARKER );
-		map.putAll( asMap( SIZE, TYPE ) );
-		return map;
-	}
-
-	public DesignMarker updateFrom( Map<String, Object> map ) {
-		super.updateFrom( map );
-		setSize( (String)map.get( SIZE ) );
-		setType( (String)map.get( TYPE ) );
-		return this;
-	}
-
-	@Override
-	public DesignMarker updateFrom( DesignShape shape ) {
-		super.updateFrom( shape );
-		if( !(shape instanceof DesignMarker marker) ) return this;
-
-		try( Txn ignore = Txn.create() ) {
-			this.setSize( marker.getSize() );
-			this.setType( marker.getMarkerType() );
-		} catch( TxnException exception ) {
-			log.atWarn().log( "Unable to update marker" );
-		}
-
-		return this;
-	}
-
-	@Override
-	public String toString() {
-		return super.toString( ORIGIN );
 	}
 
 }

@@ -26,6 +26,14 @@ public class DrawArc3Test extends BaseCommandTest {
 
 	private final DrawArc3 command = new DrawArc3();
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of(
+			Arguments.of( new String[]{ "bad parameter" }, "start-point" ),
+			Arguments.of( new String[]{ "8,3", "bad parameter" }, "mid-point" ),
+			Arguments.of( new String[]{ "8,3", "1,0", "bad parameter" }, "end-point" )
+		);
+	}
+
 	/**
 	 * Draw arc with no parameters or event. Should prompt the
 	 * user to select an origin point. The result should be incomplete.
@@ -48,6 +56,8 @@ public class DrawArc3Test extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
+	// Stepped tests -------------------------------------------------------------
+
 	@Test
 	void testRunTaskStepWithThreeParameters() throws Exception {
 		// given
@@ -63,8 +73,6 @@ public class DrawArc3Test extends BaseCommandTest {
 		assertThat( command.getPreview() ).hasSize( 0 );
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
-
-	// Stepped tests -------------------------------------------------------------
 
 	@Test
 	void testRunTaskStepWithOneStep() throws Exception {
@@ -110,6 +118,8 @@ public class DrawArc3Test extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
+	// Bad Parameter Tests -------------------------------------------------------
+
 	@Test
 	void testRunTaskStepWithThreeSteps() throws Exception {
 		// given
@@ -133,8 +143,6 @@ public class DrawArc3Test extends BaseCommandTest {
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) throws Exception {
@@ -150,14 +158,6 @@ public class DrawArc3Test extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of(
-			Arguments.of( new String[]{ "bad parameter" }, "start-point" ),
-			Arguments.of( new String[]{ "8,3", "bad parameter" }, "mid-point" ),
-			Arguments.of( new String[]{ "8,3", "1,0", "bad parameter" }, "end-point" )
-		);
 	}
 
 	@Test

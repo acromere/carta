@@ -27,6 +27,10 @@ public class SelectByWindowIntersectTest extends BaseCommandTest {
 
 	private final SelectByWindowIntersect command = new SelectByWindowIntersect();
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "select-window-anchor" ), Arguments.of( new String[]{ "1,3", "bad parameter" }, "select-window-corner" ) );
+	}
+
 	/**
 	 * Select by window contain with no parameters or event, should prompt the
 	 * user to select an anchor point. The result should be incomplete.
@@ -92,6 +96,8 @@ public class SelectByWindowIntersectTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
+	// Bad Parameter Tests -------------------------------------------------------
+
 	/**
 	 * Select by window contain with one parameter should set the anchor. The
 	 * result should be incomplete.
@@ -112,8 +118,6 @@ public class SelectByWindowIntersectTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( SUCCESS );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) {
@@ -129,10 +133,6 @@ public class SelectByWindowIntersectTest extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "select-window-anchor" ), Arguments.of( new String[]{ "1,3", "bad parameter" }, "select-window-corner" ) );
 	}
 
 }

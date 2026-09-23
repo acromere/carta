@@ -10,9 +10,6 @@ import org.mapstruct.Mapping;
 @Mapper
 public interface DesignPathMapper {
 
-	@CustomLog
-	class Log {}
-
 	@Mapping( target = "" )
 	default Path map( DesignPath designPath ) {
 		Path path = new Path();
@@ -34,7 +31,7 @@ public interface DesignPathMapper {
 	}
 
 	@Mapping( target = "" )
-	default Path update( DesignMarker designMarker, Path path, double shapeScaleX, double shapeScaleY ){
+	default Path update( DesignMarker designMarker, Path path, double shapeScaleX, double shapeScaleY ) {
 		path.getElements().setAll( designMarker.getSteps().stream().map( step -> map( step, shapeScaleX, shapeScaleY ) ).toList() );
 		return path;
 	}
@@ -76,5 +73,8 @@ public interface DesignPathMapper {
 			case Z -> new ClosePath();
 		};
 	}
+
+	@CustomLog
+	class Log {}
 
 }

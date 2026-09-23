@@ -15,10 +15,10 @@ import static org.mockito.Mockito.*;
 
 public class RedoTest extends BaseCommandTest {
 
+	private final Redo command = new Redo();
+
 	@Mock
 	private UndoManager<List<NodeChange>> undoManager;
-
-	private final Redo command = new Redo();
 
 	// Script Tests --------------------------------------------------------------
 

@@ -72,7 +72,7 @@ public class DesignToolV2ScreenPointSelectUIT extends DesignToolV2BaseUIT {
 
 	@Test
 	@Disabled
-	// FIXME Flaky. Occasionally, comes back with no selection on second select
+		// FIXME Flaky. Occasionally, comes back with no selection on second select
 	void screenPointSelectWithMultipleSelectsMovingDownVisibleGeometry() throws Exception {
 		// given
 		useLineLayer();

@@ -34,6 +34,34 @@ public abstract class BaseDesignRendererTest extends BaseCartesiaUnitTest {
 		this.renderer = renderer;
 	}
 
+	private static Stream<Arguments> matchesArguments() {
+		Shape shapeInside = new Rectangle( 2, 2, 2, 2 );
+		Shape selectorSurrounding = new Rectangle( 0, 0, 10, 10 );
+
+		Shape shapeSurrounding = new Rectangle( 0, 0, 10, 10 );
+		Shape selectorInside = new Rectangle( 2, 2, 2, 2 );
+
+		Shape shapeOverlapping = new Rectangle( 0, 0, 5, 5 );
+		Shape selectorOverlapping = new Rectangle( 2, 2, 5, 5 );
+
+		Shape shapeDisjoint = new Rectangle( 0, 0, 2, 2 );
+		Shape selectorDisjoint = new Rectangle( 10, 10, 2, 2 );
+
+		return Stream.of(
+			// Selector contains Shape
+			Arguments.of( shapeInside, selectorSurrounding, true, true ), Arguments.of( shapeInside, selectorSurrounding, false, true ),
+
+			// Shape contains Selector
+			Arguments.of( shapeSurrounding, selectorInside, true, true ), Arguments.of( shapeSurrounding, selectorInside, false, false ),
+
+			// Shape and Selector overlap
+			Arguments.of( shapeOverlapping, selectorOverlapping, true, true ), Arguments.of( shapeOverlapping, selectorOverlapping, false, false ),
+
+			// Shape and Selector are disjoint
+			Arguments.of( shapeDisjoint, selectorDisjoint, true, false ), Arguments.of( shapeDisjoint, selectorDisjoint, false, false )
+		);
+	}
+
 	protected BaseDesignRenderer getRenderer() {
 		return renderer;
 	}
@@ -229,38 +257,6 @@ public abstract class BaseDesignRendererTest extends BaseCartesiaUnitTest {
 	@MethodSource( "matchesArguments" )
 	void matches( Shape shape, Shape selector, boolean intersect, boolean expected ) {
 		assertThat( getRenderer().matches( shape, selector, intersect ) ).isEqualTo( expected );
-	}
-
-	private static Stream<Arguments> matchesArguments() {
-		Shape shapeInside = new Rectangle( 2, 2, 2, 2 );
-		Shape selectorSurrounding = new Rectangle( 0, 0, 10, 10 );
-
-		Shape shapeSurrounding = new Rectangle( 0, 0, 10, 10 );
-		Shape selectorInside = new Rectangle( 2, 2, 2, 2 );
-
-		Shape shapeOverlapping = new Rectangle( 0, 0, 5, 5 );
-		Shape selectorOverlapping = new Rectangle( 2, 2, 5, 5 );
-
-		Shape shapeDisjoint = new Rectangle( 0, 0, 2, 2 );
-		Shape selectorDisjoint = new Rectangle( 10, 10, 2, 2 );
-
-		return Stream.of(
-			// Selector contains Shape
-			Arguments.of( shapeInside, selectorSurrounding, true, true ),
-			Arguments.of( shapeInside, selectorSurrounding, false, true ),
-
-			// Shape contains Selector
-			Arguments.of( shapeSurrounding, selectorInside, true, true ),
-			Arguments.of( shapeSurrounding, selectorInside, false, false ),
-
-			// Shape and Selector overlap
-			Arguments.of( shapeOverlapping, selectorOverlapping, true, true ),
-			Arguments.of( shapeOverlapping, selectorOverlapping, false, false ),
-
-			// Shape and Selector are disjoint
-			Arguments.of( shapeDisjoint, selectorDisjoint, true, false ),
-			Arguments.of( shapeDisjoint, selectorDisjoint, false, false )
-		);
 	}
 
 	// --- Moved from BaseDesignRendererCoverageTest ---

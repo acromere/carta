@@ -46,28 +46,9 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 
 	private static final DesignPathMapper pathElementMapper;
 
-	/**
-	 * Caution: This map is shared among all renderers of this type. This could
-	 * result in a memory leak if the FX geometry is not properly removed from the
-	 * renderers when drawables are removed from the design, tools are closed,
-	 * etc. Watch for memory leaks.
-	 */
-	private final Map<GeometryKey, Node> drawableToGeometry;
-
-	/**
-	 * Reference to the Design.
-	 */
-	private Design<? extends DesignModel> design;
-
-	/**
-	 * Reference to the Design data model.
-	 */
-	private DesignModel model;
-
-	/**
-	 * Reference to the DesignTool workplane.
-	 */
-	private Workplane workplane;
+	static {
+		pathElementMapper = Mappers.getMapper( DesignPathMapper.class );
+	}
 
 	/**
 	 * The primary container for all visual elements that are not part of the design
@@ -122,6 +103,14 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	@Getter
 	final Pane aperture;
 
+	/**
+	 * Caution: This map is shared among all renderers of this type. This could
+	 * result in a memory leak if the FX geometry is not properly removed from the
+	 * renderers when drawables are removed from the design, tools are closed,
+	 * etc. Watch for memory leaks.
+	 */
+	private final Map<GeometryKey, Node> drawableToGeometry;
+
 	private final DoubleProperty apertureUnitScale;
 
 	private final DoubleProperty apertureShapeScaleX;
@@ -149,13 +138,24 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	@Getter( AccessLevel.PACKAGE )
 	private final Translate viewCenterTransform;
 
-	private final EventHandler<DataNodeEvent> workplaneChangeHandler = _ -> updateGridFxGeometry();
+	/**
+	 * Reference to the Design.
+	 */
+	private Design<? extends DesignModel> design;
+
+	/**
+	 * Reference to the Design data model.
+	 */
+	private DesignModel model;
 
 	private final EventHandler<DataNodeEvent> designUnitChangeHandler = _ -> setDesignUnit( model.calcDesignUnit() );
 
-	static {
-		pathElementMapper = Mappers.getMapper( DesignPathMapper.class );
-	}
+	/**
+	 * Reference to the DesignTool workplane.
+	 */
+	private Workplane workplane;
+
+	private final EventHandler<DataNodeEvent> workplaneChangeHandler = _ -> updateGridFxGeometry();
 
 	/**
 	 * Create a new renderer. This class is intended to only be used by {@link

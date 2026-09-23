@@ -25,11 +25,17 @@ import static org.mockito.Mockito.*;
 
 public class SnapSelectTest extends BaseCommandTest {
 
-	private final SnapSelect command = new SnapSelect();
-
 	private static final Snap snap = new SnapMidpoint();
 
+	private final SnapSelect command = new SnapSelect();
+
 	// Script Tests --------------------------------------------------------------
+
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of( Arguments.of( new Object[]{ snap, BAD_POINT_PARAMETER }, "select-snap-shape" ) );
+	}
+
+	// Interactive Tests ---------------------------------------------------------
 
 	/**
 	 * Draw line with two parameters should set both the origin
@@ -54,8 +60,6 @@ public class SnapSelectTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( new Point3D( 0, -1, 0 ) );
 	}
 
-	// Interactive Tests ---------------------------------------------------------
-
 	@Test
 	void testRunTaskStepNoParameters() {
 		// given
@@ -72,6 +76,8 @@ public class SnapSelectTest extends BaseCommandTest {
 		assertThat( command.getPreview() ).hasSize( 0 );
 	}
 
+	// Bad Parameter Tests -------------------------------------------------------
+
 	@Test
 	void testRunTaskStepWithSnapOnly() throws Exception {
 		// given
@@ -86,8 +92,6 @@ public class SnapSelectTest extends BaseCommandTest {
 		assertThat( command.getPreview() ).hasSize( 0 );
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
-
-	// Bad Parameter Tests -------------------------------------------------------
 
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
@@ -104,10 +108,6 @@ public class SnapSelectTest extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of( Arguments.of( new Object[]{ snap, BAD_POINT_PARAMETER }, "select-snap-shape" ) );
 	}
 
 	@Test

@@ -21,6 +21,19 @@ import static com.acromere.cartesia.command.Command.Result.*;
 @CustomLog
 public class ShapeInformation extends Command {
 
+	private static void fireNotice( CommandTask task, DesignShape shape, String description ) {
+		String title = Rb.text( RbKey.NOTICE, "measurement" );
+		String message = shape == DesignShape.NONE ? Rb.text( RbKey.NOTICE, "shape-not-selected" ) : description;
+		Notice notice = new Notice( title, message );
+		notice.setAction( () -> Fx.run( () -> {
+			Clipboard clipboard = Clipboard.getSystemClipboard();
+			ClipboardContent content = new ClipboardContent();
+			content.putString( message );
+			clipboard.setContent( content );
+		} ) );
+		task.getContext().getTool().getProgram().getNoticeManager().addNotice( notice );
+	}
+
 	@Override
 	public Object execute( CommandTask task ) throws Exception {
 		if( task.getParameterCount() == 0 & task.getTool().getSelectedShapes().isEmpty() ) {
@@ -66,19 +79,6 @@ public class ShapeInformation extends Command {
 		}
 
 		return FAILURE;
-	}
-
-	private static void fireNotice( CommandTask task, DesignShape shape, String description ) {
-		String title = Rb.text( RbKey.NOTICE, "measurement" );
-		String message = shape == DesignShape.NONE ? Rb.text( RbKey.NOTICE, "shape-not-selected" ) : description;
-		Notice notice = new Notice( title, message );
-		notice.setAction( () -> Fx.run( () -> {
-			Clipboard clipboard = Clipboard.getSystemClipboard();
-			ClipboardContent content = new ClipboardContent();
-			content.putString( message );
-			clipboard.setContent( content );
-		} ) );
-		task.getContext().getTool().getProgram().getNoticeManager().addNotice( notice );
 	}
 
 }

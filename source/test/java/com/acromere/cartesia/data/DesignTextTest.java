@@ -20,11 +20,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class DesignTextTest extends DesignShapeTest {
 
+	private DesignText text;
+
 	DesignTextTest() {
 		super( new DesignText() );
 	}
-
-	private DesignText text;
 
 	@BeforeEach
 	protected void setup() throws Exception {

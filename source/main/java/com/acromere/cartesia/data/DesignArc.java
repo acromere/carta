@@ -20,22 +20,6 @@ import java.util.Map;
 @CustomLog
 public class DesignArc extends DesignEllipse {
 
-	public enum Type {
-		CHORD( ArcType.CHORD ),
-		OPEN( ArcType.OPEN ),
-		PIE( ArcType.ROUND );
-
-		private final ArcType fxArcType;
-
-		Type( ArcType fxArcType ) {
-			this.fxArcType = fxArcType;
-		}
-
-		public ArcType arcType() {
-			return fxArcType;
-		}
-	}
-
 	public static final String ARC = "arc";
 
 	public static final String START = "start";
@@ -82,6 +66,11 @@ public class DesignArc extends DesignEllipse {
 	@Override
 	public DesignShape.Type getType() {
 		return DesignShape.Type.ARC;
+	}
+
+	public DesignArc setType( DesignArc.Type value ) {
+		setValue( TYPE, value );
+		return this;
 	}
 
 	/**
@@ -149,11 +138,6 @@ public class DesignArc extends DesignEllipse {
 
 	public DesignArc.Type getArcType() {
 		return getValue( TYPE );
-	}
-
-	public DesignArc setType( DesignArc.Type value ) {
-		setValue( TYPE, value );
-		return this;
 	}
 
 	/**
@@ -256,18 +240,15 @@ public class DesignArc extends DesignEllipse {
 		super.updateFrom( map );
 		if( map.containsKey( START ) ) {
 			Object start = map.get( START );
-			if( start instanceof Number ) setStart( ((Number)start).doubleValue() );
-			else if( start instanceof String ) setStart( Double.parseDouble( (String)start ) );
+			if( start instanceof Number ) {setStart( ((Number)start).doubleValue() );} else if( start instanceof String ) setStart( Double.parseDouble( (String)start ) );
 		}
 		if( map.containsKey( EXTENT ) ) {
 			Object extent = map.get( EXTENT );
-			if( extent instanceof Number ) setExtent( ((Number)extent).doubleValue() );
-			else if( extent instanceof String ) setExtent( Double.parseDouble( (String)extent ) );
+			if( extent instanceof Number ) {setExtent( ((Number)extent).doubleValue() );} else if( extent instanceof String ) setExtent( Double.parseDouble( (String)extent ) );
 		}
 		if( map.containsKey( TYPE ) ) {
 			Object type = map.get( TYPE );
-			if( type instanceof Type ) setType( (Type)type );
-			else if( type instanceof String ) setType( Type.valueOf( ((String)type).toUpperCase() ) );
+			if( type instanceof Type ) {setType( (Type)type );} else if( type instanceof String ) setType( Type.valueOf( ((String)type).toUpperCase() ) );
 		}
 		return this;
 	}
@@ -314,6 +295,22 @@ public class DesignArc extends DesignEllipse {
 	@Override
 	public String toString() {
 		return super.toString( ORIGIN, RADII, ROTATE, START, EXTENT, TYPE );
+	}
+
+	public enum Type {
+		CHORD( ArcType.CHORD ),
+		OPEN( ArcType.OPEN ),
+		PIE( ArcType.ROUND );
+
+		private final ArcType fxArcType;
+
+		Type( ArcType fxArcType ) {
+			this.fxArcType = fxArcType;
+		}
+
+		public ArcType arcType() {
+			return fxArcType;
+		}
 	}
 
 }

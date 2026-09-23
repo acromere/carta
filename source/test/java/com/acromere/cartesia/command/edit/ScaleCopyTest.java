@@ -30,6 +30,16 @@ public class ScaleCopyTest extends BaseCommandTest {
 
 	// Script Tests --------------------------------------------------------------
 
+	private static Stream<Arguments> provideParametersForTestWithParameters() {
+		return Stream.of(
+			Arguments.of( new Object[]{ BAD_POINT_PARAMETER }, "anchor" ),
+			Arguments.of( new Object[]{ "0,0", BAD_POINT_PARAMETER }, "reference" ),
+			Arguments.of( new Object[]{ "0,0", "1,0", BAD_POINT_PARAMETER }, "target" )
+		);
+	}
+
+	// Interactive Tests ---------------------------------------------------------
+
 	/**
 	 * ScaleCopy should copy and scale the selected shapes. The result should be
 	 * success.
@@ -52,8 +62,6 @@ public class ScaleCopyTest extends BaseCommandTest {
 		// then
 		assertSuccessfulCopy( result, layer, line );
 	}
-
-	// Interactive Tests ---------------------------------------------------------
 
 	@Test
 	void testExecuteWithNoSelectedShapes() throws Exception {
@@ -109,6 +117,8 @@ public class ScaleCopyTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
+	// Bad Parameter Tests -------------------------------------------------------
+
 	@Test
 	void testExecuteWithSelectedShapesAndTwoParameter() throws Exception {
 		// given
@@ -130,8 +140,6 @@ public class ScaleCopyTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	@ParameterizedTest
 	@MethodSource( "provideParametersForTestWithParameters" )
 	void testRunTaskStepWithBadParameters( Object[] parameters, String rbKey ) {
@@ -148,14 +156,6 @@ public class ScaleCopyTest extends BaseCommandTest {
 		assertThat( exception.getInputRbKey() ).isEqualTo( rbKey );
 		assertThat( command.getReference() ).hasSize( 0 );
 		assertThat( command.getPreview() ).hasSize( 0 );
-	}
-
-	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of(
-			Arguments.of( new Object[]{ BAD_POINT_PARAMETER }, "anchor" ),
-			Arguments.of( new Object[]{ "0,0", BAD_POINT_PARAMETER }, "reference" ),
-			Arguments.of( new Object[]{ "0,0", "1,0", BAD_POINT_PARAMETER }, "target" )
-		);
 	}
 
 	@Test

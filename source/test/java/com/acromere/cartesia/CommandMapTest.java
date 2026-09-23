@@ -21,32 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CommandMapTest extends BaseCommandMapTest {
 
-	@BeforeEach
-	public void setup() throws Exception {
-		super.setup();
-	}
-
-	@Test
-	void getCommandByShortcut() {
-		assertThat( getMod().getCommandMap().getCommandByShortcut( "ws" ).getType() ).isEqualTo( SelectByWindowContain.class );
-	}
-
-	@Test
-	void getCommandByAction() {
-		assertThat( getMod().getCommandMap().getCommandByAction( "anchor" ).getType() ).isEqualTo( Anchor.class );
-	}
-
-	@ParameterizedTest
-	@MethodSource( "cartesiaMetadataMap" )
-	void getCommandByEvent( CommandMetadata expected, InputEvent event ) {
-		CommandMetadata actual = getMod().getCommandMap().getCommandByEvent( event );
-		assertThat( actual.getAction() ).isEqualTo( expected.getAction() );
-		assertThat( actual.getName() ).isEqualTo( expected.getName() );
-		assertThat( actual.getCommand() ).isEqualTo( expected.getCommand() );
-		assertThat( actual.getShortcut() ).isEqualTo( expected.getShortcut() );
-		assertThat( actual.getType() ).isEqualTo( expected.getType() );
-	}
-
 	private static Stream<Arguments> cartesiaMetadataMap() {
 		return Stream.of(
 			// Camera Move
@@ -85,6 +59,32 @@ public class CommandMapTest extends BaseCommandMapTest {
 			// Snap Auto Midpoint
 			Arguments.of( createMetadata( "snap-auto-midpoint", "Snap Midpoint", null, AutoSnap.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.MIDDLE, false, false, false, false ) )
 		);
+	}
+
+	@BeforeEach
+	public void setup() throws Exception {
+		super.setup();
+	}
+
+	@Test
+	void getCommandByShortcut() {
+		assertThat( getMod().getCommandMap().getCommandByShortcut( "ws" ).getType() ).isEqualTo( SelectByWindowContain.class );
+	}
+
+	@Test
+	void getCommandByAction() {
+		assertThat( getMod().getCommandMap().getCommandByAction( "anchor" ).getType() ).isEqualTo( Anchor.class );
+	}
+
+	@ParameterizedTest
+	@MethodSource( "cartesiaMetadataMap" )
+	void getCommandByEvent( CommandMetadata expected, InputEvent event ) {
+		CommandMetadata actual = getMod().getCommandMap().getCommandByEvent( event );
+		assertThat( actual.getAction() ).isEqualTo( expected.getAction() );
+		assertThat( actual.getName() ).isEqualTo( expected.getName() );
+		assertThat( actual.getCommand() ).isEqualTo( expected.getCommand() );
+		assertThat( actual.getShortcut() ).isEqualTo( expected.getShortcut() );
+		assertThat( actual.getType() ).isEqualTo( expected.getType() );
 	}
 
 }

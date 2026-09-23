@@ -15,16 +15,16 @@ public class DuplexPixelReticle extends DuplexReticle {
 		super( percent, width, height );
 	}
 
+	public static void main( String[] commands ) {
+		Proof.proof( new DuplexPixelReticle( 0.8, 64, 64 ) );
+	}
+
 	@Override
 	protected void render() {
 		super.render();
 		startPath();
 		getGraphicsContext2D().appendSVGPath( SvgIcon.circle( getC() - 0.5, getC() - 0.5, 1 ) );
 		fill();
-	}
-
-	public static void main( String[] commands ) {
-		Proof.proof( new DuplexPixelReticle( 0.8, 64, 64 ) );
 	}
 
 }
