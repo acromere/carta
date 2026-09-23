@@ -12,6 +12,7 @@ import com.acromere.zerra.color.Paints;
 import com.acromere.zerra.javafx.Fx;
 import javafx.geometry.Point3D;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static com.acromere.cartesia.TestConstants.TOLERANCE;
@@ -19,6 +20,8 @@ import static com.acromere.cartesia.tool.RenderConstants.DEFAULT_SELECTED_DRAW_P
 import static com.acromere.cartesia.tool.RenderConstants.DEFAULT_SELECTED_FILL_PAINT;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Deprecated
+@Disabled
 public class DesignToolV2RendererTest extends BaseCartesiaUnitTest {
 
 	private DesignToolV2Renderer renderer;

@@ -175,29 +175,20 @@ public class CartesiaMod extends Module {
 	}
 
 	private void registerTools() {
-		getProgram().getToolManager().addToolAlias( "com.acromere.cartesia.tool.DesignToolV1", DesignToolV2.class );
-		getProgram().getToolManager().addToolAlias( "com.acromere.cartesia.tool.design.FxRenderDesignTool", DesignToolV2.class );
-		getProgram().getToolManager().addToolAlias( "com.acromere.cartesia.tool.design.FxShapeDesignTool", DesignToolV2.class );
+		getProgram().getToolManager().addToolAlias( "com.acromere.cartesia.tool.DesignToolV1", DesignToolV3.class );
+		getProgram().getToolManager().addToolAlias( "com.acromere.cartesia.tool.design.FxRenderDesignTool", DesignToolV3.class );
+		getProgram().getToolManager().addToolAlias( "com.acromere.cartesia.tool.design.FxShapeDesignTool", DesignToolV3.class );
+		getProgram().getToolManager().addToolAlias( "com.acromere.cartesia.tool.design.DesignToolV2", DesignToolV3.class );
 
 		// Default tool registration (because it is first)
 		ToolRegistration designToolV3Registration = new ToolRegistration( this, DesignToolV3.class );
 		designToolV3Registration.setName( Rb.text( RbKey.LABEL, "design-2d-editor" ) );
 		registerTool( design2dResourceType, designToolV3Registration );
 
-		// Design V3 Editor registration
-		ToolRegistration designToolV2Registration = new ToolRegistration( this, DesignToolV2.class );
-		designToolV2Registration.setName( Rb.text( RbKey.LABEL, "design-2d-editor" ) + " (Old)" );
-		registerTool( design2dResourceType, designToolV2Registration );
-
-		// Other tool registrations
-		ToolRegistration design2dEditorRegistration = new ToolRegistration( this, Design2dEditor.class );
-		design2dEditorRegistration.setName( Rb.text( RbKey.LABEL, "design-2d-editor" ) + " (Deprecated)" );
-		registerTool( design2dResourceType, design2dEditorRegistration );
-
 		// Register Design3D resource type and tools
 		//registerResourceType( design3dResourceType = new Design3dResourceType( this ) );
 		// Tool registration
-		//ToolRegistration design3dEditorRegistration = new ToolRegistration( this, Design3dEditor.class );
+		//ToolRegistration design3dEditorRegistration = new ToolRegistration( this, Design3dToolV1.class );
 		//design3dEditorRegistration.setName( Rb.text(RbKey.LABEL, "design-3d-editor") );
 		//registerTool( design3dResourceType, design3dEditorRegistration );
 

@@ -13,6 +13,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Deprecated
 @Getter
 @CustomLog
 @Disabled( "Not going to fix box rendering in V2 renderer" )

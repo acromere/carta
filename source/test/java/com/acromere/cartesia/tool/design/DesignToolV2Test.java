@@ -8,6 +8,7 @@ import com.acromere.xenon.resource.Resource;
 import com.acromere.zerra.javafx.Fx;
 import javafx.geometry.Point3D;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -17,8 +18,10 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Deprecated
 @Note( "All V2 tests have been implemented in V3 as of 2026-07-11" )
 @ExtendWith( MockitoExtension.class )
+@Disabled
 public class DesignToolV2Test extends BaseDesignToolTest {
 
 	private static final double DPC = FxRenderer2d.DEFAULT_DPI / 2.54;

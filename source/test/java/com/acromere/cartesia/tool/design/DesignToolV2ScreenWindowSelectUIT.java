@@ -13,8 +13,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Deprecated
 @Getter
 @CustomLog
+@Disabled
 public class DesignToolV2ScreenWindowSelectUIT extends DesignToolV2BaseUIT {
 
 	@Test

@@ -5,7 +5,6 @@ import com.acromere.cartesia.data.Design;
 import com.acromere.cartesia.data.DesignLayer;
 import com.acromere.cartesia.data.DesignModel;
 import com.acromere.cartesia.tool.BaseDesignTool;
-import com.acromere.cartesia.tool.DesignToolLayersGuide;
 import com.acromere.data.DataNodeEvent;
 import com.acromere.event.EventHandler;
 import com.acromere.product.Rb;
@@ -38,11 +37,11 @@ public class LayerGuide extends Guide {
 
 	// HANDLERS
 
-	private static final String NAME_HANDLER = DesignToolLayersGuide.class.getName() + ":name-handler";
+	private static final String NAME_HANDLER = LayerGuide.class.getName() + ":name-handler";
 
-	private static final String ORDER_HANDLER = DesignToolLayersGuide.class.getName() + ":order-handler";
+	private static final String ORDER_HANDLER = LayerGuide.class.getName() + ":order-handler";
 
-	//private static final String VISIBLE_HANDLER = DesignToolLayersGuide.class.getName() + ":visible-handler";
+	//private static final String VISIBLE_HANDLER = LayerGuide.class.getName() + ":visible-handler";
 
 	// FIELDS
 

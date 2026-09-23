@@ -12,6 +12,7 @@ import javafx.stage.Screen;
 import lombok.CustomLog;
 import lombok.Getter;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 
 import java.net.URI;
 import java.util.Objects;
@@ -21,8 +22,10 @@ import java.util.concurrent.TimeoutException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@Deprecated
 @Getter
 @CustomLog
+@Disabled
 public abstract class DesignToolV2BaseUIT extends BaseCartesiaUiTest {
 
 	private DesignToolV2 tool;

@@ -3,12 +3,15 @@ package com.acromere.cartesia.tool.design;
 import com.acromere.cartesia.Design2dResourceType;
 import lombok.CustomLog;
 import lombok.Getter;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Deprecated
 @Getter
 @CustomLog
+@Disabled
 public class DesignToolV2AssertTypeUIT extends DesignToolV2BaseUIT {
 
 	@Test
