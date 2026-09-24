@@ -46,11 +46,11 @@ public class CommandMapTest extends BaseCommandMapTest {
 			Arguments.of( createMetadata( "select-touch", "Select By Point", "sp", SelectByPoint.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, false, false, false, false ) ),
 			Arguments.of( createMetadata( "select-toggle", "Select Toggle", null, SelectToggle.class ), createMouseEvent( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, true, false, false, false ) ),
 			Arguments.of(
-				createMetadata( "select-window-contain", "Select Window Contain", "ws", SelectByWindowContain.class ),
+				createMetadata( "select-window", "Select by Window", "ws", SelectByWindow.class ),
 				createMouseEvent( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, false, false, false, false )
 			),
 			Arguments.of(
-				createMetadata( "select-window-intersect", "Select Window Intersect", "cs", SelectByWindowIntersect.class ),
+				createMetadata( "select-window-intersect", "Select Window Intersect", "wi", SelectByWindow.class ),
 				createMouseEvent( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, true, false, false, false )
 			),
 

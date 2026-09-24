@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mockito;
 
 import java.util.stream.Stream;
 
@@ -23,16 +24,22 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-public class SelectByWindowIntersectTest extends BaseCommandTest {
+public class SelectByWindowTest extends BaseCommandTest {
 
-	private final SelectByWindowIntersect command = new SelectByWindowIntersect();
+	private final SelectByWindow command = new SelectByWindow();
 
 	private static Stream<Arguments> provideParametersForTestWithParameters() {
-		return Stream.of( Arguments.of( new String[]{ "bad parameter" }, "select-window-anchor" ), Arguments.of( new String[]{ "1,3", "bad parameter" }, "select-window-corner" ) );
+		return Stream.of(
+			Arguments.of( new String[]{ "bad parameter" }, "select-window-anchor" ),
+			Arguments.of( new String[]{ "bad parameter", "2,4" }, "select-window-corner" ),
+			Arguments.of( new String[]{ "bad parameter", "2,4", "0" }, "select-window-anchor" ),
+			Arguments.of( new String[]{ "1,3", "bad parameter", "0" }, "select-window-corner" ),
+			Arguments.of( new String[]{ "1,3", "2,4", "bad parameter" }, "select-window-intersect" )
+		);
 	}
 
 	/**
-	 * Select by window contain with no parameters or event, should prompt the
+	 * Select-by-window-contain, with no parameters or event, should prompt the
 	 * user to select an anchor point. The result should be incomplete.
 	 *
 	 * @throws Exception If an error occurs during the test
@@ -61,7 +68,7 @@ public class SelectByWindowIntersectTest extends BaseCommandTest {
 	@Test
 	void testExecuteWithNoParametersAndEvent() throws Exception {
 		// given
-		CommandTrigger trigger = getMod().getCommandMap().getTriggersByAction( "select-window-intersect" ).iterator().next();
+		CommandTrigger trigger = getMod().getCommandMap().getTriggersByAction( "select-window" ).iterator().next();
 		InputEvent event = createMouseEvent( trigger, 48, 17 );
 		CommandTask task = new CommandTask( commandContext, tool, trigger, event, command );
 		// Pretend the world anchor has been set
@@ -96,26 +103,48 @@ public class SelectByWindowIntersectTest extends BaseCommandTest {
 		assertThat( result ).isEqualTo( INCOMPLETE );
 	}
 
-	// Bad Parameter Tests -------------------------------------------------------
-
 	/**
-	 * Select by window contain with one parameter should set the anchor. The
-	 * result should be incomplete.
+	 * Select by window contain with two parameters should set both the anchor
+	 * and the point, and then select the geometry contained by the window. The
+	 * result should be success.
 	 *
 	 * @throws Exception If an error occurs during the test
 	 */
 	@Test
 	void testExecuteWithTwoParameters() throws Exception {
 		// given
-		CommandTask task = new CommandTask( commandContext, tool, null, null, command, "-3,3", "3,-3" );
+		CommandTask task = new CommandTask( commandContext, tool, null, null, command, "-3,3", "3,-3", "0" );
 		when( commandContext.isSelectMode() ).thenReturn( true );
 
 		// when
 		Object result = task.runTaskStep();
 
 		// then
-		verify( tool, times( 1 ) ).worldWindowSelect( eq( new Point3D( -3, 3, 0 ) ), eq( new Point3D( 3, -3, 0 ) ), eq( true ), eq( false ) );
+		verify( tool, times( 1 ) ).worldWindowSelect( eq( new Point3D( -3, 3, 0 ) ), eq( new Point3D( 3, -3, 0 ) ), eq( false ), eq( false ) );
 		assertThat( result ).isEqualTo( SUCCESS );
+	}
+
+	// Bad Parameter Tests -------------------------------------------------------
+
+	/**
+	 * Select by window contain with two parameters, and commands on the command
+	 * stack, should return the corner point.
+	 *
+	 * @throws Exception If an error occurs during the test
+	 */
+	@Test
+	void testExecuteWithTwoParametersAndCommandStack() throws Exception {
+		// given
+		CommandTask task = new CommandTask( commandContext, tool, null, null, command, "-3,3", "3,-3", "0" );
+		// Pretend there is another command on the stack
+		when( commandContext.isSelectMode() ).thenReturn( false );
+
+		// when
+		Object result = task.runTaskStep();
+
+		// then
+		verify( tool, times( 0 ) ).worldWindowSelect( any(), any(), anyBoolean(), anyBoolean() );
+		assertThat( result ).isEqualTo( new Point3D( 3, -3, 0 ) );
 	}
 
 	@ParameterizedTest

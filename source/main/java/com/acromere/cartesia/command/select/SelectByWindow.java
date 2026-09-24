@@ -2,7 +2,6 @@ package com.acromere.cartesia.command.select;
 
 import com.acromere.cartesia.command.CommandMap;
 import com.acromere.cartesia.command.CommandTask;
-import com.acromere.cartesia.command.CommandTrigger;
 import com.acromere.cartesia.command.base.Value;
 import com.acromere.cartesia.tool.BaseDesignTool;
 import javafx.geometry.Point3D;
@@ -10,17 +9,18 @@ import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 import lombok.CustomLog;
 
+import java.util.Arrays;
+
 import static com.acromere.cartesia.command.Command.Result.*;
 import static com.acromere.cartesia.tool.RenderConstants.POINT_SELECT_APERTURE;
 import static com.acromere.cartesia.tool.RenderConstants.WINDOW_SELECT_APERTURE;
 
-// NEXT Remove SelectByWindowContains and SelectByWindowIntersects
-// Use task trigger matching to determine contains or intersect
-
 @CustomLog
-public abstract class SelectByWindow extends SelectCommand {
+public class SelectByWindow extends SelectCommand {
 
-	protected Object execute( CommandTask task, boolean intersect ) throws Exception {
+	private Point3D anchor;
+
+	public Object execute( CommandTask task ) throws Exception {
 		setCaptureUndoChanges( task, false );
 
 		int paramCount = task.getParameters().length;
@@ -47,21 +47,32 @@ public abstract class SelectByWindow extends SelectCommand {
 
 		// Get the world anchor point from the first parameter
 		if( paramCount == 1 & noEvent ) {
-			Point3D worldPoint = asPoint( task, "select-window-anchor", 0 );
-			if( worldPoint != null ) {
+			Point3D anchor = asPoint( task, "select-window-anchor", 0 );
+			if( anchor != null ) {
+				this.anchor = anchor;
 				task.getTool().setSelectAperture( WINDOW_SELECT_APERTURE );
-				task.getTool().moveSelectAperture( worldPoint, worldPoint );
+				task.getTool().moveSelectAperture( anchor, anchor );
 				promptForWindow( task, "select-window-corner" );
 				return INCOMPLETE;
 			}
 		}
 
-		// The situation of one parameter and an event should not occur
+		// Get the world corner point from the second parameter
+		if( paramCount == 2 & noEvent ) {
+			Point3D corner = asPoint( task, "select-window-corner", 0 );
+			if( corner != null ) {
+				task.getTool().setSelectAperture( WINDOW_SELECT_APERTURE );
+				task.getTool().moveSelectAperture( anchor, corner );
+				promptForYesNo( task, "select-window-intersect" );
+				return INCOMPLETE;
+			}
+		}
 
 		// Get the world point from the event or the second parameter
-		if( paramCount == 2 ) {
+		if( paramCount == 3 ) {
 			Point3D worldAnchor = asPoint( task, "select-window-anchor", 0 );
 			Point3D worldCorner = asPoint( task, "select-window-corner", 1 );
+			boolean intersect = (asDouble( task, "select-window-intersect", 2 ) > 0.0);
 			if( worldAnchor != null && worldCorner != null ) {
 				if( task.getContext().isSelectMode() ) {
 					task.getTool().worldWindowSelect( worldAnchor, worldCorner, intersect, false );
@@ -85,24 +96,16 @@ public abstract class SelectByWindow extends SelectCommand {
 
 		event.consume();
 
-		// The triggers for select by window intersect
-		boolean intersect = false;
-		for( CommandTrigger trigger : task.getTool().getMod().getCommandMap().getTriggersByAction( "select-window-intersect" ) ) {
-			intersect = trigger.matches( event );
-			if( intersect ) {
-				break;
-			}
-		}
-
 		if( event.getEventType().equals( MouseEvent.MOUSE_DRAGGED ) ) {
 			tool.moveSelectAperture( localAnchor, worldAnchor );
-		} else if( getStep() == 2 && event.getEventType().equals( MouseEvent.MOUSE_MOVED ) ) {
+		} else if( getStep() == 1 && event.getEventType().equals( MouseEvent.MOUSE_MOVED ) ) {
 			tool.moveSelectAperture( localAnchor, worldAnchor );
 		} else if( event.getEventType().equals( MouseEvent.MOUSE_RELEASED ) ) {
-			// NEXT Add the intersect flag to this command
+			CommandMap map = tool.getMod().getCommandMap();
+			boolean intersect = map.eventMatchesActionTriggerButtonsAndModifiers( event, "select-window-intersect" );
 
 			// Submit a Value command to pass the point back to this command
-			task.getContext().submit( tool, new Value(), worldAnchor );
+			task.getContext().submit( tool, new Value(), worldAnchor, intersect ? 1 : -3 );
 		}
 	}
 

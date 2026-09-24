@@ -100,9 +100,8 @@ public final class CommandMap {
 
 		// Basic commands
 		add( product, "select-touch", SelectByPoint.class );
-		//add( product, "select-window", SelectByWindow.class );
-		add( product, "select-window-contain", SelectByWindowContain.class );
-		add( product, "select-window-intersect", SelectByWindowIntersect.class );
+		add( product, "select-window", SelectByWindow.class );
+		add( product, "select-window-intersect", SelectByWindow.class );
 		add( product, "select-toggle", SelectToggle.class );
 
 		// View commands
@@ -274,11 +273,18 @@ public final class CommandMap {
 		return triggersByAction.getOrDefault( action, Collections.emptySet() );
 	}
 
+	public boolean eventMatchesActionTriggerButtonsAndModifiers( InputEvent event, String action ) {
+		boolean matches = false;
+		for( CommandTrigger trigger : getTriggersByAction(action ) ) {
+			if( trigger.matchesButtonsAndModifiers( event ) ) {
+				matches = true;
+				break;
+			}
+		}
+		return matches;
+	}
+
 	void add( String action, CommandTrigger trigger ) {
-		//		if( trigger.getEventType() == MouseEvent.MOUSE_PRESSED && !"anchor".equals( action ) ) {
-		//			log.atWarn().log( "Mouse pressed event should only be assigned to \"anchor\" command: %s", action );
-		//			return;
-		//		}
 		if( actionByTrigger.containsKey( trigger ) ) {
 			log.atSevere().log( "Trigger already used [%s] by %s", trigger, action );
 			return;

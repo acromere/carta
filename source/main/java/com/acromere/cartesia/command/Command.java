@@ -326,6 +326,11 @@ public abstract class Command {
 		return String.valueOf( value );
 	}
 
+	protected void promptForYesNo( CommandTask task, String key ) {
+		Fx.run( () -> task.getTool().setCursor( null ) );
+		promptForValue( task, key, CommandContext.Input.NUMBER );
+	}
+
 	protected void promptForNumber( CommandTask task, String key ) {
 		Fx.run( () -> task.getTool().setCursor( null ) );
 		promptForValue( task, key, CommandContext.Input.NUMBER );

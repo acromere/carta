@@ -13,9 +13,9 @@ public enum MouseAndGestureMap {
 
 			// Selects ---------------------------------------------------------------
 			map.add( "select-touch", new CommandTrigger( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY ) );
-			map.add( "select-toggle", new CommandTrigger( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, CommandTrigger.Modifier.CONTROL ) );
-			map.add( "select-window-contain", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY ) );
+			map.add( "select-window", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY ) );
 			map.add( "select-window-intersect", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.CONTROL ) );
+			map.add( "select-toggle", new CommandTrigger( MouseEvent.MOUSE_PRESSED, MouseButton.PRIMARY, CommandTrigger.Modifier.CONTROL ) );
 
 			// Snaps -----------------------------------------------------------------
 			map.add( "snap-auto-nearest", new CommandTrigger( MouseEvent.MOUSE_PRESSED, MouseButton.SECONDARY ) );
@@ -42,7 +42,7 @@ public enum MouseAndGestureMap {
 			// Selects ---------------------------------------------------------------
 			map.add( "select-touch", new CommandTrigger( MouseEvent.MOUSE_CLICKED, MouseButton.PRIMARY ) );
 			map.add( "select-toggle", new CommandTrigger( MouseEvent.MOUSE_CLICKED, MouseButton.PRIMARY, CommandTrigger.Modifier.CONTROL ) );
-			map.add( "select-window-contain", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY ) );
+			map.add( "select-window", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY ) );
 			map.add( "select-window-intersect", new CommandTrigger( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, CommandTrigger.Modifier.SHIFT ) );
 
 			// Snaps -----------------------------------------------------------------
