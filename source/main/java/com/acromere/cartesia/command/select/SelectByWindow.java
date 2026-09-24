@@ -1,6 +1,8 @@
 package com.acromere.cartesia.command.select;
 
+import com.acromere.cartesia.command.CommandMap;
 import com.acromere.cartesia.command.CommandTask;
+import com.acromere.cartesia.command.CommandTrigger;
 import com.acromere.cartesia.command.base.Value;
 import com.acromere.cartesia.tool.BaseDesignTool;
 import javafx.geometry.Point3D;
@@ -82,11 +84,23 @@ public abstract class SelectByWindow extends SelectCommand {
 		Point3D worldAnchor = tool.screenToWorld( new Point3D( event.getX(), event.getY(), event.getZ() ) );
 
 		event.consume();
+
+		// The triggers for select by window intersect
+		boolean intersect = false;
+		for( CommandTrigger trigger : task.getTool().getMod().getCommandMap().getTriggersByAction( "select-window-intersect" ) ) {
+			intersect = trigger.matches( event );
+			if( intersect ) {
+				break;
+			}
+		}
+
 		if( event.getEventType().equals( MouseEvent.MOUSE_DRAGGED ) ) {
 			tool.moveSelectAperture( localAnchor, worldAnchor );
 		} else if( getStep() == 2 && event.getEventType().equals( MouseEvent.MOUSE_MOVED ) ) {
 			tool.moveSelectAperture( localAnchor, worldAnchor );
 		} else if( event.getEventType().equals( MouseEvent.MOUSE_RELEASED ) ) {
+			// NEXT Add the intersect flag to this command
+
 			// Submit a Value command to pass the point back to this command
 			task.getContext().submit( tool, new Value(), worldAnchor );
 		}
