@@ -122,6 +122,15 @@ public class CommandTrigger {
 		return typeMatches && buttonMatches && modifiersMatch;
 	}
 
+	public boolean equalsButtonsAndModifiers( Object object ) {
+		if( this == object ) return true;
+		if( object == null || getClass() != object.getClass() ) return false;
+		CommandTrigger that = (CommandTrigger)object;
+		boolean buttonMatches = Objects.equals( this.button, that.button );
+		boolean modifiersMatch = modifiers.equals( that.modifiers );
+		return buttonMatches && modifiersMatch;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash( type, button, modifiers );
@@ -129,6 +138,10 @@ public class CommandTrigger {
 
 	public boolean matches( InputEvent event ) {
 		return this.equals( from( event ) );
+	}
+
+	public boolean matchesButtonsAndModifiers( InputEvent event ) {
+		return this.equalsButtonsAndModifiers( from( event ) );
 	}
 
 	public enum Modifier {
