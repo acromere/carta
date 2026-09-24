@@ -50,7 +50,7 @@ public class CommandMapTest extends BaseCommandMapTest {
 				createMouseEvent( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, false, false, false, false )
 			),
 			Arguments.of(
-				createMetadata( "select-window-intersect", "Select Window Intersect", "wi", SelectByWindow.class ),
+				createMetadata( "select-window-intersect", "select-window-intersect", null, SelectByWindow.class ),
 				createMouseEvent( MouseEvent.DRAG_DETECTED, MouseButton.PRIMARY, true, false, false, false )
 			),
 
