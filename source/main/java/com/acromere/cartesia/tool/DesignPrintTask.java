@@ -47,9 +47,50 @@ public class DesignPrintTask extends Task<Void> {
 
 	@Override
 	public Void call() throws Exception {
-		log.atDebug().log( "Starting design print task..." );
+		log.atWarn().log( "Starting design print task..." );
 
-		// User-specific properties ------------------------------------------------
+		attempt2();
+
+		log.atWarn().log( "Design print task complete." );
+		return null;
+	}
+
+	private void attempt2() throws Exception {
+		PrinterJob job = PrinterJob.createPrinterJob();
+		if( job == null ) {
+			Notice notice = new Notice();
+			notice.setTitle( "No Printer Available" );
+			notice.setMessage( "There are no printers available on this computer." );
+			notice.setType( Notice.Type.WARN );
+			getProgram().getNoticeManager().addNotice( notice );
+			return;
+		}
+
+		// NOTE This can be used to give feedback to the user. It can be bound to a text field
+		job.jobStatusProperty().asString();
+
+		// NOTE This is a rather Swing looking dialog, maybe handle print properties separately
+		//				boolean print = job.showPageSetupDialog( getScene().getWindow() );
+		boolean print = job.showPrintDialog( getProgram().getWorkspaceManager().getActiveStage() );
+		if( !print ) return;
+
+		// Render the design -------------------------------------------------------
+
+		boolean successful = printWithSingleRenderPane( job );
+		//boolean successful = renderWithMultipleRenderPanes( job );
+
+		// Inform the user ---------------------------------------------------------
+
+		Notice notice = new Notice();
+		notice.setTitle( successful ? "Print Job Success" : "Print Job Failure" );
+		notice.setMessage( DesignPrintTask.this.getName() );
+		notice.setType( successful ? Notice.Type.INFO : Notice.Type.WARN );
+		getProgram().getNoticeManager().addNotice( notice );
+	}
+
+	private void priorAttempt() throws Exception {
+		log.atWarn().log( "Starting design print task..." );
+
 		Printer printer = getPrinterByName( "PDF", Printer.getDefaultPrinter() );
 
 		PrintResolution resolution = printer.getPrinterAttributes().getDefaultPrintResolution();
@@ -109,9 +150,6 @@ public class DesignPrintTask extends Task<Void> {
 		notice.setMessage( DesignPrintTask.this.getName() );
 		notice.setType( successful ? Notice.Type.INFO : Notice.Type.WARN );
 		getProgram().getNoticeManager().addNotice( notice );
-
-		log.atInfo().log( "Design print task complete." );
-		return null;
 	}
 
 	private boolean renderWithMultipleRenderPanes( PrinterJob job ) {

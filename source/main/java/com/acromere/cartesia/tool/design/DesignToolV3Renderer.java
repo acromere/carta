@@ -162,7 +162,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 	 * DesignToolV3} and should not be instantiated directly otherwise except for
 	 * testing purposes.
 	 */
-	DesignToolV3Renderer() {
+	public DesignToolV3Renderer() {
 		super();
 
 		drawableToGeometry = new ConcurrentHashMap<>();
@@ -420,7 +420,7 @@ public class DesignToolV3Renderer extends BaseDesignRenderer {
 			grid.setVisible( true );
 		} else {
 			grid.setVisible( false );
-			grid.getChildren().clear();
+			Fx.run( () -> grid.getChildren().clear() );
 		}
 	}
 
