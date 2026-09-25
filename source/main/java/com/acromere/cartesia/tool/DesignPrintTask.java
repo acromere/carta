@@ -178,7 +178,9 @@ public class DesignPrintTask extends Task<Void> {
 	private boolean printWithSingleRenderPane( PrinterJob job ) throws Exception {
 		PageLayout layout = job.getJobSettings().getPageLayout();
 
-		double factor = 1;
+		// TODO Can this factor be nicely linked to the DPI of the printer?
+		double factor = 8;
+		double inverse = 1 / factor;
 
 		// The NEW way
 		Class<? extends BaseDesignRenderer> rendererClass = tool.getPrintDesignRendererClass();
@@ -192,11 +194,12 @@ public class DesignPrintTask extends Task<Void> {
 		renderer.setPrefHeight( layout.getPrintableHeight() );
 		renderer.setViewCenter( tool.getViewCenter() );
 		renderer.setViewRotate( tool.getViewRotate() );
-		renderer.setViewZoom( tool.getViewZoom(), tool.getViewZoom() );
+		renderer.setViewZoom( inverse * tool.getViewZoom(), inverse * tool.getViewZoom() );
 
 		//renderer.setReferenceLayerVisible( false );
 
 		// FIXME This is changing the actual geometry colors...not just copying them to the print
+		// Move this to the renderer and let it change the colors of the FX geometry
 		// Invert the colors if using a dark theme
 		// TODO This should eventually be a user preference
 		//		if( getProgram().getWorkspaceManager().getThemeMetadata().isDark() ) {
@@ -209,47 +212,6 @@ public class DesignPrintTask extends Task<Void> {
 		// Do the actual rendering
 		// It is NOT required to do this on the FX thread
 		renderer.print( factor );
-
-		//		// FIXME Can't seem to get the factor above 3.2, about 230 dpi
-		//		//  ...and it inconsistently prints nothing
-		//		// The goal is to match the DPI requested by the printer/user
-		//		// 300 dpi is a factor of 4.166666666666667
-		//		// 2024 Aug 23 - Been as high as 13 today
-		//		// Well, I think this is the issue: https://bugs.openjdk.org/browse/JDK-8090178
-		//		// Which eventually leads to this:  https://bugs.openjdk.org/browse/JDK-8090822
-		//
-		//		double factor = 1; // 720 dpi
-		//
-		//		Canvas renderer = new Canvas();
-		//		//		renderer.setScaleX( 1.0 / factor ); // 0.1
-		//		//		renderer.setScaleY( 1.0 / factor ); // 0.1
-		//		//
-		//		//		double vFactor = 36;
-		//		//
-		//		//		// Changing the width and height also caused it to be moved
-		//		//		renderer.setWidth( factor * layout.getPrintableWidth() ); // 1440
-		//		//		renderer.setHeight( factor * 2*vFactor ); // 1440
-		//		//		renderer.setLayoutX( -((factor - 1) * (0.5*layout.getPrintableWidth())) ); // -648
-		//		//		renderer.setLayoutY( -((factor - 1) * vFactor) ); // -648
-		//
-		//		//		renderer.setTranslateX( -((factor - 1) * 72) );
-		//		//		renderer.setTranslateY( -((factor - 1) * 72) );
-		//		//		renderer.getGraphicsContext2D().setFill( Color.BLACK );
-		//		//		renderer.getGraphicsContext2D().fillRect( 0, 0, factor * layout.getPrintableWidth(), factor * layout.getPrintableHeight() );
-		//		//		renderer.getGraphicsContext2D().setFill( Color.YELLOW );
-		//		//		renderer.getGraphicsContext2D().fillOval( 0, 0, factor * layout.getPrintableWidth(), factor * layout.getPrintableHeight() );
-		//
-		//		renderer.getGraphicsContext2D().setFill( Color.BLACK );
-		//		renderer.getGraphicsContext2D().fillRect( 0, 0, factor * 144, factor * 144 );
-		//		renderer.getGraphicsContext2D().beginPath();
-		//		renderer.getGraphicsContext2D().moveTo( 0, 0 );
-		//		renderer.getGraphicsContext2D().lineTo( factor * 72, 0 );
-		//		renderer.getGraphicsContext2D().lineTo( 0, factor * 72 );
-		//		renderer.getGraphicsContext2D().closePath();
-		//		renderer.getGraphicsContext2D().setFill( Color.YELLOW );
-		//		renderer.getGraphicsContext2D().fill();
-		//		log.atConfig().log( "Job size: " + layout.getPrintableWidth() + "x" + layout.getPrintableHeight() );
-		//		log.atConfig().log( "Print size: " + renderer.getWidth() + "x" + renderer.getHeight() + " = " + (renderer.getWidth() * renderer.getHeight()) );
 
 		return job.printPage( layout, renderer ) && job.endJob();
 	}
