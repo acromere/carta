@@ -10,6 +10,10 @@ import com.acromere.xenon.resource.Resource;
 import com.acromere.xenon.task.Task;
 import com.acromere.zerra.color.Colors;
 import com.acromere.zerra.color.Paints;
+import com.acromere.zerra.javafx.Fx;
+import com.acromere.zerra.javafx.FxUtil;
+import javafx.geometry.Bounds;
+import javafx.geometry.Point3D;
 import javafx.print.*;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
@@ -17,6 +21,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import lombok.CustomLog;
 import lombok.Getter;
+
+import java.util.concurrent.TimeUnit;
 
 @Getter
 @CustomLog
@@ -189,13 +195,37 @@ public class DesignPrintTask extends Task<Void> {
 		renderer.setDesign( resource.getModel() );
 		renderer.setVisibleLayers( tool.getVisibleLayers() );
 
-		renderer.setDpi( factor * 72, factor * 72 );
+		// Renderer layout on page, (0,0) is where the margins put the origin
+		renderer.setLayoutX( 0.0 );
+		renderer.setLayoutY( 0.0 );
 		renderer.setPrefWidth( layout.getPrintableWidth() );
 		renderer.setPrefHeight( layout.getPrintableHeight() );
+
+		// These are all in points (1/72 inches)
+		log.atWarn().log( "Paper size: (%f,%f)", layout.getPaper().getWidth(), layout.getPaper().getHeight() );
+		log.atWarn().log(
+			"Page layout: (%f,%f) (%f,%f) (%f,%f)",
+			layout.getLeftMargin(),
+			layout.getTopMargin(),
+			layout.getPrintableWidth(),
+			layout.getPrintableHeight(),
+			layout.getRightMargin(),
+			layout.getBottomMargin()
+		);
+		log.atWarn().log( "Renderer layout: (%f,%f) (%f,%f)", renderer.getLayoutX(), renderer.getLayoutY(), renderer.getPrefWidth(), renderer.getPrefHeight() );
+
+		// Renderer rendering settings
+		renderer.setDpi( factor * 72, factor * 72 );
 		renderer.setViewCenter( tool.getViewCenter() );
 		renderer.setViewRotate( tool.getViewRotate() );
 		renderer.setViewZoom( inverse * tool.getViewZoom(), inverse * tool.getViewZoom() );
 
+		// Grid
+		Workplane workplane = new Workplane();
+		renderer.setWorkplane( workplane );
+		renderer.setGridVisible( true );
+		workplane.setBounds( renderer.screenToWorld( FxUtil.bounds( new Point3D( 0, 0, 0 ), new Point3D( layout.getPrintableWidth(), layout.getPrintableHeight(), 0 ) ) ) );
+		log.atWarn().log( "Workplane bounds: {0}", workplane.getBounds() );
 		//renderer.setReferenceLayerVisible( false );
 
 		// FIXME This is changing the actual geometry colors...not just copying them to the print
@@ -211,7 +241,8 @@ public class DesignPrintTask extends Task<Void> {
 
 		// Do the actual rendering
 		// It is NOT required to do this on the FX thread
-		renderer.print( factor );
+		//renderer.print( factor );
+		//Fx.waitForStability( 1, TimeUnit.SECONDS );
 
 		return job.printPage( layout, renderer ) && job.endJob();
 	}
