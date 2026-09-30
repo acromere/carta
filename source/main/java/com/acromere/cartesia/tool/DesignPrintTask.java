@@ -185,8 +185,8 @@ public class DesignPrintTask extends Task<Void> {
 		PageLayout layout = job.getJobSettings().getPageLayout();
 
 		// TODO Can this factor be nicely linked to the DPI of the printer?
-		double factor = 8;
-		double inverse = 1 / factor;
+		double factor = 8.0;
+		double inverse = 1.0 / factor;
 
 		// The NEW way
 		Class<? extends BaseDesignRenderer> rendererClass = tool.getPrintDesignRendererClass();
@@ -224,6 +224,12 @@ public class DesignPrintTask extends Task<Void> {
 		Workplane workplane = new Workplane();
 		renderer.setWorkplane( workplane );
 		renderer.setGridVisible( true );
+
+		// Understanding parent and local coordinates
+		// TODO Ensure there is an accurate transform between parent and local coordinates
+		// So far:
+		//   screenToWorld does not provide correct coordinates (incorrect translate)
+		//   parentToLocal does not provide correct coordinates (incorrect translate)
 		workplane.setBounds( renderer.screenToWorld( FxUtil.bounds( new Point3D( 0, 0, 0 ), new Point3D( layout.getPrintableWidth(), layout.getPrintableHeight(), 0 ) ) ) );
 		log.atWarn().log( "Workplane bounds: {0}", workplane.getBounds() );
 		//renderer.setReferenceLayerVisible( false );

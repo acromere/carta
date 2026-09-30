@@ -373,4 +373,32 @@ public abstract class BaseDesignRendererTest extends BaseCartesiaUnitTest {
 		assertThat( actualScreen ).isEqualTo( expectedScreen );
 	}
 
+	@Test
+	void testScreenToWorld() {
+		double zoom = 1.0;
+		double factor = 1.0;
+		double inverse = 1.0 / factor;
+		double screenToWorldScale = 1.0 / (factor * 72) * 2.54;
+
+		double width = 72 * 7;
+		double height = 72 * 9.5;
+
+		// This is in the context of printing
+		getRenderer().setLayoutX( 0.0 );
+		getRenderer().setLayoutY( 0.0 );
+		getRenderer().setPrefWidth( width );
+		getRenderer().setPrefHeight( height );
+
+		renderer.setDpi( factor * 72, factor * 72 );
+		renderer.setViewCenter( Point3D.ZERO );
+		renderer.setViewRotate( 0.0 );
+		renderer.setViewZoom( inverse * zoom, inverse * zoom );
+
+		Point3D upperLeftCorner = new Point3D( -252, 342, 0 ).multiply( screenToWorldScale );
+		Point3D lowerRightCorner = new Point3D( 252, -342, 0 ).multiply( screenToWorldScale );
+		//assertThat( renderer.parentToLocal( 0, 0, 0 ) ).isEqualTo( upperLeftCorner );
+		assertThat( renderer.screenToWorld( 0.5 * width, 0.5 * height, 0 ) ).isEqualTo( Point3D.ZERO );
+		assertThat( renderer.screenToWorld( width, height, 0 ) ).isEqualTo( lowerRightCorner );
+	}
+
 }
