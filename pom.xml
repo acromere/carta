@@ -40,7 +40,7 @@
 		<curve.version>0.6-SNAPSHOT</curve.version>
 		<marea.version>0.4-SNAPSHOT</marea.version>
 		<zerra.version>0.12-SNAPSHOT</zerra.version>
-		<javaluator.version>3.0.6</javaluator.version>
+		<javaluator.version>3.0.8</javaluator.version>
 		<mockito.version>5.21.0</mockito.version>
 
 		<!-- Plugin versions -->
