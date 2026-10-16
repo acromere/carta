@@ -69,7 +69,7 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 	@Mock
 	private ChangeListener<Number> valueListener;
 
-	public DesignToolV3RendererTest() {
+	public DesignToolV3RendererTest() throws Exception {
 		super( new DesignToolV3Renderer() );
 		this.renderer = (DesignToolV3Renderer)super.getRenderer();
 
@@ -77,6 +77,8 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 		renderer.setDesign( new Design<>( new DesignModel2D() ) );
 		renderer.setWorkplane( new Workplane() );
 		renderer.layout();
+
+		Fx.waitForStability( Fx.STABILITY_TIMEOUT );
 	}
 
 	private static Stream<Arguments> screenToWorldWithRotate() {
