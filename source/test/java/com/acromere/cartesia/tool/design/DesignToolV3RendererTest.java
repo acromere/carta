@@ -78,6 +78,7 @@ public class DesignToolV3RendererTest extends BaseDesignRendererTest {
 		renderer.setWorkplane( new Workplane() );
 		renderer.layout();
 
+		// FIXME Is this an indication that the renderer is not FX thread contained?
 		Fx.waitForStability( Fx.STABILITY_TIMEOUT );
 	}
 
