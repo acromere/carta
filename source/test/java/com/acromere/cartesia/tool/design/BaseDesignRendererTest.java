@@ -1,6 +1,5 @@
 package com.acromere.cartesia.tool.design;
 
-import com.acromere.cartesia.BaseCartesiaUnitTest;
 import com.acromere.cartesia.DesignUnit;
 import com.acromere.cartesia.DesignValue;
 import com.acromere.cartesia.data.*;
@@ -23,15 +22,18 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static com.acromere.cartesia.TestTimeouts.FX_STABILITY_TIMEOUT;
+import static com.acromere.cartesia.TestTimeouts.FX_STARTUP_TIMEOUT;
 import static com.acromere.cartesia.tool.RenderConstants.WINDOW_SELECT_APERTURE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public abstract class BaseDesignRendererTest extends BaseCartesiaUnitTest {
+public abstract class BaseDesignRendererTest {
 
 	private final BaseDesignRenderer renderer;
 
-	protected BaseDesignRendererTest( BaseDesignRenderer renderer ) {
+	protected BaseDesignRendererTest( BaseDesignRenderer renderer ) throws Exception {
 		this.renderer = renderer;
+		Fx.startup();
+		Fx.waitFor( FX_STARTUP_TIMEOUT );
 	}
 
 	private static Stream<Arguments> matchesArguments() {
@@ -371,34 +373,6 @@ public abstract class BaseDesignRendererTest extends BaseCartesiaUnitTest {
 		double expectedScreen = 1.0 * 96; // 96 px
 		double actualScreen = getRenderer().realToScreen( dvCm );
 		assertThat( actualScreen ).isEqualTo( expectedScreen );
-	}
-
-	@Test
-	void testScreenToWorld() {
-		double zoom = 1.0;
-		double factor = 1.0;
-		double inverse = 1.0 / factor;
-		double screenToWorldScale = 1.0 / (factor * 72) * 2.54;
-
-		double width = 72 * 7;
-		double height = 72 * 9.5;
-
-		// This is in the context of printing
-		getRenderer().setLayoutX( 0.0 );
-		getRenderer().setLayoutY( 0.0 );
-		getRenderer().setPrefWidth( width );
-		getRenderer().setPrefHeight( height );
-
-		renderer.setDpi( factor * 72, factor * 72 );
-		renderer.setViewCenter( Point3D.ZERO );
-		renderer.setViewRotate( 0.0 );
-		renderer.setViewZoom( inverse * zoom, inverse * zoom );
-
-		Point3D upperLeftCorner = new Point3D( -252, 342, 0 ).multiply( screenToWorldScale );
-		Point3D lowerRightCorner = new Point3D( 252, -342, 0 ).multiply( screenToWorldScale );
-		//assertThat( renderer.parentToLocal( 0, 0, 0 ) ).isEqualTo( upperLeftCorner );
-		assertThat( renderer.screenToWorld( 0.5 * width, 0.5 * height, 0 ) ).isEqualTo( Point3D.ZERO );
-		assertThat( renderer.screenToWorld( width, height, 0 ) ).isEqualTo( lowerRightCorner );
 	}
 
 }

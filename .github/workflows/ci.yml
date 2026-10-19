@@ -35,10 +35,10 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Fetch sources
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Fetch CI/CD resources
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: acromere/canoe
           path: .github
@@ -60,7 +60,7 @@ jobs:
           java-version: ${{env.JAVA_VERSION}}
 
       - name: Maven Repository Cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -76,7 +76,7 @@ jobs:
           mvn ${{env.MAVEN_PARMS}} test
 
       - name: Upload Artifacts for Next Steps
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: build
           path: target
@@ -89,10 +89,10 @@ jobs:
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/stable' || github.base_ref == 'refs/heads/main' || github.base_ref == 'refs/heads/stable'
     steps:
       - name: Fetch sources
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Fetch CI/CD resources
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: acromere/canoe
           path: .github
@@ -115,7 +115,7 @@ jobs:
           java-package: ${{env.JAVA_PACKAGE}}
 
       - name: Maven Repository Cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -123,7 +123,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Download Artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: build
           path: target
@@ -158,10 +158,10 @@ jobs:
       XVFB_PARMS: "-screen 0 1920x1080x24 -nolisten unix"
     steps:
       - name: Fetch sources
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Fetch CI/CD resources
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: acromere/canoe
           path: .github
@@ -183,7 +183,7 @@ jobs:
           java-package: ${{env.JAVA_PACKAGE}}
 
       - name: Maven Repository Cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -191,7 +191,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Download Artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: build
           path: target
@@ -217,10 +217,10 @@ jobs:
       XVFB_PARMS: "-screen 0 3840x2160x24 -nolisten unix"
     steps:
       - name: Fetch sources
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Fetch CI/CD resources
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: acromere/canoe
           path: .github
@@ -242,7 +242,7 @@ jobs:
           java-package: ${{env.JAVA_PACKAGE}}
 
       - name: Maven Repository Cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -250,7 +250,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Download Artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: build
           path: target
@@ -275,10 +275,10 @@ jobs:
       ACM_PLATFORM: "linux"
     steps:
       - name: Fetch sources
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Fetch CI/CD resources
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: acromere/canoe
           path: .github
@@ -300,7 +300,7 @@ jobs:
           java-package: ${{env.JAVA_PACKAGE}}
 
       - name: Maven Repository Cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -308,7 +308,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Download Artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: build
           path: target
